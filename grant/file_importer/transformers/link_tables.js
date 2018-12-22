@@ -13,5 +13,6 @@ let transform = (record) =>
 
 module.exports = {
     transform: transform,
-    disable: false
+    disable: false,
+    allow_duplicated: true
 };

@@ -24,14 +24,27 @@ let save_to_db = async(collection_name) =>
 let import_bulk = async (type, record, callback) => {
     counter++;
     let document = transformers[type].transform(record);
+    let allow_duplicated = transformers[type].allow_duplicated;
     let id = document._id;
-    // delete document._id;
 
-    // if (!mongo_bulk.some(({_id}) => _id === id))
+    if (allow_duplicated)
+    {
+        delete document._id;
+        if (!mongo_bulk.some(({_id}) => _id === id))
+            mongo_bulk.push({command_name: "upsert", _id: id, document: document});
+    }
+    else
+    {
         mongo_bulk.push({command_name: "upsert", _id: id, document: document});
+    }
 
     if (counter % bulk_size === 0)
-        await save_to_db(type);
+        try {
+            await save_to_db(type);
+        }
+    catch(e) {
+        debugger
+    }
 
     callback();
 };
