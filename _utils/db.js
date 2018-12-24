@@ -218,9 +218,8 @@ Mongo.prototype.update = async function(model_title, params) {
  *
  * @param {String} model_title
  * @param {Object} params
- * @param {Object} params.data
  * @param {Object} params.query
- * @param {Object} [params.data]
+ * @param {Object} params.data
  * @param {Object} [params.unset]
  * @returns {Promise.<void>}
  */

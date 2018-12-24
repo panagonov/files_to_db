@@ -39,16 +39,21 @@ let mapping = {
                                     other_name      = other_name.trim().split(" ");
                                     let first_name  = (other_name.shift() || "").trim().replace(".", "");
                                     let middle_name = other_name.join(" ").trim().replace(/\./g, "");
-                                    return {
-                                        last_name: last_name.replace(".", ""),
-                                        ...first_name ? {first_name: first_name} : "",
-                                        ...middle_name ? {middle_name: middle_name} : ""
-                                    };
-                                }),
+                                    if (first_name || middle_name || last_name)
+                                    {
+                                        return {
+                                            ...last_name ? {last_name: last_name.replace(".", "")} : "",
+                                            ...first_name ? {first_name: first_name} : "",
+                                            ...middle_name ? {middle_name: middle_name} : ""
+                                        };
+                                    }
+                                    return null
+                                })
+                                .filter(name => name),
     "officer_name"          : "PROGRAM_OFFICER_NAME",
     "date_start"            : (record) => record["PROJECT_START"] ? new Date(record["PROJECT_START"]) : "",
     "date_end"              : (record) => record["PROJECT_END"] ? new Date(record["PROJECT_END"]) : "",
-    "terms"                 : (record) => record["PROJECT_TERMS"] ? record["PROJECT_TERMS"].split(";").map(term => term.trim()) : "",
+    "terms"                 : (record) => record["PROJECT_TERMS"] ? record["PROJECT_TERMS"].split(";").map(term => term.trim()).filter(term => term) : "",
     "name"                  : "PROJECT_TITLE",
     "serial_number"         : "SERIAL_NUMBER",
     "study_section"         : "STUDY_SECTION",

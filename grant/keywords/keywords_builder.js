@@ -1,8 +1,6 @@
 let fs       = require("fs");
 let es_db    = require("../../_utils/elasticsearch/db.js");
 
-
-let mongo_db;
 let hash_path = `${__dirname}/_sources/hash.json`;
 let hash = {};
 
@@ -29,9 +27,9 @@ let build_single_hash = async({index, fields}) =>
     return result;
 };
 
-let build_hash = async(db) =>
+let build_hash = async() =>
 {
-    mongo_db = db;
+    console.log("Build keywords hash.");
     await init_dbs();
 
     if (fs.existsSync(hash_path))
@@ -61,6 +59,12 @@ let build_hash = async(db) =>
     fs.writeFileSync(hash_path, JSON.stringify(hash), "utf8")
 };
 
+let get = (key) =>
+{
+    return hash[key];
+};
+
 module.exports = {
-    build_hash
-}
+    build_hash,
+    get
+};

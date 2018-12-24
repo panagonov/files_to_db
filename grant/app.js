@@ -6,7 +6,7 @@
 
 let MongoDb       = require("../_utils/db.js");
 let file_importer = require("./file_importer/file_importer.js");
-let cache_builder = require("./keywords/cache_builder.js");
+let keywords = require("./keywords/keywords.js");
 
 let mongo_db;
 let db_name  = "grant";
@@ -21,7 +21,7 @@ let start = async () =>
 {
     await init();
     await file_importer(mongo_db);
-    await cache_builder.build_hash(mongo_db);
+    await keywords(mongo_db);
 };
 
 start()
