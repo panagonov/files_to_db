@@ -4,8 +4,9 @@
  *
  ********************************************************************/
 
-let file_importer = require("./file_importer/file_importer.js");
 let MongoDb       = require("../_utils/db.js");
+let file_importer = require("./file_importer/file_importer.js");
+let cache_builder = require("./keywords/cache_builder.js");
 
 let mongo_db;
 let db_name  = "grant";
@@ -19,7 +20,8 @@ let init = async () =>
 let start = async () =>
 {
     await init();
-    await file_importer(mongo_db)
+    await file_importer(mongo_db);
+    await cache_builder.build_hash(mongo_db);
 };
 
 start()
