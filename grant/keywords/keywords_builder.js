@@ -46,7 +46,8 @@ let build_hash = async() =>
         {index: "process", fields: ["name", "aliases"]},
         {index: "organism", fields: ["name", "aliases"]},
         {index: "anatomy", fields: ["name", "aliases"]},
-        {index: "gene", fields: ["name", "aliases", "symbol", "syn1", "syn2"]}
+        {index: "gene", fields: ["name", "aliases", "symbol", "syn1", "syn2"]},
+        {index: "clinical_trial", fields: ["_id", "name"]}
     ];
 
     for(let i = 0; i < db_data.length; i++)
@@ -61,10 +62,17 @@ let build_hash = async() =>
 
 let get = (key) =>
 {
-    return hash[key];
+    return hash[key.toLowerCase()];
+};
+
+let clean = () =>
+{
+    if(fs.existsSync(hash_path))
+        fs.unlinkSync(clean)
 };
 
 module.exports = {
     build_hash,
-    get
+    get,
+    clean
 };

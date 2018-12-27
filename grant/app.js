@@ -6,7 +6,7 @@
 
 let MongoDb       = require("../_utils/db.js");
 let file_importer = require("./file_importer/file_importer.js");
-let keywords = require("./keywords/keywords.js");
+let keywords      = require("./keywords/keywords.js");
 
 let mongo_db;
 let db_name  = "grant";
@@ -20,10 +20,28 @@ let init = async () =>
 let start = async () =>
 {
     await init();
-    await file_importer(mongo_db);
-    await keywords(mongo_db);
+    await file_importer.run(mongo_db);
+    await keywords.run(mongo_db);
 };
 
-start()
-.then(() => process.exit(0))
-.catch(e => console.error(e));
+let clean = async () =>
+{
+    await init();
+    await keywords.clean(mongo_db);
+    await file_importer.clean(mongo_db);
+
+};
+
+let st = () =>
+    start()
+    .then(() => process.exit(0))
+    .catch(e => {
+        console.error(e);
+        st()
+    });
+
+st();
+
+// clean()
+// .then(() => process.exit(0))
+// .catch(e => console.error(e));

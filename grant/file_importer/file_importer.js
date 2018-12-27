@@ -39,11 +39,8 @@ let import_bulk = async (type, record, callback) => {
     }
 
     if (counter % bulk_size === 0)
-        try {
-            await save_to_db(type);
-        }
-    catch(e) {
-        debugger
+    {
+        await save_to_db(type);
     }
 
     callback();
@@ -78,7 +75,7 @@ let importCSVfromPath = async (csv_path, type) => {
     });
 };
 
-let import_files_to_db = async (db) =>
+let run = async (db) =>
 {
     mongo_db = db;
 
@@ -110,4 +107,21 @@ let import_files_to_db = async (db) =>
     }
 };
 
-module.exports = import_files_to_db;
+clean = async (db)=>
+{
+    mongo_db = db;
+
+    fs.writeFileSync(__dirname + "/progress.json", "{}", "utf8");
+
+    for (let key in transformers)
+    {
+        if (transformers.hasOwnProperty(key)) {
+            await mongo_db.drop(key)
+        }
+    }
+};
+
+module.exports = {
+    run,
+    clean
+};

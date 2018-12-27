@@ -16,6 +16,12 @@ let mapping_transform = (mapping, record) =>
     return result;
 };
 
+let wait = async(delay) =>
+    new Promise((resolve, reject) => {
+        setTimeout(resolve, delay)
+    });
+
 module.exports = {
-    mapping_transform
+    mapping_transform,
+    wait
 };
