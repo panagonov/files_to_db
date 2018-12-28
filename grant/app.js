@@ -7,6 +7,7 @@
 let MongoDb       = require("../_utils/db.js");
 let file_importer = require("./file_importer/file_importer.js");
 let keywords      = require("./keywords/keywords.js");
+let affiliate     = require("./affiliate/affiliate.js");
 
 let mongo_db;
 let db_name  = "grant";
@@ -20,8 +21,9 @@ let init = async () =>
 let start = async () =>
 {
     await init();
-    await file_importer.run(mongo_db);
-    await keywords.run(mongo_db);
+    // await file_importer.run(mongo_db);
+    // await keywords.run(mongo_db);
+    await affiliate.run(mongo_db)
 };
 
 let clean = async () =>
@@ -29,6 +31,7 @@ let clean = async () =>
     await init();
     await keywords.clean(mongo_db);
     await file_importer.clean(mongo_db);
+    await affiliate.clean(mongo_db);
 
 };
 

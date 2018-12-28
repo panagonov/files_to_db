@@ -219,7 +219,7 @@ Mongo.prototype.update = async function(model_title, params) {
  * @param {String} model_title
  * @param {Object} params
  * @param {Object} params.query
- * @param {Object} params.data
+ * @param {Object} [params.data]
  * @param {Object} [params.unset]
  * @returns {Promise.<void>}
  */
@@ -228,7 +228,7 @@ Mongo.prototype.update_many = async function(model_title, params) {
         throw new Error('use only with query');
     }
 
-    delete params.data._id;
+    params.data ? delete params.data._id : null;
 
     let update_query = {};
     params.data ? update_query["$set"] = params.data : null;

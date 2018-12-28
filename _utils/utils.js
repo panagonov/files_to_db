@@ -1,3 +1,5 @@
+let unidecode = require("unidecode");
+
 let mapping_transform = (mapping, record) =>
 {
     let result = {};
@@ -25,12 +27,13 @@ let uniq = (arr, fn) =>
 {
     if(!fn)
     {
-        return arr.reduce((res, item) =>
+        let result = arr.reduce((res, item) =>
         {
-            if (res.indexOf(item) === -1)
-                res.push(item);
+            res[item] = item;
             return res
-        }, []);
+        }, {});
+
+        return Object.keys(result).map(key => result[key])
     }
     else
     {
@@ -38,8 +41,15 @@ let uniq = (arr, fn) =>
     }
 };
 
+let normalize_string = (str) => {
+    if (!str || !str.replace)
+        str = "";
+    return unidecode(str).replace(/\W/g, " ").replace(/\s+/g, " ").trim().toLowerCase();
+};
+
 module.exports = {
     mapping_transform,
     wait,
-    uniq
+    uniq,
+    normalize_string
 };
