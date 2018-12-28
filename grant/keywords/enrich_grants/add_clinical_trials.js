@@ -1,4 +1,5 @@
 let keywords_builder = require("../keywords_builder.js");
+let utils            = require("../../../_utils/utils.js");
 
 let collection_name = "clinical_studies";
 let target_collection = "projects";
@@ -39,6 +40,8 @@ let add_clinical_trials = async(mongo_db) =>
 
         projects.forEach(item => {
             item.clinical_trial_relations = (item.clinical_trial_relations || []).concat(map_hash[item.core_project_num]);
+            item.clinical_trial_relations = utils.uniq(item.clinical_trial_relations);
+
             let document = {
                 clinical_trial_relations : item.clinical_trial_relations,
                 clinical_trial_relations_count : item.clinical_trial_relations.length

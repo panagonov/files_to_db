@@ -1,4 +1,5 @@
 let es_db = require("../../../_utils/elasticsearch/db.js");
+let utils = require("../../../_utils/utils.js");
 
 let collection_name = "link_tables";
 let target_collection = "projects";
@@ -52,7 +53,7 @@ let add_pubmeds = async(mongo_db) =>
             return res;
         }, {});
 
-        projects.forEach(item => {
+        projects.forEach((item, index) => {
             let document = {version_pubmed: version};
             let pubmed_ids = map_hash[item.core_project_num];
 
@@ -62,27 +63,38 @@ let add_pubmeds = async(mongo_db) =>
                     found++;
                     item.pubmed_relations = item.pubmed_relations || [];
                     item.pubmed_relations.push(pubmed_id);
-                    item.author_relations = item.author_relations || [];
-                    item.author_relations = (original_pubmeds_hash[pubmed_id].authors || []).map(({_id}) => _id);
 
-                    document.pubmed_relations = item.pubmed_relations;
-                    document.pubmed_relations_count  = item.pubmed_relations.length;
-                    document.author_relations = item.author_relations;
-                    document.author_relations_count = item.author_relations.length;
+                    // item.author_relations = item.author_relations || [];
+                    // item.author_relations = (original_pubmeds_hash[pubmed_id].authors || []).map(({_id}) => _id);
                 }
                 else {
                     not_found++;
                     item._pubmed_not_found = item._pubmed_not_found || [];
                     item._pubmed_not_found.push(pubmed_id);
-                    document._pubmed_not_found = item._pubmed_not_found
                 }
             });
+
+            if (item.pubmed_relations && item.pubmed_relations.length) {
+                item.pubmed_relations = utils.uniq(item.pubmed_relations);
+                document.pubmed_relations = item.pubmed_relations;
+                document.pubmed_relations_count  = item.pubmed_relations.length;
+            }
+
+            // if (item.author_relations && item.author_relations.length) {
+                // item.author_relations = utils.uniq(item.author_relations);
+                // document.author_relations = item.author_relations;
+                // document.author_relations_count = item.author_relations.length;
+            // }
+
+            if (item._pubmed_not_found && item._pubmed_not_found.length) {
+                item._pubmed_not_found = utils.uniq(item._pubmed_not_found);
+                document._pubmed_not_found = item._pubmed_not_found
+            }
+
             mongo_bulk.push({command_name: "update", _id: item._id, document: document})
         });
-
         if (mongo_bulk.length)
             await mongo_db.bulk(target_collection, mongo_bulk);
-
         page++;
         console.log(`Pubmeds ${page * limit}/${count} - found: ${found}/${not_found}`);
     }

@@ -1,3 +1,5 @@
+let utils            = require("../../../_utils/utils.js");
+
 let collection_name = "patents";
 let target_collection = "projects";
 let version = 1;
@@ -33,7 +35,7 @@ let add_patents = async(mongo_db) =>
 
         projects.forEach(item => {
             item.patent_relations = (item.patent_relations || []).concat(map_hash[item.core_project_num]);
-
+            item.patent_relations = utils.uniq(item.patent_relations);
             let document = {
                 patent_relations: item.patent_relations,
                 patent_relations_count: item.patent_relations.length

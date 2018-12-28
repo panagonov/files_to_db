@@ -14,8 +14,12 @@ let enrich_patents = {
 };
 
 let aggs_grants = {
-    affiliate_not_found          : require("./aggs_grants/affiliate_not_found.js")
+    affiliate_not_found          : require("./aggs_grants/affiliate_not_found.js"),
     terms_not_found              : require("./aggs_grants/terms_not_found.js")
+};
+
+let aggs_patents = {
+    affiliate_not_found          : require("./aggs_patents/affiliate_not_found.js")
 };
 
 
@@ -35,6 +39,8 @@ let run = async(mongo_db) =>
 
     await aggs_grants.affiliate_not_found(mongo_db);
     await aggs_grants.terms_not_found(mongo_db);
+
+    await aggs_patents.affiliate_not_found(mongo_db);
 };
 
 let clean = async() =>
