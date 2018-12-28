@@ -4,7 +4,10 @@ let mapping = {
     "_id"              : "PATENT_ID",
     "name"             : "PATENT_TITLE",
     "organization_name": "PATENT_ORG_NAME",
-    "project_id"       : "PROJECT_ID"
+    "project_id"       : "PROJECT_ID",
+    "external_links"        : (record) => {
+        return [{key: "JUSTIA", id: record["PATENT_ID"]}];
+    },
 };
 
 let transform = (record) =>
@@ -14,5 +17,6 @@ let transform = (record) =>
 
 module.exports = {
     transform: transform,
-    disable: false
+    disable: false,
+    allow_duplicated: true
 };

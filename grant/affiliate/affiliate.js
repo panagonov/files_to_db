@@ -28,8 +28,8 @@ let run = async(mongo_db) =>
         affiliate   : hash_builder.affiliate(resources)
     };
 
-    // await affiliate_match_in_projects.run(mongo_db, hash);
-    // await add_missing_affiliates_in_projects.run(mongo_db);
+    await affiliate_match_in_projects.run(mongo_db, hash);
+    await add_missing_affiliates_in_projects.run(mongo_db);
     await affiliate_match_in_patents.run(mongo_db, hash);
     await add_missing_affiliates_in_patents.run(mongo_db);
 };

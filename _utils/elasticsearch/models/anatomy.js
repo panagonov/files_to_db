@@ -105,6 +105,8 @@ module.exports = {
             "process_relations_count"       : {"type": "number"},
             "anatomy_relations_count"       : {"type": "number"},
             "pubmed_relations_count"        : {"type": "number"},
+            "grant_relations_count"         : {"type": "number"},
+            "patent_relations_count"        : {"type": "number"},
             "clinical_trial_relations_count": {"type": "number"},
             "views"                         : {"type": "number"},
             "posts"                         : {"type": "number"},
@@ -282,6 +284,8 @@ module.exports = {
                         "anatomy_relations_count"       : {"type": "integer", "index": false, "doc_values": true},
                         "pubmed_relations_count"        : {"type": "integer", "index": false, "doc_values": true},
                         "clinical_trial_relations_count": {"type": "integer", "index": false, "doc_values": true},
+                        "grant_relations_count"         : {"type": "integer", "index": false, "doc_values": true},
+                        "patent_relations_count"        : {"type": "integer", "index": false, "doc_values": true},
                         "views"                         : {"type": "integer", "index": false, "doc_values": true},
                         "posts"                         : {"type": "integer", "index": false, "doc_values": true}
                     }

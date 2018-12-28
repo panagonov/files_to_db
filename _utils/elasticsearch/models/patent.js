@@ -1,7 +1,7 @@
 module.exports = {
 
     "schema": {
-        "title": "gene",
+        "title": "patent",
         "type": "object",
         "properties": {
             "_id": {
@@ -10,37 +10,13 @@ module.exports = {
             "name": {
                 "type": "string"
             },
-            "symbol": {
-                "type": "string"
-            },
-            "tax_id" : {
-                "type": "array",
-                "items": {
-                    "type": "string"
-                }
-            },
-            "gene_id" : {
-                "type": "array",
-                "items": {
-                    "type": "string"
-                }
-            },
-            "aliases": {
-                "type": "array",
-                "items": {
-                    "type": "string"
-                }
-            },
-            "type_of_gene" : {
-                "type": "string"
-            },
             "external_links": {
                 "type": "array",
                 "items": {
                     "type": "object",
                     "properties" : {
                         "key": {"type" : "string"},
-                        "_id": {"type" : "string"}
+                        "id": {"type" : "string"}
                     }
                 }
             },
@@ -98,6 +74,30 @@ module.exports = {
                     "type": "string"
                 }
             },
+            "affiliate_relations"           : {
+                "type" : ["array"],
+                "items": {
+                    "type": "string"
+                }
+            },
+            "pubmed_relations"           : {
+                "type" : ["array"],
+                "items": {
+                    "type": "string"
+                }
+            },
+            "grant_relations"           : {
+                "type" : ["array"],
+                "items": {
+                    "type": "string"
+                }
+            },
+            "clinical_trial_relations"           : {
+                "type" : ["array"],
+                "items": {
+                    "type": "string"
+                }
+            },
             "gene_relations_count"          : {"type": "number"},
             "pathway_relations_count"       : {"type": "number"},
             "drug_relations_count"          : {"type": "number"},
@@ -109,36 +109,19 @@ module.exports = {
             "anatomy_relations_count"       : {"type": "number"},
             "pubmed_relations_count"        : {"type": "number"},
             "clinical_trial_relations_count": {"type": "number"},
+            "affiliate_relations_count"     : {"type": "number"},
             "grant_relations_count"         : {"type": "number"},
-            "patent_relations_count"        : {"type": "number"},
-            "syn1": {
-                "type" : ["array"],
-                "items": {
-                    "type": "string"
-                }
-            },
-            "syn2": {
-                "type" : ["array"],
-                "items": {
-                    "type": "string"
-                }
-            },
-            "views"                   : {"type": "number"},
-            "posts"                   : {"type": "number"},
             "rel_version"             : {"type": "number"}
         },
-        "required": [
-            "symbol"
-        ],
         "additionalProperties": false
     },
 
     "settings": {
-        "index": "bioseek1-gene",
-        "doc_type": "gene",
+        "index": "bioseek-patent",
+        "doc_type": "patent",
         "mapping": {
             "aliases": {
-                "bioseek1-gene": {}
+                "bioseek-patent": {}
             },
             "settings": {
                 "analysis": {
@@ -262,28 +245,9 @@ module.exports = {
                 }
             },
             "mappings": {
-                "gene": {
+                "patent": {
                     "properties": {
                         "name": {
-                            "type": "keyword",
-                            "fields": {
-                                "raw": {
-                                    "type": "text",
-                                    "analyzer": "term_lowercase"
-                                },
-                                "main": {
-                                    "type": "text",
-                                    "analyzer": "edge_phrase_analyzer",
-                                    "search_analyzer" : "term_lowercase"
-                                },
-                                "suggest": {
-                                    "type": "text",
-                                    "analyzer" : "edge_analyzer",
-                                    "search_analyzer": "lowercase_whitespace"
-                                }
-                            }
-                        },
-                        "symbol": {
                             "type": "keyword",
                             "fields": {
                                 "raw": {
@@ -308,36 +272,6 @@ module.exports = {
                                 "key" : {"type": "keyword"}
                             }
                         },
-                        "aliases": {
-                            "type": "keyword",
-                            "fields": {
-                                "raw": {
-                                    "type": "text",
-                                    "analyzer": "term_lowercase"
-                                },
-                                "main": {
-                                    "type": "text",
-                                    "analyzer": "edge_phrase_analyzer",
-                                    "search_analyzer" : "term_lowercase"
-                                }
-                            }
-                        },
-                        "syn1":  {
-                            "type": "text",
-                            "analyzer" : "edge_analyzer",
-                            "search_analyzer": "lowercase_whitespace",
-                            "fields" : {
-                                "raw" : {
-                                    "type" : "text",
-                                    "analyzer" : "term_lowercase"
-                                }
-                            }
-                        },
-                        "syn2":  {
-                            "type": "text",
-                            "analyzer" : "edge_analyzer",
-                            "search_analyzer": "lowercase_whitespace"
-                        },
                         "gene_id"                       : {"type": "keyword"},
                         "tax_id"                        : {"type": "keyword"},
                         "type_of_gene"                  : {"type": "keyword"},
@@ -350,6 +284,10 @@ module.exports = {
                         "anatomy_relations"             : {"type": "keyword"},
                         "organism_relations"            : {"type": "keyword"},
                         "enzyme_relations"              : {"type": "keyword"},
+                        "pubmed_relations"              : {"type": "keyword"},
+                        "grant_relations"               : {"type": "keyword"},
+                        "affiliate_relations"           : {"type": "keyword"},
+                        "clinical_trial_relations"      : {"type": "keyword"},
                         "gene_relations_count"          : {"type": "integer", "index": false, "doc_values": true},
                         "pathway_relations_count"       : {"type": "integer", "index": false, "doc_values": true},
                         "drug_relations_count"          : {"type": "integer", "index": false, "doc_values": true},
@@ -361,8 +299,8 @@ module.exports = {
                         "anatomy_relations_count"       : {"type": "integer", "index": false, "doc_values": true},
                         "pubmed_relations_count"        : {"type": "integer", "index": false, "doc_values": true},
                         "clinical_trial_relations_count": {"type": "integer", "index": false, "doc_values": true},
+                        "affiliate_relations_count"     : {"type": "integer", "index": false, "doc_values": true},
                         "grant_relations_count"         : {"type": "integer", "index": false, "doc_values": true},
-                        "patent_relations_count"        : {"type": "integer", "index": false, "doc_values": true},
                         "views"                         : {"type": "integer", "index": false, "doc_values": true},
                         "posts"                         : {"type": "integer", "index": false, "doc_values": true}
                     }

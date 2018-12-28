@@ -7,9 +7,6 @@ let mapping = {
     "adm_ic"                : "ADMINISTERING_IC",
     "app_type"              : "APPLICATION_TYPE",
     "arra_funded"           : "ARRA_FUNDED",
-    "award_notice_date"     : (record) => record["AWARD_NOTICE_DATE"] ? new Date(record["AWARD_NOTICE_DATE"]) : "",
-    "budget_start"          : (record) => record["BUDGET_START"] ? new Date(record["BUDGET_START"]) : "",
-    "budget_end"            : (record) => record["BUDGET_END"] ? new Date(record["BUDGET_END"]) : "",
     "cfda_code"             : "CFDA_CODE",
     "core_project_num"      : "CORE_PROJECT_NUM",
     "inst_type"             : "ED_INST_TYPE",
@@ -20,6 +17,7 @@ let mapping = {
     "year"                  : (record) => record["FY"] ? parseInt(record["FY"], 10) : "",
     "ic_name"               : "IC_NAME",
     "nih_cats"              : "NIH_SPENDING_CATS",
+    "phr"                   : "PHR",
     "affiliate"             : (record) => ({
         ...record["ORG_NAME"]    ? {name: record["ORG_NAME"]} : "",
         ...record["ORG_CITY"]    ? {city: record["ORG_CITY"]} : "",
@@ -32,28 +30,31 @@ let mapping = {
         ...record["ORG_IPF_CODE"]? {ipf_id: record["ORG_IPF_CODE"]} : "",
         ...record["ORG_DEPT"] &&  record["ORG_DEPT"] !== "NONE" ? {department: record["ORG_DEPT"]} : ""
     }),
-    // "org_city"              : "ORG_CITY",
-    // "org_country"           : "ORG_COUNTRY",
-    // "org_dept"              : "ORG_DEPT",
-    // "org_destrict"          : "ORG_DISTRICT",
-    // "org_duns"              : "ORG_DUNS",
-    // "org_fips"              : "ORG_FIPS",
-    // "org_ipf_code"          : "ORG_IPF_CODE",
-    // "org_name"              : "ORG_NAME",
-    // "org_state"             : "ORG_STATE",
-    // "org_zipcode"           : "ORG_ZIPCODE",
-    "phr"                   : "PHR",
-    "pi_ids"                : "PI_IDS",
+    "external_links"        : (record) => {
+        let result = [];
+        result.push({key: "ProjectReporter", id: record["APPLICATION_ID"]});
+        record["CORE_PROJECT_NUM"] ? result.push({key: "GrantCoreNr", id: record["CORE_PROJECT_NUM"]}) : null;
+        record["FULL_PROJECT_NUM"] ? result.push({key: "GrantFullNr", id: record["FULL_PROJECT_NUM"]}) : null;
+        record["FOA_NUMBER"] ? result.push({key: "GrantFoaNr", id: record["FOA_NUMBER"]}) : null;
+
+        return result
+    },
     "pi_names"              : (record) => record["PI_NAMEs"]
                                 .split(";")
-                                .map(name => {
-                                    let [last_name  = "", other_name = ""] = name.trim().split(",");
+                                .map((name, index) => {
+                                    let [last_name  = "", other_name = ""] = name.toLowerCase().trim().split(",");
                                     other_name      = other_name.trim().split(" ");
                                     let first_name  = (other_name.shift() || "").trim().replace(".", "");
                                     let middle_name = other_name.join(" ").trim().replace(/\./g, "");
+
+                                    first_name ? first_name = first_name[0].toUpperCase() + first_name.slice(1, first_name.length) : null;
+                                    middle_name ? middle_name = middle_name[0].toUpperCase() + middle_name.slice(1, middle_name.length) : null;
+                                    last_name ? last_name = last_name[0].toUpperCase() + last_name.slice(1, last_name.length) : null;
                                     if (first_name || middle_name || last_name)
                                     {
+                                        let ids = (record["PI_IDS"] || "").split(";");
                                         return {
+                                            ...ids[index] ? {_id: ids[index]} : "",
                                             ...last_name ? {last_name: last_name.replace(".", "")} : "",
                                             ...first_name ? {first_name: first_name} : "",
                                             ...middle_name ? {middle_name: middle_name} : ""
@@ -62,11 +63,37 @@ let mapping = {
                                     return null
                                 })
                                 .filter(name => name),
-    "officer_name"          : "PROGRAM_OFFICER_NAME",
+    "officer_name"          : (record) => {
+                                if (!record["PROGRAM_OFFICER_NAME"])
+                                {
+                                    return null;
+                                }
+                                 let [last_name  = "", other_name = ""] = record["PROGRAM_OFFICER_NAME"].toLowerCase().trim().split(",");
+                                other_name      = other_name.trim().split(" ");
+                                let first_name  = (other_name.shift() || "").trim().replace(".", "");
+                                let middle_name = other_name.join(" ").trim().replace(/\./g, "");
+
+                                first_name ? first_name = first_name[0].toUpperCase() + first_name.slice(1, first_name.length) : null;
+                                middle_name ? middle_name = middle_name[0].toUpperCase() + middle_name.slice(1, middle_name.length) : null;
+                                last_name ? last_name = last_name[0].toUpperCase() + last_name.slice(1, last_name.length) : null;
+                                if (first_name || middle_name || last_name)
+                                {
+                                    return {
+                                        ...last_name ? {last_name: last_name.replace(".", "")} : "",
+                                        ...first_name ? {first_name: first_name} : "",
+                                        ...middle_name ? {middle_name: middle_name} : ""
+                                    };
+                                }
+                                else
+                                    return null
+                            },
+    "award_notice_date"     : (record) => record["AWARD_NOTICE_DATE"] ? new Date(record["AWARD_NOTICE_DATE"]) : "",
+    "budget_start"          : (record) => record["BUDGET_START"] ? new Date(record["BUDGET_START"]) : "",
+    "budget_end"            : (record) => record["BUDGET_END"] ? new Date(record["BUDGET_END"]) : "",
     "date_start"            : (record) => record["PROJECT_START"] ? new Date(record["PROJECT_START"]) : "",
     "date_end"              : (record) => record["PROJECT_END"] ? new Date(record["PROJECT_END"]) : "",
     "terms"                 : (record) => record["PROJECT_TERMS"] ? record["PROJECT_TERMS"].split(";").map(term => term.trim()).filter(term => term) : "",
-    "name"                  : "PROJECT_TITLE",
+    "name"                  : (record) => record["PROJECT_TITLE"] ? record["PROJECT_TITLE"][0] +  record["PROJECT_TITLE"].slice(1,record["PROJECT_TITLE"].length).toLowerCase() : null,
     "serial_number"         : "SERIAL_NUMBER",
     "study_section"         : "STUDY_SECTION",
     "study_name"            : "STUDY_SECTION_NAME",

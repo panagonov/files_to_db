@@ -1,7 +1,7 @@
 module.exports = {
 
     "schema": {
-        "title": "gene",
+        "title": "grant",
         "type": "object",
         "properties": {
             "_id": {
@@ -10,37 +10,75 @@ module.exports = {
             "name": {
                 "type": "string"
             },
-            "symbol": {
-                "type": "string"
-            },
-            "tax_id" : {
-                "type": "array",
-                "items": {
-                    "type": "string"
-                }
-            },
-            "gene_id" : {
-                "type": "array",
-                "items": {
-                    "type": "string"
-                }
-            },
-            "aliases": {
-                "type": "array",
-                "items": {
-                    "type": "string"
-                }
-            },
-            "type_of_gene" : {
-                "type": "string"
-            },
             "external_links": {
                 "type": "array",
                 "items": {
                     "type": "object",
                     "properties" : {
                         "key": {"type" : "string"},
-                        "_id": {"type" : "string"}
+                        "id": {"type" : "string"}
+                    }
+                }
+            },
+            "date_award_notice"  : {
+                "type"  : "string",
+                "format": "date-time"
+            },
+            "date_budget_start"  : {
+                "type"  : "string",
+                "format": "date-time"
+            },
+            "date_budget_end"  : {
+                "type"  : "string",
+                "format": "date-time"
+            },
+            "date_start"  : {
+                "type"  : "string",
+                "format": "date-time"
+            },
+            "date_end"  : {
+                "type"  : "string",
+                "format": "date-time"
+            },
+            "cost_direct"           : {"type": "number"},
+            "cost_indirect"         : {"type": "number"},
+            "cost_total"            : {"type": "number"},
+            "cost_total_sub_project": {"type": "number"},
+            "activity"              : {"type": "string"},
+            "adm_ic"                : {"type": "string"},
+            "app_type"              : {"type": "string"},
+            "arra_funded"           : {"type": "string"},
+            "cfda_code"             : {"type": "string"},
+            "inst_type"             : {"type": "string"},
+            "funding_ics"           : {"type": "string"},
+            "funding_mechanism"     : {"type": "string"},
+            "year"                  : {"type": "number"},
+            "ic_name"               : {"type": "string"},
+            "nih_cats"              : {"type": "string"},
+            "phr"                   : {"type": "string"},
+            "serial_number"         : {"type": "string"},
+            "study_section"         : {"type": "string"},
+            "study_name"            : {"type": "string"},
+            "sub_project_id"        : {"type": "string"},
+            "suffix"                : {"type": "string"},
+            "support_year"          : {"type": "string"},
+            "officer_name" : {
+                "type" : "object",
+                "properties" : {
+                    "first_name" : {"type" : "string"},
+                    "middle_name" : {"type" : "string"},
+                    "last_name" : {"type" : "string"}
+                }
+            },
+            "pi_names" : {
+                "type" : "array",
+                "items" : {
+                    "type" : "object",
+                    "properties" : {
+                        "_id" :  {"type" : "string"},
+                        "first_name" : {"type" : "string"},
+                        "middle_name" : {"type" : "string"},
+                        "last_name" : {"type" : "string"}
                     }
                 }
             },
@@ -98,6 +136,30 @@ module.exports = {
                     "type": "string"
                 }
             },
+            "affiliate_relations"           : {
+                "type" : ["array"],
+                "items": {
+                    "type": "string"
+                }
+            },
+            "pubmed_relations"           : {
+                "type" : ["array"],
+                "items": {
+                    "type": "string"
+                }
+            },
+            "patent_relations"           : {
+                "type" : ["array"],
+                "items": {
+                    "type": "string"
+                }
+            },
+            "clinical_trial_relations"           : {
+                "type" : ["array"],
+                "items": {
+                    "type": "string"
+                }
+            },
             "gene_relations_count"          : {"type": "number"},
             "pathway_relations_count"       : {"type": "number"},
             "drug_relations_count"          : {"type": "number"},
@@ -109,36 +171,19 @@ module.exports = {
             "anatomy_relations_count"       : {"type": "number"},
             "pubmed_relations_count"        : {"type": "number"},
             "clinical_trial_relations_count": {"type": "number"},
-            "grant_relations_count"         : {"type": "number"},
+            "affiliate_relations_count"     : {"type": "number"},
             "patent_relations_count"        : {"type": "number"},
-            "syn1": {
-                "type" : ["array"],
-                "items": {
-                    "type": "string"
-                }
-            },
-            "syn2": {
-                "type" : ["array"],
-                "items": {
-                    "type": "string"
-                }
-            },
-            "views"                   : {"type": "number"},
-            "posts"                   : {"type": "number"},
-            "rel_version"             : {"type": "number"}
+            "rel_version"                   : {"type": "number"}
         },
-        "required": [
-            "symbol"
-        ],
         "additionalProperties": false
     },
 
     "settings": {
-        "index": "bioseek1-gene",
-        "doc_type": "gene",
+        "index": "bioseek-grant",
+        "doc_type": "grant",
         "mapping": {
             "aliases": {
-                "bioseek1-gene": {}
+                "bioseek-grant": {}
             },
             "settings": {
                 "analysis": {
@@ -262,28 +307,9 @@ module.exports = {
                 }
             },
             "mappings": {
-                "gene": {
+                "grant": {
                     "properties": {
                         "name": {
-                            "type": "keyword",
-                            "fields": {
-                                "raw": {
-                                    "type": "text",
-                                    "analyzer": "term_lowercase"
-                                },
-                                "main": {
-                                    "type": "text",
-                                    "analyzer": "edge_phrase_analyzer",
-                                    "search_analyzer" : "term_lowercase"
-                                },
-                                "suggest": {
-                                    "type": "text",
-                                    "analyzer" : "edge_analyzer",
-                                    "search_analyzer": "lowercase_whitespace"
-                                }
-                            }
-                        },
-                        "symbol": {
                             "type": "keyword",
                             "fields": {
                                 "raw": {
@@ -308,39 +334,50 @@ module.exports = {
                                 "key" : {"type": "keyword"}
                             }
                         },
-                        "aliases": {
-                            "type": "keyword",
-                            "fields": {
-                                "raw": {
-                                    "type": "text",
-                                    "analyzer": "term_lowercase"
-                                },
-                                "main": {
-                                    "type": "text",
-                                    "analyzer": "edge_phrase_analyzer",
-                                    "search_analyzer" : "term_lowercase"
-                                }
+                        "officer_name" : {
+                            "type" : "object",
+                            "properties" : {
+                                "first_name" : {"type" : "keyword"},
+                                "middle_name" : {"type" : "keyword"},
+                                "last_name" : {"type" : "keyword"}
                             }
                         },
-                        "syn1":  {
-                            "type": "text",
-                            "analyzer" : "edge_analyzer",
-                            "search_analyzer": "lowercase_whitespace",
-                            "fields" : {
-                                "raw" : {
-                                    "type" : "text",
-                                    "analyzer" : "term_lowercase"
-                                }
+                        "pi_names" : {
+                            "type" : "object",
+                            "properties" : {
+                                "_id" :  {"type" : "keyword"},
+                                "first_name" : {"type" : "keyword"},
+                                "middle_name" : {"type" : "keyword"},
+                                "last_name" : {"type" : "keyword"}
                             }
                         },
-                        "syn2":  {
-                            "type": "text",
-                            "analyzer" : "edge_analyzer",
-                            "search_analyzer": "lowercase_whitespace"
-                        },
-                        "gene_id"                       : {"type": "keyword"},
-                        "tax_id"                        : {"type": "keyword"},
-                        "type_of_gene"                  : {"type": "keyword"},
+                        "date_award_notice"             : {"type": "date"},
+                        "date_budget_start"             : {"type": "date"},
+                        "date_budget_end"               : {"type": "date"},
+                        "date_start"                    : {"type": "date"},
+                        "date_end"                      : {"type": "date"},
+                        "cost_direct"                   : {"type": "integer", "doc_values": true},
+                        "cost_indirect"                 : {"type": "integer", "doc_values": true},
+                        "cost_total"                    : {"type": "integer", "doc_values": true},
+                        "cost_total_sub_project"        : {"type": "integer", "doc_values": true},
+                        "activity"                      : {"type": "keyword"},
+                        "adm_ic"                        : {"type": "keyword"},
+                        "app_type"                      : {"type": "keyword"},
+                        "arra_funded"                   : {"type": "keyword"},
+                        "cfda_code"                     : {"type": "keyword"},
+                        "inst_type"                     : {"type": "keyword"},
+                        "funding_ics"                   : {"type": "keyword"},
+                        "funding_mechanism"             : {"type": "keyword"},
+                        "year"                          : {"type": "integer"},
+                        "ic_name"                       : {"type": "keyword"},
+                        "nih_cats"                      : {"type": "keyword"},
+                        "phr"                           : {"type": "keyword"},
+                        "serial_number"                 : {"type": "keyword"},
+                        "study_section"                 : {"type": "keyword"},
+                        "study_name"                    : {"type": "keyword"},
+                        "sub_project_id"                : {"type": "keyword"},
+                        "suffix"                        : {"type": "keyword"},
+                        "support_year"                  : {"type": "keyword"},
                         "gene_relations"                : {"type": "keyword"},
                         "pathway_relations"             : {"type": "keyword"},
                         "author_relations"              : {"type": "keyword"},
@@ -350,6 +387,10 @@ module.exports = {
                         "anatomy_relations"             : {"type": "keyword"},
                         "organism_relations"            : {"type": "keyword"},
                         "enzyme_relations"              : {"type": "keyword"},
+                        "pubmed_relations"              : {"type": "keyword"},
+                        "patent_relations"              : {"type": "keyword"},
+                        "affiliate_relations"           : {"type": "keyword"},
+                        "clinical_trial_relations"      : {"type": "keyword"},
                         "gene_relations_count"          : {"type": "integer", "index": false, "doc_values": true},
                         "pathway_relations_count"       : {"type": "integer", "index": false, "doc_values": true},
                         "drug_relations_count"          : {"type": "integer", "index": false, "doc_values": true},
@@ -361,15 +402,13 @@ module.exports = {
                         "anatomy_relations_count"       : {"type": "integer", "index": false, "doc_values": true},
                         "pubmed_relations_count"        : {"type": "integer", "index": false, "doc_values": true},
                         "clinical_trial_relations_count": {"type": "integer", "index": false, "doc_values": true},
-                        "grant_relations_count"         : {"type": "integer", "index": false, "doc_values": true},
-                        "patent_relations_count"        : {"type": "integer", "index": false, "doc_values": true},
-                        "views"                         : {"type": "integer", "index": false, "doc_values": true},
-                        "posts"                         : {"type": "integer", "index": false, "doc_values": true}
+                        "affiliate_relations_count"     : {"type": "integer", "index": false, "doc_values": true},
+                        "patent_relations_count"        : {"type": "integer", "index": false, "doc_values": true}
                     }
                 }
             }
         }
     },
 
-   "database": "elasticsearch"
+    "database": "elasticsearch"
 };

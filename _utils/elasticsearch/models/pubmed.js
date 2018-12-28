@@ -127,6 +127,18 @@ module.exports = {
                     "type": "string"
                 }
             },
+            "grant_relations"           : {
+                "type" : ["array"],
+                "items": {
+                    "type": "string"
+                }
+            },
+            "patent_relations"         : {
+                "type" : ["array"],
+                "items": {
+                    "type": "string"
+                }
+            },
             "gene_relations_count"          : {"type": "number"},
             "pathway_relations_count"       : {"type": "number"},
             "drug_relations_count"          : {"type": "number"},
@@ -139,6 +151,8 @@ module.exports = {
             "pubmed_relations_count"        : {"type": "number"},
             "affiliate_relations_count"     : {"type": "number"},
             "clinical_trial_relations_count": {"type": "number"},
+            "grant_relations_count"         : {"type": "number"},
+            "patent_relations_count"        : {"type": "number"},
             "views"                         : {"type": "number"},
             "posts"                         : {"type": "number"},
             "rel_version"                   : {"type": "number"},
@@ -327,6 +341,8 @@ module.exports = {
                         "organism_relations"            : {"type": "keyword"},
                         "enzyme_relations"              : {"type": "keyword"},
                         "affiliate_relations"           : {"type": "keyword"},
+                        "grant_relations"               : {"type": "keyword"},
+                        "patent_relations"              : {"type": "keyword"},
                         "gene_relations_count"          : {"type": "integer", "index": false, "doc_values": true},
                         "pathway_relations_count"       : {"type": "integer", "index": false, "doc_values": true},
                         "drug_relations_count"          : {"type": "integer", "index": false, "doc_values": true},
@@ -338,11 +354,13 @@ module.exports = {
                         "anatomy_relations_count"       : {"type": "integer", "index": false, "doc_values": true},
                         "pubmed_relations_count"        : {"type": "integer", "index": false, "doc_values": true},
                         "affiliate_relations_count"     : {"type": "integer", "index": false, "doc_values": true},
-                        "views"                         : {"type": "integer", "index": false, "doc_values": true},
                         "clinical_trial_relations_count": {"type": "integer", "index": false, "doc_values": true},
+                        "grant_relations_count"         : {"type": "integer", "index": false, "doc_values": true},
+                        "patent_relations_count"        : {"type": "integer", "index": false, "doc_values": true},
                         "date_created"                  : {"type": "date"},
                         "date_completed"                : {"type": "date"},
                         "date_revised"                  : {"type": "date"},
+                        "views"                         : {"type": "integer", "index": false, "doc_values": true},
                         "posts"                         : {"type": "integer", "index": false, "doc_values": true}
                     }
                 }
