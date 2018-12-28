@@ -33,7 +33,7 @@ Mongo.prototype.init = async function(conf, counter = 0)
     if (this.db) return;
     try {
         let client = await MongoClient.connect(`mongodb://${conf.host || host}:${conf.port || port}/${conf.database}`, {
-            socketTimeoutMS  : 60000,
+            socketTimeoutMS  : 120000,
             connectTimeoutMS : 6000,
             reconnectTries   : 10,
             reconnectInterval: 5000,
@@ -306,7 +306,10 @@ Mongo.prototype.bulk = async function(model_title, data)
  */
 Mongo.prototype.drop = async function(model_title)
 {
-    await this.db.collection(model_title).drop();
+    try {
+        await this.db.collection(model_title).drop();
+    }
+    catch(e) {}
 };
 
 Mongo.prototype.compact = async function()

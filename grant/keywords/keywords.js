@@ -37,10 +37,10 @@ let run = async(mongo_db) =>
     await enrich_patents.add_keyword_relations(mongo_db);
     await enrich_patents.add_external_links(mongo_db);
 
-    await aggs_grants.affiliate_not_found(mongo_db);
-    await aggs_grants.terms_not_found(mongo_db);
-
-    await aggs_patents.affiliate_not_found(mongo_db);
+    // await aggs_grants.affiliate_not_found(mongo_db);
+    // await aggs_grants.terms_not_found(mongo_db);
+    //
+    // await aggs_patents.affiliate_not_found(mongo_db);
 };
 
 let clean = async() =>
