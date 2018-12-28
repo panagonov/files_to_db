@@ -1,9 +1,16 @@
 let keywords_builder = require("../keywords_builder.js");
+let utils            = require("../../../_utils/utils.js");
+
+let target_collection = "projects";
+let version = 3;
 
 let build_index = async(mongo_db, target_collection) =>
 {
+    console.log("Build indexes...");
     await mongo_db.create_index(target_collection, {data : {version: 1}});
     await mongo_db.create_index(target_collection, {data : {core_project_num: 1}});
+    await mongo_db.create_index(target_collection, {data : {patent_relations: 1}});
+    console.log("Indexes done");
 };
 
 let type_map = (type) =>
@@ -17,7 +24,7 @@ let type_map = (type) =>
     }
 };
 
-let add_keywords_relations = async(version, target_collection, mongo_db) =>
+let add_keyword_relations = async(mongo_db) =>
 {
     console.log("Add keyword relations");
     await build_index(mongo_db, target_collection);
@@ -49,6 +56,7 @@ let add_keywords_relations = async(version, target_collection, mongo_db) =>
                     let count_key = relation._type +"_relations_count";
                     item[key] = item[key] || [];
                     item[key].push(relation._id);
+                    item[key] = utils.uniq(item[key]);
                     document[key] = item[key];
                     document[count_key] = item[key].length;
                 }
@@ -56,12 +64,13 @@ let add_keywords_relations = async(version, target_collection, mongo_db) =>
                     not_found++;
                     item._terms_not_found = item._terms_not_found || [];
                     item._terms_not_found.push(term);
+                    item._terms_not_found = utils.uniq(item._terms_not_found);
                     document._terms_not_found = item._terms_not_found;
                 }
             });
-            if (item.org_name)
+            if (item.affiliate)
             {
-                let affiliate = keywords_builder.get(item.org_name.trim().toLowerCase());
+                let affiliate = keywords_builder.get((item.affiliate.name || "").trim().toLowerCase());
                 if (affiliate)
                 {
                     affiliate_found++;
@@ -75,7 +84,8 @@ let add_keywords_relations = async(version, target_collection, mongo_db) =>
                 else {
                     affiliate_not_found++;
                     item._affiliate_not_found = item._affiliate_not_found || [];
-                    item._affiliate_not_found.push(item.org_name.trim().toLowerCase());
+                    item._affiliate_not_found.push((item.affiliate.name || "").trim().toLowerCase());
+                    item._affiliate_not_found = utils.uniq(item._affiliate_not_found);
                     document._affiliate_not_found = item._affiliate_not_found;
                 }
             }
@@ -93,4 +103,4 @@ let add_keywords_relations = async(version, target_collection, mongo_db) =>
     while(result.length === limit)
 };
 
-module.exports = add_keywords_relations;
+module.exports = add_keyword_relations;

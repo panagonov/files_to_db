@@ -1,25 +1,41 @@
 let keywords_builder = require("../keywords_builder.js");
-let collection_name = "patents";
+let utils            = require("../../../_utils/utils.js");
 
-let add_affiliate = async (version, mongo_db) =>
+let collection_name = "patents";
+let version_affiliate = 1;
+
+let build_index = async(mongo_db) =>
+{
+    await mongo_db.create_index(collection_name, {data : {version_affiliate: 1}});
+};
+
+let add_affiliate = async (mongo_db) =>
 {
     console.log("Add patent affiliate relations");
+    await build_index(mongo_db);
 
     let result = [];
     let limit = 1000;
     let page = 0;
 
-    let count = await mongo_db.read(collection_name, {body: {version: {$ne : version}}, count_only: true});
+    let count = await mongo_db.read(collection_name, {body: {version_affiliate: {$ne : version_affiliate}}, count_only: true});
 
     do {
         let mongo_bulk      = [];
-        let found           = 0, not_found = 0;
         let affiliate_found = 0, affiliate_not_found = 0;
-        result              = await mongo_db.read(collection_name, {body: {version: {$ne: version}}, size: limit});
+        result              = await mongo_db.read(collection_name, {body: {version_affiliate: {$ne: version_affiliate}}, size: limit});
 
         result.forEach(item =>
         {
-            let affiliate = keywords_builder.get(item.org_name.trim().toLowerCase());
+            let document = {
+                version_affiliate: version_affiliate
+            };
+
+            item.grant_relations = item.grant_relations || [];
+            item.grant_relations.push(item.project_id);
+            item.grant_relations = utils.uniq(item.grant_relations);
+
+            let affiliate = keywords_builder.get((item.organization_name || "").trim().toLowerCase());
             if (affiliate)
             {
                 affiliate_found++;
@@ -33,20 +49,21 @@ let add_affiliate = async (version, mongo_db) =>
             else {
                 affiliate_not_found++;
                 item._affiliate_not_found = item._affiliate_not_found || [];
-                item._affiliate_not_found.push(item.org_name.trim().toLowerCase());
-                item._affiliate_not_found = item._affiliate_not_found.reduce((res, item) =>
-                {
-                    if (res.indexOf(item) === -1)
-                        res.push(item);
-                    return res
-                }, []);
+                item._affiliate_not_found.push(item.organization_name);
+                item._affiliate_not_found = utils.uniq(item._affiliate_not_found);
                 document._affiliate_not_found = item._affiliate_not_found;
             }
+
+            mongo_bulk.push({command_name: "update", _id: item._id, document: document})
         });
 
+        if (mongo_bulk.length)
+            await mongo_db.bulk(collection_name, mongo_bulk);
+
         page++;
-        console.log(`Keywords ${page * limit}/${count} - found: ${found}/${not_found} aff: ${affiliate_found}/${affiliate_not_found}`);
+        console.log(`Keywords ${page * limit}/${count} - aff found: ${affiliate_found}/${affiliate_not_found}`);
     }
     while(result.length === limit);
-
 };
+
+module.exports = add_affiliate;

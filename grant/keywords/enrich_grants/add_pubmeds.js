@@ -1,27 +1,38 @@
 let es_db = require("../../../_utils/elasticsearch/db.js");
 
 let collection_name = "link_tables";
+let target_collection = "projects";
+let version = 1;
 
-let build_index = async(mongo_db) =>
+let build_index = async(mongo_db, target_collection) =>
 {
+    console.log("Build indexes...");
     await mongo_db.create_index(collection_name, {data : {version: 1}});
+    await mongo_db.create_index(collection_name, {data : {project_number: 1}});
+    await mongo_db.create_index(target_collection, {data : {version_pubmed: 1}});
+    console.log("Indexes done");
 };
 
-let add_pubmeds = async(version, target_collection, mongo_db) =>
+let add_pubmeds = async(mongo_db) =>
 {
     console.log("Add pubmeds");
-    await build_index(mongo_db);
+    await build_index(mongo_db, target_collection);
 
-    let pubmeds = [];
-    let limit = 500;
+    let projects = [];
+    let limit = 1000;
     let page = 0;
+    let found = 0;
+    let not_found = 0;
 
-    let count = await mongo_db.read(collection_name, {body: {version: {$ne : version}}, count_only: true});
+    let count = await mongo_db.read(target_collection, {body: {version_pubmed: {$ne : version}}, count_only: true});
 
     do {
         let mongo_bulk = [];
 
-        pubmeds = await mongo_db.read(collection_name, {body: {version: {$ne : version}}, size: limit});
+        projects = await mongo_db.read(target_collection, {body: {version_pubmed: {$ne : version}}, size: limit});
+
+        let pubmeds = await mongo_db.read(collection_name, {body: {project_number: {$in: projects.map(({core_project_num}) => core_project_num)}}});
+
         let map_hash = pubmeds.reduce((res, item) => {
             res[item.project_number] = res[item.project_number] || [];
             res[item.project_number].push(item.pubmed_id);
@@ -41,71 +52,42 @@ let add_pubmeds = async(version, target_collection, mongo_db) =>
             return res;
         }, {});
 
-        let projects = await mongo_db.read(target_collection, {body: {core_project_num: {$in : Object.keys(map_hash)}}});
-
         projects.forEach(item => {
-            let document = {};
+            let document = {version_pubmed: version};
             let pubmed_ids = map_hash[item.core_project_num];
-            pubmed_ids.forEach(pubmed_id =>{
+
+            (pubmed_ids || []).forEach(pubmed_id =>{
                 if (original_pubmeds_hash[pubmed_id])
                 {
+                    found++;
                     item.pubmed_relations = item.pubmed_relations || [];
                     item.pubmed_relations.push(pubmed_id);
                     item.author_relations = item.author_relations || [];
                     item.author_relations = (original_pubmeds_hash[pubmed_id].authors || []).map(({_id}) => _id);
 
-                    document = {
-                        pubmed_relations : item.pubmed_relations,
-                        pubmed_relations_count : item.pubmed_relations.length,
-                        author_relations : item.author_relations,
-                        author_relations_count : item.author_relations.length
-                    };
+                    document.pubmed_relations = item.pubmed_relations;
+                    document.pubmed_relations_count  = item.pubmed_relations.length;
+                    document.author_relations = item.author_relations;
+                    document.author_relations_count = item.author_relations.length;
                 }
                 else {
+                    not_found++;
                     item._pubmed_not_found = item._pubmed_not_found || [];
                     item._pubmed_not_found.push(pubmed_id);
-                    document = {
-                        _pubmed_not_found: item._pubmed_not_found
-                    }
+                    document._pubmed_not_found = item._pubmed_not_found
                 }
             });
             mongo_bulk.push({command_name: "update", _id: item._id, document: document})
         });
 
-        let step = 0;
-        let step_limit = 3000;
-        let start_index = 0, end_index = 0;
-
-        do {
-            start_index = step * step_limit;
-            end_index = start_index + step_limit;
-            let bulk = mongo_bulk.slice(start_index, end_index);
-            if (bulk.length)
-                await mongo_db.bulk(target_collection, bulk);
-            step++
-        }
-        while (end_index < mongo_bulk.length);
-
-
-        mongo_bulk = [];
-
-        pubmeds.forEach(item =>
-        {
-            let document = {
-                version: version,
-                ...!original_pubmeds_hash[item.pubmed_id] ? {not_found: true} : ""
-            };
-
-            mongo_bulk.push({command_name: "update", _id: item._id, document: document})
-        });
-
         if (mongo_bulk.length)
-            await mongo_db.bulk(collection_name, mongo_bulk);
+            await mongo_db.bulk(target_collection, mongo_bulk);
 
         page++;
-        console.log(`Pubmeds ${page * limit}/${count}`);
+        console.log(`Pubmeds ${page * limit}/${count} - found: ${found}/${not_found}`);
     }
-    while(pubmeds.length === limit)
+    while(projects.length === limit)
 };
+
 
 module.exports = add_pubmeds;

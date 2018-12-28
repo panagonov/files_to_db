@@ -1,11 +1,15 @@
 let collection_name = "patents";
+let target_collection = "projects";
+let version = 1;
 
 let build_index = async(mongo_db) =>
 {
+    console.log("Build indexes...");
     await mongo_db.create_index(collection_name, {data : {version: 1}});
+    console.log("Indexes done");
 };
 
-let add_patents = async(version, target_collection, mongo_db) =>
+let add_patents = async(mongo_db) =>
 {
     console.log("Add patents");
     await build_index(mongo_db);

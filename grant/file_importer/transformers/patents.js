@@ -1,4 +1,4 @@
-let utils = require("./utils/utils.js");
+let utils = require("../../../_utils/utils.js");
 
 let mapping = {
     "_id"              : "PATENT_ID",

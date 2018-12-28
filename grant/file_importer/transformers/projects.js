@@ -1,4 +1,4 @@
-let utils = require("./utils/utils.js");
+let utils = require("../../../_utils/utils.js");
 
 let mapping = {
     "_id"                   : (record) => `${record["APPLICATION_ID"]}_${record["CORE_PROJECT_NUM"]}`,
@@ -20,16 +20,28 @@ let mapping = {
     "year"                  : (record) => record["FY"] ? parseInt(record["FY"], 10) : "",
     "ic_name"               : "IC_NAME",
     "nih_cats"              : "NIH_SPENDING_CATS",
-    "org_city"              : "ORG_CITY",
-    "org_country"           : "ORG_COUNTRY",
-    "org_dept"              : "ORG_DEPT",
-    "org_destrict"          : "ORG_DISTRICT",
-    "org_duns"              : "ORG_DUNS",
-    "org_fips"              : "ORG_FIPS",
-    "org_ipf_code"          : "ORG_IPF_CODE",
-    "org_name"              : "ORG_NAME",
-    "org_state"             : "ORG_STATE",
-    "org_zipcode"           : "ORG_ZIPCODE",
+    "affiliate"             : (record) => ({
+        ...record["ORG_NAME"]    ? {name: record["ORG_NAME"]} : "",
+        ...record["ORG_CITY"]    ? {city: record["ORG_CITY"]} : "",
+        ...record["ORG_COUNTRY"] ? {country: record["ORG_COUNTRY"]} : "",
+        ...record["ORG_FIPS"]    ? {alpha_two_code: record["ORG_FIPS"]} : "",
+        ...record["ORG_STATE"]   ? {state: record["ORG_STATE"]} : "",
+        ...record["ORG_ZIPCODE"] ? {post_code: record["ORG_ZIPCODE"]} : "",
+        ...record["ORG_DISTRICT"]? {district: record["ORG_DISTRICT"]} : "",
+        ...record["ORG_DUNS"]    ? {duns_id: record["ORG_DUNS"]} : "",
+        ...record["ORG_IPF_CODE"]? {ipf_id: record["ORG_IPF_CODE"]} : "",
+        ...record["ORG_DEPT"] &&  record["ORG_DEPT"] !== "NONE" ? {department: record["ORG_DEPT"]} : ""
+    }),
+    // "org_city"              : "ORG_CITY",
+    // "org_country"           : "ORG_COUNTRY",
+    // "org_dept"              : "ORG_DEPT",
+    // "org_destrict"          : "ORG_DISTRICT",
+    // "org_duns"              : "ORG_DUNS",
+    // "org_fips"              : "ORG_FIPS",
+    // "org_ipf_code"          : "ORG_IPF_CODE",
+    // "org_name"              : "ORG_NAME",
+    // "org_state"             : "ORG_STATE",
+    // "org_zipcode"           : "ORG_ZIPCODE",
     "phr"                   : "PHR",
     "pi_ids"                : "PI_IDS",
     "pi_names"              : (record) => record["PI_NAMEs"]
@@ -74,5 +86,6 @@ let transform = (record) =>
 
 module.exports = {
     transform: transform,
-    disable: false
+    disable: false,
+    allow_duplicated: true
 };

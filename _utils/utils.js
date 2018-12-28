@@ -21,7 +21,25 @@ let wait = async(delay) =>
         setTimeout(resolve, delay)
     });
 
+let uniq = (arr, fn) =>
+{
+    if(!fn)
+    {
+        return arr.reduce((res, item) =>
+        {
+            if (res.indexOf(item) === -1)
+                res.push(item);
+            return res
+        }, []);
+    }
+    else
+    {
+        return fn(arr)
+    }
+};
+
 module.exports = {
     mapping_transform,
-    wait
+    wait,
+    uniq
 };

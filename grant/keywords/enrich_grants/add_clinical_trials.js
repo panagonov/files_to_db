@@ -1,13 +1,17 @@
 let keywords_builder = require("../keywords_builder.js");
 
 let collection_name = "clinical_studies";
+let target_collection = "projects";
+let version = 1;
 
 let build_index = async(mongo_db) =>
 {
+    console.log("Build indexes...");
     await mongo_db.create_index(collection_name, {data : {version: 1}});
+    console.log("Indexes done");
 };
 
-let add_clinical_trials = async(version, target_collection, mongo_db) =>
+let add_clinical_trials = async(mongo_db) =>
 {
     console.log("Add clinical trials");
     await build_index(mongo_db);
