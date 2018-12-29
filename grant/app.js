@@ -25,8 +25,8 @@ let start = async () =>
 {
     await init();
     await file_importer.run(mongo_db);
-    // await keywords.run(mongo_db);
-    // await affiliate.run(mongo_db);
+    await keywords.run(mongo_db);
+    await affiliate.run(mongo_db);
     await export_data.run(mongo_db)
 };
 

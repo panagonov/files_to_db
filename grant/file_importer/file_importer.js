@@ -31,7 +31,7 @@ let import_bulk = async (type, record, callback) => {
     {
         delete document._id;
         if (!mongo_bulk.some(({_id}) => _id === id))
-            mongo_bulk.push({command_name: "update", _id: id, document: document});
+            mongo_bulk.push({command_name: "upsert", _id: id, document: document});
     }
     else
     {

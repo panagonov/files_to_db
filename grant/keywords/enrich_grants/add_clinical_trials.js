@@ -67,7 +67,7 @@ let add_clinical_trials = async(mongo_db) =>
             await mongo_db.bulk(collection_name, mongo_bulk);
 
         page++;
-        console.log(`Trials ${page * limit}/${count}`);
+        console.log(`Trials in Grants ${page * limit}/${count}`);
     }
     while(clinical_trials.length === limit)
 };

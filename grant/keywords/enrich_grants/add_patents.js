@@ -52,7 +52,7 @@ let add_patents = async(mongo_db) =>
         });
 
         page++;
-        console.log(`Keywords ${page * limit}/${count}`);
+        console.log(`Patents in grants ${page * limit}/${count}`);
     }
     while(result.length === limit)
 };

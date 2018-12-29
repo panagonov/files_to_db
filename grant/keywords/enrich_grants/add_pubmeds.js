@@ -62,7 +62,7 @@ let add_pubmeds = async(mongo_db) =>
                 {
                     found++;
                     item.pubmed_relations = item.pubmed_relations || [];
-                    item.pubmed_relations.push(pubmed_id);
+                    item.pubmed_relations.push(original_pubmeds_hash[pubmed_id]._id);
 
                     // item.author_relations = item.author_relations || [];
                     // item.author_relations = (original_pubmeds_hash[pubmed_id].authors || []).map(({_id}) => _id);
@@ -96,7 +96,7 @@ let add_pubmeds = async(mongo_db) =>
         if (mongo_bulk.length)
             await mongo_db.bulk(target_collection, mongo_bulk);
         page++;
-        console.log(`Pubmeds ${page * limit}/${count} - found: ${found}/${not_found}`);
+        console.log(`Pubmed relations in grants ${page * limit}/${count} - found: ${found}/${not_found}`);
     }
     while(projects.length === limit)
 };

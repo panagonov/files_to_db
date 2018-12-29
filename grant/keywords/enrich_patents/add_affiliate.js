@@ -61,7 +61,7 @@ let add_affiliate = async (mongo_db) =>
             await mongo_db.bulk(collection_name, mongo_bulk);
 
         page++;
-        console.log(`Keywords ${page * limit}/${count} - aff found: ${affiliate_found}/${affiliate_not_found}`);
+        console.log(`Affiliate in patents ${page * limit}/${count} - aff found: ${affiliate_found}/${affiliate_not_found}`);
     }
     while(result.length === limit);
 };

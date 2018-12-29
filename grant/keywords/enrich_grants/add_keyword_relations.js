@@ -2,7 +2,7 @@ let keywords_builder = require("../keywords_builder.js");
 let utils            = require("../../../_utils/utils.js");
 
 let target_collection = "projects";
-let version = 3;
+let version = 1;
 
 let build_index = async(mongo_db, target_collection) =>
 {
@@ -97,7 +97,7 @@ let add_keyword_relations = async(mongo_db) =>
             await mongo_db.bulk(target_collection, mongo_bulk);
 
         page++;
-        console.log(`Keywords ${page * limit}/${count} - found: ${found}/${not_found} aff: ${affiliate_found}/${affiliate_not_found}`);
+        console.log(`Keywords in Grants ${page * limit}/${count} - found: ${found}/${not_found} aff: ${affiliate_found}/${affiliate_not_found}`);
 
     }
     while(result.length === limit)

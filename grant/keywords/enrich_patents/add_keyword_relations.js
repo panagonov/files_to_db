@@ -66,7 +66,7 @@ let add_keyword_relations = async (mongo_db) =>
             await mongo_db.bulk(collection_name, mongo_bulk);
 
         page++;
-        console.log(`Keywords ${page * limit}/${count}`);
+        console.log(`Keywords in patents ${page * limit}/${count}`);
     }
     while(result.length === limit);
 };

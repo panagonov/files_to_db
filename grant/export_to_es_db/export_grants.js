@@ -1,7 +1,7 @@
 let es_db    = require("../../_utils/elasticsearch/db.js");
 
 let collection_name = "projects";
-let version_export = 1;
+let version_export = 3;
 
 let build_index = async(mongo_db) =>
 {
@@ -30,7 +30,7 @@ let run = async(mongo_db) =>
         {
             let  _id = `GRANT:${item._id}`;
             let document = {
-                name: item.name.toLowerCase(),
+                name: (item.name || "").toLowerCase(),
                 external_links: item.external_links,
                 ...item.affiliate_relations && item.affiliate_relations.length ? {affiliate_relations: item.affiliate_relations} : "",
                 ...item.affiliate_relations_count ? {affiliate_relations_count: item.affiliate_relations_count} : "",
@@ -83,10 +83,10 @@ let run = async(mongo_db) =>
                 ...item.suffix ? {suffix : item.suffix} : "",
                 ...item.support_year ? {support_year : item.support_year} : "",
                 ...item.pi_names &&  item.pi_names.length ? {pi_names : item.pi_names} : "",
-                ...item.officer_name ? {officer_name : item.officer_name} : "",
+                ...item.officer_name && item.officer_name instanceof Object ? {officer_name : item.officer_name} : "",
             };
 
-            es_bulk.push({"model_title": "patent", "command_name": "index", "_id": _id, "document": document});
+            es_bulk.push({"model_title": "grant", "command_name": "index", "_id": _id, "document": document});
             mongo_bulk.push({"command_name": "update", "_id": item._id, "document": {version_export: version_export}})
         });
 
