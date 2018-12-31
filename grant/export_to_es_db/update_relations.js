@@ -1,6 +1,6 @@
 let es_db    = require("../../_utils/elasticsearch/db.js");
 
-let rel_version = 1;
+let rel_version = 2;
 
 let get_collection_name = (field) =>
 {
@@ -80,10 +80,11 @@ let run = async(collection_name) =>
             end_index = start_index + sub_limit;
             let ids = all_ids.slice(start_index, end_index);
 
-            let data = await es_db.read_unlimited(collections,{body: { "query" : {"terms": {"_id": ids}}, "_source" : ["patent_relations_count"]}, size: sub_limit, add_type: true});
+            let field = `${collection_name}_relations_count`;
+            let data = await es_db.read_unlimited(collections,{body: { "query" : {"terms": {"_id": ids}}, "_source" : [field]}, size: sub_limit, add_type: true});
             data.data.forEach(item =>{
-                item.patent_relations_count = (item.patent_relations_count || 0) + rel_hash[item._id];
-                es_bulk.push({"model_title": item._type, "command_name": "update", "_id": item._id, "document": {patent_relations_count: item.patent_relations_count}});
+                item[field] = (item[field] || 0) + rel_hash[item._id];
+                es_bulk.push({"model_title": item._type, "command_name": "update", "_id": item._id, "document": {[field]: item[field]}});
             });
 
             sub_step++
@@ -100,4 +101,36 @@ let run = async(collection_name) =>
     while (result.length === limit)
 };
 
-module.exports = run;
+let clean = async(field_name) => {
+    await es_db.init();
+    let result = [];
+    let limit = 1000;
+
+    for (let i = 0; i < collections.length; i++ )
+    {
+        let page = 0;
+        let collection = collections[i];
+
+        do {
+            let es_bulk = [];
+            let db_data = await es_db.read_unlimited(collection,{body: { "query" : {"range": {[field_name]: {"gte" : 1}}}, "_source" : [field_name]}, size: limit});
+            result = db_data.data;
+
+            result.forEach(item =>{
+                es_bulk.push({ "model_title": collection, "command_name": "update", "_id" : item._id, "script" : {"source" : `ctx._source.remove('${field_name}')`} })
+            });
+
+            if (es_bulk.length)
+                await es_db.bulk(es_bulk);
+
+            page++;
+            console.log(`Remove ${field_name} from ${collection}: ${page * limit}/${db_data.count}`);
+        }
+        while (result.length === limit);
+    }
+};
+
+module.exports = {
+    run,
+    clean
+};
