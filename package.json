@@ -11,11 +11,14 @@
   "dependencies": {
     "csv-parse": "^4.2.0",
     "elasticsearch": "^15.2.0",
+    "humanparser": "^1.10.0",
     "jsonschema": "^1.2.4",
     "mongodb": "^3.1.10",
     "node-aho-corasick": "0.0.2",
     "stream-transform": "^1.0.8",
+    "underscore": "^1.9.1",
     "unidecode": "^0.1.8",
+    "xml2js": "^0.4.19",
     "xml2json": "^0.11.2"
   }
 }

@@ -47,9 +47,20 @@ let normalize_string = (str) => {
     return unidecode(str).replace(/\W/g, " ").replace(/\s+/g, " ").trim().toLowerCase();
 };
 
+let get_node_type = (node) =>
+{
+    if (node._type === "drug_or_chemical")
+    {
+        return "drug";
+    }
+
+    return node._type || "";
+};
+
 module.exports = {
     mapping_transform,
     wait,
     uniq,
-    normalize_string
+    normalize_string,
+    get_node_type
 };
