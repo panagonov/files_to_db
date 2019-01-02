@@ -1,7 +1,7 @@
 let es_db    = require("../../_utils/elasticsearch/db.js");
 
 let collection_name = "projects";
-let version_export = 3;
+let version_export = 4;
 
 let build_index = async(mongo_db) =>
 {
@@ -84,6 +84,7 @@ let run = async(mongo_db) =>
                 ...item.support_year ? {support_year : item.support_year} : "",
                 ...item.pi_names &&  item.pi_names.length ? {pi_names : item.pi_names} : "",
                 ...item.officer_name && item.officer_name instanceof Object ? {officer_name : item.officer_name} : "",
+                ...item.affiliate ? {affiliate : item.affiliate} : "",
             };
 
             es_bulk.push({"model_title": "grant", "command_name": "index", "_id": _id, "document": document});

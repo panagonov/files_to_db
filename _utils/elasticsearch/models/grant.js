@@ -82,6 +82,21 @@ module.exports = {
                     }
                 }
             },
+            "affiliate" : {
+                "type" : "object",
+                "properties" : {
+                    "name"          : {"type": "string"},
+                    "city"          : {"type": "string"},
+                    "country"       : {"type": "string"},
+                    "alpha_two_code": {"type": "string"},
+                    "state"         : {"type": "string"},
+                    "post_code"     : {"type": "string"},
+                    "district"      : {"type": "string"},
+                    "duns_id"       : {"type": "string"},
+                    "ipf_id"        : {"type": "string"},
+                    "department"    : {"type": "string"}
+                }
+            },
             "gene_relations"           : {
                 "type" : ["array"],
                 "items": {
@@ -349,6 +364,21 @@ module.exports = {
                                 "first_name" : {"type" : "keyword"},
                                 "middle_name" : {"type" : "keyword"},
                                 "last_name" : {"type" : "keyword"}
+                            }
+                        },
+                        "affiliate" : {
+                            "type" : "object",
+                            "properties" : {
+                                "name"          : {"type": "keyword"},
+                                "city"          : {"type": "keyword"},
+                                "country"       : {"type": "keyword"},
+                                "alpha_two_code": {"type": "keyword"},
+                                "state"         : {"type": "keyword"},
+                                "post_code"     : {"type": "keyword"},
+                                "district"      : {"type": "keyword"},
+                                "duns_id"       : {"type": "keyword"},
+                                "ipf_id"        : {"type": "keyword"},
+                                "department"    : {"type": "keyword"}
                             }
                         },
                         "date_award_notice"             : {"type": "date"},
