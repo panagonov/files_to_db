@@ -1,30 +1,12 @@
-let fs      = require("fs");
-let MongoDb = require("../../_utils/db.js");
-let es_db   = require("../../_utils/elasticsearch/db.js");
+let fs    = require("fs");
+let es_db = require("../../_utils/elasticsearch/db.js");
 
-let version = 2;
-let mongo_db;
-let mongo_conf = {
-    "host"             : "85.10.244.21",
-    "port"             : "27017",
-    "database"         : "crawlers",
-    "user"             : "hashstyle",
-    "pass"             : "Ha5h5tylE",
-    "socketTimeoutMS"  : 120000,
-    "connectTimeoutMS" : 6000,
-    "tryToConnect"     : 10,
-    "delayBetweenRetry": 5000
-};
-let mongo_collection = "patent_justia";
-let es_db_index = "patent";
+let version = 1;
+
+let mongo_collection       = "patent_justia";
+let es_db_index            = "patent";
 let unknown_history_fields = {};
 
-let init = async () =>
-{
-    mongo_db = new MongoDb();
-    await mongo_db.init(mongo_conf);
-    await es_db.init();
-};
 
 let build_index = async(mongo_db) =>
 {
@@ -33,9 +15,8 @@ let build_index = async(mongo_db) =>
     console.log("Indexes done");
 };
 
-let run = async () =>
+let run = async (mongo_db) =>
 {
-    await init();
     await build_index(mongo_db);
 
     let result = [];
@@ -78,6 +59,8 @@ let run = async () =>
             }, []);
 
             let document = {
+                ...enrich_data.patent_relations && enrich_data.patent_relations.length ? {patent_relations: enrich_data.patent_relations} : "",
+                ...enrich_data.patent_relations_count ? {patent_relations_count: enrich_data.patent_relations_count} : "",
                 ...enrich_data.date_created ? {date_created: enrich_data.date_created} : "",
                 ...enrich_data.date_filed ? {date_filed: enrich_data.date_filed} : "",
                 ...enrich_data.abstract ? {abstract: enrich_data.abstract} : "",

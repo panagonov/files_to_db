@@ -10,7 +10,7 @@ let file_importer = require("./file_importer/file_importer.js");
 let keywords      = require("./keywords/keywords.js");
 let affiliate     = require("./affiliate/affiliate.js");
 let export_data   = require("./export_to_es_db/export_data.js");
-let enrich_data   = require("./enrich/patents.js");
+let enrich_data   = require("./enrich/enrich.js");
 
 let mongo_db;
 let db_name  = "grant";
@@ -24,11 +24,11 @@ let init = async () =>
 
 let start = async () =>
 {
-    // await init();
-    // await file_importer.run(mongo_db);
-    // await keywords.run(mongo_db);
-    // await affiliate.run(mongo_db);
-    // await export_data.run(mongo_db);
+    await init();
+    await file_importer.run(mongo_db);
+    await keywords.run(mongo_db);
+    await affiliate.run(mongo_db);
+    await export_data.run(mongo_db);
     await enrich_data.run(mongo_db)
 };
 

@@ -40,7 +40,7 @@ Mongo.prototype.init = async function(conf, counter = 0)
             search_string = "?authSource=admin";
         }
 
-        let loginStr = `mongodb://${credentials}${conf.host}:${conf.port || 27017}/${conf.database}${search_string}`;
+        let loginStr = `mongodb://${credentials}${conf.host || host}:${conf.port || port}/${conf.database}${search_string}`;
 
         let client = await MongoClient.connect(loginStr, {
             socketTimeoutMS  : conf.socketTimeoutMS || 120000,

@@ -5,9 +5,9 @@ let update_relations = require("./update_relations.js");
 let run = async(mongo_db) =>
 {
     await export_patents(mongo_db);
-    await export_grants(mongo_db);
-    await update_relations.run("patent");
-    await update_relations.run("grant");
+    // await export_grants(mongo_db);
+    // await update_relations.run("patent");
+    // await update_relations.run("grant");
 };
 
 let clean = async() => {

@@ -1,7 +1,7 @@
 let es_db    = require("../../_utils/elasticsearch/db.js");
 
 let collection_name = "patents";
-let version_export = 1;
+let version_export = 2;
 
 let build_index = async(mongo_db) =>
 {
