@@ -1,7 +1,7 @@
 let fs    = require("fs");
 let es_db = require("../../_utils/elasticsearch/db.js");
 
-let version = 1;
+let version = 2;
 
 let mongo_collection       = "patent_justia";
 let es_db_index            = "patent";

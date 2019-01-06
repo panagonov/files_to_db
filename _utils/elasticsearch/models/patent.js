@@ -159,6 +159,12 @@ module.exports = {
                     "type": "string"
                 }
             },
+            "patent_relations"           : {
+                "type" : ["array"],
+                "items": {
+                    "type": "string"
+                }
+            },
             "clinical_trial_relations"           : {
                 "type" : ["array"],
                 "items": {
@@ -178,6 +184,7 @@ module.exports = {
             "clinical_trial_relations_count": {"type": "number"},
             "affiliate_relations_count"     : {"type": "number"},
             "grant_relations_count"         : {"type": "number"},
+            "patent_relations_count"        : {"type": "number"},
             "rel_version"             : {"type": "number"}
         },
         "additionalProperties": false
@@ -354,6 +361,7 @@ module.exports = {
                         "pubmed_relations"              : {"type": "keyword"},
                         "grant_relations"               : {"type": "keyword"},
                         "affiliate_relations"           : {"type": "keyword"},
+                        "patent_relations"              : {"type": "keyword"},
                         "clinical_trial_relations"      : {"type": "keyword"},
                         "abstract"                      : {"type": "keyword", "index": false},
                         "patent_type"                   : {"type": "keyword"},
@@ -415,6 +423,7 @@ module.exports = {
                         "clinical_trial_relations_count": {"type": "integer", "index": false, "doc_values": true},
                         "affiliate_relations_count"     : {"type": "integer", "index": false, "doc_values": true},
                         "grant_relations_count"         : {"type": "integer", "index": false, "doc_values": true},
+                        "patent_relations_count"        : {"type": "integer", "index": false, "doc_values": true},
                         "views"                         : {"type": "integer", "index": false, "doc_values": true},
                         "posts"                         : {"type": "integer", "index": false, "doc_values": true}
                     }
@@ -423,5 +432,5 @@ module.exports = {
         }
     },
 
-   "database": "elasticsearch"
+    "database": "elasticsearch"
 };
