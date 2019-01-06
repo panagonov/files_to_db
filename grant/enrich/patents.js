@@ -91,7 +91,7 @@ let run = async () =>
                 external_links: external_links
             };
 
-            es_bulk.push({"model_title": es_db_index, "command_name": "index", "_id": item._id, "document": document});
+            es_bulk.push({"model_title": es_db_index, "command_name": "update", "_id": item._id, "document": document});
         });
 
         if (es_bulk.length)
