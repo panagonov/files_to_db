@@ -32,11 +32,21 @@ Mongo.prototype.init = async function(conf, counter = 0)
 {
     if (this.db) return;
     try {
-        let client = await MongoClient.connect(`mongodb://${conf.host || host}:${conf.port || port}/${conf.database}`, {
-            socketTimeoutMS  : 120000,
-            connectTimeoutMS : 6000,
-            reconnectTries   : 10,
-            reconnectInterval: 5000,
+        let credentials = "";
+        let search_string = "";
+        if (conf.user)
+        {
+            credentials = `${conf.user}:${conf.pass}@`;
+            search_string = "?authSource=admin";
+        }
+
+        let loginStr = `mongodb://${credentials}${conf.host}:${conf.port || 27017}/${conf.database}${search_string}`;
+
+        let client = await MongoClient.connect(loginStr, {
+            socketTimeoutMS  : conf.socketTimeoutMS || 120000,
+            connectTimeoutMS : conf.connectTimeoutMS || 6000,
+            reconnectTries   : conf.reconnectTries || 10,
+            reconnectInterval: conf.reconnectInterval || 5000,
             useNewUrlParser  : true
         });
         this.db    = client.db(conf.database);

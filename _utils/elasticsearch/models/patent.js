@@ -20,6 +20,73 @@ module.exports = {
                     }
                 }
             },
+            "abstract" : {"type" : "string"},
+            "patent_type" : {"type" : "string"},
+            "date_created" : {
+                "type"  : "string",
+                "format": "date-time"
+            },
+            "date_filed" : {
+                "type"  : "string",
+                "format": "date-time"
+            },
+            "claims" : {
+                "type"  : "array",
+                "items": {
+                    "type"  : "string"
+                }
+            },
+            "inventors" : {
+                "type"  : "array",
+                "items": {
+                    "type"  : "object",
+                    "properties": {
+                        "first_name"  : {"type": "string"},
+                        "middle_name"  : {"type": "string"},
+                        "last_name"  : {"type": "string"},
+                        "city"  : {"type": "string"},
+                        "state"  : {"type": "string"}
+                    }
+                }
+            },
+            "primary_examiner" : {
+                "type"  : "object",
+                "properties": {
+                    "first_name"  : {"type": "string"},
+                    "middle_name"  : {"type": "string"},
+                    "last_name"  : {"type": "string"},
+                }
+            },
+            "affiliate" : {
+                "type"  : "object",
+                "properties": {
+                    "name"  : {"type": "string"},
+                    "city"  : {"type": "string"},
+                    "state"  : {"type": "string"},
+                }
+            },
+            "us_citation" : {
+                "type"  : "array",
+                "items": {
+                    "type"  : "object",
+                    "properties": {
+                        "id"  : {"type": "string"},
+                        "date"  : {"type": "string"},
+                        "inventor"  : {"type": "string"},
+                    }
+                }
+            },
+            "foreign_citations" : {
+                "type"  : "array",
+                "items": {
+                    "type"  : "object",
+                    "properties": {
+                        "id"  : {"type": "string"},
+                        "date"  : {"type": "string"},
+                        "country"  : {"type": "string"},
+                    }
+                }
+            },
             "gene_relations"           : {
                 "type" : ["array"],
                 "items": {
@@ -288,6 +355,53 @@ module.exports = {
                         "grant_relations"               : {"type": "keyword"},
                         "affiliate_relations"           : {"type": "keyword"},
                         "clinical_trial_relations"      : {"type": "keyword"},
+                        "abstract"                      : {"type": "keyword", "index": false},
+                        "patent_type"                   : {"type": "keyword"},
+                        "claims"                        : {"type": "keyword"},
+                        "date_created"                  : {"type": "date"},
+                        "date_filed"                    : {"type": "date"},
+                        "inventors" : {
+                            "type"  : "object",
+                            "properties": {
+                                "first_name"  : {"type": "keyword"},
+                                "middle_name"  : {"type": "keyword"},
+                                "last_name"  : {"type": "keyword"},
+                                "city"  : {"type": "keyword"},
+                                "state"  : {"type": "keyword"}
+                            }
+                        },
+                        "primary_examiner" : {
+                            "type"  : "object",
+                            "properties": {
+                                "first_name"  : {"type": "keyword"},
+                                "middle_name"  : {"type": "keyword"},
+                                "last_name"  : {"type": "keyword"},
+                            }
+                        },
+                        "affiliate" : {
+                            "type"  : "object",
+                            "properties": {
+                                "name"  : {"type": "keyword"},
+                                "city"  : {"type": "keyword"},
+                                "state"  : {"type": "keyword"},
+                            }
+                        },
+                        "us_citation" : {
+                            "type"  : "object",
+                            "properties": {
+                                "id"  : {"type": "keyword"},
+                                "date"  : {"type": "keyword"},
+                                "inventor"  : {"type": "keyword"},
+                            }
+                        },
+                        "foreign_citations" : {
+                            "type"  : "object",
+                            "properties": {
+                                "id"  : {"type": "keyword"},
+                                "date"  : {"type": "keyword"},
+                                "country"  : {"type": "keyword"},
+                            }
+                        },
                         "gene_relations_count"          : {"type": "integer", "index": false, "doc_values": true},
                         "pathway_relations_count"       : {"type": "integer", "index": false, "doc_values": true},
                         "drug_relations_count"          : {"type": "integer", "index": false, "doc_values": true},
