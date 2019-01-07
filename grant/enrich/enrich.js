@@ -24,7 +24,7 @@ let init = async () =>
 let run = async(mongo_db) =>
 {
     await init();
-    await patent_patent_rel.run(crawler_mongo_db);
+    // await patent_patent_rel.run(crawler_mongo_db);
     await enrich_patents.run(crawler_mongo_db);
 };
 

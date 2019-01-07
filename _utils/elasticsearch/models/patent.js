@@ -22,6 +22,7 @@ module.exports = {
             },
             "abstract" : {"type" : "string"},
             "patent_type" : {"type" : "string"},
+            "law_firm" : {"type" : "string"},
             "date_created" : {
                 "type"  : "string",
                 "format": "date-time"
@@ -50,6 +51,14 @@ module.exports = {
                 }
             },
             "primary_examiner" : {
+                "type"  : "object",
+                "properties": {
+                    "first_name"  : {"type": "string"},
+                    "middle_name"  : {"type": "string"},
+                    "last_name"  : {"type": "string"},
+                }
+            },
+            "assistant_examiner" : {
                 "type"  : "object",
                 "properties": {
                     "first_name"  : {"type": "string"},
@@ -366,6 +375,7 @@ module.exports = {
                         "abstract"                      : {"type": "keyword", "index": false},
                         "patent_type"                   : {"type": "keyword"},
                         "claims"                        : {"type": "keyword"},
+                        "law_firm"                      : {"type": "law_firm"},
                         "date_created"                  : {"type": "date"},
                         "date_filed"                    : {"type": "date"},
                         "inventors" : {
@@ -379,6 +389,14 @@ module.exports = {
                             }
                         },
                         "primary_examiner" : {
+                            "type"  : "object",
+                            "properties": {
+                                "first_name"  : {"type": "keyword"},
+                                "middle_name"  : {"type": "keyword"},
+                                "last_name"  : {"type": "keyword"},
+                            }
+                        },
+                        "assistant_examiner" : {
                             "type"  : "object",
                             "properties": {
                                 "first_name"  : {"type": "keyword"},
