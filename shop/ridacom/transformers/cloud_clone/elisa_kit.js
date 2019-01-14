@@ -2,6 +2,7 @@ let utils = require("../../../../_utils/utils.js");
 
 let mapping = {
     "_id"              : (record) => `PRODUCT_SOURCE:[CLOUD_CLONE]_SUPPLIER:[RIDACOM]_ID:[${record["Product No."] || ""}]`,
+    "oid"              : "Product No.",
     "tid"              : result => "ridacom",
     "src"              : result => "cloud_clone",
     "type"             : result => "elisa_kit",
@@ -94,8 +95,6 @@ let mapping = {
 
         let link = record["Reference"].replace(/\n/g, " ");
         let match = /"\s?([http|www].+)"/.exec(link);
-
-        if (!match)debugger;
 
         return match && match[1] ? match[1].trim() : null
     },

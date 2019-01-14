@@ -1,1 +1,9 @@
-{"antibody":{"antibody":1},"elisa_kit":{"elisa_kit":1},"protein":{"protein":1}}
+{
+    "ridacom": {
+        "cloud_clone": {
+            "antibody": 1,
+            "elisa_kit": 1,
+            "protein": 1
+        }
+    }
+}

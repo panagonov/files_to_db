@@ -85,14 +85,15 @@ let run = async (db, supplier_name, source_name) =>
         if (transformers.hasOwnProperty(type) && !transformers[type].disable)
         {
             let file_name = type;
-            if (progress[type] && progress[type][file_name])
+            if (progress[supplier_name] && progress[supplier_name][source_name] && progress[supplier_name][source_name][file_name])
                 continue;
 
             console.log(`Import "${file_name}.csv"`);
             await importCSVfromPath(files_path + file_name + ".csv", type, supplier_name);
             await save_to_db(type, supplier_name);
-            progress[type] = progress[type] || {};
-            progress[type][file_name] = 1;
+            progress[supplier_name] = progress[supplier_name] || {};
+            progress[supplier_name][source_name] = progress[supplier_name][source_name] || {};
+            progress[supplier_name][source_name][file_name] = 1;
             fs.writeFileSync(__dirname + "/progress.json", JSON.stringify(progress), "utf8");
             console.log(counter);
             counter = 0;
