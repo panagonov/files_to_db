@@ -23,4 +23,4 @@ let clean = async(mongo_db) =>
 module.exports = {
     run,
     clean
-}
+};
