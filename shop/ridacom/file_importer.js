@@ -89,8 +89,8 @@ let run = async (db, supplier_name, source_name) =>
                 continue;
 
             console.log(`Import "${file_name}.csv"`);
-            await importCSVfromPath(files_path + file_name + ".csv", type, supplier_name);
-            await save_to_db(supplier_name);
+            await importCSVfromPath(files_path + file_name + ".csv", type, "product");
+            await save_to_db("product");
             progress[supplier_name] = progress[supplier_name] || {};
             progress[supplier_name][source_name] = progress[supplier_name][source_name] || {};
             progress[supplier_name][source_name][file_name] = 1;
