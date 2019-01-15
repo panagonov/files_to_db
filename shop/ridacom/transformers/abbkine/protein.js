@@ -23,7 +23,7 @@ let mapping = {
 
         return result.length ? result : null
     },
-    "Sequence" : record =>
+    "sequence" : record =>
     {
         if (!record["Sequence"])
             return null;
@@ -180,11 +180,17 @@ let mapping = {
 
         return record["Molecular weight"]
     },
-    "notes" : record => {
-        if (!record["Usage notes"] || record["Usage notes"] === "Null")
+    "app_notes" : record => {
+        if (!record["Applications notes"] || record["Applications notes"] === "Null")
             return null;
 
         return (record["Applications notes"] || "").split("\n").map( item => item.replace(/\s+/, " ").trim()).filter(item => item)
+    },
+    "usage_notes" : record => {
+        if (!record["Usage notes"] || record["Usage notes"] === "Null")
+            return null;
+
+        return (record["Usage notes"] || "").split("\n").map( item => item.replace(/\s+/, " ").trim()).filter(item => item)
     },
     "storage_buffer" : record => {
         if (!record["Storage buffer"] || record["Storage buffer"] === "Null")
@@ -270,6 +276,8 @@ let mapping = {
                 result.push({price, size})
             }
         }
+
+        return result
     }
 };
 
