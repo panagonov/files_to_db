@@ -24,6 +24,9 @@ let save_to_db = async(collection_name) =>
 let import_bulk = async (type, collection_name, record, callback) => {
     counter++;
     let document = transformers[type].transform(record);
+    if (!document)
+        return callback();
+
     let allow_duplicated = transformers[type].allow_duplicated;
     let id = document._id;
 
@@ -77,6 +80,8 @@ let importCSVfromPath = async (csv_path, type, collection_name) => {
 
 let run = async (db, supplier_name, source_name) =>
 {
+    let output_collection_name = "product";
+
     mongo_db = db;
     transformers = directory_reader(`${__dirname}/transformers/${source_name}/`, "js");
     files_path = `${__dirname}/files/${source_name}/`;
@@ -89,8 +94,8 @@ let run = async (db, supplier_name, source_name) =>
                 continue;
 
             console.log(`Import "${file_name}.csv"`);
-            await importCSVfromPath(files_path + file_name + ".csv", type, "product");
-            await save_to_db("product");
+            await importCSVfromPath(files_path + file_name + ".csv", type,output_collection_name);
+           await save_to_db(output_collection_name);
             progress[supplier_name] = progress[supplier_name] || {};
             progress[supplier_name][source_name] = progress[supplier_name][source_name] || {};
             progress[supplier_name][source_name][file_name] = 1;
