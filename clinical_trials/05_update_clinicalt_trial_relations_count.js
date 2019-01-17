@@ -11,7 +11,7 @@ let init_dbs = async() =>
 {
     await es_db.init();
     mongo_db = new Mongo_db();
-    await mongo_db.init("clinical_trails");
+    await mongo_db.init({database: "clinical_trails"});
 };
 
 let remove_old_relations_count = async() => {

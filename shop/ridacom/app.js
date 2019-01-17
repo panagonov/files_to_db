@@ -8,6 +8,7 @@
  ********************************************************************/
 
 let file_importer = require("./file_importer.js");
+let save_to_es_db = require("./save_to_es_db.js");
 
 let collection_name = "ridacom";
 
@@ -15,8 +16,10 @@ let run = async(mongo_db) =>
 {
     // await file_importer.run(mongo_db, collection_name, "cloud_clone");
     // await file_importer.run(mongo_db, collection_name, "abbkine");
-    // await file_importer.run(mongo_db, collection_name, "capp")
-    await file_importer.run(mongo_db, collection_name, "genome_me")
+    // await file_importer.run(mongo_db, collection_name, "capp");
+    // await file_importer.run(mongo_db, collection_name, "genome_me");
+
+    await save_to_es_db.run(mongo_db)
 };
 
 let clean = async(mongo_db) =>
