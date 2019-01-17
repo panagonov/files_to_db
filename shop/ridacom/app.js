@@ -3,6 +3,7 @@
  * http://www.cloud-clone.com/
  * https://www.abbkine.com/
  * https://www.capp.dk/
+ * http://www.genomeme.ca
  *
  ********************************************************************/
 
@@ -14,7 +15,8 @@ let run = async(mongo_db) =>
 {
     // await file_importer.run(mongo_db, collection_name, "cloud_clone");
     // await file_importer.run(mongo_db, collection_name, "abbkine");
-    await file_importer.run(mongo_db, collection_name, "capp")
+    // await file_importer.run(mongo_db, collection_name, "capp")
+    await file_importer.run(mongo_db, collection_name, "genome_me")
 };
 
 let clean = async(mongo_db) =>

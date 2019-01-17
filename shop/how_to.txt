@@ -1,0 +1,3 @@
+Import product db
+mongodump -d product -c product
+mongorestore -h 172.16.1.11 -u hashstyle -p Ha5h5tylE
