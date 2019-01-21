@@ -1,3 +1,5 @@
+let semantica = require("../../../../common-components/search-engine-3/domains/genetics/index.js")
+
 let _getClonality = str =>
 {
     if (str.toLowerCase().indexOf("monoclonal") !== -1)
@@ -39,11 +41,11 @@ let _getPdf = item =>
 {
     let result = [];
 
-    if(item.manual)
+    if(item.pdf)
     {
         result.push({
-            link: item.manual,
-            ...item.pdf_preview ? {"thumb_link" : item.pdf_preview} : ""
+            link: item.pdf.link,
+            ...item.pdf.preview ? {"thumb_link" : item.pdf.preview} : ""
         })
     }
 
@@ -86,6 +88,19 @@ let _getPriceModel = (item, crawler_item) =>
     return result;
 };
 
+let get_canonical = (text, type) =>
+{
+    if (typeof type === "string")
+        type = [type];
+
+    let atoms = semantica.analyseSpeech("eng", text);
+    atoms = atoms.filter(([atom_type]) => type.indexOf(atom_type) !== -1);
+    let keys = atoms.map(([,id]) => id);
+    let ui = atoms.map(([,,name]) => name);
+    console.log(atoms, text, type);
+    return [keys, ui]
+}
+
 
 let convert = (item, crawler_item) =>
 {
@@ -110,23 +125,23 @@ let convert = (item, crawler_item) =>
 
         },
         "price_model"                   : price_model,
-        ...item.description             ? {"description" : item.description}                : "",
-        ...item.host                    ? {"host" : item.host}                              : "", //todo
-        ...item.reactivity              ? {"reactivity" : item.reactivity}                  : "", //todo
-        ...item.application             ? {"application": item.application}                 : "", //todo
-        ...item.isotype                 ? {"isotype": item.isotype}                         : "", //todo
-        ...item.concentration           ? {"concentration" : item.concentration}            : "",
-        ...clonality                    ? {"clonality": clonality}                          : "",
-        ...item.clone_num               ? {"clone_id" : item.clone_num}                     : "",
-        ...item.research_area           ? {"research_area": item.research_area}             : "",
-        ...item.usage                   ? {"usage": item.usage}                             : "",
-        ...item.shelf_life              ? {"shelf_life": item.shelf_life}                   : "",
-        ...item.storage_conditions      ? {"storage_conditions": item.storage_conditions}   : "",
-        ...item.delivery_conditions     ? {"delivery_conditions": item.delivery_conditions} : "",
-        ...item.buffer_form             ? {"buffer_form": item.buffer_form}                 : "",
-        ...item.immunogen               ? {"immunogen": item.immunogen}                     : "",
-        ...images.length                ? {"images" : images}                               : "",
-        ...pdf.length                   ? {"pdf" : pdf}                                     : "",
+        ...item.description             ? {"description" : item.description}                                                    : "",
+        ...item.host                    ? {"host" : get_canonical(item.host, [":host", ":reactivity"])}                         : "", //todo
+        ...item.reactivity              ? {"reactivity" : get_canonical(item.reactivity.join("; "), [":host", ":reactivity"])}  : "", //todo
+        ...item.application             ? {"application": get_canonical(item.application.join("; "), ":application")}           : "", //todo
+        ...item.isotype                 ? {"isotype": get_canonical(item.isotype, ":isotype")}                                  : "", //todo
+        ...clonality                    ? {"clonality": get_canonical(clonality, ":clonality")}                                 : "",
+        ...item.concentration           ? {"concentration" : item.concentration}                                                : "",
+        ...item.clone_num               ? {"clone_id" : item.clone_num}                                                         : "",
+        ...item.research_area           ? {"research_area": item.research_area}                                                 : "",
+        ...item.usage                   ? {"usage": item.usage}                                                                 : "",
+        ...item.shelf_life              ? {"shelf_life": item.shelf_life}                                                       : "",
+        ...item.storage_conditions      ? {"storage_conditions": item.storage_conditions}                                       : "",
+        ...item.delivery_conditions     ? {"delivery_conditions": item.delivery_conditions}                                     : "",
+        ...item.buffer_form             ? {"buffer_form": item.buffer_form}                                                     : "",
+        ...item.immunogen               ? {"immunogen": item.immunogen}                                                         : "",
+        ...images.length                ? {"images" : images}                                                                   : "",
+        ...pdf.length                   ? {"pdf" : pdf}                                                                         : "",
         "supplier_specific" : {
             "price" : item.supplier_specific.price,
             "link"  : item.link
@@ -140,3 +155,16 @@ let convert = (item, crawler_item) =>
 module.exports = {
     convert
 };
+
+let test = (text) =>
+{
+    let db = semantica.getDb();
+    let res = semantica.analyseSpeech("eng", text);
+    // let parents = semantica.knowledge.getTagParents(db, res[0][1]);
+    console.log(res)
+    debugger
+};
+
+// test("Rat CHO Guinea pig E.coli 293F Mouse Rabbit n/a null", )
+
+// console.log(get_canonical("Rat CHO Guinea pig E.coli 293F Mouse Rabbit n/a null", [":host", ":reactivity"]));

@@ -135,6 +135,22 @@
                 }
             }
         }
+    },
+    "ui" : {
+        "host" : {"type" :  "string"},
+        "reactivity" : {
+            "type" :  "array",
+            "items": {"type" : "string"}
+        },
+        "application" : {
+            "type" :  "array",
+            "items": {"type" : "string"}
+        },
+        "isotype" : {
+            "type" :  "array",
+            "items": {"type" : "string"}
+        },
+        "clonality": { "type" : "string"}
     }
 }
 
