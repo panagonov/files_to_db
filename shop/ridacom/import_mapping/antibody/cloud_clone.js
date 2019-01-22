@@ -143,9 +143,9 @@ let mapping_step2 = {
     "reactivity"         : record => record.reactivity && record.reactivity.length? record.reactivity.map(([,key]) => key) : null,
     "application"        : record => record.application && record.application.length? record.application.map(([,key]) => key) : null,
     "isotype"            : record => record.isotype && record.isotype.length? record.isotype.map(([,key]) => key) : null,
-    "light_chain"        : record => record.light_chain && record.light_chain.length? record.light_chain.map(([,key]) => key) : null,
-    "heavy_chain"        : record => record.heavy_chain && record.heavy_chain.length? record.heavy_chain.map(([,key]) => key) : null,
-    "clonality"          : record => record.clonality && record.clonality.length? record.clonality.map(([,key]) => key)[0] : null,
+    "light_chain"        : record => record.light_chain && record.light_chain.length ? record.light_chain.map(([,key]) => key) : null,
+    "heavy_chain"        : record => record.heavy_chain && record.heavy_chain.length ? record.heavy_chain.map(([,key]) => key) : null,
+    "clonality"          : record => record.clonality && record.clonality.length ? record.clonality.map(([,key]) => key) : null,
     "ui"                 : record => {
         let result = {
             "host"               : record.host && record.host.length? record.host.map(([,,name]) => name) : null,
@@ -154,7 +154,7 @@ let mapping_step2 = {
             "isotype"            : record.isotype && record.isotype.length? record.isotype.map(([,,name]) => name) : null,
             "light_chain"        : record.light_chain && record.light_chain.length? record.light_chain.map(([,,name]) => name) : null,
             "heavy_chain"        : record.heavy_chain && record.heavy_chain.length? record.heavy_chain.map(([,,name]) => name) : null,
-            "clonality"          : record.clonality && record.clonality.length? record.clonality.map(([,,name]) => name)[0] : null,
+            "clonality"          : record.clonality && record.clonality.length ? record.clonality.map(([,,name]) => name) : null,
         };
 
         for (let key in result)
@@ -171,7 +171,7 @@ let mapping_step2 = {
             "isotype"            : record.isotype && record.isotype.length? record.isotype.map(([,,,,name]) => name).filter(name => name) : null,
             "light_chain"        : record.light_chain && record.light_chain.length? record.light_chain.map(([,,,,name]) => name).filter(name => name) : null,
             "heavy_chain"        : record.heavy_chain && record.heavy_chain.length? record.heavy_chain.map(([,,,,name]) => name).filter(name => name) : null,
-            "clonality"          : record.clonality && record.clonality.length? record.clonality.map(([,,,,name]) => name).filter(name => name)[0] : null,
+            "clonality"          : record.clonality && record.clonality.length? record.clonality.map(([,,,,name]) => name).filter(name => name) : null,
         };
 
         for (let key in result)

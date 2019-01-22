@@ -1,112 +1,313 @@
+let stopwords = require("./stopwords.en.json");
 
 exports.schema =
-{
-    "title": "antibody",
-    "type": "object",
-    "properties": {
-        "supplier": {"type": "string"},
-        "catalog_no": { "type": "string" },
-        "name": { "type": "string" },
-        "size": {
-            "type": "object",
-            "properties" : {
-                "quantity" : { "type" : "number"},
-                "units" : { "type" : "string" },
-                "type" : { "type" : ["string", "null"] }
-            }
-        },
-        "price": {
-            "type" : "object",
-            "properties": {
-                "currency": {"type": "string"},
-                "isPromotion": {"type": "boolean"},
-                "promotion": {
-                    "type" : "object",
+    {
+        "title"     : "antibody",
+        "type"      : "object",
+        "properties": {
+
+            "_id"               : {"type": "string"},
+            "name"              : {"type": "string"},
+            "description"       : {"type": "string"},
+            "supplier"          : {
+                "type"      : "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "_id" : {"type": "string"}
+                }
+            },
+            "external_links"    : {
+                "type" : "array",
+                "items": {
+                    "type"      : "object",
                     "properties": {
-                        "discount": {"type": "number"},
-                        "discountPercentage": {"type": "number"},
-                        "originalValue": {"type": "number"}
+                        "key": {"type": "string"},
+                        "id" : {"type": "string"}
                     }
+                }
+            },
+            "bio_object"        : {
+                "type"      : "object",
+                "properties": {
+                    "type"          : {"type": "string"},
+                    "name"          : {"type": "string"},
+                    "aliases"       : {
+                        "type" : "array",
+                        "items": {"type": "string"}
+                    },
+                    "external_links": {
+                        "type" : "array",
+                        "items": {
+                            "type"      : "object",
+                            "properties": {
+                                "key": {"type": "string"},
+                                "id" : {"type": "string"}
+                            }
+                        }
+                    }
+                }
+            },
+            "host"              : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "reactivity"        : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "application"       : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "isotype"           : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "light_chain"       : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "heavy_chain"       : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "clonality"       : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "conjugate"          : {"type": "string"},
+            "purification"       : {"type": "string"},
+            "concentration"      : {"type": "string"},
+            "clone_id"           : {"type": "string"},
+            "buffer_form"        : {"type": "string"},
+            "shelf_life"         : {"type": "string"},
+            "storage_conditions" : {"type": "string"},
+            "delivery_conditions": {"type": "string"},
+            "immunogen"          : {"type": "string"},
+            "research_area"     : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "supplier_specific" : {
+                "type": "object"
+            },
+            "pdf"               : {
+                "type" : "array",
+                "items": {
+                    "type"      : "object",
+                    "properties": {
+                        "link"      : {"type": "string"},
+                        "text"      : {"type": "string"},
+                        "type"      : {"type": "string"},
+                        "thumb_link": {"type": "string"}
+                    }
+                }
+            },
+            "images"            : {
+                "type" : "array",
+                "items": {
+                    "type"      : "object",
+                    "properties": {
+                        "link"      : {"type": "string"},
+                        "text"      : {"type": "string"},
+                        "type"      : {"type": "string"},
+                        "thumb_link": {"type": "string"}
+                    }
+                }
+            },
+            "usage"             : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "self_life"         : {"type": "string"},
+            "storage_condition" : {"type": "string"},
+            "delivery_condition": {"type": "string"},
+            "price_model"       : {
+                "type"      : "object",
+                "properties": {
+                    "sort_price"       : {"type": "number"},
+                    "is_multiple"      : {"type": "boolean"},
+                    "is_ids_are_unique": {"type": "boolean"},
+                    "discount"         : {
+                        "type"                : "object",
+                        "properties"          : {
+                            "default": {
+                                "type"          : "object",
+                                "properties"    : {
+                                    "discount_type": {"enums": ["absolute", "percent"]}
+                                },
+                                "discount_value": {"type": "number"}
+                            }
+                        },
+                        "additionalProperties": true
+                    },
+                    "variation"        : {
+                        "type" : "array",
+                        "items": {
+                            "type"      : "object",
+                            "properties": {
+                                "price"     : {
+                                    "type"      : "object",
+                                    "properties": {
+                                        "value"   : {"type": "number"},
+                                        "currency": {"type": "string"}
+                                    }
+                                },
+                                "product_id": {"type": "string"},
+                                "size"      : {"type": "string"}
+                            }
+                        }
+                    }
+                }
+            },
+            "search_text"       : {"type": "string"},
+            "ui"                : {
+                "host"       : {"type": "string"},
+                "reactivity" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
                 },
-                "value": {"type": "number", "minimum" : 0}
+                "application": {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                },
+                "isotype"    : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                },
+                "light_chain": {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                },
+                "heavy_chain": {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                },
+                "clonality": {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
             }
         },
-        "subtype": {"type": "string"},
-        "bio_object": {"type": "string" },
-        "bio_object_synonyms" : {"type": ["string", "array", "null"] },
-        "bio_object_type" : {"type": "string"},
-        "ncbi_id" : {"type": "string" },
-        "uniprot_id" : {"type": "string"},
-        "keg_id" : {"type": "string"},
-        "storage": {"type": ["string", "null"]},
-        "description": {"type": ["string", "null"]},
 
-        "clone_id": {"type": ["string", "null"]},
-        "application": {"type": ["array", "null"], "items": {"type": "string"}},
-        "application_info": {"type": ["string", "null"]},
-        "clonality": {"type": ["string", "null"]},
-        "conjugate": {"type": ["string", "array"]},
-        "purification": {"type": ["string", "null"]},
-        "concentration": {"type": ["string", "null"]},
-        "reactivity": {"type": ["array", "null"], "items": {"type": "string"}},
-        "host": {"type": ["string", "null"]},
-        "isotype": {"type": ["array", "null"], "items": {"type": "string"}},
-        "form": {"type": ["string", "null"]},
-        "usage": {"type": ["string", "null"]},
-        "immunogen" : {"type": ["string", "null"]},
-        "advisory": {"type": ["string", "null"]},
-        "combined": {"type": ["string", "null"]},
-        "ui" : {
-            "properties" : {
-                "clonality_ui" : {  "type" : ["string", "null"]},
-                "host_ui" : {  "type" : ["string", "null"]},
-                "reactivity_ui" : {  "type" : ["array", "string", "null"]},
-                "gene_ui" : {  "type" : ["array", "string", "null"]},
-                "application_ui" : {  "type" : ["array", "string", "null"]},
-                "conjugate_ui" : {  "type" : ["string", "null"]},
-                "isotype_ui" : {  "type" : ["array", "string", "null"]}
-            }
-        },
-        "supplier_specific" : {
-            "type" : "object"
-        }
-
-    },
-    "required" : ["catalog_no", "supplier", "subtype"],
-    "additionalProperties" : false
-};
+        "additionalProperties": false
+    };
 
 exports.settings = {
-    "index" : "gentaur-data",
-    "doc_type" : "antibody",
-    "mapping": {
-        "aliases": {
-            "gentaur-data": {}
+    "index"   : "shop-product",
+    "doc_type": "antibody",
+    "mapping" : {
+        "aliases" : {
+            "shop-product": {}
         },
         "settings": {
             "analysis": {
-                "filter": {
-                    "autocomplete_filter": {
-                        "type": "edge_ngram",
-                        "min_gram": 2,
-                        "max_gram": 20
+                "char_filter": {
+                    "my_char_filter": {
+                        "type"    : "mapping",
+                        "mappings": [
+                            "Α => a",
+                            "α => a",
+                            "Β => b",
+                            "β => b",
+                            "Γ => g",
+                            "γ => g",
+                            "Δ => d",
+                            "δ => d",
+                            "Ε => e",
+                            "ε => e",
+                            "Ζ => z",
+                            "ζ => z",
+                            "Η => e",
+                            "η => e",
+                            "Θ => t",
+                            "θ => t",
+                            "Ι => i",
+                            "ι => i",
+                            "Κ => k",
+                            "κ => k",
+                            "Λ => l",
+                            "λ => l",
+                            "Μ => m",
+                            "μ => m",
+                            "Ν => n",
+                            "ν => n",
+                            "Ξ => h",
+                            "ξ => h",
+                            "Ο => o",
+                            "ο => o",
+                            "Π => p",
+                            "π => p",
+                            "Ρ => r",
+                            "ρ => r",
+                            "Σ => s",
+                            "σς => s",
+                            "Τ => t",
+                            "τ => t",
+                            "Υ => y",
+                            "υ => y",
+                            "Φ => f",
+                            "φ => f",
+                            "Χ => k",
+                            "χ => k",
+                            "Ψ => ps",
+                            "ψ => ps",
+                            "Ω => o",
+                            "ω => o"
+                        ]
                     }
                 },
-                "analyzer": {
-                    "whitelowercase": {
-                        "type": "custom",
-                        "tokenizer": "whitespace",
-                        "filter": ["lowercase"]
+                "filter"     : {
+                    "edge_filter"   : {
+                        "type"    : "edge_ngram",
+                        "min_gram": 1,
+                        "max_gram": 256
                     },
-                    "term_lowercase": {
-                        "type" : "custom",
-                        "tokenizer": "keyword",
-                        "filter": ["lowercase"]
+                    "stop"          : {
+                        "type"     : "stop",
+                        "stopwords": stopwords
                     },
-                    "autocomplete": {
-                        "type": "custom",
-                        "tokenizer": "standard",
-                        "filter": [ "lowercase", "autocomplete_filter" ]
+                    "word_delimeter": {
+                        "type"                   : "word_delimiter",
+                        "generate_word_parts"    : true, // false
+                        "generate_number_parts"  : true,
+                        "catenate_all"           : true,
+                        "split_on_case_change"   : true,
+                        "preserve_original"      : true,
+                        "split_on_numerics"      : true, // false
+                        "stem_english_possessive": false
+                    }
+                },
+                "analyzer"   : {
+                    "edge_phrase_analyzer": {
+                        "type"       : "custom",
+                        "char_filter": ["my_char_filter"],
+                        "tokenizer"  : "keyword",
+                        "filter"     : ["lowercase", "edge_filter"]
+                    },
+                    "term_lowercase"      : {
+                        "type"       : "custom",
+                        "char_filter": ["my_char_filter"],
+                        "tokenizer"  : "keyword",
+                        "filter"     : ["lowercase"]
+                    },
+                    "edge_analyzer"       : {
+                        "type"       : "custom",
+                        "char_filter": ["my_char_filter"],
+                        "tokenizer"  : "whitespace",
+                        "filter"     : ["lowercase", "stop", "word_delimeter", "edge_filter"]
+                    },
+                    "syn_analyzer"        : {
+                        "type"       : "custom",
+                        "char_filter": ["my_char_filter"],
+                        "tokenizer"  : "whitespace",
+                        "filter"     : ["lowercase", "edge_filter", "stop"]
+                    },
+                    "lowercase_whitespace": {
+                        "type"       : "custom",
+                        "char_filter": ["my_char_filter"],
+                        "tokenizer"  : "whitespace",
+                        "filter"     : ["lowercase", "stop"]
                     }
                 }
             }
@@ -114,94 +315,172 @@ exports.settings = {
         "mappings": {
             "antibody": {
                 "properties": {
-                    "supplier": {"type": "text", "fielddata": true},
-                    "catalog_no": {"type": "keyword"},
-                    "name": {"type": "text", "analyzer": "whitelowercase"},
-                    "size": {
-                        "properties" : {
-                            "quantity" : { "type" : "long" },
-                            "units" : { "type" : "keyword" },
-                            "type" : { "type" : "keyword" }
-                        }
-                    },
-                    "price": {
-                        "properties": {
-                            "currency": {
-                                "type": "keyword",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "isPromotion": {"type": "boolean"},
-                            "promotion": {
-                                "properties": {
-                                    "discount": {"type": "long"},
-                                    "discountPercentage": {"type": "long"},
-                                    "originalValue": {"type": "long"}
-                                }
-                            },
-                            "value": {"type": "long"}
-                        }
-                    },
-                    "subtype": {"type": "text", "fielddata": true},
-                    "bio_object": {
-                        "type": "text",
-                        "analyzer": "whitelowercase",
-                        "fielddata": true,
-                        "fields" : {
-                            "raw": {
-                                "type": "text",
+                    "name"              : {
+                        "type"  : "keyword",
+                        "fields": {
+                            "raw"    : {
+                                "type"    : "text",
                                 "analyzer": "term_lowercase"
                             },
-                            "main": {
-                                "type": "text",
-                                "analyzer": "autocomplete",
-                                "search_analyzer": "standard"
+                            "main"   : {
+                                "type"           : "text",
+                                "analyzer"       : "edge_phrase_analyzer",
+                                "search_analyzer": "term_lowercase"
+                            },
+                            "suggest": {
+                                "type"           : "text",
+                                "analyzer"       : "edge_analyzer",
+                                "search_analyzer": "lowercase_whitespace"
+                            },
+                            "phrase" : {
+                                "type"    : "text",
+                                "analyzer": "standard"
                             }
                         }
                     },
-                    "bio_object_synonyms" : {
-                        "type": "text",
-                        "analyzer": "whitelowercase"
-                    },
-                    "bio_object_type" : {"type": "keyword" },
-                    "ncbi_id" : {"type": "keyword" },
-                    "uniprot_id" : {"type": "keyword" },
-                    "keg_id" : {"type": "keyword" },
-                    "storage": {"type": "text" },
-                    "description": {"type": "text" },
-
-                    "clone_id" : { "type" : "keyword" },
-                    "application": {"type": "text", "analyzer": "whitelowercase", "fielddata": true},
-                    "application_info": {"type": "text" },
-                    "clonality": {"type": "text","fielddata": true},
-                    "conjugate": {"type": "text", "fielddata": true},
-                    "purification": {"type": "text" },
-                    "concentration": {"type": "text" },
-                    "host": {"type": "text", "fielddata": true},
-                    "reactivity": {"type": "text", "analyzer": "whitelowercase", "fielddata": true},
-                    "isotype": {"type": "text", "fielddata": true},
-                    "form" : {"type": "keyword"},
-                    "usage" : {"type": "keyword"},
-                    //"binding" ????
-                    "immunogen" : {"type": "text"},
-                    // "advisory": {"type": "text"},
-                    "combined": {"type": "text", "analyzer": "whitelowercase"},
-                    "ui" : {
-                        "properties" : {
-                            "clonality_ui" : {  "type" : "keyword" },
-                            "host_ui" : {  "type" : "keyword" },
-                            "reactivity_ui" : {  "type" : "keyword" },
-                            "bio_object_ui" : {  "type" : "keyword" },
-                            "application_ui" : {  "type" : "keyword" },
-                            "conjugate_ui" : {  "type" : "keyword" },
-                            "isotype_ui" : {  "type" : "keyword" }
+                    "description"       : {"type": "keyword", "index": false},
+                    "supplier"          : {
+                        "type"      : "object",
+                        "properties": {
+                            "name": {"type": "keyword"},
+                            "_id" : {"type": "keyword"}
                         }
                     },
-                    "supplier_specific" : {
+                    "external_links"    : {
+                        "type"      : "object",
+                        "properties": {
+                            "key": {"type": "keyword"},
+                            "id" : {"type": "keyword"}
+                        }
+                    },
+                    "bio_object"        : {
+                        "type"          : "object",
+                        "properties"    : {
+                            "type"   : {"type": "keyword"},
+                            "name"   : {"type": "keyword"},
+                            "aliases": {"type": "keyword"},
+                            "external_links": {
+                                "type"      : "object",
+                                "properties": {
+                                    "key": {"type": "keyword"},
+                                    "id" : {"type": "keyword"}
+                                }
+                            }
+                        },
+                    },
+                    "host"               : {"type": "keyword"},
+                    "reactivity"         : {"type": "keyword"},
+                    "application"        : {"type": "keyword"},
+                    "isotype"            : {"type": "keyword"},
+                    "light_chain"        : {"type": "keyword"},
+                    "heavy_chain"        : {"type": "keyword"},
+                    "conjugate"          : {"type": "keyword"},
+                    "clonality"          : {"type": "keyword"},
+                    "purification"       : {"type": "keyword"},
+                    "concentration"      : {"type": "keyword"},
+                    "clone_id"           : {"type": "keyword"},
+                    "buffer_form"        : {"type": "keyword"},
+                    "immunogen"          : {"type": "keyword"},
+                    "research_area"      : {"type": "keyword"},
+                    "usage"              : {"type": "keyword"},
+                    "self_life"          : {"type": "keyword"},
+                    "storage_condition"  : {"type": "keyword"},
+                    "delivery_condition" : {"type": "keyword"},
+                    "shelf_life"         : {"type": "keyword"},
+                    "storage_conditions" : {"type": "keyword"},
+                    "delivery_conditions": {"type": "keyword"},
+                    "pdf"               : {
+
+                        "type"      : "object",
+                        "properties": {
+                            "link"      : {"type": "keyword"},
+                            "text"      : {"type": "keyword"},
+                            "type"      : {"type": "keyword"},
+                            "thumb_link": {"type": "keyword"}
+                        }
+                    },
+
+                    "images"     : {
+                        "type"      : "object",
+                        "properties": {
+                            "link"      : {"type": "keyword"},
+                            "text"      : {"type": "keyword"},
+                            "type"      : {"type": "keyword"},
+                            "thumb_link": {"type": "keyword"}
+                        }
+                    },
+                    "price_model": {
+                        "type"      : "object",
+                        "properties": {
+                            "sort_price"       : {"type": "float", "doc_values": true},
+                            "is_multiple"      : {"type": "boolean"},
+                            "is_ids_are_unique": {"type": "boolean"},
+                            "discount"         : {
+                                "type"      : "object",
+                                "properties": {
+                                    "default": {
+                                        "type"          : "object",
+                                        "properties"    : {
+                                            "discount_type": {"type": "keyword"},
+                                            "discount_value": {"type": "float"}
+                                        },
+                                    }
+                                }
+                            },
+                            "variation"        : {
+                                "type"      : "object",
+                                "properties": {
+                                    "price"     : {
+                                        "type"      : "object",
+                                        "properties": {
+                                            "value"   : {"type": "float"},
+                                            "currency": {"type": "keyword"}
+                                        }
+                                    },
+                                    "product_id": {"type": "keyword"},
+                                    "size"      : {"type": "keyword"}
+                                }
+                            }
+                        }
+                    },
+                    "search_text": {
+                        "type"  : "keyword",
+                        "fields": {
+                            "raw"    : {
+                                "type"    : "text",
+                                "analyzer": "term_lowercase"
+                            },
+                            "main"   : {
+                                "type"           : "text",
+                                "analyzer"       : "edge_phrase_analyzer",
+                                "search_analyzer": "term_lowercase"
+                            },
+                            "suggest": {
+                                "type"           : "text",
+                                "analyzer"       : "edge_analyzer",
+                                "search_analyzer": "lowercase_whitespace"
+                            },
+                            "phrase" : {
+                                "type"    : "text",
+                                "analyzer": "standard"
+                            }
+                        }
+                    },
+                    "ui"        : {
+                        "type": "object",
+                        "properties" : {
+                            "host"       : {"type": "keyword"},
+                            "reactivity" : {"type": "keyword"},
+                            "application": {"type": "keyword"},
+                            "isotype"    : {"type": "keyword"},
+                            "light_chain": {"type": "keyword"},
+                            "heavy_chain": {"type": "keyword"},
+                            "clonality"  : {"type": "keyword"}
+                        }
+                    },
+
+                    "supplier_specific": {
+                        "type": "object",
                         "properties" : {}
                     }
                 }

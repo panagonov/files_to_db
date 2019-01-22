@@ -1,7 +1,8 @@
+let fs       = require("fs");
 let es_db    = require("../../_utils/elasticsearch/db.js");
 let Mongo_db = require("../../_utils/db.js");
 
-let export_version = 1;
+let export_version = 5;
 let collection_name = "product";
 
 let mapping = {
@@ -32,6 +33,7 @@ let save_to_db = async(mongo_db, type, site) =>
     let page = 0;
     let result = [];
     let count = await mongo_db.read(collection_name, {body: {type: type, src: site, tid: "ridacom", export_version: {$ne : export_version}}, count_only: true});
+    let not_found = [];
 
     do {
         let es_bulk = [];
@@ -53,22 +55,24 @@ let save_to_db = async(mongo_db, type, site) =>
 
             if (!crawler_item)
             {
-                debugger;
+                not_found.push(id);
                 return;
             }
             let res = mapping[type][site].convert(item, crawler_item);
             es_bulk.push({"model_title": type, "command_name": "index", "_id": item._id, "document": res})
         });
 
-        // if (es_bulk.length)
-        //     await es_db.bulk(es_bulk);
+        if (es_bulk.length)
+            await es_db.bulk(es_bulk);
         let ids = result.map(({_id}) => _id);
-        //await mongo_db.update_many(collection_name, {query: {_id: {$in: ids}}, data: {export_version: export_version}})
+        await mongo_db.update_many(collection_name, {query: {_id: {$in: ids}}, data: {export_version: export_version}})
 
         page++;
         console.log("ridacom", type, site, `${page * limit}/${count}`)
 
-    }while(result.length === limit)
+    }while(result.length === limit);
+
+    fs.writeFileSync(__dirname + "/not_found.json", JSON.stringify(not_found), "utf8")
 };
 
 
