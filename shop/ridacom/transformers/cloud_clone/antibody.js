@@ -8,7 +8,13 @@ let mapping = {
     "type"             : result => "antibody",
     "name"             : "Product Name",
     "source"           : "Source",
-    "host"             : "Host",
+    "host"             : record => {
+        if (!record["Host"] && !!record["Host"].trim())
+            return null;
+        if (record["Host"] === "n/a")
+            return null;
+        return record["Host"]
+    },
     "clone_num"        : "Potency (Clone Number)",
     "isotype"          : "Ig Isotype",
     "fragment"         : record => !record["Fragment"] || record["Fragment"].trim() === "-" ? null : record["Fragment"],
@@ -16,10 +22,10 @@ let mapping = {
         if (!record["Organism species"])
             return null;
 
-        return record["Organism species"].split(";").map(item => {
-            item = item.trim().split("(").pop();
+        return record["Organism species"].replace(/,/g, ";").split(";").map(item => {
+            item = item.replace(".", "").trim().split("(").pop();
             return item.replace(")", "")
-        }).filter(item => item)
+        }).filter(item => item && item !== "0")
     },
     "concentration"    : "Concentration",
     "price"            : (record) => {
@@ -66,7 +72,7 @@ let mapping = {
         if (!record["Application"])
             return null;
 
-        return record["Application"].split(";").map(item => item.trim()).filter(item => item)
+        return record["Application"].replace(/,/g, ";").split(";").map(item => item.replace(".", "").replace("Applications:", "").trim()).filter(item => item)
     },
     "link"             : "Web link",
     "pdf"              : record => record["Manual Links"] ? ({link: record["Manual Links"]}) : null,

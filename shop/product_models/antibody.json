@@ -53,6 +53,14 @@
         "type" :  "array",
         "items": {"type" : "string"}
     },
+    "light_chain" : {
+        "type" :  "array",
+        "items": {"type" : "string"}
+    },
+    "heavy_chain" : {
+        "type" :  "array",
+        "items": {"type" : "string"}
+    },
     "conjugate" : { "type" : "string"},
     "clonality": { "type" : "string"},
     "purification" : {"type": "string"},
@@ -136,6 +144,7 @@
             }
         }
     },
+    "search_text" : {"type" :  "string"},
     "ui" : {
         "host" : {"type" :  "string"},
         "reactivity" : {
@@ -147,6 +156,14 @@
             "items": {"type" : "string"}
         },
         "isotype" : {
+            "type" :  "array",
+            "items": {"type" : "string"}
+        },
+        "light_chain" : {
+            "type" :  "array",
+            "items": {"type" : "string"}
+        },
+        "heavy_chain" : {
             "type" :  "array",
             "items": {"type" : "string"}
         },
