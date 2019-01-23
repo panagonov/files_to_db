@@ -377,7 +377,7 @@ exports.settings = {
                     "light_chain_relations": {"type": "keyword"},
                     "heavy_chain_relations": {"type": "keyword"},
                     "conjugate_relations"  : {"type": "keyword"},
-                    "clonality"            : {"type": "keyword"},
+                    "clonality_relations"  : {"type": "keyword"},
                     "purification"         : {"type": "keyword"},
                     "concentration"        : {"type": "keyword"},
                     "clone_id"             : {"type": "keyword"},
