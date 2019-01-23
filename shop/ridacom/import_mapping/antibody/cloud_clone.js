@@ -90,7 +90,7 @@ let _getPriceModel = (item, crawler_item) =>
     (crawler_item.price || []).forEach((price, index )=> {
         result.variation.push({
             "price" : {
-                "value" : price,
+                "value" : price || 0,
                 "currency": "usd",
                 "size" : crawler_item.size[index]
             }
@@ -103,9 +103,12 @@ let _getPriceModel = (item, crawler_item) =>
 let mapping_step1 = {
     "name"               : record => record.name,
     "supplier"           : record => ({
-            "name": "RIDACOM Ltd."
+            "name": "RIDACOM Ltd.",
+            "_id" : "ridacom_ltd"
         }
     ),
+    "oid"                : "oid",
+    "human_readable_id"  : record => record.name.replace(/\W/g, "_").replace(/\s/g, "_").replace(/_+/, "_").replace(/^_/, "").replace(/_$/, "") + "_" + record.oid,
     "external_links"     : record => [{"key": "cloud_clone", "id": record.oid}],
     "bio_object"         : record => ({
         "type": "protein",
@@ -139,14 +142,14 @@ let mapping_step1 = {
 };
 
 let mapping_step2 = {
-    "host"               : record => record.host && record.host.length? record.host.map(([,key]) => key) : null,
-    "reactivity"         : record => record.reactivity && record.reactivity.length? record.reactivity.map(([,key]) => key) : null,
-    "application"        : record => record.application && record.application.length? record.application.map(([,key]) => key) : null,
-    "isotype"            : record => record.isotype && record.isotype.length? record.isotype.map(([,key]) => key) : null,
-    "light_chain"        : record => record.light_chain && record.light_chain.length ? record.light_chain.map(([,key]) => key) : null,
-    "heavy_chain"        : record => record.heavy_chain && record.heavy_chain.length ? record.heavy_chain.map(([,key]) => key) : null,
-    "clonality"          : record => record.clonality && record.clonality.length ? record.clonality.map(([,key]) => key) : null,
-    "ui"                 : record => {
+    "host_relations"          : record => record.host && record.host.length? record.host.map(([,key]) => key) : null,
+    "reactivity_relations"    : record => record.reactivity && record.reactivity.length? record.reactivity.map(([,key]) => key) : null,
+    "application_relations"   : record => record.application && record.application.length? record.application.map(([,key]) => key) : null,
+    "isotype_relations"       : record => record.isotype && record.isotype.length? record.isotype.map(([,key]) => key) : null,
+    "light_chain_relations"   : record => record.light_chain && record.light_chain.length ? record.light_chain.map(([,key]) => key) : null,
+    "heavy_chain_relations"   : record => record.heavy_chain && record.heavy_chain.length ? record.heavy_chain.map(([,key]) => key) : null,
+    "clonality_relations"     : record => record.clonality && record.clonality.length ? record.clonality.map(([,key]) => key) : null,
+    "ui"                      : record => {
         let result = {
             "host"               : record.host && record.host.length? record.host.map(([,,name]) => name) : null,
             "reactivity"         : record.reactivity && record.reactivity.length? record.reactivity.map(([,,name]) => name) : null,
@@ -216,6 +219,13 @@ let convert = (item, crawler_item) =>
     let result = Object.assign(result_step1, result_step2, result_step3);
 
     delete result.synonyms;
+    delete result.host;
+    delete result.reactivity;
+    delete result.application;
+    delete result.isotype;
+    delete result.light_chain;
+    delete result.heavy_chain;
+    delete result.clonality;
 
     return result
 };

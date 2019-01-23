@@ -9,6 +9,8 @@ exports.schema =
             "_id"               : {"type": "string"},
             "name"              : {"type": "string"},
             "description"       : {"type": "string"},
+            "oid"               : {"type": "string"},
+            "human_readable_id" : {"type": "string"},
             "supplier"          : {
                 "type"      : "object",
                 "properties": {
@@ -47,31 +49,31 @@ exports.schema =
                     }
                 }
             },
-            "host"              : {
+            "host_relations"              : {
                 "type" : "array",
                 "items": {"type": "string"}
             },
-            "reactivity"        : {
+            "reactivity_relations"        : {
                 "type" : "array",
                 "items": {"type": "string"}
             },
-            "application"       : {
+            "application_relations"       : {
                 "type" : "array",
                 "items": {"type": "string"}
             },
-            "isotype"           : {
+            "isotype_relations"           : {
                 "type" : "array",
                 "items": {"type": "string"}
             },
-            "light_chain"       : {
+            "light_chain_relations"       : {
                 "type" : "array",
                 "items": {"type": "string"}
             },
-            "heavy_chain"       : {
+            "heavy_chain_relations"       : {
                 "type" : "array",
                 "items": {"type": "string"}
             },
-            "clonality"       : {
+            "clonality_relations"       : {
                 "type" : "array",
                 "items": {"type": "string"}
             },
@@ -89,7 +91,8 @@ exports.schema =
                 "items": {"type": "string"}
             },
             "supplier_specific" : {
-                "type": "object"
+                "type": "object",
+                "additionalProperties": true
             },
             "pdf"               : {
                 "type" : "array",
@@ -119,9 +122,6 @@ exports.schema =
                 "type" : "array",
                 "items": {"type": "string"}
             },
-            "self_life"         : {"type": "string"},
-            "storage_condition" : {"type": "string"},
-            "delivery_condition": {"type": "string"},
             "price_model"       : {
                 "type"      : "object",
                 "properties": {
@@ -368,27 +368,29 @@ exports.settings = {
                             }
                         },
                     },
-                    "host"               : {"type": "keyword"},
-                    "reactivity"         : {"type": "keyword"},
-                    "application"        : {"type": "keyword"},
-                    "isotype"            : {"type": "keyword"},
-                    "light_chain"        : {"type": "keyword"},
-                    "heavy_chain"        : {"type": "keyword"},
-                    "conjugate"          : {"type": "keyword"},
-                    "clonality"          : {"type": "keyword"},
-                    "purification"       : {"type": "keyword"},
-                    "concentration"      : {"type": "keyword"},
-                    "clone_id"           : {"type": "keyword"},
-                    "buffer_form"        : {"type": "keyword"},
-                    "immunogen"          : {"type": "keyword"},
-                    "research_area"      : {"type": "keyword"},
-                    "usage"              : {"type": "keyword"},
-                    "self_life"          : {"type": "keyword"},
-                    "storage_condition"  : {"type": "keyword"},
-                    "delivery_condition" : {"type": "keyword"},
-                    "shelf_life"         : {"type": "keyword"},
-                    "storage_conditions" : {"type": "keyword"},
-                    "delivery_conditions": {"type": "keyword"},
+                    "oid"                  : {"type": "keyword"},
+                    "human_readable_id"    : {"type": "keyword"},
+                    "host_relations"       : {"type": "keyword"},
+                    "reactivity_relations" : {"type": "keyword"},
+                    "application_relations": {"type": "keyword"},
+                    "isotype_relations"    : {"type": "keyword"},
+                    "light_chain_relations": {"type": "keyword"},
+                    "heavy_chain_relations": {"type": "keyword"},
+                    "conjugate_relations"  : {"type": "keyword"},
+                    "clonality"            : {"type": "keyword"},
+                    "purification"         : {"type": "keyword"},
+                    "concentration"        : {"type": "keyword"},
+                    "clone_id"             : {"type": "keyword"},
+                    "buffer_form"          : {"type": "keyword"},
+                    "immunogen"            : {"type": "keyword"},
+                    "research_area"        : {"type": "keyword"},
+                    "usage"                : {"type": "keyword"},
+                    "self_life"            : {"type": "keyword"},
+                    "storage_condition"    : {"type": "keyword"},
+                    "delivery_condition"   : {"type": "keyword"},
+                    "shelf_life"           : {"type": "keyword"},
+                    "storage_conditions"   : {"type": "keyword"},
+                    "delivery_conditions"  : {"type": "keyword"},
                     "pdf"               : {
 
                         "type"      : "object",
