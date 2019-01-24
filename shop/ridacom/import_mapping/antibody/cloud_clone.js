@@ -103,6 +103,11 @@ let _getPriceModel = (item, crawler_item) =>
 let mapping_step1 = {
     "name"               : record => record.name,
     "supplier"           : record => ({
+            "name": "Cloud-Clone Corp.",
+            "_id" : "cloud_clone_corp"
+        }
+    ),
+    "distributor"    : record => ({
             "name": "RIDACOM Ltd.",
             "_id" : "ridacom_ltd"
         }
@@ -126,7 +131,7 @@ let mapping_step1 = {
     "clonality"          : record => get_canonical(record.source || "", ":clonality"),
     "concentration"      : "concentration",
     "clone_id"           : "clone_num",
-    "research_area"      : "research_area",
+    "research_area"      : record => get_canonical(record.research_area.join("; ") || "", ":research_area"),
     "usage"              : "usage",
     "shelf_life"         : "shelf_life",
     "storage_conditions" : "storage_conditions",
@@ -149,6 +154,9 @@ let mapping_step2 = {
     "light_chain_relations"   : record => record.light_chain && record.light_chain.length ? record.light_chain.map(([,key]) => key) : null,
     "heavy_chain_relations"   : record => record.heavy_chain && record.heavy_chain.length ? record.heavy_chain.map(([,key]) => key) : null,
     "clonality_relations"     : record => record.clonality && record.clonality.length ? record.clonality.map(([,key]) => key) : null,
+    "research_area_relations" : record => record.research_area && record.research_area.length ? record.research_area.map(([,key]) => key) : null,
+    "supplier_relations"      : record => ["Cloud-Clone Corp."],
+    "distributor_relations"   : record => ["RIDACOM Ltd."],
     "ui"                      : record => {
         let result = {
             "host"               : record.host && record.host.length? record.host.map(([,,name]) => name) : null,
@@ -158,6 +166,8 @@ let mapping_step2 = {
             "light_chain"        : record.light_chain && record.light_chain.length? record.light_chain.map(([,,name]) => name) : null,
             "heavy_chain"        : record.heavy_chain && record.heavy_chain.length? record.heavy_chain.map(([,,name]) => name) : null,
             "clonality"          : record.clonality && record.clonality.length ? record.clonality.map(([,,name]) => name) : null,
+            "supplier"           : ["cloud_clone_corp"],
+            "distributor"        : ["ridacom_ltd"]
         };
 
         for (let key in result)
@@ -175,6 +185,7 @@ let mapping_step2 = {
             "light_chain"        : record.light_chain && record.light_chain.length? record.light_chain.map(([,,,,name]) => name).filter(name => name) : null,
             "heavy_chain"        : record.heavy_chain && record.heavy_chain.length? record.heavy_chain.map(([,,,,name]) => name).filter(name => name) : null,
             "clonality"          : record.clonality && record.clonality.length? record.clonality.map(([,,,,name]) => name).filter(name => name) : null,
+            "research_area"      : record.research_area && record.research_area.length? record.research_area.map(([,,,,name]) => name).filter(name => name) : null,
         };
 
         for (let key in result)
@@ -186,7 +197,7 @@ let mapping_step2 = {
 };
 
 let mapping_step3 = {
-    "search_text": record =>
+    "search_data": record =>
     {
         let res = [].concat(
             [record.name],
@@ -226,6 +237,7 @@ let convert = (item, crawler_item) =>
     delete result.light_chain;
     delete result.heavy_chain;
     delete result.clonality;
+    delete result.research_area;
 
     return result
 };

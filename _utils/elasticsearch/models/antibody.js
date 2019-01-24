@@ -11,13 +11,6 @@ exports.schema =
             "description"       : {"type": "string"},
             "oid"               : {"type": "string"},
             "human_readable_id" : {"type": "string"},
-            "supplier"          : {
-                "type"      : "object",
-                "properties": {
-                    "name": {"type": "string"},
-                    "_id" : {"type": "string"}
-                }
-            },
             "external_links"    : {
                 "type" : "array",
                 "items": {
@@ -74,6 +67,18 @@ exports.schema =
                 "items": {"type": "string"}
             },
             "clonality_relations"       : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "research_area_relations"       : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "distributor_relations"       : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "supplier_relations"       : {
                 "type" : "array",
                 "items": {"type": "string"}
             },
@@ -160,7 +165,16 @@ exports.schema =
                     }
                 }
             },
-            "search_text"       : {"type": "string"},
+            "search_data"       : {
+                "type": "array",
+                "items" : {
+                    "type" : "object",
+                    "properties" : {
+                        "key" : {"type" : "string"},
+                        "text": {"type" : "string"}
+                    }
+                }
+            },
             "ui"                : {
                 "host"       : {"type": "string"},
                 "reactivity" : {
@@ -184,6 +198,10 @@ exports.schema =
                     "items": {"type": "string"}
                 },
                 "clonality": {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                },
+                "research_area": {
                     "type" : "array",
                     "items": {"type": "string"}
                 }
@@ -339,13 +357,6 @@ exports.settings = {
                         }
                     },
                     "description"       : {"type": "keyword", "index": false},
-                    "supplier"          : {
-                        "type"      : "object",
-                        "properties": {
-                            "name": {"type": "keyword"},
-                            "_id" : {"type": "keyword"}
-                        }
-                    },
                     "external_links"    : {
                         "type"      : "object",
                         "properties": {
@@ -368,29 +379,32 @@ exports.settings = {
                             }
                         },
                     },
-                    "oid"                  : {"type": "keyword"},
-                    "human_readable_id"    : {"type": "keyword"},
-                    "host_relations"       : {"type": "keyword"},
-                    "reactivity_relations" : {"type": "keyword"},
-                    "application_relations": {"type": "keyword"},
-                    "isotype_relations"    : {"type": "keyword"},
-                    "light_chain_relations": {"type": "keyword"},
-                    "heavy_chain_relations": {"type": "keyword"},
-                    "conjugate_relations"  : {"type": "keyword"},
-                    "clonality_relations"  : {"type": "keyword"},
-                    "purification"         : {"type": "keyword"},
-                    "concentration"        : {"type": "keyword"},
-                    "clone_id"             : {"type": "keyword"},
-                    "buffer_form"          : {"type": "keyword"},
-                    "immunogen"            : {"type": "keyword"},
-                    "research_area"        : {"type": "keyword"},
-                    "usage"                : {"type": "keyword"},
-                    "self_life"            : {"type": "keyword"},
-                    "storage_condition"    : {"type": "keyword"},
-                    "delivery_condition"   : {"type": "keyword"},
-                    "shelf_life"           : {"type": "keyword"},
-                    "storage_conditions"   : {"type": "keyword"},
-                    "delivery_conditions"  : {"type": "keyword"},
+                    "oid"                    : {"type": "keyword"},
+                    "human_readable_id"      : {"type": "keyword"},
+                    "host_relations"         : {"type": "keyword"},
+                    "reactivity_relations"   : {"type": "keyword"},
+                    "application_relations"  : {"type": "keyword"},
+                    "isotype_relations"      : {"type": "keyword"},
+                    "light_chain_relations"  : {"type": "keyword"},
+                    "heavy_chain_relations"  : {"type": "keyword"},
+                    "conjugate_relations"    : {"type": "keyword"},
+                    "clonality_relations"    : {"type": "keyword"},
+                    "research_area_relations": {"type": "keyword"},
+                    "distributor_relations"  : {"type": "keyword"},
+                    "supplier_relations"     : {"type": "keyword"},
+                    "purification"           : {"type": "keyword"},
+                    "concentration"          : {"type": "keyword"},
+                    "clone_id"               : {"type": "keyword"},
+                    "buffer_form"            : {"type": "keyword"},
+                    "immunogen"              : {"type": "keyword"},
+                    "research_area"          : {"type": "keyword"},
+                    "usage"                  : {"type": "keyword"},
+                    "self_life"              : {"type": "keyword"},
+                    "storage_condition"      : {"type": "keyword"},
+                    "delivery_condition"     : {"type": "keyword"},
+                    "shelf_life"             : {"type": "keyword"},
+                    "storage_conditions"     : {"type": "keyword"},
+                    "delivery_conditions"    : {"type": "keyword"},
                     "pdf"               : {
 
                         "type"      : "object",
@@ -445,39 +459,37 @@ exports.settings = {
                             }
                         }
                     },
-                    "search_text": {
-                        "type"  : "keyword",
-                        "fields": {
-                            "raw"    : {
-                                "type"    : "text",
-                                "analyzer": "term_lowercase"
-                            },
-                            "main"   : {
-                                "type"           : "text",
-                                "analyzer"       : "edge_phrase_analyzer",
-                                "search_analyzer": "term_lowercase"
-                            },
-                            "suggest": {
-                                "type"           : "text",
-                                "analyzer"       : "edge_analyzer",
-                                "search_analyzer": "lowercase_whitespace"
-                            },
-                            "phrase" : {
-                                "type"    : "text",
-                                "analyzer": "standard"
+                    "search_data": {
+                        "type"  : "object",
+                        "properties" : {
+                            "key"       : {"type": "keyword"},
+                            "text"      : {
+                                "type": "keyword",
+                                "fields": {
+                                    "raw"    : {
+                                        "type"    : "text",
+                                        "analyzer": "term_lowercase"
+                                    },
+                                    "main"   : {
+                                        "type"           : "text",
+                                        "analyzer"       : "edge_phrase_analyzer",
+                                        "search_analyzer": "term_lowercase"
+                                    }
+                                }
                             }
                         }
                     },
                     "ui"        : {
                         "type": "object",
                         "properties" : {
-                            "host"       : {"type": "keyword"},
-                            "reactivity" : {"type": "keyword"},
-                            "application": {"type": "keyword"},
-                            "isotype"    : {"type": "keyword"},
-                            "light_chain": {"type": "keyword"},
-                            "heavy_chain": {"type": "keyword"},
-                            "clonality"  : {"type": "keyword"}
+                            "host"         : {"type": "keyword"},
+                            "reactivity"   : {"type": "keyword"},
+                            "application"  : {"type": "keyword"},
+                            "isotype"      : {"type": "keyword"},
+                            "light_chain"  : {"type": "keyword"},
+                            "heavy_chain"  : {"type": "keyword"},
+                            "clonality"    : {"type": "keyword"},
+                            "research_area": {"type": "keyword"}
                         }
                     },
 

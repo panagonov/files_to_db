@@ -2,7 +2,7 @@ let fs       = require("fs");
 let es_db    = require("../../_utils/elasticsearch/db.js");
 let Mongo_db = require("../../_utils/db.js");
 
-let export_version = 1;
+let export_version = 2;
 let collection_name = "product";
 
 let mapping = {

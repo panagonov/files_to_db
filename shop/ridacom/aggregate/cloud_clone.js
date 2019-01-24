@@ -13,6 +13,9 @@ let aggregate = async(mongo_db) =>
     console.log("isotype...");
     await mongo_db.drop("_agg_cloud_clone_antibody_isotype");
     await mongo_db.aggregate("product", {match: {tid: "ridacom", src: "cloud_clone", type: "antibody"}, group: {_id : "$isotype", total : {$sum : 1}}, out: "_agg_cloud_clone_antibody_isotype", options: {allowDiskUse: true}});
+    console.log("research_area...");
+    await mongo_db.drop("_agg_cloud_clone_antibody_research_area");
+    await mongo_db.aggregate("product", {unwind: "research_area", match: {tid: "ridacom", src: "cloud_clone", type: "antibody"}, group: {_id : "$research_area", total : {$sum : 1}}, out: "_agg_cloud_clone_antibody_research_area", options: {allowDiskUse: true}});
 };
 
 module.exports = {
