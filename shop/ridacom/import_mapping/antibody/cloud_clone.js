@@ -15,7 +15,10 @@ let get_canonical = (text, type) =>
     .map(atom => {
         let synonyms = semantica.knowledge.findTagsByCanonical(db, atom[1]);
         if (synonyms && synonyms.length)
-            atom.push(synonyms.map(({name}) => name).join(" "));
+        {
+            atom.push(synonyms);
+        }
+
         return atom
     });
     return atoms
@@ -102,16 +105,6 @@ let _getPriceModel = (item, crawler_item) =>
 
 let mapping_step1 = {
     "name"               : record => record.name,
-    "supplier"           : record => ({
-            "name": "Cloud-Clone Corp.",
-            "_id" : "cloud_clone_corp"
-        }
-    ),
-    "distributor"    : record => ({
-            "name": "RIDACOM Ltd.",
-            "_id" : "ridacom_ltd"
-        }
-    ),
     "oid"                : "oid",
     "human_readable_id"  : record => record.name.replace(/\W/g, "_").replace(/\s/g, "_").replace(/_+/, "_").replace(/^_/, "").replace(/_$/, "") + "_" + record.oid,
     "external_links"     : record => [{"key": "cloud_clone", "id": record.oid}],
@@ -122,6 +115,8 @@ let mapping_step1 = {
     }),
     "price_model"        : record => _getPriceModel(record, record.crawler_item),
     "description"        : "description",
+    "supplier"           : record => get_canonical("Cloud-Clone Corp.", ":supplier"),
+    "distributor"        : record => get_canonical("RIDACOM Ltd.", ":distributor"),
     "host"               : record => get_canonical(record.host || "", [":host", ":reactivity"]),
     "reactivity"         : record => get_canonical(record.reactivity.join("; "), [":host", ":reactivity"]),
     "application"        : record => get_canonical(record.application.join("; "), ":application"),
@@ -131,7 +126,7 @@ let mapping_step1 = {
     "clonality"          : record => get_canonical(record.source || "", ":clonality"),
     "concentration"      : "concentration",
     "clone_id"           : "clone_num",
-    "research_area"      : record => get_canonical(record.research_area.join("; ") || "", ":research_area"),
+    "research_area"      : record => get_canonical((record.research_area || []).join("; ") || "", ":research_area"),
     "usage"              : "usage",
     "shelf_life"         : "shelf_life",
     "storage_conditions" : "storage_conditions",
@@ -155,8 +150,8 @@ let mapping_step2 = {
     "heavy_chain_relations"   : record => record.heavy_chain && record.heavy_chain.length ? record.heavy_chain.map(([,key]) => key) : null,
     "clonality_relations"     : record => record.clonality && record.clonality.length ? record.clonality.map(([,key]) => key) : null,
     "research_area_relations" : record => record.research_area && record.research_area.length ? record.research_area.map(([,key]) => key) : null,
-    "supplier_relations"      : record => ["Cloud-Clone Corp."],
-    "distributor_relations"   : record => ["RIDACOM Ltd."],
+    "supplier_relations"      : record => record.supplier && record.supplier.length ? record.supplier.map(([,key]) => key) : null,
+    "distributor_relations"   : record => record.distributor && record.distributor.length ? record.distributor.map(([,key]) => key) : null,
     "ui"                      : record => {
         let result = {
             "host"               : record.host && record.host.length? record.host.map(([,,name]) => name) : null,
@@ -166,8 +161,9 @@ let mapping_step2 = {
             "light_chain"        : record.light_chain && record.light_chain.length? record.light_chain.map(([,,name]) => name) : null,
             "heavy_chain"        : record.heavy_chain && record.heavy_chain.length? record.heavy_chain.map(([,,name]) => name) : null,
             "clonality"          : record.clonality && record.clonality.length ? record.clonality.map(([,,name]) => name) : null,
-            "supplier"           : ["cloud_clone_corp"],
-            "distributor"        : ["ridacom_ltd"]
+            "research_area"      : record.research_area && record.research_area.length ? record.research_area.map(([,,name]) => name) : null,
+            "supplier"           : record.supplier && record.supplier.length ? record.supplier.map(([,,name]) => name) : null,
+            "distributor"        : record.distributor && record.distributor.length ? record.distributor.map(([,,name]) => name) : null
         };
 
         for (let key in result)
@@ -175,49 +171,48 @@ let mapping_step2 = {
                 delete result[key];
 
         return result;
-    },
-    "synonyms"                 : record => {
-        let result = {
-            "host"               : record.host && record.host.length? record.host.map(([,,,,name]) => name).filter(name => name) : null,
-            "reactivity"         : record.reactivity && record.reactivity.length? record.reactivity.map(([,,,,name]) => name).filter(name => name) : null,
-            "application"        : record.application && record.application.length? record.application.map(([,,,,name]) => name).filter(name => name) : null,
-            "isotype"            : record.isotype && record.isotype.length? record.isotype.map(([,,,,name]) => name).filter(name => name) : null,
-            "light_chain"        : record.light_chain && record.light_chain.length? record.light_chain.map(([,,,,name]) => name).filter(name => name) : null,
-            "heavy_chain"        : record.heavy_chain && record.heavy_chain.length? record.heavy_chain.map(([,,,,name]) => name).filter(name => name) : null,
-            "clonality"          : record.clonality && record.clonality.length? record.clonality.map(([,,,,name]) => name).filter(name => name) : null,
-            "research_area"      : record.research_area && record.research_area.length? record.research_area.map(([,,,,name]) => name).filter(name => name) : null,
-        };
-
-        for (let key in result)
-            if (!result[key])
-                delete result[key];
-
-        return result;
-    },
+    }
 };
 
 let mapping_step3 = {
     "search_data": record =>
     {
-        let res = [].concat(
-            [record.name],
-            record.bio_object.aliases || [],
-            record.ui.host || [],
-            record.ui.reactivity || [],
-            record.ui.application || [],
-            record.ui.isotype || [],
-            record.ui.light_chain || [],
-            record.ui.heavy_chain || [],
-            record.ui.clonality || [],
-            record.synonyms.host || [],
-            record.synonyms.reactivity || [],
-            record.synonyms.application || [],
-            record.synonyms.isotype || [],
-            record.synonyms.light_chain || [],
-            record.synonyms.heavy_chain || [],
-            record.synonyms.clonality || [],
-        );
-        return res.join(" ").replace(/\(|\)|,/g, " ").replace(/\s+/g, " ").trim()
+        let result = [];
+
+        let name_alias = /\((.+)\)/.exec(record.name);
+        if (name_alias[1])
+        {
+            result.push({key: "name", text : name_alias[1]});
+        }
+
+        if (record.bio_object.name)
+        {
+            result.push({key: "bio_object.name", text : record.bio_object.name})
+        }
+
+        (record.bio_object.aliases || []).forEach((alias, index) => {
+            result.push({key: "bio_object.aliases." + index, text : alias})
+        });
+
+        ["host", "reactivity", "application", "isotype", "light_chain", "heavy_chain", "clonality" , "research_area", "supplier", "distributor"].forEach(field_name =>
+        {
+            if (!record[field_name] || !record[field_name].length)
+                return;
+
+            record[field_name].forEach(([,,name,,synonyms],index) => {
+                if (!name || !name.trim())
+                    return;
+                result.push({key: `${field_name}.${index}`, text : name});
+                if (synonyms && synonyms.length)
+                {
+                    synonyms.forEach(({name}) => {
+                        result.push({key: `${field_name}.${index}`, text : name})
+                    })
+                }
+            })
+        });
+
+        return result
     }
 };
 
@@ -229,7 +224,6 @@ let convert = (item, crawler_item) =>
     let result_step3 = utils.mapping_transform(mapping_step3, Object.assign(result_step1, result_step2));
     let result = Object.assign(result_step1, result_step2, result_step3);
 
-    delete result.synonyms;
     delete result.host;
     delete result.reactivity;
     delete result.application;
@@ -238,6 +232,8 @@ let convert = (item, crawler_item) =>
     delete result.heavy_chain;
     delete result.clonality;
     delete result.research_area;
+    delete result.supplier;
+    delete result.distributor;
 
     return result
 };
