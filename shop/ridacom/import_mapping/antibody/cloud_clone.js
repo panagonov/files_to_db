@@ -179,10 +179,11 @@ let mapping_step3 = {
     {
         let result = [];
 
-        let name_alias = /\((.+)\)/.exec(record.name);
-        if (name_alias[1])
+        let name_alias = record.name.split("(").pop().trim();
+
+        if (name_alias.indexOf(")") !== -1)
         {
-            result.push({key: "name", text : name_alias[1]});
+            result.push({key: "name", text : name_alias.replace(")", "").trim()});
         }
 
         if (record.bio_object.name)
