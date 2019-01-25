@@ -82,7 +82,11 @@ exports.schema =
                 "type" : "array",
                 "items": {"type": "string"}
             },
-            "conjugate"          : {"type": "string"},
+            "conjugate_relations"       : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+
             "purification"       : {"type": "string"},
             "concentration"      : {"type": "string"},
             "clone_id"           : {"type": "string"},
@@ -202,6 +206,10 @@ exports.schema =
                     "items": {"type": "string"}
                 },
                 "research_area": {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                },
+                "conjugate": {
                     "type" : "array",
                     "items": {"type": "string"}
                 }
@@ -489,7 +497,8 @@ exports.settings = {
                             "light_chain"  : {"type": "keyword"},
                             "heavy_chain"  : {"type": "keyword"},
                             "clonality"    : {"type": "keyword"},
-                            "research_area": {"type": "keyword"}
+                            "research_area": {"type": "keyword"},
+                            "conjugate"    : {"type": "keyword"}
                         }
                     },
 

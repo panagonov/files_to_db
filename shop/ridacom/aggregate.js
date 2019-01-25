@@ -1,12 +1,12 @@
-let aggregate_cloud_clone = require("./aggregate/cloud_clone.js");
+let aggregators = {
+    cloud_clone: require("./aggregate/cloud_clone.js"),
+    abbkine    : require("./aggregate/abbkine.js")
+};
 
 let aggregate = async(mongo_db, site) =>
 {
-    switch (site) {
-        case "cloud_clone" :
-            await aggregate_cloud_clone.aggregate(mongo_db);
-            break;
-    }
+    await aggregators[site].aggregate(mongo_db)
+
 };
 
 

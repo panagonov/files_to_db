@@ -2,13 +2,14 @@ let fs       = require("fs");
 let es_db    = require("../../_utils/elasticsearch/db.js");
 let Mongo_db = require("../../_utils/db.js");
 
-let export_version          = 3;
+
 let collection_name         = "product";
 let suggest_collection_name = "shop_suggest";
 
 let mapping = {
     "antibody" : {
-        "cloud_clone" : require("./import_mapping/antibody/cloud_clone.js")
+        "cloud_clone" : {converter: require("./import_mapping/antibody/cloud_clone.js"), version: 1},
+        "abbkine"     : {converter: require("./import_mapping/antibody/abbkine.js"), version: 1}
     }
 };
 
@@ -36,8 +37,28 @@ let _save_suggest_data = async (suggest_data) =>
         await es_db.bulk(es_bulk);
 };
 
+let _load_crawler_data = async (items) =>
+{
+    let crawler_ids = items.map(({oid}) => oid);
+
+    let crawler_data = await crawler_db.read(collection_name, {body: {_id: {$in : crawler_ids}}});
+
+    return crawler_data.reduce((res, item) =>
+    {
+        res[item._id] = item;
+        return res
+    }, {});
+
+}
+
 let save_to_db = async(mongo_db, type, site) =>
 {
+    let converter      =  mapping[type][site].converter;
+    let export_version = mapping[type][site].version;
+
+    if (converter.init)
+        await converter.init();
+
     let limit = 500;
     let page = 0;
     let result = [];
@@ -47,16 +68,14 @@ let save_to_db = async(mongo_db, type, site) =>
     do {
         let accumulated_suggest_data = {};
         let es_bulk = [];
+        let custom_data;
+
         result = await mongo_db.read(collection_name, {body: {type: type, src: site, tid: "ridacom", export_version: {$ne : export_version}}, size: limit});
-        let crawler_ids = result.map(({oid}) => oid);
 
-        let crawler_data = await crawler_db.read(collection_name, {body: {_id: {$in : crawler_ids}}});
+        let crawler_hash = await _load_crawler_data(result);
 
-        let crawler_hash = crawler_data.reduce((res, item) =>
-        {
-            res[item._id] = item;
-            return res
-        }, {});
+        if (converter.load_custom_data)
+            custom_data = await converter.load_custom_data(mongo_db, crawler_db, result);
 
         result.forEach(item =>
         {
@@ -68,7 +87,7 @@ let save_to_db = async(mongo_db, type, site) =>
                 not_found.push(id);
                 return;
             }
-            let {converted_item, suggest_data} = mapping[type][site].convert(item, crawler_item);
+            let {converted_item, suggest_data} = converter.convert(item, crawler_item, custom_data);
             accumulated_suggest_data = Object.assign(accumulated_suggest_data, suggest_data);
             es_bulk.push({"model_title": type, "command_name": "index", "_id": item._id, "document": converted_item})
 

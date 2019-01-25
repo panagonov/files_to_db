@@ -1,9 +1,18 @@
 let semantica = require("../../../../common-components/search-engine-3/domains/genetics/index.js");
 let utils     = require("../../../../_utils/utils.js");
+let Mongo_db = require("../../../../_utils/db.js");
 
-let relation_fields = ["host", "reactivity", "application", "isotype", "light_chain", "heavy_chain", "clonality" , "research_area", "supplier", "distributor"];
+let uniprot_db;
+
+let relation_fields = ["host", "reactivity", "application", "isotype", "light_chain", "heavy_chain", "clonality" , "research_area", "supplier", "distributor", "conjugate"];
 
 let human_radable_id = str => str.replace(/\W/g, "_").replace(/\s/g, "_").replace(/_+/, "_").replace(/^_/, "").replace(/_$/, "");
+
+let init = async() =>
+{
+    uniprot_db = new Mongo_db();
+    await uniprot_db.init({database: "uniprot"});
+}
 
 
 let get_canonical = (text, type) =>
@@ -31,26 +40,9 @@ let get_canonical = (text, type) =>
 let _getImages = item => {
     let result = [];
 
-    if(item.package_images && item.package_images.length)
-    {
-        item.package_images.forEach(link => result.push({link: link, type: "package"}))
-    }
     if(item.images && item.images.length)
     {
-        item.images.forEach(data => {
-            if (typeof data === "string")
-                result.push({link: data});
-            else
-            {
-                result.push({link: data.link, text: data.text})
-            }
-        })
-    }
-    if(item.certificate && item.certificate.length)
-    {
-        {
-            item.certificate.forEach(link => result.push({link: link, type: "certificate"}))
-        }
+        item.images.forEach(link => result.push({link: link}))
     }
 
     return result
@@ -62,10 +54,7 @@ let _getPdf = item =>
 
     if(item.pdf)
     {
-        result.push({
-            link: item.pdf.link,
-            ...item.pdf.preview ? {"thumb_link" : item.pdf.preview} : ""
-        })
+        result.push({link: item.pdf})
     }
 
     return result;
@@ -75,31 +64,16 @@ let _getPriceModel = (item, crawler_item) =>
 {
     let result = {
         ...crawler_item.price && crawler_item.price.length ? {"is_multiple" : true} : "",
-        ...item.price.promotion ? {"discount" : {
-                                        "default" : {
-                                            "type" : "percent",
-                                            "value" : item.price.promotion.discountPercentage
-                                        }
-                                    }} : "",
+        search_price: item.price && item.price[0] ? item.price[0].price || 0 : 0,
         "variation" :[]
     };
 
-    let search_price = 0;
-    if (crawler_item.price) {
-        search_price = crawler_item.price[0];
-    }
-    if (item.price.promotion) {
-        search_price = search_price * item.price.promotion.discountPercentage / 100;
-    }
-
-    search_price ? result.search_price = search_price : null;
-
-    (crawler_item.price || []).forEach((price, index )=> {
+    (item.price || []).forEach(price_item => {
         result.variation.push({
             "price" : {
-                "value"   : price || 0,
+                "value" : price_item.price || 0,
                 "currency": "usd",
-                "size"    : crawler_item.size[index]
+                "size" : price_item.size
             }
         })
     });
@@ -111,15 +85,15 @@ let mapping_step1 = {
     "name"               : "name",
     "oid"                : "oid",
     "human_readable_id"  : record => human_radable_id(record.name) + "_" + record.oid,
-    "external_links"     : record => [{"key": "cloud_clone", "id": record.oid}],
+    "external_links"     : record => [{"key": "abbkine_scientific_co_ltd", "id": record.link}],
     "bio_object"         : record => ({
         "type": "protein",
-        ...record.item_name ? {"name": record.item_name} : "",
-        ...record.aliases ? {"aliases": record.aliases} : ""
+        ...record.bio_object_data &&  record.bio_object_data.name ? {"name": record.bio_object_data.name} : "",
+        ...record.bio_object_data ? {"aliases": [record.bio_object_data._id, record.bio_object_data.alias]} : ""
     }),
     "price_model"        : record => _getPriceModel(record, record.crawler_item),
     "description"        : "description",
-    "supplier"           : record => get_canonical("Cloud-Clone Corp.", ":supplier"),
+    "supplier"           : record => get_canonical("Abbkine Scientific Co., Ltd.", ":supplier"),
     "distributor"        : record => get_canonical("RIDACOM Ltd.", ":distributor"),
     "host"               : record => get_canonical(record.host || "", [":host", ":reactivity"]),
     "reactivity"         : record => get_canonical(record.reactivity.join("; "), [":host", ":reactivity"]),
@@ -127,21 +101,29 @@ let mapping_step1 = {
     "isotype"            : record => get_canonical(record.isotype || "", ":isotype"),
     "light_chain"        : record => get_canonical(record.isotype || "", ":light_chain"),
     "heavy_chain"        : record => get_canonical(record.isotype || "", ":heavy_chain"),
-    "clonality"          : record => get_canonical(record.source || "", ":clonality"),
-    "research_area"      : record => get_canonical((record.research_area || []).join("; ") || "", ":research_area"),
-    "concentration"      : "concentration",
-    "clone_id"           : "clone_num",
-    "usage"              : "usage",
-    "shelf_life"         : "shelf_life",
-    "storage_conditions" : "storage_conditions",
-    "delivery_conditions": "delivery_conditions",
-    "buffer_form"        : "buffer_form",
-    "immunogen"          : "immunogen",
+    "clonality"          : record => get_canonical(record.clonality || "", ":clonality"),
+    "conjugate"          : record => get_canonical(record.conjugate || "", ":conjugate"),
+    "usage"                 : "background",
+    // "research_area"      : record => get_canonical((record.research_area || []).join("; ") || "", ":research_area"),
+    // "concentration"      : "concentration",
+    // "clone_id"           : "clone_num",
+    // "shelf_life"         : "shelf_life",
+    "storage_conditions"    : "storage_instructions",
+    "delivery_conditions"   : "shipping",
+    "buffer_form"           : "storage_buffer",
+    "immunogen"             : "immunogen",
+    "purification"          : "purification",
+    "formulation"           : "formulation",
     "images"             : record =>  _getImages(record.crawler_item),
     "pdf"                : record =>  _getPdf(record.crawler_item),
     "supplier_specific"  : record => ({
-        "price" : record.supplier_specific.price,
-        "link"  : record.link
+        "link"          : record.link,
+        "precautions"   : record.precautions,
+        "alternative"   : record.alternative,
+        "accession"     : record.accession,
+        "accession_link": record.accession_link,
+        "category"      : record.category,
+        "gene_id"       : record.gene_id
     })
 };
 
@@ -153,15 +135,14 @@ let mapping_step2 = {
     "light_chain_relations"   : record => record.light_chain && record.light_chain.length ? record.light_chain.map(([,key]) => key) : null,
     "heavy_chain_relations"   : record => record.heavy_chain && record.heavy_chain.length ? record.heavy_chain.map(([,key]) => key) : null,
     "clonality_relations"     : record => record.clonality && record.clonality.length ? record.clonality.map(([,key]) => key) : null,
-    "research_area_relations" : record => record.research_area && record.research_area.length ? record.research_area.map(([,key]) => key) : null,
+    "conjugate_relations"     : record => record.conjugate && record.conjugate.length ? record.conjugate.map(([,key]) => key) : null,
     "supplier_relations"      : record => record.supplier && record.supplier.length ? record.supplier.map(([,key]) => key) : null,
     "distributor_relations"   : record => record.distributor && record.distributor.length ? record.distributor.map(([,key]) => key) : null,
     "ui"                      : record =>  relation_fields.reduce((res, field_name) => {
-                                        if (record[field_name] && record[field_name].length)
-                                            res[field_name] = record[field_name].map(([,,name]) => name);
-                                        return res
-                                    }, {}),
-
+                                    if (record[field_name] && record[field_name].length)
+                                        res[field_name] = record[field_name].map(([,,name]) => name);
+                                    return res
+                                }, {}),
     "search_data": record =>
     {
         let result = [];
@@ -173,14 +154,15 @@ let mapping_step2 = {
             result.push({key: "name", text : name_alias.replace(")", "").trim()});
         }
 
-        if (record.bio_object.name)
+        if (record.bio_object)
         {
-            result.push({key: "bio_object.name", text : record.bio_object.name})
+            if (record.bio_object.name) {
+                result.push({key: "bio_object.name", text : record.bio_object.name})
+            }
+            (record.bio_object.aliases || []).forEach((alias, index) => {
+                result.push({key: "bio_object.aliases." + index, text : alias})
+            });
         }
-
-        (record.bio_object.aliases || []).forEach((alias, index) => {
-            result.push({key: "bio_object.aliases." + index, text : alias})
-        });
 
         relation_fields.forEach(field_name =>
         {
@@ -207,7 +189,7 @@ let mapping_step2 = {
 let build_suggest_data = record => {
     let result = {};
 
-    if (record.bio_object.name)
+    if (record.bio_object && record.bio_object.name)
     {
         let id = `protein_${human_radable_id(record.bio_object.name)}`;
         let protein = {
@@ -248,9 +230,11 @@ let build_suggest_data = record => {
     return result
 };
 
-let convert = (item, crawler_item) =>
+let convert = (item, crawler_item, custom_data) =>
 {
-    let record = Object.assign({}, item, {crawler_item: crawler_item});
+    let bio_object_data = custom_data[item.accession];
+
+    let record = Object.assign({}, item, {crawler_item: crawler_item, bio_object_data : bio_object_data});
     let result_step1 = utils.mapping_transform(mapping_step1, record);
     let result_step2 = utils.mapping_transform(mapping_step2, result_step1);
     let result = Object.assign(result_step1, result_step2);
@@ -262,10 +246,25 @@ let convert = (item, crawler_item) =>
     return {converted_item : result, suggest_data}
 };
 
+let load_custom_data = async(mongo_db,crawler_db, result) => {
+
+    let ids = result.map(item => item.accession);
+    let bio_objects = await uniprot_db.read("uniprot", {body: {_id : {$in : ids}}});
+
+    let hash = bio_objects.reduce((res, item) => {
+        res[item._id] = item;
+        return res;
+    }, {});
+
+    return hash;
+};
+
 
 
 module.exports = {
-    convert
+    convert,
+    load_custom_data,
+    init
 };
 
 let test = (text) =>

@@ -1,5 +1,27 @@
 let unidecode = require("unidecode");
 
+let getValueFromJSON = (jsn, key) =>
+{
+    if (!key)
+    {
+        return jsn;
+    }
+    let parseData = key.split('.');
+    let currentKey = parseData[0];
+    if (!jsn || !jsn.hasOwnProperty(currentKey))
+    {
+        return null;
+    }
+
+    if (parseData.length === 1)
+    {
+        return jsn[currentKey];
+    }
+
+    parseData.shift();
+    return getValueFromJSON(jsn[currentKey], parseData.join('.'))
+};
+
 let mapping_transform = (mapping, record) =>
 {
     let result = {};
@@ -11,8 +33,20 @@ let mapping_transform = (mapping, record) =>
                 result[key] = mapping[key](record)
             }
         }
-        else if (typeof mapping[key] === "string" && record[mapping[key]]) {
-            result[key] = record[mapping[key]]
+        else if (typeof mapping[key] === "string") {
+            let res = getValueFromJSON(record, mapping[key]);
+            res ? result[key] = res : null
+        }
+        else if (mapping[key] instanceof Array ) {
+            for(let i = 0; i < mapping[key].length; i++)
+            {
+                let res = getValueFromJSON(record, mapping[key][i]);
+                if (res || res === 0)
+                {
+                    result[key] = res;
+                    break;
+                }
+            }
         }
     }
     return result;
