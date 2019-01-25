@@ -2,8 +2,9 @@ let fs       = require("fs");
 let es_db    = require("../../_utils/elasticsearch/db.js");
 let Mongo_db = require("../../_utils/db.js");
 
-let export_version = 1;
-let collection_name = "product";
+let export_version          = 3;
+let collection_name         = "product";
+let suggest_collection_name = "shop_suggest";
 
 let mapping = {
     "antibody" : {
@@ -27,6 +28,14 @@ let build_index = async(mongo_db) =>
     console.log("Indexes done");
 };
 
+let _save_suggest_data = async (suggest_data) =>
+{
+    let es_bulk = Object.keys(suggest_data).map(id => ({model_title: suggest_collection_name, command_name: "index", "_id": id, "document": suggest_data[id]}));
+
+    if (es_bulk.length)
+        await es_db.bulk(es_bulk);
+};
+
 let save_to_db = async(mongo_db, type, site) =>
 {
     let limit = 500;
@@ -36,6 +45,7 @@ let save_to_db = async(mongo_db, type, site) =>
     let not_found = [];
 
     do {
+        let accumulated_suggest_data = {};
         let es_bulk = [];
         result = await mongo_db.read(collection_name, {body: {type: type, src: site, tid: "ridacom", export_version: {$ne : export_version}}, size: limit});
         let crawler_ids = result.map(({oid}) => oid);
@@ -58,14 +68,19 @@ let save_to_db = async(mongo_db, type, site) =>
                 not_found.push(id);
                 return;
             }
-            let res = mapping[type][site].convert(item, crawler_item);
-            es_bulk.push({"model_title": type, "command_name": "index", "_id": item._id, "document": res})
+            let {converted_item, suggest_data} = mapping[type][site].convert(item, crawler_item);
+            accumulated_suggest_data = Object.assign(accumulated_suggest_data, suggest_data);
+            es_bulk.push({"model_title": type, "command_name": "index", "_id": item._id, "document": converted_item})
+
         });
 
         if (es_bulk.length)
             await es_db.bulk(es_bulk);
+
+        await _save_suggest_data(accumulated_suggest_data);
+
         let ids = result.map(({_id}) => _id);
-        await mongo_db.update_many(collection_name, {query: {_id: {$in: ids}}, data: {export_version: export_version}})
+        await mongo_db.update_many(collection_name, {query: {_id: {$in: ids}}, data: {export_version: export_version}});
 
         page++;
         console.log("ridacom", type, site, `${page * limit}/${count}`)

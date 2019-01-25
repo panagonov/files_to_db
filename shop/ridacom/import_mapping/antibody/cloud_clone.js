@@ -1,6 +1,10 @@
 let semantica = require("../../../../common-components/search-engine-3/domains/genetics/index.js");
 let utils     = require("../../../../_utils/utils.js");
 
+let relation_fields = ["host", "reactivity", "application", "isotype", "light_chain", "heavy_chain", "clonality" , "research_area", "supplier", "distributor"];
+
+let human_radable_id = str => str.replace(/\W/g, "_").replace(/\s/g, "_").replace(/_+/, "_").replace(/^_/, "").replace(/_$/, "");
+
 
 let get_canonical = (text, type) =>
 {
@@ -104,9 +108,9 @@ let _getPriceModel = (item, crawler_item) =>
 };
 
 let mapping_step1 = {
-    "name"               : record => record.name,
+    "name"               : "name",
     "oid"                : "oid",
-    "human_readable_id"  : record => record.name.replace(/\W/g, "_").replace(/\s/g, "_").replace(/_+/, "_").replace(/^_/, "").replace(/_$/, "") + "_" + record.oid,
+    "human_readable_id"  : record => human_radable_id(record.name) + "_" + record.oid,
     "external_links"     : record => [{"key": "cloud_clone", "id": record.oid}],
     "bio_object"         : record => ({
         "type": "protein",
@@ -124,9 +128,9 @@ let mapping_step1 = {
     "light_chain"        : record => get_canonical(record.isotype || "", ":light_chain"),
     "heavy_chain"        : record => get_canonical(record.isotype || "", ":heavy_chain"),
     "clonality"          : record => get_canonical(record.source || "", ":clonality"),
+    "research_area"      : record => get_canonical((record.research_area || []).join("; ") || "", ":research_area"),
     "concentration"      : "concentration",
     "clone_id"           : "clone_num",
-    "research_area"      : record => get_canonical((record.research_area || []).join("; ") || "", ":research_area"),
     "usage"              : "usage",
     "shelf_life"         : "shelf_life",
     "storage_conditions" : "storage_conditions",
@@ -171,10 +175,7 @@ let mapping_step2 = {
                 delete result[key];
 
         return result;
-    }
-};
-
-let mapping_step3 = {
+    },
     "search_data": record =>
     {
         let result = [];
@@ -195,7 +196,7 @@ let mapping_step3 = {
             result.push({key: "bio_object.aliases." + index, text : alias})
         });
 
-        ["host", "reactivity", "application", "isotype", "light_chain", "heavy_chain", "clonality" , "research_area", "supplier", "distributor"].forEach(field_name =>
+        relation_fields.forEach(field_name =>
         {
             if (!record[field_name] || !record[field_name].length)
                 return;
@@ -217,13 +218,58 @@ let mapping_step3 = {
     }
 };
 
+let build_suggest_data = record => {
+    let result = {};
+
+    if (record.bio_object.name)
+    {
+        let id = `protein_${human_radable_id(record.bio_object.name)}`;
+        let protein = {
+            type    : "protein",
+            category: ["antibody"],
+            name    : record.bio_object.name,
+            aliases : record.bio_object.aliases || []
+        };
+
+        let name_alias = record.name.split("(").pop().trim();
+
+        if (name_alias.indexOf(")") !== -1)
+            protein.aliases.push(name_alias.replace(")", "").trim());
+
+        result[id] = protein
+    }
+
+
+    relation_fields.forEach(field_name =>
+    {
+        if (!record[field_name] || !record[field_name].length)
+            return;
+
+        record[field_name].forEach(([,,name,,synonyms]) => {
+            if (!name || !name.trim())
+                return;
+
+            let id = `${field_name}_${human_radable_id(name)}`;
+            result[id] = {
+                type    : field_name,
+                category: ["antibody"],
+                name    : name,
+                aliases : (synonyms || []).map(({name}) => name)
+            };
+        })
+    });
+
+    return result
+};
+
 let convert = (item, crawler_item) =>
 {
     let record = Object.assign({}, item, {crawler_item: crawler_item});
     let result_step1 = utils.mapping_transform(mapping_step1, record);
     let result_step2 = utils.mapping_transform(mapping_step2, result_step1);
-    let result_step3 = utils.mapping_transform(mapping_step3, Object.assign(result_step1, result_step2));
-    let result = Object.assign(result_step1, result_step2, result_step3);
+    let result = Object.assign(result_step1, result_step2);
+
+    let suggest_data = build_suggest_data(result);
 
     delete result.host;
     delete result.reactivity;
@@ -236,7 +282,7 @@ let convert = (item, crawler_item) =>
     delete result.supplier;
     delete result.distributor;
 
-    return result
+    return {converted_item : result, suggest_data}
 };
 
 
