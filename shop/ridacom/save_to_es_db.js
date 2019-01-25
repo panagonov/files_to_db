@@ -2,7 +2,6 @@ let fs       = require("fs");
 let es_db    = require("../../_utils/elasticsearch/db.js");
 let Mongo_db = require("../../_utils/db.js");
 
-
 let collection_name         = "product";
 let suggest_collection_name = "shop_suggest";
 
@@ -48,8 +47,7 @@ let _load_crawler_data = async (items) =>
         res[item._id] = item;
         return res
     }, {});
-
-}
+};
 
 let save_to_db = async(mongo_db, type, site) =>
 {
@@ -87,10 +85,10 @@ let save_to_db = async(mongo_db, type, site) =>
                 not_found.push(id);
                 return;
             }
+
             let {converted_item, suggest_data} = converter.convert(item, crawler_item, custom_data);
             accumulated_suggest_data = Object.assign(accumulated_suggest_data, suggest_data);
             es_bulk.push({"model_title": type, "command_name": "index", "_id": item._id, "document": converted_item})
-
         });
 
         if (es_bulk.length)
@@ -109,7 +107,6 @@ let save_to_db = async(mongo_db, type, site) =>
     fs.writeFileSync(__dirname + "/not_found.json", JSON.stringify(not_found), "utf8")
 };
 
-
 let run = async(mongo_db) =>
 {
     await init();
@@ -126,4 +123,4 @@ let run = async(mongo_db) =>
 
 module.exports = {
     run
-}
+};

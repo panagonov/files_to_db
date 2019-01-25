@@ -11,7 +11,6 @@ let counter      = 0;
 
 let XmlStream       = require('xml-stream');
 
-
 let save_to_db = async(collection_name) =>
 {
     if (!mongo_bulk.length)
