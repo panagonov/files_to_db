@@ -1,12 +1,11 @@
-let semantica = require("../../../../common-components/search-engine-3/domains/genetics/index.js");
-let utils     = require("../../../../_utils/utils.js");
-let Mongo_db = require("../../../../_utils/db.js");
+let semantica    = require("../../../../common-components/search-engine-3/domains/genetics/index.js");
+let utils        = require("../../../../_utils/utils.js");
+let Mongo_db     = require("../../../../_utils/db.js");
+let import_utils = require("../_utils.js");
 
 let uniprot_db;
 
 let relation_fields = ["host", "reactivity", "application", "isotype", "light_chain", "heavy_chain", "clonality" , "research_area", "supplier", "distributor", "conjugate"];
-
-let human_radable_id = str => str.replace(/\W/g, "_").replace(/\s/g, "_").replace(/_+/, "_").replace(/^_/, "").replace(/_$/, "");
 
 let init = async() =>
 {
@@ -84,8 +83,8 @@ let _getPriceModel = (item, crawler_item) =>
 let mapping_step1 = {
     "name"               : "name",
     "oid"                : "oid",
-    "human_readable_id"  : record => human_radable_id(record.name) + "_" + record.oid,
-    "external_links"     : record => [{"key": "abbkine_scientific_co_ltd", "id": record.link}],
+    "human_readable_id"  : record => import_utils.human_readable_id(record.name) + "_" + record.oid,
+    "external_links"     : record => [{"key": "abbkine_scientific_co_ltd", "id": record.oid}],
     "bio_object"         : record => ({
         "type": "protein",
         ...record.bio_object_data &&  record.bio_object_data.name ? {"name": record.bio_object_data.name} : "",
@@ -96,14 +95,14 @@ let mapping_step1 = {
     "supplier"           : record => get_canonical("Abbkine Scientific Co., Ltd.", ":supplier"),
     "distributor"        : record => get_canonical("RIDACOM Ltd.", ":distributor"),
     "host"               : record => get_canonical(record.host || "", [":host", ":reactivity"]),
-    "reactivity"         : record => get_canonical(record.reactivity.join("; "), [":host", ":reactivity"]),
-    "application"        : record => get_canonical(record.application.join("; "), ":application"),
+    "reactivity"         : record => get_canonical((record.reactivity || []).join("; "), [":host", ":reactivity"]),
+    "application"        : record => get_canonical((record.application || []).join("; "), ":application"),
     "isotype"            : record => get_canonical(record.isotype || "", ":isotype"),
     "light_chain"        : record => get_canonical(record.isotype || "", ":light_chain"),
     "heavy_chain"        : record => get_canonical(record.isotype || "", ":heavy_chain"),
     "clonality"          : record => get_canonical(record.clonality || "", ":clonality"),
     "conjugate"          : record => get_canonical(record.conjugate || "", ":conjugate"),
-    "usage"                 : "background",
+    "usage"                 : record =>  record.background && record.background.trim() ? [record.background.replace(/\s+/g, " ").trim()] : null,
     // "research_area"      : record => get_canonical((record.research_area || []).join("; ") || "", ":research_area"),
     // "concentration"      : "concentration",
     // "clone_id"           : "clone_num",
@@ -191,12 +190,12 @@ let build_suggest_data = record => {
 
     if (record.bio_object && record.bio_object.name)
     {
-        let id = `protein_${human_radable_id(record.bio_object.name)}`;
+        let id = `protein_${import_utils.human_readable_id(record.bio_object.name)}`;
         let protein = {
             type    : "protein",
             category: ["antibody"],
             name    : record.bio_object.name,
-            aliases : record.bio_object.aliases || []
+            aliases : record.bio_object.alias ? [record.bio_object.alias] : []
         };
 
         let name_alias = record.name.split("(").pop().trim();
@@ -207,17 +206,16 @@ let build_suggest_data = record => {
         result[id] = protein
     }
 
-
     relation_fields.forEach(field_name =>
     {
         if (!record[field_name] || !record[field_name].length)
             return;
 
-        record[field_name].forEach(([,,name,,synonyms]) => {
+        record[field_name].forEach(([,key,name,,synonyms]) => {
             if (!name || !name.trim())
                 return;
 
-            let id = `${field_name}_${human_radable_id(name)}`;
+            let id = `${field_name}_${key}`;
             result[id] = {
                 type    : field_name,
                 category: ["antibody"],
@@ -233,24 +231,31 @@ let build_suggest_data = record => {
 let convert = (item, crawler_item, custom_data) =>
 {
     let bio_object_data = custom_data[item.accession];
+    try{
 
-    let record = Object.assign({}, item, {crawler_item: crawler_item, bio_object_data : bio_object_data});
-    let result_step1 = utils.mapping_transform(mapping_step1, record);
-    let result_step2 = utils.mapping_transform(mapping_step2, result_step1);
-    let result = Object.assign(result_step1, result_step2);
+        let record = Object.assign({}, item, {crawler_item: crawler_item, bio_object_data : bio_object_data});
+        let result_step1 = utils.mapping_transform(mapping_step1, record);
+        let result_step2 = utils.mapping_transform(mapping_step2, result_step1);
+        let result = Object.assign(result_step1, result_step2);
 
-    let suggest_data = build_suggest_data(result);
+        let suggest_data = build_suggest_data(result);
 
-    relation_fields.forEach(name => delete result[name]);
-
-    return {converted_item : result, suggest_data}
+        relation_fields.forEach(name => delete result[name]);
+        return {converted_item : result, suggest_data}
+    }
+    catch(e)
+    {
+        item;
+        crawler_item
+        debugger
+    }
 };
 
 let load_custom_data = async(mongo_db,crawler_db, result) => {
 
     let ids = result.map(item => item.accession);
     let bio_objects = await uniprot_db.read("uniprot", {body: {_id : {$in : ids}}});
-
+    console.log(`Found ${bio_objects.length}/${ids.length} bio-objects`);
     let hash = bio_objects.reduce((res, item) => {
         res[item._id] = item;
         return res;

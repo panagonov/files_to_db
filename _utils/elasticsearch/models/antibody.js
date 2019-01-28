@@ -88,6 +88,7 @@ exports.schema =
             },
 
             "purification"       : {"type": "string"},
+            "formulation"        : {"type": "string"},
             "concentration"      : {"type": "string"},
             "clone_id"           : {"type": "string"},
             "buffer_form"        : {"type": "string"},
@@ -401,6 +402,7 @@ exports.settings = {
                     "distributor_relations"  : {"type": "keyword"},
                     "supplier_relations"     : {"type": "keyword"},
                     "purification"           : {"type": "keyword"},
+                    "formulation"            : {"type": "keyword"},
                     "concentration"          : {"type": "keyword"},
                     "clone_id"               : {"type": "keyword"},
                     "buffer_form"            : {"type": "keyword"},

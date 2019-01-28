@@ -1,10 +1,8 @@
-let semantica = require("../../../../common-components/search-engine-3/domains/genetics/index.js");
-let utils     = require("../../../../_utils/utils.js");
+let semantica    = require("../../../../common-components/search-engine-3/domains/genetics/index.js");
+let utils        = require("../../../../_utils/utils.js");
+let import_utils = require("../_utils.js");
 
 let relation_fields = ["host", "reactivity", "application", "isotype", "light_chain", "heavy_chain", "clonality" , "research_area", "supplier", "distributor"];
-
-let human_radable_id = str => str.replace(/\W/g, "_").replace(/\s/g, "_").replace(/_+/, "_").replace(/^_/, "").replace(/_$/, "");
-
 
 let get_canonical = (text, type) =>
 {
@@ -110,7 +108,7 @@ let _getPriceModel = (item, crawler_item) =>
 let mapping_step1 = {
     "name"               : "name",
     "oid"                : "oid",
-    "human_readable_id"  : record => human_radable_id(record.name) + "_" + record.oid,
+    "human_readable_id"  : record => import_utils.human_readable_id(record.name) + "_" + record.oid,
     "external_links"     : record => [{"key": "cloud_clone", "id": record.oid}],
     "bio_object"         : record => ({
         "type": "protein",
@@ -209,7 +207,7 @@ let build_suggest_data = record => {
 
     if (record.bio_object.name)
     {
-        let id = `protein_${human_radable_id(record.bio_object.name)}`;
+        let id = `protein_${import_utils.human_readable_id(record.bio_object.name)}`;
         let protein = {
             type    : "protein",
             category: ["antibody"],
@@ -231,11 +229,11 @@ let build_suggest_data = record => {
         if (!record[field_name] || !record[field_name].length)
             return;
 
-        record[field_name].forEach(([,,name,,synonyms]) => {
+        record[field_name].forEach(([,key,name,,synonyms]) => {
             if (!name || !name.trim())
                 return;
 
-            let id = `${field_name}_${human_radable_id(name)}`;
+            let id = `${field_name}_${key}`;
             result[id] = {
                 type    : field_name,
                 category: ["antibody"],
