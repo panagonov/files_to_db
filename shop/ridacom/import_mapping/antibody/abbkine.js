@@ -68,12 +68,15 @@ let _getPriceModel = (item, crawler_item) =>
     };
 
     (item.price || []).forEach(price_item => {
+
+        let size = import_utils.size_parser(price_item.size);
+
         result.variation.push({
             "price" : {
                 "value" : price_item.price || 0,
-                "currency": "usd",
-                "size" : price_item.size
-            }
+                "currency": "usd"
+            },
+            "size" : size
         })
     });
 
@@ -245,8 +248,6 @@ let convert = (item, crawler_item, custom_data) =>
     }
     catch(e)
     {
-        item;
-        crawler_item
         debugger
     }
 };
@@ -264,23 +265,8 @@ let load_custom_data = async(mongo_db,crawler_db, result) => {
     return hash;
 };
 
-
-
 module.exports = {
     convert,
     load_custom_data,
     init
 };
-
-let test = (text) =>
-{
-    let db = semantica.getDb();
-    let res = semantica.analyseSpeech("eng", text);
-    // let parents = semantica.knowledge.getTagParents(db, res[0][1]);
-    console.log(res)
-    debugger
-};
-
-// console.log(test("Loading Control of WB" ))
-
-// console.log(get_canonical("Rat CHO Guinea pig E.coli 293F Mouse Rabbit n/a null", [":host", ":reactivity"]));

@@ -2,7 +2,7 @@ let semantica    = require("../../../../common-components/search-engine-3/domain
 let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../_utils.js");
 
-let relation_fields = ["host", "reactivity", "application", "isotype", "light_chain", "heavy_chain", "clonality" , "research_area", "supplier", "distributor"];
+let relation_fields = ["host", "clonality", "supplier", "distributor"];
 
 let get_canonical = (text, type) =>
 {
@@ -27,42 +27,28 @@ let get_canonical = (text, type) =>
 };
 
 let _getImages = item => {
-    let result = [];
-
-    if(item.package_images && item.package_images.length)
+    if(item.image && item.image.length)
     {
-        item.package_images.forEach(link => result.push({link: link, type: "package"}))
-    }
-    if(item.images && item.images.length)
-    {
-        item.images.forEach(data => {
-            if (typeof data === "string")
-                result.push({link: data});
-            else
-            {
-                result.push({link: data.link, text: data.text})
+        return item.image.map((img_data, index) =>{
+            let img_text = item.img_text instanceof Array ? item.img_text[index] || ""  : index === 0 ? item.img_text || "" : "";
+            return {
+                link: img_data.link.replace("../../", "/"),
+                ...img_data.thumb ? {thumb_link: img_data.thumb.replace("../../", "/")} : "",
+                ...img_text       ? {text: img_text} : ""
             }
         })
     }
-    if(item.certificate && item.certificate.length)
-    {
-        {
-            item.certificate.forEach(link => result.push({link: link, type: "certificate"}))
-        }
-    }
 
-    return result
+    return null
 };
 
 let _getPdf = item =>
 {
-    let result = [];
-
     if(item.pdf)
     {
-        result.push({
-            link: item.pdf.link,
-            ...item.pdf.preview ? {"thumb_link" : item.pdf.preview} : ""
+        return item.pdf.map(item => {
+            item.link = item.link.replace("../../", "/");
+            return item;
         })
     }
 
@@ -72,34 +58,33 @@ let _getPdf = item =>
 let _getPriceModel = (item, crawler_item) =>
 {
     let result = {
-        ...crawler_item.price && crawler_item.price.length ? {"is_multiple" : true} : "",
-        ...item.price.promotion ? {"discount" : {
-                                        "default" : {
-                                            "type" : "percent",
-                                            "value" : item.price.promotion.discountPercentage
-                                        }
-                                    }} : "",
+        ...item.price && item.price.length ? {"is_multiple" : true} : "",
         "variation" :[]
     };
 
     let search_price = 0;
-    if (crawler_item.price) {
-        search_price = crawler_item.price[0];
-    }
-    if (item.price.promotion) {
-        search_price = search_price * item.price.promotion.discountPercentage / 100;
+    if (item.price) {
+        search_price = item.price[0].price;
     }
 
     search_price ? result.search_price = search_price : null;
 
-    (crawler_item.price || []).forEach((price, index )=> {
-        let size = import_utils.size_parser(crawler_item.size[index]);
+    (item.price || []).forEach((price_item, index )=>
+    {
+        let product_id =  `${item.oid}-`;
+        let end_of_id = /^[\d|\.]+/.exec(price_item.size)[0];
+        if (end_of_id === "0.1")
+            end_of_id = "100";
+
+        let size = import_utils.size_parser(price_item.size);
+
         result.variation.push({
             "price" : {
-                "value"   : price || 0,
-                "currency": "usd",
+                "value"   : price_item.price || 0,
+                "currency": "usd"
             },
-            "size"    : size
+            "product_id" : product_id + end_of_id,
+            "size"       : size
         })
     });
 
@@ -110,56 +95,37 @@ let mapping_step1 = {
     "name"               : "name",
     "oid"                : "oid",
     "human_readable_id"  : record => import_utils.human_readable_id(record.name) + "_" + record.oid,
-    "external_links"     : record => [{"key": "cloud_clone", "id": record.oid}],
+    "external_links"     : record => [{"key": "genomeme", "id": record.oid}],
     "bio_object"         : record => ({
         "type": "protein",
-        ...record.item_name ? {"name": record.item_name} : "",
-        ...record.aliases ? {"aliases": record.aliases} : ""
+        ...record.name ? {"name": record.name} : ""
     }),
     "price_model"        : record => _getPriceModel(record, record.crawler_item),
-    "description"        : "description",
-    "supplier"           : record => get_canonical("Cloud-Clone Corp.", ":supplier"),
+    "description"        : "crawler_item.description",
+    "supplier"           : record => get_canonical("GenomeMe", ":supplier"),
     "distributor"        : record => get_canonical("RIDACOM Ltd.", ":distributor"),
-    "host"               : record => get_canonical(record.host || "", [":host", ":reactivity"]),
-    "reactivity"         : record => get_canonical(record.reactivity.join("; "), [":host", ":reactivity"]),
-    "application"        : record => get_canonical(record.application.join("; "), ":application"),
-    "isotype"            : record => get_canonical(record.isotype || "", ":isotype"),
-    "light_chain"        : record => get_canonical(record.isotype || "", ":light_chain"),
-    "heavy_chain"        : record => get_canonical(record.isotype || "", ":heavy_chain"),
-    "clonality"          : record => get_canonical(record.source || "", ":clonality"),
-    "research_area"      : record => get_canonical((record.research_area || []).join("; ") || "", ":research_area"),
-    "concentration"      : "concentration",
-    "clone_id"           : "clone_num",
-    "usage"              : "usage",
-    "shelf_life"         : "shelf_life",
-    "storage_conditions" : "storage_conditions",
-    "delivery_conditions": "delivery_conditions",
-    "buffer_form"        : "buffer_form",
-    "immunogen"          : "immunogen",
+    "host"               : record => get_canonical(record.crawler_item.host || "", [":host", ":reactivity"]),
+    "clonality"          : record => get_canonical(record.crawler_item.host || "", ":clonality"),
+
     "images"             : record =>  _getImages(record.crawler_item),
     "pdf"                : record =>  _getPdf(record.crawler_item),
     "supplier_specific"  : record => ({
-        "price" : record.supplier_specific.price,
-        "link"  : record.link
+        link : record.crawler_item.url,
+        ...record.crawler_item ? {"positive_control" : record.crawler_item.positive_control} : "",
+        ...record.crawler_item ? {"dilution_range"  : record.crawler_item.range} : ""
     })
 };
 
 let mapping_step2 = {
     "host_relations"          : record => record.host && record.host.length? record.host.map(([,key]) => key) : null,
-    "reactivity_relations"    : record => record.reactivity && record.reactivity.length? record.reactivity.map(([,key]) => key) : null,
-    "application_relations"   : record => record.application && record.application.length? record.application.map(([,key]) => key) : null,
-    "isotype_relations"       : record => record.isotype && record.isotype.length? record.isotype.map(([,key]) => key) : null,
-    "light_chain_relations"   : record => record.light_chain && record.light_chain.length ? record.light_chain.map(([,key]) => key) : null,
-    "heavy_chain_relations"   : record => record.heavy_chain && record.heavy_chain.length ? record.heavy_chain.map(([,key]) => key) : null,
     "clonality_relations"     : record => record.clonality && record.clonality.length ? record.clonality.map(([,key]) => key) : null,
-    "research_area_relations" : record => record.research_area && record.research_area.length ? record.research_area.map(([,key]) => key) : null,
     "supplier_relations"      : record => record.supplier && record.supplier.length ? record.supplier.map(([,key]) => key) : null,
     "distributor_relations"   : record => record.distributor && record.distributor.length ? record.distributor.map(([,key]) => key) : null,
     "ui"                      : record =>  relation_fields.reduce((res, field_name) => {
-                                        if (record[field_name] && record[field_name].length)
-                                            res[field_name] = record[field_name].map(([,,name]) => name);
-                                        return res
-                                    }, {}),
+        if (record[field_name] && record[field_name].length)
+            res[field_name] = record[field_name].map(([,,name]) => name);
+        return res
+    }, {}),
 
     "search_data": record =>
     {
@@ -249,7 +215,7 @@ let build_suggest_data = record => {
 
 let convert = (item, crawler_item) =>
 {
-    let record = Object.assign({}, item, {crawler_item: crawler_item});
+    let record = Object.assign({}, item, {crawler_item: crawler_item || {}});
     let result_step1 = utils.mapping_transform(mapping_step1, record);
     let result_step2 = utils.mapping_transform(mapping_step2, result_step1);
     let result = Object.assign(result_step1, result_step2);
@@ -261,21 +227,6 @@ let convert = (item, crawler_item) =>
     return {converted_item : result, suggest_data}
 };
 
-
-
 module.exports = {
     convert
 };
-
-let test = (text) =>
-{
-    let db = semantica.getDb();
-    let res = semantica.analyseSpeech("eng", text);
-    // let parents = semantica.knowledge.getTagParents(db, res[0][1]);
-    console.log(res)
-    debugger
-};
-
-// console.log(test("Loading Control of WB" ))
-
-// console.log(get_canonical("Rat CHO Guinea pig E.coli 293F Mouse Rabbit n/a null", [":host", ":reactivity"]));

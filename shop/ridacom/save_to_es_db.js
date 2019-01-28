@@ -7,8 +7,9 @@ let suggest_collection_name = "shop_suggest";
 
 let mapping = {
     "antibody" : {
-        "cloud_clone" : {converter: require("./import_mapping/antibody/cloud_clone.js"), version: 2},
-        "abbkine"     : {converter: require("./import_mapping/antibody/abbkine.js"), version: 3}
+        "cloud_clone" : {converter: require("./import_mapping/antibody/cloud_clone.js"),    version: 1},
+        "abbkine"     : {converter: require("./import_mapping/antibody/abbkine.js"),        version: 1},
+        "genome_me"   : {converter: require("./import_mapping/antibody/genome_me.js"),      version: 1}
     }
 };
 

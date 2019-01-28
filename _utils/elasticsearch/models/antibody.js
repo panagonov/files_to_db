@@ -161,10 +161,19 @@ exports.schema =
                                     "properties": {
                                         "value"   : {"type": "number"},
                                         "currency": {"type": "string"}
-                                    }
+                                    },
+                                    "additionalProperties": false
                                 },
                                 "product_id": {"type": "string"},
-                                "size"      : {"type": "string"}
+                                "size"      : {
+                                    "type"      : "object",
+                                    "properties": {
+                                        "value"   : {"type": "number"},
+                                        "dimension": {"type": "string"},
+                                        "more_data": {"type": "string"}
+                                    },
+                                    "additionalProperties": false
+                                }
                             }
                         }
                     }
@@ -464,7 +473,14 @@ exports.settings = {
                                         }
                                     },
                                     "product_id": {"type": "keyword"},
-                                    "size"      : {"type": "keyword"}
+                                    "size"      : {
+                                        "type"      : "object",
+                                        "properties": {
+                                            "value"   : {"type": "float"},
+                                            "dimension": {"type": "keyword"},
+                                            "more_data": {"type": "keyword"}
+                                        }
+                                    }
                                 }
                             }
                         }
