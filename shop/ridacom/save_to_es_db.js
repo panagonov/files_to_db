@@ -12,7 +12,7 @@ let mapping = {
         "genome_me"   : {converter: require("./save_transformers/antibody/genome_me.js"),      version: 1}
     },
     "elisa_kit" : {
-        "cloud_clone" : {converter: require("./save_transformers/elisa_kit/cloud_clone.js"),    version: 2}
+        "cloud_clone" : {converter: require("./save_transformers/elisa_kit/cloud_clone.js"),    version: 1}
     }
 };
 
