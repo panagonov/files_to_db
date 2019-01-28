@@ -1,11 +1,11 @@
-let stopwords          = require("./stopwords.en.json");
+let stopwords = require("./stopwords.en.json");
 let char_filter        = require("./_analysis_resource/char_filter.json");
 let analysis_filters   = require("./_analysis_resource/filters.json");
 let analysis_analyzers = require("./_analysis_resource/analyzers.json");
 
 exports.schema =
     {
-        "title"     : "antibody",
+        "title"     : "elisa_kit",
         "type"      : "object",
         "properties": {
 
@@ -45,31 +45,11 @@ exports.schema =
                     }
                 }
             },
-            "host_relations"              : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
             "reactivity_relations"        : {
                 "type" : "array",
                 "items": {"type": "string"}
             },
             "application_relations"       : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
-            "isotype_relations"           : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
-            "light_chain_relations"       : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
-            "heavy_chain_relations"       : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
-            "clonality_relations"       : {
                 "type" : "array",
                 "items": {"type": "string"}
             },
@@ -85,24 +65,21 @@ exports.schema =
                 "type" : "array",
                 "items": {"type": "string"}
             },
-            "conjugate_relations"       : {
+            "test_method_relations"       : {
                 "type" : "array",
                 "items": {"type": "string"}
             },
-
-            "purification"       : {"type": "string"},
-            "formulation"        : {"type": "string"},
-            "concentration"      : {"type": "string"},
-            "clone_id"           : {"type": "string"},
-            "buffer_form"        : {"type": "string"},
-            "shelf_life"         : {"type": "string"},
-            "storage_conditions" : {"type": "string"},
-            "delivery_conditions": {"type": "string"},
-            "immunogen"          : {"type": "string"},
             "research_area"     : {
                 "type" : "array",
                 "items": {"type": "string"}
             },
+            "shelf_life"         : {"type": "string"},
+            "storage_conditions" : {"type": "string"},
+            "delivery_conditions": {"type": "string"},
+            "sensitivity"        : {"type": "string"},
+            "sample_type"        : {"type": "string"},
+            "assay_length"       : {"type": "string"},
+
             "supplier_specific" : {
                 "type": "object",
                 "additionalProperties": true
@@ -132,6 +109,22 @@ exports.schema =
                 }
             },
             "usage"             : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "specificity"             : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "precision"             : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "stability"             : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "procedure"             : {
                 "type" : "array",
                 "items": {"type": "string"}
             },
@@ -193,8 +186,7 @@ exports.schema =
                 }
             },
             "ui"                : {
-                "host"       : {"type": "string"},
-                "reactivity" : {
+                "reactivity": {
                     "type" : "array",
                     "items": {"type": "string"}
                 },
@@ -202,27 +194,11 @@ exports.schema =
                     "type" : "array",
                     "items": {"type": "string"}
                 },
-                "isotype"    : {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                },
-                "light_chain": {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                },
-                "heavy_chain": {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                },
-                "clonality": {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                },
                 "research_area": {
                     "type" : "array",
                     "items": {"type": "string"}
                 },
-                "conjugate": {
+                "test_method": {
                     "type" : "array",
                     "items": {"type": "string"}
                 },
@@ -241,11 +217,11 @@ exports.schema =
     };
 
 exports.settings = {
-    "index"   : "shop-product",
-    "doc_type": "antibody",
+    "index"   : "shop-elisa_kit",
+    "doc_type": "elisa_kit",
     "mapping" : {
         "aliases" : {
-            "shop-product": {}
+            "shop-elisa_kit": {}
         },
         "settings": {
             "analysis": {
@@ -262,7 +238,7 @@ exports.settings = {
             }
         },
         "mappings": {
-            "antibody": {
+            "elisa_kit": {
                 "properties": {
                     "name"              : {
                         "type"  : "keyword",
@@ -312,14 +288,9 @@ exports.settings = {
                     },
                     "oid"                    : {"type": "keyword"},
                     "human_readable_id"      : {"type": "keyword"},
-                    "host_relations"         : {"type": "keyword"},
                     "reactivity_relations"   : {"type": "keyword"},
                     "application_relations"  : {"type": "keyword"},
-                    "isotype_relations"      : {"type": "keyword"},
-                    "light_chain_relations"  : {"type": "keyword"},
-                    "heavy_chain_relations"  : {"type": "keyword"},
-                    "conjugate_relations"    : {"type": "keyword"},
-                    "clonality_relations"    : {"type": "keyword"},
+                    "test_method_relations"  : {"type": "keyword"},
                     "research_area_relations": {"type": "keyword"},
                     "distributor_relations"  : {"type": "keyword"},
                     "supplier_relations"     : {"type": "keyword"},
@@ -337,6 +308,13 @@ exports.settings = {
                     "shelf_life"             : {"type": "keyword"},
                     "storage_conditions"     : {"type": "keyword"},
                     "delivery_conditions"    : {"type": "keyword"},
+                    "sensitivity"            : {"type": "keyword"},
+                    "sample_type"            : {"type": "keyword"},
+                    "assay_length"           : {"type": "keyword"},
+                    "specificity"            : {"type": "keyword"},
+                    "precision"              : {"type": "keyword"},
+                    "stability"              : {"type": "keyword"},
+                    "procedure"              : {"type": "keyword"},
                     "pdf"               : {
 
                         "type"      : "object",
@@ -421,15 +399,10 @@ exports.settings = {
                     "ui"        : {
                         "type": "object",
                         "properties" : {
-                            "host"         : {"type": "keyword"},
                             "reactivity"   : {"type": "keyword"},
                             "application"  : {"type": "keyword"},
-                            "isotype"      : {"type": "keyword"},
-                            "light_chain"  : {"type": "keyword"},
-                            "heavy_chain"  : {"type": "keyword"},
-                            "clonality"    : {"type": "keyword"},
                             "research_area": {"type": "keyword"},
-                            "conjugate"    : {"type": "keyword"},
+                            "test_method"  : {"type": "keyword"},
                             "supplier"     : {"type": "keyword"},
                             "distributor"  : {"type": "keyword"}
                         }

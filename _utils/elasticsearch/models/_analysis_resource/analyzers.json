@@ -22,5 +22,11 @@
         "char_filter": ["my_char_filter"],
         "tokenizer": "whitespace",
         "filter": [ "lowercase" ]
+    },
+    "syn_analyzer"        : {
+        "type"       : "custom",
+        "char_filter": ["my_char_filter"],
+        "tokenizer"  : "whitespace",
+        "filter"     : ["lowercase", "edge_filter", "stop"]
     }
 }
