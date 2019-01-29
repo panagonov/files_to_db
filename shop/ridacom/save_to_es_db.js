@@ -8,12 +8,13 @@ let suggest_collection_name = "shop_suggest";
 
 let mapping = {
     "antibody" : {
-        "cloud_clone" : {converter: require("./save_transformers/antibody/cloud_clone.js"),    version: 1},
-        "abbkine"     : {converter: require("./save_transformers/antibody/abbkine.js"),        version: 1},
-        "genome_me"   : {converter: require("./save_transformers/antibody/genome_me.js"),      version: 1}
+        "cloud_clone" : {converter: require("./save_transformers/antibody/cloud_clone.js"),     version: 1},
+        "abbkine"     : {converter: require("./save_transformers/antibody/abbkine.js"),         version: 1},
+        "genome_me"   : {converter: require("./save_transformers/antibody/genome_me.js"),       version: 1}
     },
     "elisa_kit" : {
-        "cloud_clone" : {converter: require("./save_transformers/elisa_kit/cloud_clone.js"),    version: 1}
+        "cloud_clone" : {converter: require("./save_transformers/elisa_kit/cloud_clone.js"),    version: 1},
+        "abbkine"     : {converter: require("./save_transformers/elisa_kit/abbkine.js"),        version: 1}
     }
 };
 
@@ -47,7 +48,7 @@ let _save_suggest_data = async (suggest_data) =>
         end_index = start_index + size;
         let ids = all_ids.slice(start_index, end_index);
 
-        let db_data = await es_db.read_unlimited(suggest_collection_name, {body: {"query" : {"terms" : {"_id" : ids}}, "_source" : ["category"]}, size: ids.length,});
+        let db_data = await es_db.read_unlimited(suggest_collection_name, {body: {"query" : {"terms" : {"_id" : ids}}, "_source" : ["category"]}, size: ids.length});
         db_data.data.forEach(item => suggest_category_hash[item._id] = item.category);
         page++;
     }

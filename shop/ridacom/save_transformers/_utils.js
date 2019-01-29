@@ -23,6 +23,12 @@ let get_canonical = (text, type) =>
     let atoms = semantica.analyseSpeech("eng", text);
 
     atoms = atoms
+    .reduce((res, atom) => {
+        if (!res.some(item => item[1] === atom[1]))
+            res.push(atom);
+
+        return res;
+    }, [])
     .filter(([atom_type]) => type.indexOf(atom_type) !== -1)
     .map(atom => {
         let synonyms = semantica.knowledge.findTagsByCanonical(db, atom[1]);

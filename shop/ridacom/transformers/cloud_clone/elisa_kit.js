@@ -65,7 +65,12 @@ let mapping = {
         }).filter(item => item)
     },
     "sensitivity"      : record => record["Sensitivity"] ? record["Sensitivity"].trim() : null,
-    "sample_type"      : "Sample type",
+    "sample_type"      : record =>  {
+            if (!record["Sample type"] || record["Sample type"] === "Null")
+                return null;
+            return record["Sample type"].replace(/\n|\t|\r/g, " ").replace(/\s+/, " ").split(",").map(item => item.trim().replace(/\.$/, ""))
+    },
+
     "link"             : "Web links",
     "pdf"              : record => record["Manual Links"] ? ({link: record["Manual Links"]}) : null,
     "images"           : record => record["OD Images"] ? [record["OD Images"]] : null,

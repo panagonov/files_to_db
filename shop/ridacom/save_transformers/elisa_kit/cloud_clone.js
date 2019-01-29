@@ -113,7 +113,7 @@ let mapping_step1 = {
     }),
 
     "sensitivity"       : "sensitivity",  //str
-    "sample_type"       : "sample_type",  //str
+    "sample_type"       : "sample_type",  //arr
     "assay_length"      : "assay_length",  //str
     "specificity"       : "specificity",  //arr
     "precision"         : "precision",  //arr

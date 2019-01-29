@@ -59,16 +59,24 @@ let _getPriceModel = (item, crawler_item) =>
     return result;
 };
 
-let mapping_step1 = {
-    "name"               : "name",
-    "oid"                : "oid",
-    "human_readable_id"  : record => import_utils.human_readable_id(record.name) + "_" + record.oid,
-    "external_links"     : record => [{"key": "abbkine_scientific_co_ltd", "id": record.oid}],
-    "bio_object"         : record => ({
+let _get_bio_object = record =>
+{
+    if (!record.bio_object_data)
+        return null;
+
+    return {
         "type": "protein",
         ...record.bio_object_data &&  record.bio_object_data.name ? {"name": record.bio_object_data.name} : "",
         ...record.bio_object_data ? {"aliases": [record.bio_object_data._id, record.bio_object_data.alias]} : ""
-    }),
+    }
+};
+
+let mapping_step1 = {
+    "name"                  : "name",
+    "oid"                   : "oid",
+    "human_readable_id"     : record => import_utils.human_readable_id(record.name) + "_" + record.oid,
+    "external_links"        : record => [{"key": "abbkine_scientific_co_ltd", "id": record.oid}],
+    "bio_object"            : record => _get_bio_object(record),
     "price_model"           : record => _getPriceModel(record, record.crawler_item),
     "description"           : "description",
     "supplier"              : record => import_utils.get_canonical("Abbkine Scientific Co., Ltd.", ":supplier"),

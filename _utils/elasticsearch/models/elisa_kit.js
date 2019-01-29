@@ -73,11 +73,19 @@ exports.schema =
                 "type" : "array",
                 "items": {"type": "string"}
             },
+            "sample_type"     : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "kit_components"     : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "formulation"        : {"type": "string"},
             "shelf_life"         : {"type": "string"},
             "storage_conditions" : {"type": "string"},
             "delivery_conditions": {"type": "string"},
             "sensitivity"        : {"type": "string"},
-            "sample_type"        : {"type": "string"},
             "assay_length"       : {"type": "string"},
 
             "supplier_specific" : {
@@ -294,6 +302,7 @@ exports.settings = {
                     "research_area_relations": {"type": "keyword"},
                     "distributor_relations"  : {"type": "keyword"},
                     "supplier_relations"     : {"type": "keyword"},
+                    "kit_components"         : {"type": "keyword"},
                     "purification"           : {"type": "keyword"},
                     "formulation"            : {"type": "keyword"},
                     "concentration"          : {"type": "keyword"},

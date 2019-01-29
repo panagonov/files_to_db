@@ -15,15 +15,15 @@ let collection_name = "ridacom";
 
 let run = async(mongo_db) =>
 {
-    // await file_importer.run(mongo_db, collection_name, "cloud_clone");
-    // await file_importer.run(mongo_db, collection_name, "abbkine");
+    await file_importer.run(mongo_db, collection_name, "cloud_clone");
+    await file_importer.run(mongo_db, collection_name, "abbkine");
     // await file_importer.run(mongo_db, collection_name, "capp");
     // await file_importer.run(mongo_db, collection_name, "genome_me");
 
     // await aggregate_data(mongo_db, "cloud_clone");
     // await aggregate_data(mongo_db, "abbkine");
 
-    await save_to_es_db.run(mongo_db);
+    // await save_to_es_db.run(mongo_db);
 };
 
 let clean = async(mongo_db) =>

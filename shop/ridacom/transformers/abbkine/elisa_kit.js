@@ -4,8 +4,8 @@ let mapping = {
     "_id"              : (record) => `PRODUCT_SOURCE:[ABBKINE]_SUPPLIER:[RIDACOM]_ID:[${record["Catalog no"] || ""}]`,
     "oid"              : "Catalog no",
     "tid"              : result => "ridacom",
-    "src"              : result => "assay_kit",
-    "type"             : result => "antibody",
+    "src"              : result => "abbkine",
+    "type"             : result => "elisa_kit",
     "name"             : "product name",
     "host"             : record => {
         if (!record["Host"])
@@ -118,7 +118,7 @@ let mapping = {
         if (!record["Sample type"] || record["Sample type"] === "Null")
             return null;
 
-        return record["Sample type"].replace(/\n|\t|\r/g, " ").replace(/\s+/, " ").trim()
+        return record["Sample type"].replace(/\n|\t|\r/g, " ").replace(/\s+/, " ").trim().split("#")
     },
     "assay_type" : record => {
         if (!record["Assay type"] || record["Assay type"] === "Null")
