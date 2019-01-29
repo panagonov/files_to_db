@@ -8,12 +8,12 @@ let suggest_collection_name = "shop_suggest";
 
 let mapping = {
     "antibody" : {
-        "cloud_clone" : {converter: require("./save_transformers/antibody/cloud_clone.js"),    version: 3},
-        "abbkine"     : {converter: require("./save_transformers/antibody/abbkine.js"),        version: 2},
-        "genome_me"   : {converter: require("./save_transformers/antibody/genome_me.js"),      version: 2}
+        "cloud_clone" : {converter: require("./save_transformers/antibody/cloud_clone.js"),    version: 1},
+        "abbkine"     : {converter: require("./save_transformers/antibody/abbkine.js"),        version: 1},
+        "genome_me"   : {converter: require("./save_transformers/antibody/genome_me.js"),      version: 1}
     },
     "elisa_kit" : {
-        "cloud_clone" : {converter: require("./save_transformers/elisa_kit/cloud_clone.js"),    version: 2}
+        "cloud_clone" : {converter: require("./save_transformers/elisa_kit/cloud_clone.js"),    version: 1}
     }
 };
 
@@ -59,7 +59,7 @@ let _save_suggest_data = async (suggest_data) =>
 
         let document = suggest_data[id];
         if (item_in_hash) {
-            document.category = utils.uniq(document.category.concat(item_in_hash.category))
+            document.category = utils.uniq(document.category.concat(item_in_hash));
         }
 
         return {model_title: suggest_collection_name, command_name: command, "_id": id, "document":document}});
