@@ -1,30 +1,7 @@
-let semantica    = require("../../../../common-components/search-engine-3/domains/genetics/index.js");
 let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../_utils.js");
 
 let relation_fields = ["reactivity", "application", "test_method", "research_area", "supplier", "distributor"];
-
-let get_canonical = (text, type) =>
-{
-    if (typeof type === "string")
-        type = [type];
-
-    let db = semantica.getDb();
-    let atoms = semantica.analyseSpeech("eng", text);
-
-    atoms = atoms
-    .filter(([atom_type]) => type.indexOf(atom_type) !== -1)
-    .map(atom => {
-        let synonyms = semantica.knowledge.findTagsByCanonical(db, atom[1]);
-        if (synonyms && synonyms.length)
-        {
-            atom.push(synonyms);
-        }
-
-        return atom
-    });
-    return atoms
-};
 
 let _getImages = item => {
     let result = [];
@@ -119,12 +96,12 @@ let mapping_step1 = {
         ...record.aliases ? {"aliases": record.aliases} : ""
     }),
     "price_model"        : record => _getPriceModel(record, record.crawler_item),
-    "supplier"           : record => get_canonical("Cloud-Clone Corp.", ":supplier"),
-    "distributor"        : record => get_canonical("RIDACOM Ltd.", ":distributor"),
-    "reactivity"         : record => get_canonical(record.reactivity.join("; "), [":host", ":reactivity"]),
-    "application"        : record => get_canonical((record.application || []).join("; "), ":application"),
-    "research_area"      : record => get_canonical((record.research_area || []).join("; ") || "", ":research_area"),
-    "test_method"        : record => get_canonical(record.method, ":test_method"),
+    "supplier"           : record => import_utils.get_canonical("Cloud-Clone Corp.", ":supplier"),
+    "distributor"        : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
+    "reactivity"         : record => import_utils.get_canonical(record.reactivity.join("; "), [":host", ":reactivity"]),
+    "application"        : record => import_utils.get_canonical((record.application || []).join("; "), ":application"),
+    "research_area"      : record => import_utils.get_canonical((record.research_area || []).join("; ") || "", ":research_area"),
+    "test_method"        : record => import_utils.get_canonical(record.method, ":test_method"),
     "shelf_life"         : "shelf_life",
     "usage"              : record => record["test_principle"] ? [record["test_principle"]] : null,
     "storage_conditions" : "storage_conditions",
@@ -199,50 +176,6 @@ let mapping_step2 = {
     }
 };
 
-let build_suggest_data = record => {
-    let result = {};
-
-    if (record.bio_object.name)
-    {
-        let id = `protein_${import_utils.human_readable_id(record.bio_object.name)}`;
-        let protein = {
-            type    : "protein",
-            category: ["antibody"],
-            name    : record.bio_object.name,
-            aliases : record.bio_object.aliases || []
-        };
-
-        let name_alias = record.name.split("(").pop().trim();
-
-        if (name_alias.indexOf(")") !== -1)
-            protein.aliases.push(name_alias.replace(")", "").trim());
-
-        result[id] = protein
-    }
-
-
-    relation_fields.forEach(field_name =>
-    {
-        if (!record[field_name] || !record[field_name].length)
-            return;
-
-        record[field_name].forEach(([,key,name,,synonyms]) => {
-            if (!name || !name.trim())
-                return;
-
-            let id = `${field_name}_${key}`;
-            result[id] = {
-                type    : field_name,
-                category: ["antibody"],
-                name    : name,
-                aliases : (synonyms || []).map(({name}) => name)
-            };
-        })
-    });
-
-    return result
-};
-
 let convert = (item, crawler_item) =>
 {
     let record = Object.assign({}, item, {crawler_item: crawler_item});
@@ -250,7 +183,7 @@ let convert = (item, crawler_item) =>
     let result_step2 = utils.mapping_transform(mapping_step2, result_step1);
     let result = Object.assign(result_step1, result_step2);
 
-    let suggest_data = build_suggest_data(result);
+    let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "elisa_kit");
 
     relation_fields.forEach(name => delete result[name]);
 
@@ -261,4 +194,4 @@ module.exports = {
     convert
 };
 
-// console.log(get_canonical("Competitive Inhibition", [":test_method"]));
+// console.log(import_utils.get_canonical("Competitive Inhibition", [":test_method"]));

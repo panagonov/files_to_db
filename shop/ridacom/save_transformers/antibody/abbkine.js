@@ -1,4 +1,3 @@
-let semantica    = require("../../../../common-components/search-engine-3/domains/genetics/index.js");
 let utils        = require("../../../../_utils/utils.js");
 let Mongo_db     = require("../../../../_utils/db.js");
 let import_utils = require("../_utils.js");
@@ -11,29 +10,6 @@ let init = async() =>
 {
     uniprot_db = new Mongo_db();
     await uniprot_db.init({database: "uniprot"});
-}
-
-
-let get_canonical = (text, type) =>
-{
-    if (typeof type === "string")
-        type = [type];
-
-    let db = semantica.getDb();
-    let atoms = semantica.analyseSpeech("eng", text);
-
-    atoms = atoms
-    .filter(([atom_type]) => type.indexOf(atom_type) !== -1)
-    .map(atom => {
-        let synonyms = semantica.knowledge.findTagsByCanonical(db, atom[1]);
-        if (synonyms && synonyms.length)
-        {
-            atom.push(synonyms);
-        }
-
-        return atom
-    });
-    return atoms
 };
 
 let _getImages = item => {
@@ -93,32 +69,28 @@ let mapping_step1 = {
         ...record.bio_object_data &&  record.bio_object_data.name ? {"name": record.bio_object_data.name} : "",
         ...record.bio_object_data ? {"aliases": [record.bio_object_data._id, record.bio_object_data.alias]} : ""
     }),
-    "price_model"        : record => _getPriceModel(record, record.crawler_item),
-    "description"        : "description",
-    "supplier"           : record => get_canonical("Abbkine Scientific Co., Ltd.", ":supplier"),
-    "distributor"        : record => get_canonical("RIDACOM Ltd.", ":distributor"),
-    "host"               : record => get_canonical(record.host || "", [":host", ":reactivity"]),
-    "reactivity"         : record => get_canonical((record.reactivity || []).join("; "), [":host", ":reactivity"]),
-    "application"        : record => get_canonical((record.application || []).join("; "), ":application"),
-    "isotype"            : record => get_canonical(record.isotype || "", ":isotype"),
-    "light_chain"        : record => get_canonical(record.isotype || "", ":light_chain"),
-    "heavy_chain"        : record => get_canonical(record.isotype || "", ":heavy_chain"),
-    "clonality"          : record => get_canonical(record.clonality || "", ":clonality"),
-    "conjugate"          : record => get_canonical(record.conjugate || "", ":conjugate"),
+    "price_model"           : record => _getPriceModel(record, record.crawler_item),
+    "description"           : "description",
+    "supplier"              : record => import_utils.get_canonical("Abbkine Scientific Co., Ltd.", ":supplier"),
+    "distributor"           : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
+    "host"                  : record => import_utils.get_canonical(record.host || "", [":host", ":reactivity"]),
+    "reactivity"            : record => import_utils.get_canonical((record.reactivity || []).join("; "), [":host", ":reactivity"]),
+    "application"           : record => import_utils.get_canonical((record.application || []).join("; "), ":application"),
+    "isotype"               : record => import_utils.get_canonical(record.isotype || "", ":isotype"),
+    "light_chain"           : record => import_utils.get_canonical(record.isotype || "", ":light_chain"),
+    "heavy_chain"           : record => import_utils.get_canonical(record.isotype || "", ":heavy_chain"),
+    "clonality"             : record => import_utils.get_canonical(record.clonality || "", ":clonality"),
+    "conjugate"             : record => import_utils.get_canonical(record.conjugate || "", ":conjugate"),
     "usage"                 : record =>  record.background && record.background.trim() ? [record.background.replace(/\s+/g, " ").trim()] : null,
-    // "research_area"      : record => get_canonical((record.research_area || []).join("; ") || "", ":research_area"),
-    // "concentration"      : "concentration",
-    // "clone_id"           : "clone_num",
-    // "shelf_life"         : "shelf_life",
     "storage_conditions"    : "storage_instructions",
     "delivery_conditions"   : "shipping",
     "buffer_form"           : "storage_buffer",
     "immunogen"             : "immunogen",
     "purification"          : "purification",
     "formulation"           : "formulation",
-    "images"             : record =>  _getImages(record.crawler_item),
-    "pdf"                : record =>  _getPdf(record.crawler_item),
-    "supplier_specific"  : record => ({
+    "images"                : record =>  _getImages(record.crawler_item),
+    "pdf"                   : record =>  _getPdf(record.crawler_item),
+    "supplier_specific"     : record => ({
         "link"          : record.link,
         "precautions"   : record.precautions,
         "alternative"   : record.alternative,
@@ -127,6 +99,10 @@ let mapping_step1 = {
         "category"      : record.category,
         "gene_id"       : record.gene_id
     })
+    // "research_area"      : record => import_utils.get_canonical((record.research_area || []).join("; ") || "", ":research_area"),
+    // "concentration"      : "concentration",
+    // "clone_id"           : "clone_num",
+    // "shelf_life"         : "shelf_life",
 };
 
 let mapping_step2 = {
@@ -188,49 +164,6 @@ let mapping_step2 = {
     }
 };
 
-let build_suggest_data = record => {
-    let result = {};
-
-    if (record.bio_object && record.bio_object.name)
-    {
-        let id = `protein_${import_utils.human_readable_id(record.bio_object.name)}`;
-        let protein = {
-            type    : "protein",
-            category: ["antibody"],
-            name    : record.bio_object.name,
-            aliases : record.bio_object.alias ? [record.bio_object.alias] : []
-        };
-
-        let name_alias = record.name.split("(").pop().trim();
-
-        if (name_alias.indexOf(")") !== -1)
-            protein.aliases.push(name_alias.replace(")", "").trim());
-
-        result[id] = protein
-    }
-
-    relation_fields.forEach(field_name =>
-    {
-        if (!record[field_name] || !record[field_name].length)
-            return;
-
-        record[field_name].forEach(([,key,name,,synonyms]) => {
-            if (!name || !name.trim())
-                return;
-
-            let id = `${field_name}_${key}`;
-            result[id] = {
-                type    : field_name,
-                category: ["antibody"],
-                name    : name,
-                aliases : (synonyms || []).map(({name}) => name)
-            };
-        })
-    });
-
-    return result
-};
-
 let convert = (item, crawler_item, custom_data) =>
 {
     let bio_object_data = custom_data[item.accession];
@@ -241,7 +174,7 @@ let convert = (item, crawler_item, custom_data) =>
         let result_step2 = utils.mapping_transform(mapping_step2, result_step1);
         let result = Object.assign(result_step1, result_step2);
 
-        let suggest_data = build_suggest_data(result);
+        let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "antibody");
 
         relation_fields.forEach(name => delete result[name]);
         return {converted_item : result, suggest_data}

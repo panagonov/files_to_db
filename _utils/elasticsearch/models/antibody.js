@@ -241,11 +241,11 @@ exports.schema =
     };
 
 exports.settings = {
-    "index"   : "shop-product",
+    "index"   : "shop-antibody",
     "doc_type": "antibody",
     "mapping" : {
         "aliases" : {
-            "shop-product": {}
+            "shop-antibody": {}
         },
         "settings": {
             "analysis": {

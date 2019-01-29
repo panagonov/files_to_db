@@ -26,6 +26,12 @@ module.exports = {
                     "type": "string"
                 }
             },
+            "synonyms": {
+                "type" : "array",
+                "items": {
+                    "type": "string"
+                }
+            },
             "type"   : {
                 "type": "string"
             }
@@ -53,19 +59,20 @@ module.exports = {
                         "name"   : {
                             "type"  : "keyword",
                             "fields": {
-                                "raw"    : {
-                                    "type"    : "text",
-                                    "analyzer": "term_lowercase"
-                                },
                                 "main"   : {
                                     "type"           : "text",
                                     "analyzer"       : "edge_phrase_analyzer",
                                     "search_analyzer": "term_lowercase"
-                                },
-                                "suggest": {
+                                }
+                            }
+                        },
+                        "synonyms"   : {
+                            "type"  : "keyword",
+                            "fields": {
+                                "main"   : {
                                     "type"           : "text",
-                                    "analyzer"       : "edge_analyzer",
-                                    "search_analyzer": "lowercase_whitespace"
+                                    "analyzer"       : "edge_phrase_analyzer",
+                                    "search_analyzer": "term_lowercase"
                                 }
                             }
                         },
@@ -75,11 +82,6 @@ module.exports = {
                                 "raw" : {
                                     "type"    : "text",
                                     "analyzer": "term_lowercase"
-                                },
-                                "main": {
-                                    "type"           : "text",
-                                    "analyzer"       : "edge_phrase_analyzer",
-                                    "search_analyzer": "term_lowercase"
                                 }
                             }
                         },

@@ -1,30 +1,9 @@
-let semantica    = require("../../../../common-components/search-engine-3/domains/genetics/index.js");
 let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../_utils.js");
 
 let relation_fields = ["host", "reactivity", "application", "isotype", "light_chain", "heavy_chain", "clonality" , "research_area", "supplier", "distributor"];
 
-let get_canonical = (text, type) =>
-{
-    if (typeof type === "string")
-        type = [type];
 
-    let db = semantica.getDb();
-    let atoms = semantica.analyseSpeech("eng", text);
-
-    atoms = atoms
-    .filter(([atom_type]) => type.indexOf(atom_type) !== -1)
-    .map(atom => {
-        let synonyms = semantica.knowledge.findTagsByCanonical(db, atom[1]);
-        if (synonyms && synonyms.length)
-        {
-            atom.push(synonyms);
-        }
-
-        return atom
-    });
-    return atoms
-};
 
 let _getImages = item => {
     let result = [];
@@ -118,16 +97,16 @@ let mapping_step1 = {
     }),
     "price_model"        : record => _getPriceModel(record, record.crawler_item),
     "description"        : "description",
-    "supplier"           : record => get_canonical("Cloud-Clone Corp.", ":supplier"),
-    "distributor"        : record => get_canonical("RIDACOM Ltd.", ":distributor"),
-    "host"               : record => get_canonical(record.host || "", [":host", ":reactivity"]),
-    "reactivity"         : record => get_canonical(record.reactivity.join("; "), [":host", ":reactivity"]),
-    "application"        : record => get_canonical(record.application.join("; "), ":application"),
-    "isotype"            : record => get_canonical(record.isotype || "", ":isotype"),
-    "light_chain"        : record => get_canonical(record.isotype || "", ":light_chain"),
-    "heavy_chain"        : record => get_canonical(record.isotype || "", ":heavy_chain"),
-    "clonality"          : record => get_canonical(record.source || "", ":clonality"),
-    "research_area"      : record => get_canonical((record.research_area || []).join("; ") || "", ":research_area"),
+    "supplier"           : record => import_utils.get_canonical("Cloud-Clone Corp.", ":supplier"),
+    "distributor"        : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
+    "host"               : record => import_utils.get_canonical(record.host || "", [":host", ":reactivity"]),
+    "reactivity"         : record => import_utils.get_canonical(record.reactivity.join("; "), [":host", ":reactivity"]),
+    "application"        : record => import_utils.get_canonical(record.application.join("; "), ":application"),
+    "isotype"            : record => import_utils.get_canonical(record.isotype || "", ":isotype"),
+    "light_chain"        : record => import_utils.get_canonical(record.isotype || "", ":light_chain"),
+    "heavy_chain"        : record => import_utils.get_canonical(record.isotype || "", ":heavy_chain"),
+    "clonality"          : record => import_utils.get_canonical(record.source || "", ":clonality"),
+    "research_area"      : record => import_utils.get_canonical((record.research_area || []).join("; ") || "", ":research_area"),
     "concentration"      : "concentration",
     "clone_id"           : "clone_num",
     "usage"              : "usage",
@@ -203,50 +182,6 @@ let mapping_step2 = {
     }
 };
 
-let build_suggest_data = record => {
-    let result = {};
-
-    if (record.bio_object.name)
-    {
-        let id = `protein_${import_utils.human_readable_id(record.bio_object.name)}`;
-        let protein = {
-            type    : "protein",
-            category: ["antibody"],
-            name    : record.bio_object.name,
-            aliases : record.bio_object.aliases || []
-        };
-
-        let name_alias = record.name.split("(").pop().trim();
-
-        if (name_alias.indexOf(")") !== -1)
-            protein.aliases.push(name_alias.replace(")", "").trim());
-
-        result[id] = protein
-    }
-
-
-    relation_fields.forEach(field_name =>
-    {
-        if (!record[field_name] || !record[field_name].length)
-            return;
-
-        record[field_name].forEach(([,key,name,,synonyms]) => {
-            if (!name || !name.trim())
-                return;
-
-            let id = `${field_name}_${key}`;
-            result[id] = {
-                type    : field_name,
-                category: ["antibody"],
-                name    : name,
-                aliases : (synonyms || []).map(({name}) => name)
-            };
-        })
-    });
-
-    return result
-};
-
 let convert = (item, crawler_item) =>
 {
     let record = Object.assign({}, item, {crawler_item: crawler_item});
@@ -254,28 +189,13 @@ let convert = (item, crawler_item) =>
     let result_step2 = utils.mapping_transform(mapping_step2, result_step1);
     let result = Object.assign(result_step1, result_step2);
 
-    let suggest_data = build_suggest_data(result);
+    let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "antibody");
 
     relation_fields.forEach(name => delete result[name]);
 
     return {converted_item : result, suggest_data}
 };
 
-
-
 module.exports = {
     convert
 };
-
-let test = (text) =>
-{
-    let db = semantica.getDb();
-    let res = semantica.analyseSpeech("eng", text);
-    // let parents = semantica.knowledge.getTagParents(db, res[0][1]);
-    console.log(res)
-    debugger
-};
-
-// console.log(test("Loading Control of WB" ))
-
-// console.log(get_canonical("Rat CHO Guinea pig E.coli 293F Mouse Rabbit n/a null", [":host", ":reactivity"]));

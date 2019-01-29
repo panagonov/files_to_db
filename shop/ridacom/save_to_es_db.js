@@ -1,5 +1,6 @@
 let fs       = require("fs");
 let es_db    = require("../../_utils/elasticsearch/db.js");
+let utils    = require("../../_utils/utils.js");
 let Mongo_db = require("../../_utils/db.js");
 
 let collection_name         = "product";
@@ -7,12 +8,12 @@ let suggest_collection_name = "shop_suggest";
 
 let mapping = {
     "antibody" : {
-        "cloud_clone" : {converter: require("./save_transformers/antibody/cloud_clone.js"),    version: 1},
-        "abbkine"     : {converter: require("./save_transformers/antibody/abbkine.js"),        version: 1},
-        "genome_me"   : {converter: require("./save_transformers/antibody/genome_me.js"),      version: 1}
+        "cloud_clone" : {converter: require("./save_transformers/antibody/cloud_clone.js"),    version: 3},
+        "abbkine"     : {converter: require("./save_transformers/antibody/abbkine.js"),        version: 2},
+        "genome_me"   : {converter: require("./save_transformers/antibody/genome_me.js"),      version: 2}
     },
     "elisa_kit" : {
-        "cloud_clone" : {converter: require("./save_transformers/elisa_kit/cloud_clone.js"),    version: 1}
+        "cloud_clone" : {converter: require("./save_transformers/elisa_kit/cloud_clone.js"),    version: 2}
     }
 };
 
@@ -34,7 +35,34 @@ let build_index = async(mongo_db) =>
 
 let _save_suggest_data = async (suggest_data) =>
 {
-    let es_bulk = Object.keys(suggest_data).map(id => ({model_title: suggest_collection_name, command_name: "index", "_id": id, "document": suggest_data[id]}));
+    let size = 800;
+    let page = 0;
+    let all_ids = Object.keys(suggest_data);
+    let start_index = 0;
+    let end_index = 0;
+    let suggest_category_hash = {};
+
+    do {
+        start_index = page * size;
+        end_index = start_index + size;
+        let ids = all_ids.slice(start_index, end_index);
+
+        let db_data = await es_db.read_unlimited(suggest_collection_name, {body: {"query" : {"terms" : {"_id" : ids}}, "_source" : ["category"]}, size: ids.length,});
+        db_data.data.forEach(item => suggest_category_hash[item._id] = item.category);
+        page++;
+    }
+    while(end_index < all_ids.length);
+
+    let es_bulk = Object.keys(suggest_data).map(id => {
+        let item_in_hash = suggest_category_hash[id];
+        let command = item_in_hash ? "update" : "index";
+
+        let document = suggest_data[id];
+        if (item_in_hash) {
+            document.category = utils.uniq(document.category.concat(item_in_hash.category))
+        }
+
+        return {model_title: suggest_collection_name, command_name: command, "_id": id, "document":document}});
 
     if (es_bulk.length)
         await es_db.bulk(es_bulk);
