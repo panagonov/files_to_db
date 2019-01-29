@@ -2,6 +2,7 @@ let stopwords          = require("./stopwords.en.json");
 let char_filter        = require("./_analysis_resource/char_filter.json");
 let analysis_filters   = require("./_analysis_resource/filters.json");
 let analysis_analyzers = require("./_analysis_resource/analyzers.json");
+let shop_model         = require("./_analysis_resource/shop_model.json");
 
 exports.schema =
     {
@@ -135,53 +136,7 @@ exports.schema =
                 "type" : "array",
                 "items": {"type": "string"}
             },
-            "price_model"       : {
-                "type"      : "object",
-                "properties": {
-                    "sort_price"       : {"type": "number"},
-                    "is_multiple"      : {"type": "boolean"},
-                    "is_ids_are_unique": {"type": "boolean"},
-                    "discount"         : {
-                        "type"                : "object",
-                        "properties"          : {
-                            "default": {
-                                "type"          : "object",
-                                "properties"    : {
-                                    "discount_type": {"enums": ["absolute", "percent"]}
-                                },
-                                "discount_value": {"type": "number"}
-                            }
-                        },
-                        "additionalProperties": true
-                    },
-                    "variation"        : {
-                        "type" : "array",
-                        "items": {
-                            "type"      : "object",
-                            "properties": {
-                                "price"     : {
-                                    "type"      : "object",
-                                    "properties": {
-                                        "value"   : {"type": "number"},
-                                        "currency": {"type": "string"}
-                                    },
-                                    "additionalProperties": false
-                                },
-                                "product_id": {"type": "string"},
-                                "size"      : {
-                                    "type"      : "object",
-                                    "properties": {
-                                        "value"   : {"type": "number"},
-                                        "dimension": {"type": "string"},
-                                        "more_data": {"type": "string"}
-                                    },
-                                    "additionalProperties": false
-                                }
-                            }
-                        }
-                    }
-                }
-            },
+            "price_model"       : shop_model.schema.price_model,
             "search_data"       : {
                 "type": "array",
                 "items" : {
@@ -331,9 +286,6 @@ exports.settings = {
                     "immunogen"              : {"type": "keyword"},
                     "research_area"          : {"type": "keyword"},
                     "usage"                  : {"type": "keyword"},
-                    "self_life"              : {"type": "keyword"},
-                    "storage_condition"      : {"type": "keyword"},
-                    "delivery_condition"     : {"type": "keyword"},
                     "shelf_life"             : {"type": "keyword"},
                     "storage_conditions"     : {"type": "keyword"},
                     "delivery_conditions"    : {"type": "keyword"},
@@ -357,47 +309,7 @@ exports.settings = {
                             "thumb_link": {"type": "keyword"}
                         }
                     },
-                    "price_model": {
-                        "type"      : "object",
-                        "properties": {
-                            "sort_price"       : {"type": "float", "doc_values": true},
-                            "is_multiple"      : {"type": "boolean"},
-                            "is_ids_are_unique": {"type": "boolean"},
-                            "discount"         : {
-                                "type"      : "object",
-                                "properties": {
-                                    "default": {
-                                        "type"          : "object",
-                                        "properties"    : {
-                                            "discount_type": {"type": "keyword"},
-                                            "discount_value": {"type": "float"}
-                                        },
-                                    }
-                                }
-                            },
-                            "variation"        : {
-                                "type"      : "object",
-                                "properties": {
-                                    "price"     : {
-                                        "type"      : "object",
-                                        "properties": {
-                                            "value"   : {"type": "float"},
-                                            "currency": {"type": "keyword"}
-                                        }
-                                    },
-                                    "product_id": {"type": "keyword"},
-                                    "size"      : {
-                                        "type"      : "object",
-                                        "properties": {
-                                            "value"   : {"type": "float"},
-                                            "dimension": {"type": "keyword"},
-                                            "more_data": {"type": "keyword"}
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
+                    "price_model": shop_model.settings.price_model,
                     "search_data": {
                         "type"  : "object",
                         "properties" : {

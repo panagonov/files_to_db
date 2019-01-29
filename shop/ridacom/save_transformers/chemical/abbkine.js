@@ -1,29 +1,14 @@
 let utils        = require("../../../../_utils/utils.js");
-let Mongo_db     = require("../../../../_utils/db.js");
 let import_utils = require("../_utils.js");
 
-let uniprot_db;
-
-let relation_fields = ["reactivity", "conjugate", "test_method", "supplier", "distributor"];
-
-let init = async() =>
-{
-    uniprot_db = new Mongo_db();
-    await uniprot_db.init({database: "uniprot"});
-};
+let relation_fields = ["supplier", "distributor", "application"];
 
 let _getImages = item => {
     let result = [];
 
     if(item.images && item.images.length)
     {
-        result = item.images.map((link, index) => {
-            let text = item.images_text && item.images_text[index] ? item.images_text[index] : "";
-            return {
-                link: link,
-                ...text ? {text: text} : ""
-            }
-        })
+        item.images.forEach(link => result.push({link: link}))
     }
 
     return result
@@ -35,12 +20,10 @@ let _getPdf = item =>
 
     if(item.pdf)
     {
-        result.push({
-            link: item.pdf,
-        })
+        result.push({link: item.pdf})
     }
 
-    return result.length ? result : null;
+    return result;
 };
 
 let _getPriceModel = (item, crawler_item) =>
@@ -67,53 +50,45 @@ let _getPriceModel = (item, crawler_item) =>
     return result;
 };
 
-let _get_bio_object = record =>
-{
-    if (!record.bio_object_data)
-        return null;
-
-    return {
-        "type": "protein",
-        ...record.bio_object_data &&  record.bio_object_data.name ? {"name": record.bio_object_data.name} : "",
-        ...record.bio_object_data ? {"aliases": [record.bio_object_data._id, record.bio_object_data.alias]} : ""
-    }
-};
-
 let mapping_step1 = {
     "name"               : "name",
     "oid"                : "oid",
     "human_readable_id"  : record => import_utils.human_readable_id(record.name) + "_" + record.oid,
-    "external_links"     : record => [{"key": "abbkine", "id": record.oid}],
+    "external_links"     : record => {
+                                        let result = [{"key": "abbkine", "id": record.oid}];
+                                        if (record.cas_number)
+                                            result.push({"key": "cas_number", "id": record.cas_number});
+                                        return result;
+                           },
     "description"        : "background",
-    "bio_object"         : record => _get_bio_object(record),
     "price_model"        : record => _getPriceModel(record, record.crawler_item),
+
     "supplier"           : record => import_utils.get_canonical("Abbkine Scientific Co., Ltd.", ":supplier"),
     "distributor"        : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
-    "conjugate"          : record => import_utils.get_canonical(record.conjugate || "", [":conjugate", ":reactivity"]),
-    "test_method"        : record => import_utils.get_canonical(record.detection_method || "", ":test_method"),
+    "application"        : record => import_utils.get_canonical((record.application || []).join("; "), ":application"),
     "formulation"        : "formulation",
     "usage"              : "usage_notes",
     "storage_conditions" : "storage_instructions",
     "delivery_conditions": "shipping",
+    "molecular_weight"   : "mol_weight",
+    "purification"       : "purification",
+    "purity"             : "purity",
+    "preparation_method" : "preparation_method",
+    "formula"            : "formula",
+    "features"           : "features",
+    "storage_buffer"     : "storage_buffer",
+    "precautions"        : "precautions",
+    "alternative"        : "alternative",
     "images"             : record =>  _getImages(record.crawler_item),
     "pdf"                : record =>  _getPdf(record.crawler_item),
     "supplier_specific"  : record => ({
         "link"             : record.link,
-        ...record.calibration_range ? {"calibration_range": record.calibration_range}   : "",
-        ...record.alternative       ? {"alternative": record.alternative}               : "",
-        ...record.precautions       ? {"precautions": record.precautions}               : "",
-        ...record.gene_id           ? {"gene_id": record.gene_id}                       : ""
-    }),
-    "sensitivity"       : "limit_of_detection",
-    "sample_type"       : "sample_type",
-    "assay_length"      : "assay_duration",
-    "kit_components"    : "kit_components",
+        ...record.app_notes ? {"app_notes": record.app_notes} : "",
+    })
 };
 
 let mapping_step2 = {
-    "reactivity_relations"    : record => record.reactivity && record.reactivity.length? record.reactivity.map(([,key]) => key) : null,
-    "conjugate_relations"     : record => record.conjugate && record.conjugate.length? record.conjugate.map(([,key]) => key) : null,
-    "test_method_relations"   : record => record.test_method && record.test_method.length ? record.test_method.map(([,key]) => key) : null,
+    "application_relations"   : record => record.application && record.application.length ? record.application.map(([,key]) => key) : null,
     "supplier_relations"      : record => record.supplier && record.supplier.length ? record.supplier.map(([,key]) => key) : null,
     "distributor_relations"   : record => record.distributor && record.distributor.length ? record.distributor.map(([,key]) => key) : null,
     "ui"                      : record =>  relation_fields.reduce((res, field_name) => {
@@ -174,28 +149,13 @@ let convert = (item, crawler_item, custom_data) =>
     let result_step2 = utils.mapping_transform(mapping_step2, result_step1);
     let result = Object.assign(result_step1, result_step2);
 
-    let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "elisa_kit");
+    let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "chemical");
 
     relation_fields.forEach(name => delete result[name]);
 
     return {converted_item : result, suggest_data}
 };
 
-let load_custom_data = async(mongo_db, crawler_db, result) => {
-
-    let ids = result.map(item => item.accession).filter(id => id);
-    let bio_objects = await uniprot_db.read("uniprot", {body: {_id : {$in : ids}}});
-    console.log(`Found ${bio_objects.length}/${ids.length} bio-objects`);
-    let hash = bio_objects.reduce((res, item) => {
-        res[item._id] = item;
-        return res;
-    }, {});
-
-    return hash;
-};
-
 module.exports = {
-    convert,
-    load_custom_data,
-    init
+    convert
 };

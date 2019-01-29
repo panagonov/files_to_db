@@ -14,7 +14,7 @@ let mapping = {
     },
     "elisa_kit" : {
         "cloud_clone" : {converter: require("./save_transformers/elisa_kit/cloud_clone.js"),    version: 1},
-        "abbkine"     : {converter: require("./save_transformers/elisa_kit/abbkine.js"),        version: 1}
+        "abbkine"     : {converter: require("./save_transformers/elisa_kit/abbkine.js"),        version: 2}
     }
 };
 
@@ -116,7 +116,7 @@ let save_to_db = async(mongo_db, type, site) =>
             if (!crawler_item)
             {
                 not_found.push(id);
-                return;
+                crawler_item = {}
             }
 
             let {converted_item, suggest_data} = converter.convert(item, crawler_item, custom_data);

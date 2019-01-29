@@ -38,21 +38,21 @@ let _getPdf = item =>
 let _getPriceModel = (item, crawler_item) =>
 {
     let result = {
-        ...crawler_item.price && crawler_item.price.length ? {"is_multiple" : true} : "",
-        search_price: item.price && item.price[0] ? item.price[0].price || 0 : 0,
+        ...item.price && item.price.length ? {"is_multiple" : true} : "",
+        search_price : item.price ? item.price[0].price : 0,
         "variation" :[]
     };
 
-    (item.price || []).forEach(price_item => {
-
+    (item.price || []).forEach((price_item, index)=>
+    {
         let size = import_utils.size_parser(price_item.size);
 
         result.variation.push({
             "price" : {
-                "value" : price_item.price || 0,
-                "currency": "usd"
+                "value"   : price_item.price || 0,
+                "currency": "usd",
             },
-            "size" : size
+            "size"    : size
         })
     });
 
@@ -88,7 +88,7 @@ let mapping_step1 = {
     "light_chain"           : record => import_utils.get_canonical(record.isotype || "", ":light_chain"),
     "heavy_chain"           : record => import_utils.get_canonical(record.isotype || "", ":heavy_chain"),
     "clonality"             : record => import_utils.get_canonical(record.clonality || "", ":clonality"),
-    "conjugate"             : record => import_utils.get_canonical(record.conjugate || "", ":conjugate"),
+    "conjugate"             : record => import_utils.get_canonical(record.conjugate || "", [":conjugate", ":reactivity"]),
     "usage"                 : record =>  record.background && record.background.trim() ? [record.background.replace(/\s+/g, " ").trim()] : null,
     "storage_conditions"    : "storage_instructions",
     "delivery_conditions"   : "shipping",

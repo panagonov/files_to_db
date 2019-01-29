@@ -53,7 +53,7 @@ let build_suggest_data_antibody_elisa_kit = (record, relation_fields, category) 
         return {aliases, syn}
     };
 
-    if (record.bio_object.name)
+    if (record.bio_object && record.bio_object.name)
     {
         let id = `protein_${human_readable_id(record.bio_object.name)}`;
         let all_aliases = record.bio_object.aliases || [];
@@ -115,7 +115,7 @@ module.exports = {
 //     console.log(res)
 //     debugger
 // };
-
-// console.log(test("Loading Control of WB" ))
+//
+// console.log(test("Biotin" ))
 
 // console.log(get_canonical("Rat CHO Guinea pig E.coli 293F Mouse Rabbit n/a null", [":host", ":reactivity"]));

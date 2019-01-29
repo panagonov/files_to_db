@@ -17,7 +17,7 @@ let mapping = {
         if (!record["Reactivity"])
             return null;
 
-        let result = record["Reactivity"].split(";").map(item => item.trim()).filter(item => {
+        let result = record["Reactivity"].split("#").map(item => item.trim()).filter(item => {
             return item !== "Null"
         });
 

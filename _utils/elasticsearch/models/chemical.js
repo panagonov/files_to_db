@@ -1,4 +1,4 @@
-let stopwords          = require("./stopwords.en.json");
+let stopwords = require("./stopwords.en.json");
 let char_filter        = require("./_analysis_resource/char_filter.json");
 let analysis_filters   = require("./_analysis_resource/filters.json");
 let analysis_analyzers = require("./_analysis_resource/analyzers.json");
@@ -6,7 +6,7 @@ let shop_model         = require("./_analysis_resource/shop_model.json");
 
 exports.schema =
     {
-        "title"     : "elisa_kit",
+        "title"     : "chemical",
         "type"      : "object",
         "properties": {
 
@@ -25,36 +25,7 @@ exports.schema =
                     }
                 }
             },
-            "bio_object"        : {
-                "type"      : "object",
-                "properties": {
-                    "type"          : {"type": "string"},
-                    "name"          : {"type": "string"},
-                    "aliases"       : {
-                        "type" : "array",
-                        "items": {"type": "string"}
-                    },
-                    "external_links": {
-                        "type" : "array",
-                        "items": {
-                            "type"      : "object",
-                            "properties": {
-                                "key": {"type": "string"},
-                                "id" : {"type": "string"}
-                            }
-                        }
-                    }
-                }
-            },
-            "reactivity_relations"        : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
             "application_relations"       : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
-            "research_area_relations"       : {
                 "type" : "array",
                 "items": {"type": "string"}
             },
@@ -66,23 +37,7 @@ exports.schema =
                 "type" : "array",
                 "items": {"type": "string"}
             },
-            "test_method_relations"       : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
-            "conjugate_relations"       : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
-            "research_area"     : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
-            "sample_type"     : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
-            "kit_components"     : {
+            "alternative"       : {
                 "type" : "array",
                 "items": {"type": "string"}
             },
@@ -90,9 +45,14 @@ exports.schema =
             "shelf_life"         : {"type": "string"},
             "storage_conditions" : {"type": "string"},
             "delivery_conditions": {"type": "string"},
-            "sensitivity"        : {"type": "string"},
-            "assay_length"       : {"type": "string"},
-
+            "molecular_weight"   : {"type": "number"},
+            "purification"       : {"type": "string"},
+            "purity"             : {"type": "string"},
+            "preparation_method" : {"type": "string"},
+            "formula"            : {"type": "string"},
+            "features"           : {"type": "string"},
+            "storage_buffer"     : {"type": "string"},
+            "precautions"        : {"type": "string"},
             "supplier_specific" : {
                 "type": "object",
                 "additionalProperties": true
@@ -125,22 +85,6 @@ exports.schema =
                 "type" : "array",
                 "items": {"type": "string"}
             },
-            "specificity"             : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
-            "precision"             : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
-            "stability"             : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
-            "procedure"             : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
             "price_model"       : shop_model.schema.price_model,
             "search_data"       : {
                 "type": "array",
@@ -153,19 +97,7 @@ exports.schema =
                 }
             },
             "ui"                : {
-                "reactivity": {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                },
                 "application": {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                },
-                "research_area": {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                },
-                "test_method": {
                     "type" : "array",
                     "items": {"type": "string"}
                 },
@@ -184,11 +116,11 @@ exports.schema =
     };
 
 exports.settings = {
-    "index"   : "shop-elisa_kit",
-    "doc_type": "elisa_kit",
+    "index"   : "shop-chemical",
+    "doc_type": "chemical",
     "mapping" : {
         "aliases" : {
-            "shop-elisa_kit": {}
+            "shop-chemical": {}
         },
         "settings": {
             "analysis": {
@@ -205,7 +137,7 @@ exports.settings = {
             }
         },
         "mappings": {
-            "elisa_kit": {
+            "chemical": {
                 "properties": {
                     "name"              : {
                         "type"  : "keyword",
@@ -238,51 +170,29 @@ exports.settings = {
                             "id" : {"type": "keyword"}
                         }
                     },
-                    "bio_object"        : {
-                        "type"          : "object",
-                        "properties"    : {
-                            "type"   : {"type": "keyword"},
-                            "name"   : {"type": "keyword"},
-                            "aliases": {"type": "keyword"},
-                            "external_links": {
-                                "type"      : "object",
-                                "properties": {
-                                    "key": {"type": "keyword"},
-                                    "id" : {"type": "keyword"}
-                                }
-                            }
-                        },
-                    },
                     "oid"                    : {"type": "keyword"},
                     "human_readable_id"      : {"type": "keyword"},
-                    "reactivity_relations"   : {"type": "keyword"},
                     "application_relations"  : {"type": "keyword"},
-                    "test_method_relations"  : {"type": "keyword"},
-                    "research_area_relations": {"type": "keyword"},
+                    "alternative"            : {"type": "keyword"},
                     "distributor_relations"  : {"type": "keyword"},
                     "supplier_relations"     : {"type": "keyword"},
-                    "conjugate_relations"    : {"type": "keyword"},
-                    "kit_components"         : {"type": "keyword"},
                     "purification"           : {"type": "keyword"},
+                    "purity"                 : {"type": "keyword"},
                     "formulation"            : {"type": "keyword"},
-                    "concentration"          : {"type": "keyword"},
-                    "clone_id"               : {"type": "keyword"},
-                    "buffer_form"            : {"type": "keyword"},
-                    "immunogen"              : {"type": "keyword"},
-                    "research_area"          : {"type": "keyword"},
                     "usage"                  : {"type": "keyword"},
-                    "shelf_life"             : {"type": "keyword"},
                     "storage_conditions"     : {"type": "keyword"},
                     "delivery_conditions"    : {"type": "keyword"},
-                    "sensitivity"            : {"type": "keyword"},
-                    "sample_type"            : {"type": "keyword"},
-                    "assay_length"           : {"type": "keyword"},
-                    "specificity"            : {"type": "keyword"},
+                    "shelf_life"             : {"type": "keyword"},
                     "precision"              : {"type": "keyword"},
                     "stability"              : {"type": "keyword"},
                     "procedure"              : {"type": "keyword"},
+                    "molecular_weight"       : {"type": "keyword"},
+                    "preparation_method"     : {"type": "keyword"},
+                    "formula"                : {"type": "keyword"},
+                    "features"               : {"type": "keyword"},
+                    "storage_buffer"         : {"type": "keyword"},
+                    "precautions"            : {"type": "keyword"},
                     "pdf"               : {
-
                         "type"      : "object",
                         "properties": {
                             "link"      : {"type": "keyword"},
@@ -325,15 +235,11 @@ exports.settings = {
                     "ui"        : {
                         "type": "object",
                         "properties" : {
-                            "reactivity"   : {"type": "keyword"},
                             "application"  : {"type": "keyword"},
-                            "research_area": {"type": "keyword"},
-                            "test_method"  : {"type": "keyword"},
                             "supplier"     : {"type": "keyword"},
                             "distributor"  : {"type": "keyword"}
                         }
                     },
-
                     "supplier_specific": {
                         "type": "object",
                         "properties" : {}
