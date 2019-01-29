@@ -198,5 +198,3 @@ module.exports = {
     load_custom_data,
     init
 };
-
-// console.log(import_utils.get_canonical("Competitive Inhibition", [":test_method"]));
