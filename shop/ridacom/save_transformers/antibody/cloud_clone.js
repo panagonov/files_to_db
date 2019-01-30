@@ -84,11 +84,11 @@ let mapping_step1 = {
     "oid"                : "oid",
     "human_readable_id"  : record => import_utils.human_readable_id(record.name) + "_" + record.oid,
     "external_links"     : record => [{"key": "cloud_clone", "id": record.oid}],
-    "bio_object"         : record => ({
+    "bio_object"         : record => [{
         "type": "protein",
         ...record.item_name ? {"name": record.item_name} : "",
         ...record.aliases ? {"aliases": record.aliases} : ""
-    }),
+    }],
     "price_model"        : record => _getPriceModel(record, record.crawler_item),
     "description"        : "description",
     "supplier"           : record => import_utils.get_canonical("Cloud-Clone Corp.", ":supplier"),
@@ -134,67 +134,21 @@ let mapping_step2 = {
                                         return res
                                     }, {}),
 
-    "search_data": record =>
-    {
-        let result = [];
-
-        let name_alias = record.name.split("(").pop().trim();
-
-        if (name_alias.indexOf(")") !== -1)
-        {
-            result.push({key: "name", text : name_alias.replace(")", "").trim()});
-        }
-
-        if (record.bio_object.name)
-        {
-            result.push({key: "bio_object.name", text : record.bio_object.name})
-        }
-
-        (record.bio_object.aliases || []).forEach((alias, index) => {
-            result.push({key: "bio_object.aliases." + index, text : alias})
-        });
-
-        relation_fields.forEach(field_name =>
-        {
-            if (!record[field_name] || !record[field_name].length)
-                return;
-
-            record[field_name].forEach(([,,name,,synonyms],index) => {
-                if (!name || !name.trim())
-                    return;
-                result.push({key: `${field_name}.${index}`, text : name});
-                if (synonyms && synonyms.length)
-                {
-                    synonyms.forEach(({name}) => {
-                        result.push({key: `${field_name}.${index}`, text : name})
-                    })
-                }
-            })
-        });
-
-        return result
-    }
+    "search_data": record => import_utils.build_search_data(record, relation_fields)
 };
 
 let convert = (item, crawler_item) =>
 {
-    try
-    {
-        let record = Object.assign({}, item, {crawler_item: crawler_item});
-        let result_step1 = utils.mapping_transform(mapping_step1, record);
-        let result_step2 = utils.mapping_transform(mapping_step2, result_step1);
-        let result = Object.assign(result_step1, result_step2);
+    let record = Object.assign({}, item, {crawler_item: crawler_item});
+    let result_step1 = utils.mapping_transform(mapping_step1, record);
+    let result_step2 = utils.mapping_transform(mapping_step2, result_step1);
+    let result = Object.assign(result_step1, result_step2);
 
-        let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "antibody");
+    let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "antibody");
 
-        relation_fields.forEach(name => delete result[name]);
+    relation_fields.forEach(name => delete result[name]);
 
-        return {converted_item : result, suggest_data}
-
-    }
-    catch(e) {
-        debugger
-    }
+    return {converted_item : result, suggest_data}
 };
 
 module.exports = {

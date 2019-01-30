@@ -67,14 +67,18 @@ let _getPriceModel = (item, crawler_item) =>
 
 let _get_bio_object = record =>
 {
-    if (!record.bio_object_data)
+    if (!record.bio_object_data || !record.bio_object_data.length)
         return null;
 
-    return {
+    return record.bio_object_data.map(bio_object => ({
         "type": "protein",
-        ...record.bio_object_data &&  record.bio_object_data.name ? {"name": record.bio_object_data.name} : "",
-        ...record.bio_object_data ? {"aliases": [record.bio_object_data._id, record.bio_object_data.alias]} : ""
-    }
+        ...bio_object.name                  ? {"name": bio_object.name}                                                 : "",
+        ...bio_object.aliases               ? {"aliases": (bio_object.aliases || []).concat(bio_object.ids || [])}      : "",
+        ...bio_object.gene                  ? {"gene": bio_object.gene}                                                 : "",
+        ...bio_object.organism              ? {"organism": bio_object.organism}                                         : "",
+        ...bio_object.ncbi_organism_tax_id  ? {"ncbi_organism_tax_id": bio_object.ncbi_organism_tax_id}                 : "",
+
+    }));
 };
 
 let mapping_step1 = {
@@ -120,52 +124,29 @@ let mapping_step2 = {
         return res
     }, {}),
 
-    "search_data": record =>
-    {
-        let result = [];
+    "search_data": record => import_utils.build_search_data(record, relation_fields)
+};
 
-        let name_alias = record.name.split("(").pop().trim();
+let _get_bio_object_data = (item, custom_data) =>
+{
+    let bio_ids = (item.accession || "").split("/");
+    let missing_data = [];
 
-        if (name_alias.indexOf(")") !== -1)
-        {
-            result.push({key: "name", text : name_alias.replace(")", "").trim()});
-        }
+    let bio_object_data = bio_ids.reduce((res,id) => {
+        if (!custom_data[id])
+            missing_data.push(id);
+        else
+            res.push(custom_data[id]);
 
-        if (record.bio_object)
-        {
-            if (record.bio_object.name) {
-                result.push({key: "bio_object.name", text : record.bio_object.name})
-            }
-            (record.bio_object.aliases || []).forEach((alias, index) => {
-                result.push({key: "bio_object.aliases." + index, text : alias})
-            });
-        }
+        return res
+    }, []);
 
-        relation_fields.forEach(field_name =>
-        {
-            if (!record[field_name] || !record[field_name].length)
-                return;
-
-            record[field_name].forEach(([,,name,,synonyms],index) => {
-                if (!name || !name.trim())
-                    return;
-                result.push({key: `${field_name}.${index}`, text : name});
-                if (synonyms && synonyms.length)
-                {
-                    synonyms.forEach(({name}) => {
-                        result.push({key: `${field_name}.${index}`, text : name})
-                    })
-                }
-            })
-        });
-
-        return result
-    }
+    return {bio_object_data, missing_data}
 };
 
 let convert = (item, crawler_item, custom_data) =>
 {
-    let bio_object_data = custom_data[item.accession];
+   let {bio_object_data, missing_data} = _get_bio_object_data(item, custom_data);
 
     let record = Object.assign({}, item, {crawler_item: crawler_item, bio_object_data : bio_object_data});
     let result_step1 = utils.mapping_transform(mapping_step1, record);
@@ -176,20 +157,32 @@ let convert = (item, crawler_item, custom_data) =>
 
     relation_fields.forEach(name => delete result[name]);
 
-    return {converted_item : result, suggest_data}
+    return {converted_item : result, suggest_data, ...missing_data.length ? missing_data : ""}
 };
 
 let load_custom_data = async(mongo_db, crawler_db, result) => {
+    let duplicated = [];
 
-    let ids = result.map(item => item.accession).filter(id => id);
-    let bio_objects = await uniprot_db.read("uniprot", {body: {_id : {$in : ids}}});
-    console.log(`Found ${bio_objects.length}/${ids.length} bio-objects`);
+    let ids = utils.uniq(result
+        .map(item => item.accession)
+        .filter(id => id)
+        .reduce((res, id) => {
+            res = res.concat(id.split("/"));
+            return res
+        }, [])
+    );
+    let bio_objects = await uniprot_db.read("uniprot", {body: {ids : {$in : ids}}});
+
     let hash = bio_objects.reduce((res, item) => {
-        res[item._id] = item;
+        (item.ids || []).forEach(id => {
+            if (res[id])
+                duplicated.push(id);
+            res[id] = item});
         return res;
     }, {});
 
-    return hash;
+    duplicated = utils.uniq(duplicated);
+    return {result: hash, error: duplicated.length ? duplicated : null};
 };
 
 module.exports = {

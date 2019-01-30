@@ -77,10 +77,10 @@ let mapping_step1 = {
     "oid"                : "oid",
     "human_readable_id"  : record => import_utils.human_readable_id(record.name) + "_" + record.oid,
     "external_links"     : record => [{"key": "genomeme", "id": record.oid}],
-    "bio_object"         : record => ({
+    "bio_object"         : record => [{
         "type": "protein",
         ...record.name ? {"name": record.name} : ""
-    }),
+    }],
     "price_model"        : record => _getPriceModel(record, record.crawler_item),
     "description"        : "crawler_item.description",
     "supplier"           : record => import_utils.get_canonical("GenomeMe", ":supplier"),
@@ -108,46 +108,7 @@ let mapping_step2 = {
         return res
     }, {}),
 
-    "search_data": record =>
-    {
-        let result = [];
-
-        let name_alias = record.name.split("(").pop().trim();
-
-        if (name_alias.indexOf(")") !== -1)
-        {
-            result.push({key: "name", text : name_alias.replace(")", "").trim()});
-        }
-
-        if (record.bio_object.name)
-        {
-            result.push({key: "bio_object.name", text : record.bio_object.name})
-        }
-
-        (record.bio_object.aliases || []).forEach((alias, index) => {
-            result.push({key: "bio_object.aliases." + index, text : alias})
-        });
-
-        relation_fields.forEach(field_name =>
-        {
-            if (!record[field_name] || !record[field_name].length)
-                return;
-
-            record[field_name].forEach(([,,name,,synonyms],index) => {
-                if (!name || !name.trim())
-                    return;
-                result.push({key: `${field_name}.${index}`, text : name});
-                if (synonyms && synonyms.length)
-                {
-                    synonyms.forEach(({name}) => {
-                        result.push({key: `${field_name}.${index}`, text : name})
-                    })
-                }
-            })
-        });
-
-        return result
-    }
+    "search_data": record => import_utils.build_search_data(record, relation_fields)
 };
 
 let convert = (item, crawler_item) =>

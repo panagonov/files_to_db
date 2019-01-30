@@ -50,9 +50,15 @@ exports.schema =
             "purity"             : {"type": "string"},
             "preparation_method" : {"type": "string"},
             "formula"            : {"type": "string"},
-            "features"           : {"type": "string"},
             "storage_buffer"     : {"type": "string"},
-            "precautions"        : {"type": "string"},
+            "features"           : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
+            "precautions"        : {
+                "type" : "array",
+                "items": {"type": "string"}
+            },
             "supplier_specific" : {
                 "type": "object",
                 "additionalProperties": true
@@ -116,11 +122,11 @@ exports.schema =
     };
 
 exports.settings = {
-    "index"   : "shop-chemical",
+    "index"   : "shop_chemical",
     "doc_type": "chemical",
     "mapping" : {
         "aliases" : {
-            "shop-chemical": {}
+            "shop_chemical": {}
         },
         "settings": {
             "analysis": {

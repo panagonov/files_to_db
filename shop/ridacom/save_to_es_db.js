@@ -7,18 +7,18 @@ let collection_name         = "product";
 let suggest_collection_name = "shop_suggest";
 
 let mapping = {
-    "antibody" : {
-        "cloud_clone" : {converter: require("./save_transformers/antibody/cloud_clone.js"),     version: 1},
-        "abbkine"     : {converter: require("./save_transformers/antibody/abbkine.js"),         version: 1},
-        "genome_me"   : {converter: require("./save_transformers/antibody/genome_me.js"),       version: 1}
-    },
-    "elisa_kit" : {
-        "cloud_clone" : {converter: require("./save_transformers/elisa_kit/cloud_clone.js"),    version: 1},
-        "abbkine"     : {converter: require("./save_transformers/elisa_kit/abbkine.js"),        version: 2}
-    },
-    // "chemicals" : {
-    //     "abbkine"     : {converter: require("./save_transformers/chemical/abbkine.js"),        version: 1}
-    // }
+    // "antibody" : {
+    //     "cloud_clone" : {converter: require("./save_transformers/antibody/cloud_clone.js"),     version: 2},
+    //     "abbkine"     : {converter: require("./save_transformers/antibody/abbkine.js"),         version: 2},
+    //     "genome_me"   : {converter: require("./save_transformers/antibody/genome_me.js"),       version: 2}
+    // },
+    // "elisa_kit" : {
+    //     "cloud_clone" : {converter: require("./save_transformers/elisa_kit/cloud_clone.js"),    version: 2},
+    //     "abbkine"     : {converter: require("./save_transformers/elisa_kit/abbkine.js"),        version: 2}
+    // },
+    "chemical" : {
+        "abbkine"     : {converter: require("./save_transformers/chemical/abbkine.js"),        version: 1}
+    }
 };
 
 let crawler_db;
@@ -98,6 +98,8 @@ let save_to_db = async(mongo_db, type, site) =>
     let result = [];
     let count = await mongo_db.read(collection_name, {body: {type: type, src: site, tid: "ridacom", export_version: {$ne : export_version}}, count_only: true});
     let not_found = [];
+    let not_found_custom = [];
+    let custom_errors = [];
 
     do {
         let accumulated_suggest_data = {};
@@ -109,7 +111,12 @@ let save_to_db = async(mongo_db, type, site) =>
         let crawler_hash = await _load_crawler_data(result);
 
         if (converter.load_custom_data)
+        {
             custom_data = await converter.load_custom_data(mongo_db, crawler_db, result);
+            if (custom_data.error)
+                custom_errors.concat(custom_data.error);
+            custom_data = custom_data.result
+        }
 
         result.forEach(item =>
         {
@@ -122,9 +129,13 @@ let save_to_db = async(mongo_db, type, site) =>
                 crawler_item = {}
             }
 
-            let {converted_item, suggest_data} = converter.convert(item, crawler_item, custom_data);
+            let {converted_item, suggest_data, missing_data} = converter.convert(item, crawler_item, custom_data);
+
             accumulated_suggest_data = Object.assign(accumulated_suggest_data, suggest_data);
-            es_bulk.push({"model_title": type, "command_name": "index", "_id": item._id, "document": converted_item})
+            es_bulk.push({"model_title": type, "command_name": "index", "_id": item._id, "document": converted_item});
+
+            if (missing_data)
+                not_found_custom = not_found_custom.concat(missing_data);
         });
 
         if (es_bulk.length)
@@ -138,10 +149,15 @@ let save_to_db = async(mongo_db, type, site) =>
         page++;
         console.log("ridacom", type, site, `${page * limit}/${count}`)
 
-    }while(result.length === limit);
+    }
+    while(result.length === limit);
 
     if(not_found.length)
-        fs.writeFileSync(__dirname + `/not_found_${site}_${type}.json`, JSON.stringify(not_found), "utf8")
+        fs.writeFileSync(__dirname + `/not_found_${site}_${type}.json`, JSON.stringify(not_found), "utf8");
+    if(not_found_custom.length)
+        fs.writeFileSync(__dirname + `/not_found_custom_${site}_${type}.json`, JSON.stringify(utils.uniq(not_found_custom)), "utf8");
+    if(custom_errors.length)
+        fs.writeFileSync(__dirname + `/errors_custom_${site}_${type}.json`, JSON.stringify(utils.uniq(custom_errors)), "utf8");
 };
 
 let run = async(mongo_db) =>

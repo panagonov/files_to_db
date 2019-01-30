@@ -1,5 +1,5 @@
 let fs               = require('fs');
-let progress         = require("./progress.json");
+let progress         = require("./file_importer_progress.json");
 let directory_reader = require("../../_utils/directory_reader.js");
 
 let transformers = directory_reader(`${__dirname}/transformers/`, "js");
@@ -32,6 +32,11 @@ let import_bulk = async(dir_path, file_name, type) =>
         let input = fs.createReadStream(dir_path + file_name + ".xml");
         let xml = new XmlStream(input);
 
+        xml.collect("accession");
+        xml.collect("gene");
+        xml.collect("name");
+        xml.collect("alternativeName");
+
         xml.on("endElement: entry", async record =>{
             let document = transformers[type].transform(record);
 
@@ -49,12 +54,19 @@ let import_bulk = async(dir_path, file_name, type) =>
             await save_to_db(type);
             progress[type] = progress[type] || {};
             progress[type][file_name] = 1;
-            fs.writeFileSync(__dirname + "/progress.json", JSON.stringify(progress), "utf8");
+            fs.writeFileSync(__dirname + "/file_importer_progress.json", JSON.stringify(progress), "utf8");
             console.log(counter);
             counter = 0;
             resolve()
         });
     });
+
+let build_index = async(mongo_db, collection_name) =>
+{
+    console.log("Build indexes...");
+    await mongo_db.create_index(collection_name, {data : {ids: 1}});
+    console.log("Indexes done");
+};
 
 let run = async (db) =>
 {
@@ -68,6 +80,8 @@ let run = async (db) =>
             let files_array = Object.keys(files);
 
             console.log(`Start import directory "${type}" - ${files_array.length} files.`);
+
+            await build_index(mongo_db, type);
 
             for (let i =0; i <  files_array.length; i++)
             {
@@ -86,7 +100,7 @@ clean = async (db)=>
 {
     mongo_db = db;
 
-    fs.writeFileSync(__dirname + "/progress.json", "{}", "utf8");
+    fs.writeFileSync(__dirname + "/file_importer_progress.json", "{}", "utf8");
 
     for (let key in transformers)
     {

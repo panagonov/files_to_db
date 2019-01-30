@@ -46,6 +46,39 @@
                     }
                 }
             }
+        },
+        "bio_object" : {
+            "type"      : "array",
+            "items"     : {
+                "type"      : "object",
+                "properties": {
+                    "type"          : {"type": "string"},
+                    "name"          : {"type": "string"},
+                    "aliases"       : {
+                        "type" : "array",
+                        "items": {"type": "string"}
+                    },
+                    "gene"       : {
+                        "type" : "array",
+                        "items": {"type": "string"}
+                    },
+                    "organism"       : {
+                        "type" : "array",
+                        "items": {"type": "string"}
+                    },
+                    "ncbi_organism_tax_id" : {"type": "string"},
+                    "external_links": {
+                        "type" : "array",
+                        "items": {
+                            "type"      : "object",
+                            "properties": {
+                                "key": {"type": "string"},
+                                "id" : {"type": "string"}
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
 
@@ -88,6 +121,24 @@
                             }
                         }
                     }
+                }
+            }
+        }
+    },
+    "bio_object" : {
+        "type"          : "object",
+        "properties"    : {
+            "type"    : {"type": "keyword"},
+            "name"    : {"type": "keyword"},
+            "aliases" : {"type": "keyword"},
+            "gene"    : {"type": "keyword"},
+            "organism": {"type": "keyword"},
+            "ncbi_organism_tax_id": {"type": "keyword"},
+            "external_links": {
+                "type"      : "object",
+                "properties": {
+                    "key": {"type": "keyword"},
+                    "id" : {"type": "keyword"}
                 }
             }
         }

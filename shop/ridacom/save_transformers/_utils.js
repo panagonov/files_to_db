@@ -53,25 +53,37 @@ let build_suggest_data_antibody_elisa_kit = (record, relation_fields, category) 
         return {aliases, syn}
     };
 
-    if (record.bio_object && record.bio_object.name)
+    let name_alias = record.name.split("(").pop().trim();
+
+    if (name_alias.indexOf(")") !== -1)
     {
-        let id = `protein_${human_readable_id(record.bio_object.name)}`;
-        let all_aliases = record.bio_object.aliases || [];
-
-        let name_alias = record.name.split("(").pop().trim();
-
-        if (name_alias.indexOf(")") !== -1)
-            all_aliases.push(name_alias.replace(")", "").trim());
-
-        let  {aliases, syn} = separate_aliases_and_synonyms(all_aliases);
-
-        result[id] = {
-            type    : "protein",
+        let alias = name_alias.replace(")", "").trim();
+        result[`${category}_${human_readable_id(alias)}`] = {
+            type    : category,
             category: [category],
-            name    : record.bio_object.name,
-            ...aliases.length ? {aliases : aliases} : "",
-            ...syn.length ? {synonyms : syn} : ""
+            name    : alias
         }
+    }
+
+    if (record.bio_object && record.bio_object.length)
+    {
+        record.bio_object.forEach(bio_object =>{
+            if (!bio_object.name)
+                return;
+
+            let id = `protein_${human_readable_id(bio_object.name)}`;
+            let all_aliases = bio_object.aliases || [];
+
+            let  {aliases, syn} = separate_aliases_and_synonyms(all_aliases);
+
+            result[id] = {
+                type    : "protein",
+                category: [category],
+                name    : bio_object.name,
+                ...aliases.length ? {aliases : aliases} : "",
+                ...syn.length ? {synonyms : syn} : ""
+            }
+        })
     }
 
     relation_fields.forEach(field_name =>
@@ -100,11 +112,66 @@ let build_suggest_data_antibody_elisa_kit = (record, relation_fields, category) 
     return result
 };
 
+let build_search_data = (record, relation_fields) =>
+{
+    let result = [];
+
+    let name_alias = record.name.split("(").pop().trim();
+
+    if (name_alias.indexOf(")") !== -1)
+    {
+        result.push({key: "name", text : name_alias.replace(")", "").trim()});
+    }
+
+    if (record.bio_object && record.bio_object.length)
+    {
+        record.bio_object.forEach((bio_object,index) =>
+        {
+            if (bio_object.name)
+            {
+                result.push({key: `bio_object.${index}.name`, text : bio_object.name})
+            }
+
+            (bio_object.aliases || []).forEach((alias, ind) => {
+                result.push({key: `bio_object.${index}.aliases.${ind}`, text : alias})
+            });
+
+            (bio_object.gene || []).forEach((alias, ind) => {
+                result.push({key: `bio_object.${index}.gene.${ind}`, text : alias})
+            });
+            (bio_object.ids || []).forEach((alias, ind) => {
+                result.push({key: `bio_object.${index}.uniprot_id.${ind}`, text : alias})
+            });
+        })
+    }
+
+    relation_fields.forEach(field_name =>
+    {
+        if (!record[field_name] || !record[field_name].length)
+            return;
+
+        record[field_name].forEach(([,,name,,synonyms],index) => {
+            if (!name || !name.trim())
+                return;
+            result.push({key: `${field_name}.${index}`, text : name});
+            if (synonyms && synonyms.length)
+            {
+                synonyms.forEach(({name}) => {
+                    result.push({key: `${field_name}.${index}`, text : name})
+                })
+            }
+        })
+    });
+
+    return result
+};
+
 module.exports = {
     human_readable_id,
     size_parser,
     get_canonical,
-    build_suggest_data_antibody_elisa_kit
+    build_suggest_data_antibody_elisa_kit,
+    build_search_data
 };
 
 // let test = (text) =>
