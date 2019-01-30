@@ -15,7 +15,10 @@ let mapping = {
     "elisa_kit" : {
         "cloud_clone" : {converter: require("./save_transformers/elisa_kit/cloud_clone.js"),    version: 1},
         "abbkine"     : {converter: require("./save_transformers/elisa_kit/abbkine.js"),        version: 2}
-    }
+    },
+    // "chemicals" : {
+    //     "abbkine"     : {converter: require("./save_transformers/chemical/abbkine.js"),        version: 1}
+    // }
 };
 
 let crawler_db;
@@ -137,7 +140,8 @@ let save_to_db = async(mongo_db, type, site) =>
 
     }while(result.length === limit);
 
-    fs.writeFileSync(__dirname + "/not_found.json", JSON.stringify(not_found), "utf8")
+    if(not_found.length)
+        fs.writeFileSync(__dirname + `/not_found_${site}_${type}.json`, JSON.stringify(not_found), "utf8")
 };
 
 let run = async(mongo_db) =>

@@ -30,19 +30,19 @@ let _getImages = item => {
         }
     }
 
-    return result
+    return  result.length ? result : null
 };
 
 let _getPdf = item =>
 {
-    let result = [];
+    let result = null;
 
     if(item.pdf)
     {
-        result.push({
+        result = [{
             link: item.pdf.link,
             ...item.pdf.preview ? {"thumb_link" : item.pdf.preview} : ""
-        })
+        }]
     }
 
     return result;
@@ -61,13 +61,7 @@ let _getPriceModel = (item, crawler_item) =>
         "variation" :[]
     };
 
-    let search_price = 0;
-    if (crawler_item.price) {
-        search_price = crawler_item.price[0];
-    }
-    if (item.price.promotion) {
-        search_price = search_price * item.price.promotion.discountPercentage / 100;
-    }
+    let search_price = item.price ? item.price.value || 0 : 0;
 
     search_price ? result.search_price = search_price : null;
 
@@ -184,16 +178,23 @@ let mapping_step2 = {
 
 let convert = (item, crawler_item) =>
 {
-    let record = Object.assign({}, item, {crawler_item: crawler_item});
-    let result_step1 = utils.mapping_transform(mapping_step1, record);
-    let result_step2 = utils.mapping_transform(mapping_step2, result_step1);
-    let result = Object.assign(result_step1, result_step2);
+    try
+    {
+        let record = Object.assign({}, item, {crawler_item: crawler_item});
+        let result_step1 = utils.mapping_transform(mapping_step1, record);
+        let result_step2 = utils.mapping_transform(mapping_step2, result_step1);
+        let result = Object.assign(result_step1, result_step2);
 
-    let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "antibody");
+        let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "antibody");
 
-    relation_fields.forEach(name => delete result[name]);
+        relation_fields.forEach(name => delete result[name]);
 
-    return {converted_item : result, suggest_data}
+        return {converted_item : result, suggest_data}
+
+    }
+    catch(e) {
+        debugger
+    }
 };
 
 module.exports = {

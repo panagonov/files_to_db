@@ -25,6 +25,9 @@ let index = 0;
 
 let transform = (record) =>
 {
+    if (!record["Catalogue number"])
+        return null;
+
     let result = utils.mapping_transform(mapping, record);
 
     if (!result.name)

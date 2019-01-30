@@ -3,10 +3,13 @@ let import_utils = require("../_utils.js");
 
 let relation_fields = ["host", "clonality", "supplier", "distributor"];
 
-let _getImages = item => {
+let _getImages = item =>
+{
+    let result = null;
+
     if(item.image && item.image.length)
     {
-        return item.image.map((img_data, index) =>{
+        result = item.image.map((img_data, index) =>{
             let img_text = item.img_text instanceof Array ? item.img_text[index] || ""  : index === 0 ? item.img_text || "" : "";
             return {
                 link: img_data.link.replace("../../", "/"),
@@ -16,14 +19,15 @@ let _getImages = item => {
         })
     }
 
-    return null
+    return result
 };
 
 let _getPdf = item =>
 {
-    if(item.pdf)
+    let result = null;
+    if(item.pdf && item.pdf.length)
     {
-        return item.pdf.map(item => {
+        result = item.pdf.map(item => {
             item.link = item.link.replace("../../", "/");
             return item;
         })
@@ -87,9 +91,9 @@ let mapping_step1 = {
     "images"             : record =>  _getImages(record.crawler_item),
     "pdf"                : record =>  _getPdf(record.crawler_item),
     "supplier_specific"  : record => ({
-        link : record.crawler_item.url,
-        ...record.crawler_item ? {"positive_control" : record.crawler_item.positive_control} : "",
-        ...record.crawler_item ? {"dilution_range"  : record.crawler_item.range} : ""
+        ...record.crawler_item && record.crawler_item.url ? {link : record.crawler_item.url} : "",
+        ...record.crawler_item && record.crawler_item.positive_control ? {"positive_control" : record.crawler_item.positive_control} : "",
+        ...record.crawler_item && record.crawler_item.range ? {"dilution_range"  : record.crawler_item.range} : ""
     })
 };
 

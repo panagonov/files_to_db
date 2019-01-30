@@ -13,7 +13,7 @@ let init = async() =>
 };
 
 let _getImages = item => {
-    let result = [];
+    let result = null;
 
     if(item.images && item.images.length)
     {
@@ -31,16 +31,14 @@ let _getImages = item => {
 
 let _getPdf = item =>
 {
-    let result = [];
+    let result = null;
 
     if(item.pdf)
     {
-        result.push({
-            link: item.pdf,
-        })
+        result = [{ link: item.pdf }]
     }
 
-    return result.length ? result : null;
+    return result;
 };
 
 let _getPriceModel = (item, crawler_item) =>

@@ -113,7 +113,11 @@ let mapping = {
 
 let transform = (record) =>
 {
+    if (!record["Product No."])
+        return null;
+
     let result = utils.mapping_transform(mapping, record);
+
     return result;
 };
 

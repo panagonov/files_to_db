@@ -28,22 +28,22 @@ let _getImages = item => {
         }
     }
 
-    return result
+    return result.length ? result : null
 };
 
 let _getPdf = item =>
 {
-    let result = [];
+    let result = null;
 
     if(item.pdf)
     {
-        result.push({
+        result = [{
             link: item.pdf.link,
             ...item.pdf.preview ? {"thumb_link" : item.pdf.preview} : ""
-        })
+        }]
     }
 
-    return result.length ? result : null;
+    return result;
 };
 
 let _getPriceModel = (item, crawler_item) =>

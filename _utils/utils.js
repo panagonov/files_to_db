@@ -7,6 +7,13 @@ let getValueFromJSON = (jsn, key) =>
         return jsn;
     }
     let parseData = key.split('.');
+
+    if (parseData[parseData.length - 1] === "" && parseData[parseData.length - 2])
+    {
+        parseData[parseData.length - 2] += ".";
+        parseData.pop()
+    }
+
     let currentKey = parseData[0];
     if (!jsn || !jsn.hasOwnProperty(currentKey))
     {

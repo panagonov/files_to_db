@@ -282,6 +282,9 @@ let mapping = {
 
 let transform = (record) =>
 {
+    if (!record["Catalog no"])
+        return null;
+
     let result = utils.mapping_transform(mapping, record);
     return result;
 };

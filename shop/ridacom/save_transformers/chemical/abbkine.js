@@ -4,11 +4,11 @@ let import_utils = require("../_utils.js");
 let relation_fields = ["supplier", "distributor", "application"];
 
 let _getImages = item => {
-    let result = [];
+    let result = null;
 
     if(item.images && item.images.length)
     {
-        item.images.forEach(link => result.push({link: link}))
+        result = item.images.map(link => ({link: link}))
     }
 
     return result
@@ -16,11 +16,11 @@ let _getImages = item => {
 
 let _getPdf = item =>
 {
-    let result = [];
+    let result = null;
 
     if(item.pdf)
     {
-        result.push({link: item.pdf})
+        result =[{link: item.pdf}]
     }
 
     return result;

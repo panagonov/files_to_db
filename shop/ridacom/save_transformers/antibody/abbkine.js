@@ -13,11 +13,11 @@ let init = async() =>
 };
 
 let _getImages = item => {
-    let result = [];
+    let result = null;
 
     if(item.images && item.images.length)
     {
-        item.images.forEach(link => result.push({link: link}))
+        result = item.images.map(link => ({link: link}))
     }
 
     return result
@@ -25,11 +25,11 @@ let _getImages = item => {
 
 let _getPdf = item =>
 {
-    let result = [];
+    let result = null;
 
     if(item.pdf)
     {
-        result.push({link: item.pdf})
+        result = [{link: item.pdf}]
     }
 
     return result;
@@ -175,22 +175,16 @@ let mapping_step2 = {
 let convert = (item, crawler_item, custom_data) =>
 {
     let bio_object_data = custom_data[item.accession];
-    try{
 
-        let record = Object.assign({}, item, {crawler_item: crawler_item, bio_object_data : bio_object_data});
-        let result_step1 = utils.mapping_transform(mapping_step1, record);
-        let result_step2 = utils.mapping_transform(mapping_step2, result_step1);
-        let result = Object.assign(result_step1, result_step2);
+    let record = Object.assign({}, item, {crawler_item: crawler_item, bio_object_data : bio_object_data});
+    let result_step1 = utils.mapping_transform(mapping_step1, record);
+    let result_step2 = utils.mapping_transform(mapping_step2, result_step1);
+    let result = Object.assign(result_step1, result_step2);
 
-        let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "antibody");
+    let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "antibody");
 
-        relation_fields.forEach(name => delete result[name]);
-        return {converted_item : result, suggest_data}
-    }
-    catch(e)
-    {
-        debugger
-    }
+    relation_fields.forEach(name => delete result[name]);
+    return {converted_item : result, suggest_data}
 };
 
 let load_custom_data = async(mongo_db,crawler_db, result) => {
