@@ -42,16 +42,17 @@ let aggregate_elisa_kits = async(mongo_db) =>
     console.log("elisa_kit research_area...");
     await mongo_db.drop("_agg_cloud_clone_elisa_kit_research_area");
     await mongo_db.aggregate("product", {unwind: "research_area", match: {tid: "ridacom", src: "cloud_clone", type: "elisa_kit"}, group: {_id : "$research_area", total : {$sum : 1}}, out: "_agg_cloud_clone_elisa_kit_research_area", options: {allowDiskUse: true}});
-
-    // console.log("elisa_kit sensitivity...");
-    // await mongo_db.drop("_agg_cloud_clone_elisa_kit_sensitivity");
-    // await mongo_db.aggregate("product", {match: {tid: "ridacom", src: "cloud_clone", type: "elisa_kit"}, group: {_id : "$sensitivity", total : {$sum : 1}}, out: "_agg_cloud_clone_elisa_kit_sensitivity", options: {allowDiskUse: true}});
-    //
-    // console.log("elisa_kit sample_type...");
-    // await mongo_db.drop("_agg_cloud_clone_elisa_kit_sample_type");
-    // await mongo_db.aggregate("product", {match: {tid: "ridacom", src: "cloud_clone", type: "elisa_kit"}, group: {_id : "$sample_type", total : {$sum : 1}}, out: "_agg_cloud_clone_elisa_kit_sample_type", options: {allowDiskUse: true}});
 };
 
+let aggregate_protein = async(mongo_db) =>
+{
+    let src = "cloud_clone";
+    let type = "protein";
+
+    console.log(`${type} preparation_method...`);
+    await mongo_db.drop(`_agg_${src}_${type}_host`);
+    await mongo_db.aggregate("product", {match: {tid: "ridacom", src: src, type: type}, group: {_id : "$host", total : {$sum : 1}}, out: `_agg_${src}_${type}_host`, options: {allowDiskUse: true}});
+};
 
 
 let aggregate = async(mongo_db) =>
@@ -59,6 +60,7 @@ let aggregate = async(mongo_db) =>
     console.log("Aggregate Cloud Clone:");
     await aggregate_antibodies(mongo_db);
     await aggregate_elisa_kits(mongo_db);
+    await aggregate_protein(mongo_db);
 };
 
 module.exports = {

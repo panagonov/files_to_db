@@ -46,11 +46,23 @@ let aggregate_elisa_kits = async(mongo_db) =>
     await mongo_db.aggregate("product", {match: {tid: "ridacom", src: src, type: type}, group: {_id : "$conjugate", total : {$sum : 1}}, out: `_agg_${src}_${type}_conjugate`, options: {allowDiskUse: true}});
 };
 
+
+let aggregate_protein = async(mongo_db) =>
+{
+    let src = "abbkine";
+    let type = "protein";
+
+    console.log(`${type} preparation_method...`);
+    await mongo_db.drop(`_agg_${src}_${type}_reactivity`);
+    await mongo_db.aggregate("product", {match: {tid: "ridacom", src: src, type: type}, group: {_id : "$preparation_method", total : {$sum : 1}}, out: `_agg_${src}_${type}_preparation_method`, options: {allowDiskUse: true}});
+};
+
 let aggregate = async(mongo_db) =>
 {
     console.log("Aggregate Abbkine:");
     await aggregate_antibody(mongo_db);
     await aggregate_elisa_kits(mongo_db);
+    await aggregate_protein(mongo_db);
 };
 
 module.exports = {

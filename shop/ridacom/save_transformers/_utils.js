@@ -14,16 +14,37 @@ let size_parser = size => {
     }
 };
 
+let semantica_process_hash = {};
+
+let get_semantica_process = (types) =>
+{
+    let key = types.sort((a,b) => a < b ? -1 : 1).join("_");
+    if (semantica_process_hash[key])
+        return semantica_process_hash[key];
+
+    let phases = [":stop_word"].concat(types, ["atom_name"]).map(phase_name => semantica.phases_data[phase_name]);
+    semantica_process_hash[key] = semantica.generateCustomProcess(phases);
+
+    return semantica_process_hash[key]
+};
+
+let get_semantica_results = (text, types) =>
+{
+    let db = semantica.getDb();
+    let custom_process = get_semantica_process(types);
+    let atoms = semantica.analyseSpeech("eng", text, custom_process);
+
+    return {atoms, db}
+};
+
 let get_canonical = (text, type) =>
 {
     if (typeof type === "string")
         type = [type];
 
-    let db = semantica.getDb();
-    let atoms = semantica.analyseSpeech("eng", text);
+    let {atoms, db} = get_semantica_results(text, type);
 
-    atoms = atoms
-    .reduce((res, atom) => {
+    atoms = atoms.reduce((res, atom) => {
         if (!res.some(item => item[1] === atom[1]))
             res.push(atom);
 
@@ -163,6 +184,28 @@ let build_search_data = (record, relation_fields) =>
         })
     });
 
+    (record.aliases || []).forEach((alias, ind) => {
+        result.push({key: `aliases.${ind}`, text : alias})
+    });
+
+    return result
+};
+
+let build_service_data = (record, relation_fields) => {
+
+    let result = {};
+    relation_fields.forEach(field_name =>
+        record[field_name] && record[field_name].length ? result[field_name + "_relations"] =  record[field_name].map(([,key]) => key) : null
+    );
+
+    result["ui"] = relation_fields.reduce((res, field_name) => {
+        if (record[field_name] && record[field_name].length)
+            res[field_name] = record[field_name].map(([,,name]) => name);
+        return res
+    }, {});
+
+    result["search_data"] = build_search_data(record, relation_fields);
+
     return result
 };
 
@@ -171,7 +214,8 @@ module.exports = {
     size_parser,
     get_canonical,
     build_suggest_data_antibody_elisa_kit,
-    build_search_data
+    build_search_data,
+    build_service_data
 };
 
 // let test = (text) =>
@@ -182,7 +226,7 @@ module.exports = {
 //     console.log(res)
 //     debugger
 // };
-//
-// console.log(test("Biotin" ))
 
-// console.log(get_canonical("Rat CHO Guinea pig E.coli 293F Mouse Rabbit n/a null", [":host", ":reactivity"]));
+// console.log(test("Baculovirus-Insect Cells" ))
+
+console.log(get_canonical("Baculovirus-Insect Cells", [":preparation_method"]));

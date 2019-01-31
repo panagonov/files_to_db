@@ -7,17 +7,21 @@ let collection_name         = "product";
 let suggest_collection_name = "shop_suggest";
 
 let mapping = {
-    // "antibody" : {
-    //     "cloud_clone" : {converter: require("./save_transformers/antibody/cloud_clone.js"),     version: 2},
-    //     "abbkine"     : {converter: require("./save_transformers/antibody/abbkine.js"),         version: 2},
-    //     "genome_me"   : {converter: require("./save_transformers/antibody/genome_me.js"),       version: 2}
-    // },
-    // "elisa_kit" : {
-    //     "cloud_clone" : {converter: require("./save_transformers/elisa_kit/cloud_clone.js"),    version: 2},
-    //     "abbkine"     : {converter: require("./save_transformers/elisa_kit/abbkine.js"),        version: 2}
-    // },
+    "antibody" : {
+        "cloud_clone" : {converter: require("./save_transformers/antibody/cloud_clone.js"),     version: 2},
+        "abbkine"     : {converter: require("./save_transformers/antibody/abbkine.js"),         version: 1},
+        "genome_me"   : {converter: require("./save_transformers/antibody/genome_me.js"),       version: 2}
+    },
+    "elisa_kit" : {
+        "cloud_clone" : {converter: require("./save_transformers/elisa_kit/cloud_clone.js"),    version: 2},
+        "abbkine"     : {converter: require("./save_transformers/elisa_kit/abbkine.js"),        version: 2}
+    },
     "chemical" : {
-        "abbkine"     : {converter: require("./save_transformers/chemical/abbkine.js"),        version: 1}
+        "abbkine"     : {converter: require("./save_transformers/chemical/abbkine.js"),         version: 2}
+    },
+    "protein" : {
+        "cloud_clone" : {converter: require("./save_transformers/protein/cloud_clone.js"),      version: 2},
+        "abbkine"     : {converter: require("./save_transformers/protein/abbkine.js"),          version: 4}
     }
 };
 

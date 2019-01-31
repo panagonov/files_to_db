@@ -129,7 +129,7 @@ let mapping_step2 = {
 
 let _get_bio_object_data = (item, custom_data) =>
 {
-    let bio_ids = (item.accession || "").split("/");
+    let bio_ids = (item.accession || "").split("/").map(it => it.trim().split("-").shift());
     let missing_data = [];
 
     let bio_object_data = bio_ids.reduce((res,id) => {
@@ -168,6 +168,7 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
         .filter(id => id)
         .reduce((res, id) => {
             res = res.concat(id.split("/"));
+            res = res.map(it => it.trim().split("-").shift());
             return res
         }, [])
     );
