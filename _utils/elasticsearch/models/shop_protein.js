@@ -86,10 +86,6 @@ exports.schema =
                 "type" : "array",
                 "items": {"type": "string"}
             },
-            "alternative"       : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
             "supplier_specific" : {
                 "type": "object",
                 "additionalProperties": true

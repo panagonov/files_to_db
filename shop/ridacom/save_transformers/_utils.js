@@ -79,10 +79,16 @@ let build_suggest_data_antibody_elisa_kit = (record, relation_fields, category) 
     if (name_alias.indexOf(")") !== -1)
     {
         let alias = name_alias.replace(")", "").trim();
-        result[`${category}_${human_readable_id(alias)}`] = {
-            type    : category,
-            category: [category],
-            name    : alias
+        let _id = human_readable_id(alias);
+        if (result[_id])
+            result[_id].type.push(category);
+        else
+        {
+            result[_id] = {
+                type    : [category],
+                category: [category],
+                name    : alias
+            }
         }
     }
 
@@ -92,17 +98,22 @@ let build_suggest_data_antibody_elisa_kit = (record, relation_fields, category) 
             if (!bio_object.name)
                 return;
 
-            let id = `protein_${human_readable_id(bio_object.name)}`;
+            let id = human_readable_id(bio_object.name);
             let all_aliases = bio_object.aliases || [];
 
             let  {aliases, syn} = separate_aliases_and_synonyms(all_aliases);
 
-            result[id] = {
-                type    : "protein",
-                category: [category],
-                name    : bio_object.name,
-                ...aliases.length ? {aliases : aliases} : "",
-                ...syn.length ? {synonyms : syn} : ""
+            if (result[id])
+                result[id].type.push("protein");
+            else
+                {
+                result[id] = {
+                    type    : ["protein"],
+                    category: [category],
+                    name    : bio_object.name,
+                    ...aliases.length ? {aliases : aliases} : "",
+                    ...syn.length ? {synonyms : syn} : ""
+                }
             }
         })
     }
@@ -116,17 +127,21 @@ let build_suggest_data_antibody_elisa_kit = (record, relation_fields, category) 
             if (!name || !name.trim())
                 return;
 
-            let id = `${field_name}_${key}`;
+            let id = key;
             let all_aliases = (synonyms || []).map(({name}) => name);
             let  {aliases, syn} = separate_aliases_and_synonyms(all_aliases);
 
-            result[id] = {
-                type    : field_name,
-                category: [category],
-                name    : name,
-                ...aliases.length ? {aliases : aliases} : "",
-                ...syn.length ? {synonyms : syn} : ""
-            };
+            if (result[id])
+                result[id].type.push(field_name);
+            else {
+                result[id] = {
+                    type    : [field_name],
+                    category: [category],
+                    name    : name,
+                    ...aliases.length ? {aliases : aliases} : "",
+                    ...syn.length ? {synonyms : syn} : ""
+                };
+            }
         })
     });
 
@@ -218,15 +233,4 @@ module.exports = {
     build_service_data
 };
 
-// let test = (text) =>
-// {
-//     let db = semantica.getDb();
-//     let res = semantica.analyseSpeech("eng", text);
-//     // let parents = semantica.knowledge.getTagParents(db, res[0][1]);
-//     console.log(res)
-//     debugger
-// };
-
-// console.log(test("Baculovirus-Insect Cells" ))
-
-console.log(get_canonical("Baculovirus-Insect Cells", [":preparation_method"]));
+// console.log(get_canonical("Baculovirus-Insect Cells", [":preparation_method"]));

@@ -8,20 +8,20 @@ let suggest_collection_name = "shop_suggest";
 
 let mapping = {
     "antibody" : {
-        "cloud_clone" : {converter: require("./save_transformers/antibody/cloud_clone.js"),     version: 2},
-        "abbkine"     : {converter: require("./save_transformers/antibody/abbkine.js"),         version: 1},
-        "genome_me"   : {converter: require("./save_transformers/antibody/genome_me.js"),       version: 2}
+        "cloud_clone" : {converter: require("./save_transformers/antibody/cloud_clone.js"),     version: 7},
+        "abbkine"     : {converter: require("./save_transformers/antibody/abbkine.js"),         version: 7},
+        "genome_me"   : {converter: require("./save_transformers/antibody/genome_me.js"),       version: 7}
     },
     "elisa_kit" : {
-        "cloud_clone" : {converter: require("./save_transformers/elisa_kit/cloud_clone.js"),    version: 2},
-        "abbkine"     : {converter: require("./save_transformers/elisa_kit/abbkine.js"),        version: 2}
+        "cloud_clone" : {converter: require("./save_transformers/elisa_kit/cloud_clone.js"),    version: 7},
+        "abbkine"     : {converter: require("./save_transformers/elisa_kit/abbkine.js"),        version: 7}
     },
     "chemical" : {
-        "abbkine"     : {converter: require("./save_transformers/chemical/abbkine.js"),         version: 2}
+        "abbkine"     : {converter: require("./save_transformers/chemical/abbkine.js"),         version: 7}
     },
     "protein" : {
-        "cloud_clone" : {converter: require("./save_transformers/protein/cloud_clone.js"),      version: 2},
-        "abbkine"     : {converter: require("./save_transformers/protein/abbkine.js"),          version: 4}
+        "cloud_clone" : {converter: require("./save_transformers/protein/cloud_clone.js"),      version: 7},
+        "abbkine"     : {converter: require("./save_transformers/protein/abbkine.js"),          version: 7}
     }
 };
 
@@ -49,25 +49,31 @@ let _save_suggest_data = async (suggest_data) =>
     let start_index = 0;
     let end_index = 0;
     let suggest_category_hash = {};
+    let suggest_type_hash = {};
 
     do {
         start_index = page * size;
         end_index = start_index + size;
-        let ids = all_ids.slice(start_index, end_index);
+        let ids = all_ids.slice(start_index, end_index).filter(id => id);
 
-        let db_data = await es_db.read_unlimited(suggest_collection_name, {body: {"query" : {"terms" : {"_id" : ids}}, "_source" : ["category"]}, size: ids.length});
+        let db_data = await es_db.read_unlimited(suggest_collection_name, {body: {"query" : {"terms" : {"_id" : ids}}, "_source" : ["category", "type"]}, size: ids.length});
         db_data.data.forEach(item => suggest_category_hash[item._id] = item.category);
+        db_data.data.forEach(item => suggest_type_hash[item._id] = item.type);
         page++;
     }
     while(end_index < all_ids.length);
 
     let es_bulk = Object.keys(suggest_data).map(id => {
-        let item_in_hash = suggest_category_hash[id];
-        let command = item_in_hash ? "update" : "index";
+        let item_in_category_hash = suggest_category_hash[id];
+        let item_in_type_hash = suggest_type_hash[id];
+        let command = item_in_category_hash || item_in_type_hash ? "update" : "index";
 
         let document = suggest_data[id];
-        if (item_in_hash) {
-            document.category = utils.uniq(document.category.concat(item_in_hash));
+        if (item_in_category_hash) {
+            document.category = utils.uniq(document.category.concat(item_in_category_hash));
+        }
+        if (item_in_type_hash) {
+            document.type = utils.uniq(document.type.concat(item_in_type_hash));
         }
 
         return {model_title: suggest_collection_name, command_name: command, "_id": id, "document":document}});

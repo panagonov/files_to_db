@@ -79,7 +79,7 @@ let _getPriceModel = (item, crawler_item) =>
     return result;
 };
 
-let mapping_step1 = {
+let mapping = {
     "name"               : "name",
     "oid"                : "oid",
     "human_readable_id"  : record => import_utils.human_readable_id(record.name) + "_" + record.oid,
@@ -117,38 +117,22 @@ let mapping_step1 = {
     })
 };
 
-let mapping_step2 = {
-    "host_relations"          : record => record.host && record.host.length? record.host.map(([,key]) => key) : null,
-    "reactivity_relations"    : record => record.reactivity && record.reactivity.length? record.reactivity.map(([,key]) => key) : null,
-    "application_relations"   : record => record.application && record.application.length? record.application.map(([,key]) => key) : null,
-    "isotype_relations"       : record => record.isotype && record.isotype.length? record.isotype.map(([,key]) => key) : null,
-    "light_chain_relations"   : record => record.light_chain && record.light_chain.length ? record.light_chain.map(([,key]) => key) : null,
-    "heavy_chain_relations"   : record => record.heavy_chain && record.heavy_chain.length ? record.heavy_chain.map(([,key]) => key) : null,
-    "clonality_relations"     : record => record.clonality && record.clonality.length ? record.clonality.map(([,key]) => key) : null,
-    "research_area_relations" : record => record.research_area && record.research_area.length ? record.research_area.map(([,key]) => key) : null,
-    "supplier_relations"      : record => record.supplier && record.supplier.length ? record.supplier.map(([,key]) => key) : null,
-    "distributor_relations"   : record => record.distributor && record.distributor.length ? record.distributor.map(([,key]) => key) : null,
-    "ui"                      : record =>  relation_fields.reduce((res, field_name) => {
-                                        if (record[field_name] && record[field_name].length)
-                                            res[field_name] = record[field_name].map(([,,name]) => name);
-                                        return res
-                                    }, {}),
-
-    "search_data": record => import_utils.build_search_data(record, relation_fields)
-};
-
 let convert = (item, crawler_item) =>
 {
     let record = Object.assign({}, item, {crawler_item: crawler_item});
-    let result_step1 = utils.mapping_transform(mapping_step1, record);
-    let result_step2 = utils.mapping_transform(mapping_step2, result_step1);
-    let result = Object.assign(result_step1, result_step2);
+
+    let result = utils.mapping_transform(mapping, record);
+    let service_data = import_utils.build_service_data(result, relation_fields);
+    result = Object.assign(result, service_data);
 
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "antibody");
 
     relation_fields.forEach(name => delete result[name]);
 
-    return {converted_item : result, suggest_data}
+    return {
+        converted_item : result,
+        suggest_data
+    }
 };
 
 module.exports = {

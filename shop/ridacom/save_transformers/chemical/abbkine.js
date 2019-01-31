@@ -10,6 +10,7 @@ let _getImages = item => {
     {
         result = item.images.map((link, index) => {
             let text = item.images_text && item.images_text[index] ? item.images_text[index] : "";
+            text = text.replace(/\s+/g, " ").trim();
             return {
                 link: link,
                 ...text ? {text: text} : ""

@@ -33,7 +33,10 @@ module.exports = {
                 }
             },
             "type"   : {
-                "type": "string"
+                "type" : "array",
+                "items": {
+                    "type": "string"
+                }
             }
         },
         "additionalProperties": false
