@@ -23,7 +23,7 @@ let mapping = {
         "abbkine"     : {converter: require("./save_transformers/protein/abbkine.js"),          version: 7}
     },
     "equipment" : {
-        "capp"        : {converter: require("./save_transformers/equipment/capp.js"),           version: 3},
+        "capp"        : {converter: require("./save_transformers/equipment/capp.js"),           version: 4},
     }
 };
 
