@@ -142,5 +142,3 @@ let convert = (item, crawler_item) =>
 module.exports = {
     convert
 };
-
-// console.log(import_utils.get_canonical("Competitive Inhibition", [":test_method"]));

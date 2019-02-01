@@ -2,8 +2,8 @@ let utils = require("../../../../_utils/utils.js");
 let product_list = require("./product_list.json");
 
 let mapping = {
-    "_id"              : (record) => `PRODUCT_SOURCE:[CAPP]_SUPPLIER:[RIDACOM]_ID:[${record["Catalogue number"] || ""}]`,
-    "oid"              : "Catalogue number",
+    "_id"              : record => `PRODUCT_SOURCE:[CAPP]_SUPPLIER:[RIDACOM]_ID:[${record["Catalogue number"].trim() || ""}]`,
+    "oid"              : record => record["Catalogue number"].trim(),
     "tid"              : result => "ridacom",
     "src"              : result => "capp",
     "type"             : result => "equipment",

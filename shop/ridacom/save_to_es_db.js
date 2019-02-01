@@ -1,7 +1,6 @@
 let fs       = require("fs");
 let es_db    = require("../../_utils/elasticsearch/db.js");
 let utils    = require("../../_utils/utils.js");
-let Mongo_db = require("../../_utils/db.js");
 
 let collection_name         = "product";
 let suggest_collection_name = "shop_suggest";
@@ -22,16 +21,12 @@ let mapping = {
     "protein" : {
         "cloud_clone" : {converter: require("./save_transformers/protein/cloud_clone.js"),      version: 7},
         "abbkine"     : {converter: require("./save_transformers/protein/abbkine.js"),          version: 7}
+    },
+    "equipment" : {
+        "capp"        : {converter: require("./save_transformers/equipment/capp.js"),           version: 3},
     }
 };
 
-let crawler_db;
-
-let init = async() => {
-    await es_db.init();
-    crawler_db = new Mongo_db();
-    await crawler_db.init({host: "85.10.244.21", database: "crawlers", user: "hashstyle", "pass": "Ha5h5tylE"});
-};
 
 let build_index = async(mongo_db) =>
 {
@@ -82,7 +77,7 @@ let _save_suggest_data = async (suggest_data) =>
         await es_db.bulk(es_bulk);
 };
 
-let _load_crawler_data = async (items) =>
+let _load_crawler_data = async (items, crawler_db) =>
 {
     let crawler_ids = items.map(({oid}) => oid);
 
@@ -95,7 +90,7 @@ let _load_crawler_data = async (items) =>
     }, {});
 };
 
-let save_to_db = async(mongo_db, type, site) =>
+let save_to_db = async(mongo_db, crawler_db, type, site) =>
 {
     let converter      =  mapping[type][site].converter;
     let export_version = mapping[type][site].version;
@@ -118,7 +113,7 @@ let save_to_db = async(mongo_db, type, site) =>
 
         result = await mongo_db.read(collection_name, {body: {type: type, src: site, tid: "ridacom", export_version: {$ne : export_version}}, size: limit});
 
-        let crawler_hash = await _load_crawler_data(result);
+        let crawler_hash = await _load_crawler_data(result, crawler_db);
 
         if (converter.load_custom_data)
         {
@@ -170,16 +165,15 @@ let save_to_db = async(mongo_db, type, site) =>
         fs.writeFileSync(__dirname + `/errors_custom_${site}_${type}.json`, JSON.stringify(utils.uniq(custom_errors)), "utf8");
 };
 
-let run = async(mongo_db) =>
+let run = async(mongo_db, crawler_db) =>
 {
-    await init();
     await build_index(mongo_db);
 
     for (let type in mapping)
     {
         for (let site in mapping[type])
         {
-           await save_to_db(mongo_db, type, site)
+           await save_to_db(mongo_db, crawler_db, type, site)
         }
     }
 };
