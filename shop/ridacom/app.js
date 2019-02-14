@@ -4,6 +4,7 @@
  * https://www.abbkine.com/
  * https://www.capp.dk/
  * http://www.genomeme.ca
+ * https://www.adamequipment.co.uk
  *
  ********************************************************************/
 
@@ -17,14 +18,15 @@ let run = async(mongo_db, crawler_db) =>
 {
     // await file_importer.run(mongo_db, collection_name, "cloud_clone");
     // await file_importer.run(mongo_db, collection_name, "abbkine");
-    await file_importer.run(mongo_db, collection_name, "capp");
+    // await file_importer.run(mongo_db, collection_name, "capp");
     // await file_importer.run(mongo_db, collection_name, "genome_me");
+    await file_importer.run(mongo_db, collection_name, "adam_equipment");
 
     // await aggregate_data(mongo_db, crawler_db, "cloud_clone");
     // await aggregate_data(mongo_db, crawler_db, "abbkine");
     // await aggregate_data(mongo_db, crawler_db, "capp");
 
-    await save_to_es_db.run(mongo_db, crawler_db);
+    // await save_to_es_db.run(mongo_db, crawler_db);
 };
 
 let clean = async(mongo_db) =>

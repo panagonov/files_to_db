@@ -1,0 +1,5 @@
+To generate product_list.json:
+1. Go to https://www.adamequipment.co.uk
+2. Run in console:
+    [].slice.call(document.querySelectorAll(".slp.lsmh ul.mpl li a")).map(item => item.href)
+3. Copy result like array
