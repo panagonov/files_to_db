@@ -324,3 +324,4 @@ exports.settings = {
 };
 
 exports.database = 'elasticsearch';
+exports.category = 'shop_product';

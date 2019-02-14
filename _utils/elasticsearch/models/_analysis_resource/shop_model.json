@@ -32,7 +32,8 @@
                                 },
                                 "additionalProperties": false
                             },
-                            "product_id": {"type": "string"},
+                            "product_id"        : {"type": "string"},
+                            "final_price"       : {"type": "number"},
                             "size"      : {
                                 "type"      : "object",
                                 "properties": {
@@ -111,7 +112,8 @@
                                 "currency": {"type": "keyword"}
                             }
                         },
-                        "product_id": {"type": "keyword"},
+                        "product_id"                    : {"type": "keyword"},
+                        "final_price"                   : {"type": "float"},
                         "size"      : {
                             "type"      : "object",
                             "properties": {

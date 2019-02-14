@@ -25,114 +25,6 @@ exports.schema =
                     }
                 }
             },
-            "category_relations"       : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
-            "sub_category_relations"       : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
-            "distributor_relations"       : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
-            "supplier_relations"       : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
-            "specification"       : {
-                "type" : "array",
-                "items": {"type": "string"}
-            },
-            "table_specification"       : {
-                "type": "array",
-                "items": {"type": "object"}
-            },
-
-            "supplier_specific" : {
-                "type": "object",
-                "additionalProperties": true
-            },
-            "pdf"               : {
-                "type" : "array",
-                "items": {
-                    "type"      : "object",
-                    "properties": {
-                        "link"      : {"type": "string"},
-                        "text"      : {"type": "string"},
-                        "type"      : {"type": "string"},
-                        "thumb_link": {"type": "string"}
-                    }
-                }
-            },
-            "images"            : {
-                "type" : "array",
-                "items": {
-                    "type"      : "object",
-                    "properties": {
-                        "link"      : {"type": "string"},
-                        "text"      : {"type": "array", "items": {"type": "string"}},
-                        "type"      : {"type": "string"},
-                        "thumb_link": {"type": "string"}
-                    }
-                }
-            },
-            "price_model"       : shop_model.schema.price_model,
-            "search_data"       : {
-                "type": "array",
-                "items" : {
-                    "type" : "object",
-                    "properties" : {
-                        "key" : {"type" : "string"},
-                        "text": {"type" : "string"}
-                    }
-                }
-            },
-            "ui"                : {
-                "category": {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                },
-                "sub_category": {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                },
-                "supplier": {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                },
-                "distributor": {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                }
-            }
-        },
-
-        "additionalProperties": false
-    };
-
-exports.schema =
-    {
-        "title"     : "equipment",
-        "type"      : "object",
-        "properties": {
-
-            "_id"               : {"type": "string"},
-            "name"              : {"type": "string"},
-            "description"       : {"type": "string"},
-            "oid"               : {"type": "string"},
-            "human_readable_id" : {"type": "string"},
-            "external_links"    : {
-                "type" : "array",
-                "items": {
-                    "type"      : "object",
-                    "properties": {
-                        "key": {"type": "string"},
-                        "id" : {"type": "string"}
-                    }
-                }
-            },
             "product_category_relations"       : {
                 "type" : "array",
                 "items": {"type": "string"}
@@ -343,3 +235,4 @@ exports.settings = {
 };
 
 exports.database = 'elasticsearch';
+exports.category = 'shop_product';
