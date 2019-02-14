@@ -1,7 +1,7 @@
 let fs               = require('fs');
 let parse            = require('csv-parse');
 let transform        = require('stream-transform');
-let progress         = require("./file_importer_progress.json");
+let progress         = require("./_cache/file_importer_progress.json");
 let directory_reader = require("../../_utils/directory_reader.js");
 
 let transformers;
@@ -99,7 +99,7 @@ let run = async (db, supplier_name, source_name) =>
             progress[supplier_name] = progress[supplier_name] || {};
             progress[supplier_name][source_name] = progress[supplier_name][source_name] || {};
             progress[supplier_name][source_name][file_name] = 1;
-            fs.writeFileSync(__dirname + "/file_importer_progress.json", JSON.stringify(progress), "utf8");
+            fs.writeFileSync(__dirname + "/_cache/file_importer_progress.json", JSON.stringify(progress), "utf8");
             console.log(counter);
             counter = 0;
 
@@ -111,7 +111,7 @@ clean = async (db)=>
 {
     mongo_db = db;
 
-    fs.writeFileSync(__dirname + "/progress.json", "{}", "utf8");
+    fs.writeFileSync(__dirname + "/_cache/file_importer_progress.json", "{}", "utf8");
 
     for (let key in transformers)
     {

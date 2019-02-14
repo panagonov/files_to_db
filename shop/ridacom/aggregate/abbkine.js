@@ -65,6 +65,26 @@ let aggregate = async(mongo_db) =>
     await aggregate_protein(mongo_db);
 };
 
+let clean = async(mongo_db) => {
+    let src = "abbkine";
+    let type = "antibody";
+    await mongo_db.drop(`_agg_${src}_${type}_host`);
+    await mongo_db.drop(`_agg_${src}_${type}_reactivity`);
+    await mongo_db.drop(`_agg_${src}_${type}_application`);
+    await mongo_db.drop(`_agg_${src}_${type}_isotype`);
+    await mongo_db.drop(`_agg_${src}_${type}_immunogen`);
+    await mongo_db.drop(`_agg_${src}_${type}_conjugate`);
+
+    type = "elisa_kit";
+    await mongo_db.drop(`_agg_${src}_${type}_reactivity`);
+    await mongo_db.drop(`_agg_${src}_${type}_type`);
+    await mongo_db.drop(`_agg_${src}_${type}_conjugate`);
+
+    type = "protein";
+    await mongo_db.drop(`_agg_${src}_${type}_reactivity`);
+};
+
 module.exports = {
-    aggregate
+    aggregate,
+    clean
 };

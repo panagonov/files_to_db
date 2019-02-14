@@ -5,28 +5,32 @@ let utils    = require("../../_utils/utils.js");
 let collection_name         = "product";
 let suggest_collection_name = "shop_suggest";
 
-let mapping = {
+let versions = {
     "antibody" : {
-        "cloud_clone" : {converter: require("./save_transformers/antibody/cloud_clone.js"),     version: 7},
-        "abbkine"     : {converter: require("./save_transformers/antibody/abbkine.js"),         version: 7},
-        "genome_me"   : {converter: require("./save_transformers/antibody/genome_me.js"),       version: 7}
+        "cloud_clone"       :  7,
+        "abbkine"           : 7,
+        "genome_me"         : 7
     },
     "elisa_kit" : {
-        "cloud_clone" : {converter: require("./save_transformers/elisa_kit/cloud_clone.js"),    version: 7},
-        "abbkine"     : {converter: require("./save_transformers/elisa_kit/abbkine.js"),        version: 7}
+        "cloud_clone"       : 7,
+        "abbkine"           : 7
     },
     "chemical" : {
-        "abbkine"     : {converter: require("./save_transformers/chemical/abbkine.js"),         version: 7}
+        "abbkine"           : 7
     },
     "protein" : {
-        "cloud_clone" : {converter: require("./save_transformers/protein/cloud_clone.js"),      version: 7},
-        "abbkine"     : {converter: require("./save_transformers/protein/abbkine.js"),          version: 7}
+        "cloud_clone"       : 7,
+        "abbkine"           : 7
     },
     "equipment" : {
-        "capp"        : {converter: require("./save_transformers/equipment/capp.js"),           version: 4},
+        "capp"              : 4,
+        "adam_equipment"    : 1,
     }
 };
 
+let directory_reader = require("../../_utils/directory_reader.js");
+
+let converters = directory_reader(`${__dirname}/save_transformers/`, "js", true);
 
 let build_index = async(mongo_db) =>
 {
@@ -92,8 +96,11 @@ let _load_crawler_data = async (items, crawler_db) =>
 
 let save_to_db = async(mongo_db, crawler_db, type, site) =>
 {
-    let converter      =  mapping[type][site].converter;
-    let export_version = mapping[type][site].version;
+    let converter      =  converters[type][site];
+    let export_version =  versions[type][site] || 1;
+
+    if (!converter)
+        return;
 
     if (converter.init)
         await converter.init();
@@ -158,20 +165,20 @@ let save_to_db = async(mongo_db, crawler_db, type, site) =>
     while(result.length === limit);
 
     if(not_found.length)
-        fs.writeFileSync(__dirname + `/not_found_${site}_${type}.json`, JSON.stringify(not_found), "utf8");
+        fs.writeFileSync(__dirname + `/_missing_data/not_found_${site}_${type}.json`, JSON.stringify(not_found), "utf8");
     if(not_found_custom.length)
-        fs.writeFileSync(__dirname + `/not_found_custom_${site}_${type}.json`, JSON.stringify(utils.uniq(not_found_custom)), "utf8");
+        fs.writeFileSync(__dirname + `/_missing_data/not_found_custom_${site}_${type}.json`, JSON.stringify(utils.uniq(not_found_custom)), "utf8");
     if(custom_errors.length)
-        fs.writeFileSync(__dirname + `/errors_custom_${site}_${type}.json`, JSON.stringify(utils.uniq(custom_errors)), "utf8");
+        fs.writeFileSync(__dirname + `/_missing_data/errors_custom_${site}_${type}.json`, JSON.stringify(utils.uniq(custom_errors)), "utf8");
 };
 
 let run = async(mongo_db, crawler_db) =>
 {
     await build_index(mongo_db);
 
-    for (let type in mapping)
+    for (let type in converters)
     {
-        for (let site in mapping[type])
+        for (let site in converters[type])
         {
            await save_to_db(mongo_db, crawler_db, type, site)
         }

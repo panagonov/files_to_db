@@ -1,6 +1,6 @@
 let utils        = require("../../../../_utils/utils.js");
 let Mongo_db     = require("../../../../_utils/db.js");
-let import_utils = require("../_utils.js");
+let import_utils = require("../../../_utils/save_utils.js");
 
 let uniprot_db;
 

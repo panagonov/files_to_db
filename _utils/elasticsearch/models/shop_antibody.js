@@ -80,13 +80,10 @@ exports.schema =
             "storage_conditions" : {"type": "string"},
             "delivery_conditions": {"type": "string"},
             "immunogen"          : {"type": "string"},
+            "original_link"      : {"type": "string"},
             "research_area"     : {
                 "type" : "array",
                 "items": {"type": "string"}
-            },
-            "supplier_specific" : {
-                "type": "object",
-                "additionalProperties": true
             },
             "pdf"               : {
                 "type" : "array",
@@ -96,7 +93,8 @@ exports.schema =
                         "link"      : {"type": "string"},
                         "text"      : {"type": "string"},
                         "type"      : {"type": "string"},
-                        "thumb_link": {"type": "string"}
+                        "thumb_link": {"type": "string"},
+                        "lang"      : {"type": "string"}
                     }
                 }
             },
@@ -126,6 +124,14 @@ exports.schema =
                         "text": {"type" : "string"}
                     }
                 }
+            },
+            "supplier_specific" : {
+                "type": "object",
+                "additionalProperties": true
+            },
+            "distributor_only" : {
+                "type": "object",
+                "additionalProperties": true
             },
             "ui"                : {
                 "host"       : {"type": "string"},
@@ -255,6 +261,7 @@ exports.settings = {
                     "shelf_life"             : {"type": "keyword"},
                     "storage_conditions"     : {"type": "keyword"},
                     "delivery_conditions"    : {"type": "keyword"},
+                    "original_link"          : {"type": "keyword"},
                     "pdf"               : {
 
                         "type"      : "object",
@@ -262,7 +269,8 @@ exports.settings = {
                             "link"      : {"type": "keyword"},
                             "text"      : {"type": "keyword"},
                             "type"      : {"type": "keyword"},
-                            "thumb_link": {"type": "keyword"}
+                            "thumb_link": {"type": "keyword"},
+                            "lang"      : {"type": "keyword"}
                         }
                     },
 
@@ -314,6 +322,10 @@ exports.settings = {
                     },
 
                     "supplier_specific": {
+                        "type": "object",
+                        "properties" : {}
+                    },
+                    "distributor_only": {
                         "type": "object",
                         "properties" : {}
                     }

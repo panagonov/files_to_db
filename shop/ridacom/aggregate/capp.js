@@ -26,6 +26,14 @@ let aggregate = async(mongo_db, crawler_db) =>
     await aggregate_product(mongo_db, crawler_db);
 };
 
+let clean = async(mongo_db) => {
+    let src = "capp";
+    let type = "equipment";
+    await mongo_db.drop(`_agg_${src}_${type}_category`);
+    await mongo_db.drop(`_agg_${src}_${type}_sub_category`);
+};
+
 module.exports = {
-    aggregate
+    aggregate,
+    clean
 };

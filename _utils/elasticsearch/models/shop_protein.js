@@ -66,6 +66,7 @@ exports.schema =
             "isoelectric_point"           : {"type": "number"},
             "source"                      : {"type": "string"},
             "tag"                         : {"type": "string"},
+            "original_link"               : {"type": "string"},
             "activity"                    : {
                 "type" : "array",
                 "items": {
@@ -86,10 +87,6 @@ exports.schema =
                 "type" : "array",
                 "items": {"type": "string"}
             },
-            "supplier_specific" : {
-                "type": "object",
-                "additionalProperties": true
-            },
             "pdf"               : {
                 "type" : "array",
                 "items": {
@@ -98,7 +95,8 @@ exports.schema =
                         "link"      : {"type": "string"},
                         "text"      : {"type": "string"},
                         "type"      : {"type": "string"},
-                        "thumb_link": {"type": "string"}
+                        "thumb_link": {"type": "string"},
+                        "lang"      : {"type": "string"}
                     }
                 }
             },
@@ -124,6 +122,14 @@ exports.schema =
                         "text": {"type" : "string"}
                     }
                 }
+            },
+            "supplier_specific" : {
+                "type": "object",
+                "additionalProperties": true
+            },
+            "distributor_only" : {
+                "type": "object",
+                "additionalProperties": true
             },
             "ui"                : {
                 "preparation_method": {
@@ -240,6 +246,7 @@ exports.settings = {
                     "isoelectric_point"           : {"type": "keyword"},
                     "source"                      : {"type": "keyword"},
                     "tag"                         : {"type": "keyword"},
+                    "original_link"               : {"type": "keyword"},
                     "aliases"                     : {
                         "type": "keyword",
                         "fields": {
@@ -261,7 +268,8 @@ exports.settings = {
                             "link"      : {"type": "keyword"},
                             "text"      : {"type": "keyword"},
                             "type"      : {"type": "keyword"},
-                            "thumb_link": {"type": "keyword"}
+                            "thumb_link": {"type": "keyword"},
+                            "lang"      : {"type": "keyword"}
                         }
                     },
                     "images"                      : {
@@ -305,8 +313,11 @@ exports.settings = {
                             "distributor"       : {"type": "keyword"}
                         }
                     },
-
                     "supplier_specific": {
+                        "type": "object",
+                        "properties" : {}
+                    },
+                    "distributor_only": {
                         "type": "object",
                         "properties" : {}
                     }

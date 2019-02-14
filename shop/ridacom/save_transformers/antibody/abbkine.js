@@ -1,6 +1,6 @@
 let utils        = require("../../../../_utils/utils.js");
 let Mongo_db     = require("../../../../_utils/db.js");
-let import_utils = require("../_utils.js");
+let import_utils = require("../../../_utils/save_utils.js");
 
 let uniprot_db;
 
@@ -191,5 +191,5 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
 module.exports = {
     convert,
     load_custom_data,
-    init
+    init,
 };

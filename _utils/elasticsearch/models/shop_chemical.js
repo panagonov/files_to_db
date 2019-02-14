@@ -51,6 +51,7 @@ exports.schema =
             "preparation_method" : {"type": "string"},
             "formula"            : {"type": "string"},
             "storage_buffer"     : {"type": "string"},
+            "original_link"      : {"type": "string"},
             "features"           : {
                 "type" : "array",
                 "items": {"type": "string"}
@@ -58,10 +59,6 @@ exports.schema =
             "precautions"        : {
                 "type" : "array",
                 "items": {"type": "string"}
-            },
-            "supplier_specific" : {
-                "type": "object",
-                "additionalProperties": true
             },
             "pdf"               : {
                 "type" : "array",
@@ -71,7 +68,8 @@ exports.schema =
                         "link"      : {"type": "string"},
                         "text"      : {"type": "string"},
                         "type"      : {"type": "string"},
-                        "thumb_link": {"type": "string"}
+                        "thumb_link": {"type": "string"},
+                        "lang"      : {"type": "string"}
                     }
                 }
             },
@@ -101,6 +99,14 @@ exports.schema =
                         "text": {"type" : "string"}
                     }
                 }
+            },
+            "supplier_specific" : {
+                "type": "object",
+                "additionalProperties": true
+            },
+            "distributor_only" : {
+                "type": "object",
+                "additionalProperties": true
             },
             "ui"                : {
                 "application": {
@@ -197,6 +203,7 @@ exports.settings = {
                     "features"               : {"type": "keyword"},
                     "storage_buffer"         : {"type": "keyword"},
                     "precautions"            : {"type": "keyword"},
+                    "original_link"          : {"type": "keyword"},
                     "aliases": {
                         "type": "keyword",
                         "fields": {
@@ -217,7 +224,8 @@ exports.settings = {
                             "link"      : {"type": "keyword"},
                             "text"      : {"type": "keyword"},
                             "type"      : {"type": "keyword"},
-                            "thumb_link": {"type": "keyword"}
+                            "thumb_link": {"type": "keyword"},
+                            "lang"      : {"type": "keyword"}
                         }
                     },
 
@@ -260,6 +268,10 @@ exports.settings = {
                         }
                     },
                     "supplier_specific": {
+                        "type": "object",
+                        "properties" : {}
+                    },
+                    "distributor_only": {
                         "type": "object",
                         "properties" : {}
                     }

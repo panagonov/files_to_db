@@ -1,5 +1,5 @@
 let utils        = require("../../../../_utils/utils.js");
-let import_utils = require("../_utils.js");
+let import_utils = require("../../../_utils/save_utils.js");
 
 let relation_fields = ["host", "reactivity", "application", "isotype", "light_chain", "heavy_chain", "clonality" , "research_area", "supplier", "distributor"];
 

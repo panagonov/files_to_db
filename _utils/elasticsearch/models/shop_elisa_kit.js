@@ -72,11 +72,6 @@ exports.schema =
             "delivery_conditions": {"type": "string"},
             "sensitivity"        : {"type": "string"},
             "assay_length"       : {"type": "string"},
-
-            "supplier_specific" : {
-                "type": "object",
-                "additionalProperties": true
-            },
             "pdf"               : {
                 "type" : "array",
                 "items": {
@@ -85,7 +80,8 @@ exports.schema =
                         "link"      : {"type": "string"},
                         "text"      : {"type": "string"},
                         "type"      : {"type": "string"},
-                        "thumb_link": {"type": "string"}
+                        "thumb_link": {"type": "string"},
+                        "lang"      : {"type": "string"}
                     }
                 }
             },
@@ -132,6 +128,15 @@ exports.schema =
                     }
                 }
             },
+            "supplier_specific" : {
+                "type": "object",
+                "additionalProperties": true
+            },
+            "distributor_only" : {
+                "type": "object",
+                "additionalProperties": true
+            },
+            "original_link"     : {"type": "string"},
             "ui"                : {
                 "reactivity": {
                     "type" : "array",
@@ -247,6 +252,7 @@ exports.settings = {
                     "precision"              : {"type": "keyword"},
                     "stability"              : {"type": "keyword"},
                     "procedure"              : {"type": "keyword"},
+                    "original_link"          : {"type": "keyword"},
                     "pdf"               : {
 
                         "type"      : "object",
@@ -254,7 +260,8 @@ exports.settings = {
                             "link"      : {"type": "keyword"},
                             "text"      : {"type": "keyword"},
                             "type"      : {"type": "keyword"},
-                            "thumb_link": {"type": "keyword"}
+                            "thumb_link": {"type": "keyword"},
+                            "lang"      : {"type": "keyword"}
                         }
                     },
 
@@ -299,8 +306,11 @@ exports.settings = {
                             "distributor"  : {"type": "keyword"}
                         }
                     },
-
                     "supplier_specific": {
+                        "type": "object",
+                        "properties" : {}
+                    },
+                    "distributor_only": {
                         "type": "object",
                         "properties" : {}
                     }

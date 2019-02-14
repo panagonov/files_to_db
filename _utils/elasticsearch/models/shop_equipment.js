@@ -49,11 +49,6 @@ exports.schema =
                 "type": "array",
                 "items": {"type": "object"}
             },
-
-            "supplier_specific" : {
-                "type": "object",
-                "additionalProperties": true
-            },
             "pdf"               : {
                 "type" : "array",
                 "items": {
@@ -62,7 +57,8 @@ exports.schema =
                         "link"      : {"type": "string"},
                         "text"      : {"type": "string"},
                         "type"      : {"type": "string"},
-                        "thumb_link": {"type": "string"}
+                        "thumb_link": {"type": "string"},
+                        "lang"      : {"type": "string"}
                     }
                 }
             },
@@ -89,6 +85,15 @@ exports.schema =
                     }
                 }
             },
+            "supplier_specific" : {
+                "type": "object",
+                "additionalProperties": true
+            },
+            "distributor_only" : {
+                "type": "object",
+                "additionalProperties": true
+            },
+            "original_link"      : {"type": "string"},
             "ui"                : {
                 "product_category": {
                     "type" : "array",
@@ -175,6 +180,7 @@ exports.settings = {
                     "supplier_relations"     : {"type": "keyword"},
                     "specification"          : {"type": "keyword"},
                     "table_specification"    : {"type": "object" },
+                    "original_link"          : {"type": "keyword"},
                     "pdf"               : {
 
                         "type"      : "object",
@@ -182,7 +188,8 @@ exports.settings = {
                             "link"      : {"type": "keyword"},
                             "text"      : {"type": "keyword"},
                             "type"      : {"type": "keyword"},
-                            "thumb_link": {"type": "keyword"}
+                            "thumb_link": {"type": "keyword"},
+                            "lang"      : {"type": "keyword"}
                         }
                     },
                     "images"     : {
@@ -225,6 +232,10 @@ exports.settings = {
                         }
                     },
                     "supplier_specific": {
+                        "type": "object",
+                        "properties" : {}
+                    },
+                    "distributor_only": {
                         "type": "object",
                         "properties" : {}
                     }
