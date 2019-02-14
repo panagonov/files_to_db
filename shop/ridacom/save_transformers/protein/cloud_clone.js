@@ -112,9 +112,9 @@ let mapping = {
     "isoelectric_point"         : "isoelectric_point",          //add float
     "images"             : record =>  _getImages(record.crawler_item),
     "pdf"                : record =>  _getPdf(record.crawler_item),
-    "supplier_specific"  : record => ({
-        "price" : record.supplier_specific.price,
-        "link"  : record.link,
+    "original_link"      : "link",
+    "distributor_only" : record => ({
+        "price" : record.supplier_specific.price
     })
 };
 

@@ -109,8 +109,8 @@ let mapping = {
     "formulation"           : "formulation",
     "images"                : record =>  _getImages(record.crawler_item),
     "pdf"                   : record =>  _getPdf(record.crawler_item),
+    "original_link"         : "link",
     "supplier_specific"     : record => ({
-        "link"          : record.link,
         "precautions"   : record.precautions,
         "alternative"   : record.alternative,
         "accession"     : record.accession,

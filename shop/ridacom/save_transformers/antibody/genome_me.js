@@ -89,8 +89,8 @@ let mapping = {
     "clonality"          : record => import_utils.get_canonical(record.crawler_item.host || "", ":clonality"),
     "images"             : record =>  _getImages(record.crawler_item),
     "pdf"                : record =>  _getPdf(record.crawler_item),
+    "original_link"      : record => record.crawler_item && record.crawler_item.url ? record.crawler_item.url : null,
     "supplier_specific"  : record => ({
-        ...record.crawler_item && record.crawler_item.url ? {link : record.crawler_item.url} : "",
         ...record.crawler_item && record.crawler_item.positive_control ? {"positive_control" : record.crawler_item.positive_control} : "",
         ...record.crawler_item && record.crawler_item.range ? {"dilution_range"  : record.crawler_item.range} : ""
     })

@@ -108,10 +108,7 @@ let mapping = {
     "delivery_conditions": "delivery_conditions",
     "images"             : record =>  _getImages(record.crawler_item),
     "pdf"                : record =>  _getPdf(record.crawler_item),
-    "supplier_specific"  : record => ({
-        "price" : record.supplier_specific.price,
-    }),
-
+    "original_link"      : "link",
     "sensitivity"       : "sensitivity",  //str
     "sample_type"       : "sample_type",  //arr
     "assay_length"      : "assay_length",  //str
@@ -119,6 +116,10 @@ let mapping = {
     "precision"         : "precision",  //arr
     "stability"         : "stability",  //arr
     "procedure"         : "procedure",  //arr
+    "distributor_only" : record => ({
+        "price" : record.supplier_specific.price
+    }),
+
 };
 
 let convert = (item, crawler_item) =>

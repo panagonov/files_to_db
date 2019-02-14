@@ -100,8 +100,8 @@ let mapping = {
     "delivery_conditions": "shipping",
     "images"             : record =>  _getImages(record.crawler_item),
     "pdf"                : record =>  _getPdf(record.crawler_item),
+    "original_link"      : "link",
     "supplier_specific"  : record => ({
-        "link"             : record.link,
         ...record.calibration_range ? {"calibration_range": record.calibration_range}   : "",
         ...record.alternative       ? {"alternative": record.alternative}               : "",
         ...record.precautions       ? {"precautions": record.precautions}               : "",

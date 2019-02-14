@@ -70,10 +70,7 @@ let mapping = {
     "table_specification" : "crawler_item.specification",
     "images"              : record => _getImages(record.crawler_item),
     "pdf"                 : record => _getPdf(record.crawler_item),
-    "supplier_specific"   : record => ({
-        "link": record.link
-    })
-
+    "original_link"      : "link",
 };
 
 let convert = (item, crawler_item, custom_data) =>
