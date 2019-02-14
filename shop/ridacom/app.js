@@ -14,8 +14,7 @@ let aggregate_data = require("./aggregate.js");
 let save_to_es_db = require("./save_to_es_db.js");
 
 let distributor = "ridacom";
-
-let suppliers = fs.readdirSync(__dirname + "/transformers");
+let suppliers   = fs.readdirSync(__dirname + "/import_transformers");
 
 let run = async(mongo_db, crawler_db) =>
 {

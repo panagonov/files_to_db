@@ -83,7 +83,7 @@ let run = async (db, distributor, supplier) =>
     let output_collection_name = "product";
 
     mongo_db = db;
-    transformers = directory_reader(`${__dirname}/transformers/${supplier}/`, "js");
+    transformers = directory_reader(`${__dirname}/import_transformers/${supplier}/`, "js");
     files_path = `${__dirname}/files/${supplier}/`;
 
     for (let type in transformers) {
