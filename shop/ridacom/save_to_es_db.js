@@ -5,29 +5,6 @@ let utils    = require("../../_utils/utils.js");
 let collection_name         = "product";
 let suggest_collection_name = "shop_suggest";
 
-let versions = {
-    "antibody" : {
-        "cloud_clone"       :  7,
-        "abbkine"           : 7,
-        "genome_me"         : 7
-    },
-    "elisa_kit" : {
-        "cloud_clone"       : 7,
-        "abbkine"           : 7
-    },
-    "chemical" : {
-        "abbkine"           : 7
-    },
-    "protein" : {
-        "cloud_clone"       : 7,
-        "abbkine"           : 7
-    },
-    "equipment" : {
-        "capp"              : 4,
-        "adam_equipment"    : 1,
-    }
-};
-
 let directory_reader = require("../../_utils/directory_reader.js");
 
 let converters = directory_reader(`${__dirname}/save_transformers/`, "js", true);
@@ -94,13 +71,14 @@ let _load_crawler_data = async (items, crawler_db) =>
     }, {});
 };
 
-let save_to_db = async(mongo_db, crawler_db, type, site) =>
+let save_to_db = async(mongo_db, crawler_db, distributor, type, site) =>
 {
-    let converter      =  converters[type][site];
-    let export_version =  versions[type][site] || 1;
+    let converter = converters[type][site];
 
     if (!converter)
         return;
+
+    let export_version =  converters[type][site].version || 1;
 
     if (converter.init)
         await converter.init();
@@ -108,7 +86,7 @@ let save_to_db = async(mongo_db, crawler_db, type, site) =>
     let limit = 500;
     let page = 0;
     let result = [];
-    let count = await mongo_db.read(collection_name, {body: {type: type, src: site, tid: "ridacom", export_version: {$ne : export_version}}, count_only: true});
+    let count = await mongo_db.read(collection_name, {body: {type: type, src: site, tid: distributor, export_version: {$ne : export_version}}, count_only: true});
     let not_found = [];
     let not_found_custom = [];
     let custom_errors = [];
@@ -118,7 +96,7 @@ let save_to_db = async(mongo_db, crawler_db, type, site) =>
         let es_bulk = [];
         let custom_data;
 
-        result = await mongo_db.read(collection_name, {body: {type: type, src: site, tid: "ridacom", export_version: {$ne : export_version}}, size: limit});
+        result = await mongo_db.read(collection_name, {body: {type: type, src: site, tid: distributor, export_version: {$ne : export_version}}, size: limit});
 
         let crawler_hash = await _load_crawler_data(result, crawler_db);
 
@@ -159,7 +137,7 @@ let save_to_db = async(mongo_db, crawler_db, type, site) =>
         await mongo_db.update_many(collection_name, {query: {_id: {$in: ids}}, data: {export_version: export_version}});
 
         page++;
-        console.log("ridacom", type, site, `${page * limit}/${count}`)
+        console.log(distributor, type, site, `${page * limit}/${count}`)
 
     }
     while(result.length === limit);
@@ -172,7 +150,7 @@ let save_to_db = async(mongo_db, crawler_db, type, site) =>
         fs.writeFileSync(__dirname + `/_missing_data/errors_custom_${site}_${type}.json`, JSON.stringify(utils.uniq(custom_errors)), "utf8");
 };
 
-let run = async(mongo_db, crawler_db) =>
+let run = async(mongo_db, crawler_db, distributor) =>
 {
     await build_index(mongo_db);
 
@@ -180,11 +158,17 @@ let run = async(mongo_db, crawler_db) =>
     {
         for (let site in converters[type])
         {
-           await save_to_db(mongo_db, crawler_db, type, site)
+           await save_to_db(mongo_db, crawler_db, distributor, type, site)
         }
     }
 };
 
+let clean = async() =>
+{
+    //todo
+};
+
 module.exports = {
-    run
+    run,
+    clean
 };

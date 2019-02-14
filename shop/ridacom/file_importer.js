@@ -78,39 +78,36 @@ let importCSVfromPath = async (csv_path, type, collection_name) => {
     });
 };
 
-let run = async (db, supplier_name, source_name) =>
+let run = async (db, distributor, supplier) =>
 {
     let output_collection_name = "product";
 
     mongo_db = db;
-    transformers = directory_reader(`${__dirname}/transformers/${source_name}/`, "js");
-    files_path = `${__dirname}/files/${source_name}/`;
+    transformers = directory_reader(`${__dirname}/transformers/${supplier}/`, "js");
+    files_path = `${__dirname}/files/${supplier}/`;
 
     for (let type in transformers) {
         if (transformers.hasOwnProperty(type) && !transformers[type].disable)
         {
             let file_name = type;
-            if (progress[supplier_name] && progress[supplier_name][source_name] && progress[supplier_name][source_name][file_name])
+            if (progress[distributor] && progress[distributor][supplier] && progress[distributor][supplier][file_name])
                 continue;
 
             console.log(`Import "${file_name}.csv"`);
             await importCSVfromPath(files_path + file_name + ".csv", type,output_collection_name);
             await save_to_db(output_collection_name);
-            progress[supplier_name] = progress[supplier_name] || {};
-            progress[supplier_name][source_name] = progress[supplier_name][source_name] || {};
-            progress[supplier_name][source_name][file_name] = 1;
+            progress[distributor] = progress[distributor] || {};
+            progress[distributor][supplier] = progress[distributor][supplier] || {};
+            progress[distributor][supplier][file_name] = 1;
             fs.writeFileSync(__dirname + "/_cache/file_importer_progress.json", JSON.stringify(progress), "utf8");
             console.log(counter);
             counter = 0;
-
         }
     }
 };
 
-clean = async (db)=>
+clean = async (mongo_db)=>
 {
-    mongo_db = db;
-
     fs.writeFileSync(__dirname + "/_cache/file_importer_progress.json", "{}", "utf8");
 
     for (let key in transformers)
