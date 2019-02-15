@@ -24,14 +24,14 @@ let run = async(mongo_db, crawler_db) =>
         await aggregate_data.run(mongo_db, crawler_db, suppliers[i]);
     }
 
-    // await save_to_es_db.run(mongo_db, crawler_db, distributor);
+    await save_to_es_db.run(mongo_db, crawler_db, distributor);
 };
 
-let clean = async(mongo_db) =>
+let clean = async(mongo_db, crawler_db) =>
 {
-    await file_importer.clean(mongo_db);
-    await aggregate_data.clean(mongo_db);
-    await save_to_es_db.clean(mongo_db);
+    await file_importer.clean(mongo_db, crawler_db);
+    await aggregate_data.clean(mongo_db, crawler_db);
+    await save_to_es_db.clean(mongo_db, crawler_db);
 };
 
 module.exports = {

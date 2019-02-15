@@ -1,92 +1,138 @@
-let utils        = require("../../../../_utils/utils.js");
-let import_utils = require("../../../_utils/save_utils.js");
+let utils              = require("../../../../_utils/utils.js");
+let import_utils       = require("../../../_utils/save_utils.js");
+let country_utils      = require("../../../../common-components/region_utils/country_utils.js");
+let currency_converter = require("../../../../common-components/region_utils/currency_converter.js");
 
 let relation_fields = ["supplier", "distributor", "product_category", "product_sub_category"];
 
-let _getImages = item => {
-
-    if(item.image)
-    {
-        return [{
-            link: item.image,
-            type: "product",
-            ...item.image_text ? {text: item.image_text.map(text => text.replace(/\s+/g, " ").trim())} : ""
-        }]
-    }
-
-    return null
-};
-
 let _getPdf = item =>
 {
-    return item.pdf ? item.pdf : null;
+    if (item.pdf) {
+        return item.pdf.map(item => {
+            if (["Multi-Language", "Multi_Language"].indexOf(item.lang) !== -1)
+                delete item.lang
+            else if (item.lang) {
+                let lang = country_utils.getLangByLangugageName(item.lang);
+                if (lang)
+                {
+                    item.lang = lang
+                }
+            }
+            return item
+        })
+    }
+    return null;
 };
 
 let _getPriceModel = (item, crawler_item) =>
 {
-    let sub_products = Object.keys(crawler_item.sub_products || {}).filter(it => crawler_item.sub_products[it] !== undefined);
-
     let result = {
-        ...sub_products &&sub_products.length ? {"is_multiple" : true} : "",
-        ...sub_products &&sub_products.length ? {"is_ids_are_unique" : true} : "",
-        search_price : item.price ? item.price[0].value : 0,
-        "variation" :[{
-            "price" : {
-                "value"   : item.price ? item.price[0].value || 0 : 0,
-                "currency": item.price ? item.price[0].currency || "usd" : "usd",
-            },
-            "product_id": item.oid
+        "is_multiple"      : false,
+        "is_ids_are_unique": false,
+        "search_price"     : item.price ? currency_converter.convert_currency(item.price.currency, "usd", item.price.value) : 0,
+        "variation"        : [{
+            "price": {
+                "value"   : item.price ? item.price.value || 0 : 0,
+                "currency": item.price ? item.price.currency || "eur" : "eur"
+            }
         }]
     };
-
-    (sub_products || []).forEach(sub_product_oid =>
-    {
-        let sub_product = crawler_item.sub_products[sub_product_oid];
-        if (!sub_product.price)
-            return;
-        result.variation.push({
-            "price" : {
-                "value"   : sub_product.price[0].value || 0,
-                "currency": sub_product.price[0].currency || "usd",
-            },
-            "product_id": sub_product_oid
-        })
-    });
-
     return result;
 };
 
-let mapping = {
-    "name"                : "name",
-    "oid"                 : "oid",
-    "human_readable_id"   : record => import_utils.human_readable_id(record.name) + "_" + record.oid,
-    "external_links"      : record => [{"key": "capp", "id": record.oid}],
-    "price_model"         : record => _getPriceModel(record, record.crawler_item),
-    "supplier"            : record => import_utils.get_canonical("Adam Equipment", ":supplier"),
-    "distributor"         : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
-    "product_category"    : record => import_utils.get_canonical(record.crawler_item.category || "", ":product_category"),
-    "product_sub_category": record => import_utils.get_canonical(record.crawler_item.sub_category || "", ":product_sub_category"),
-    "description"         : "crawler_item.description",
-    "table_specification" : "crawler_item.specification",
-    "images"              : record => _getImages(record.crawler_item),
-    "pdf"                 : record => _getPdf(record.crawler_item),
-    "original_link"      : "link",
+let _get_sub_category = (item, crawler_item) => {
+    if (item.accessories)
+        return import_utils.get_canonical("Accessories", ":product_sub_category");
+
+    let sub_categories = utils.uniq((crawler_item.parent_sub_category || crawler_item.sub_category || []).filter(item => item !== crawler_item._id));
+    return import_utils.get_canonical(sub_categories[0] || "", ":product_sub_category")
 };
 
-let convert = (item, crawler_item, custom_data) =>
+let _get_specification = (item) =>
 {
-    let missing_data =  [];
-    let crawler_item1 = custom_data[item.oid];
-    if (!crawler_item1 && item.oid.indexOf("-") !== -1){
-        let oid = item.oid.split("-");
-        oid.pop();
-        oid = oid.join("-");
-        crawler_item1 = custom_data[oid]
+    let crawler_item = item.crawler_item;
+    let specifications = crawler_item ? crawler_item["specifications"] : null;
+    if (specifications)
+    {
+        return Object.keys(specifications).map(key => ({key, value: specifications[key] instanceof Array ? specifications[key] : [specifications[key]]}))
     }
-    if (!crawler_item1)
-        missing_data = [item.oid];
 
-    let record = Object.assign({}, item, {crawler_item: crawler_item1 || {}});
+    return null;
+};
+
+let _getVideos = (crawler_item) =>
+{
+    if (!crawler_item.videos || !crawler_item.videos.length)
+        return null;
+
+    let result = crawler_item.videos.filter(url => url !== "/blank.html").map(url => ({
+        link: url
+    }));
+
+    return result.length ? result : null
+};
+
+let _get_description = (item) =>
+{
+    if (item.crawler_item)
+    {
+        let crawler_item = item.crawler_item;
+        let description = crawler_item.description;
+        if (description instanceof Array)
+            return description;
+        else if (description)
+            return [description];
+    }
+    return null
+};
+
+let _get_other_info = (crawler_item) =>
+{
+    let result = [];
+    let type = "features";
+    if (crawler_item.features) {
+        result = Object.keys(crawler_item.features).map(key => ({key: key, type: type, value: crawler_item.features[key]}))
+    }
+
+    if (crawler_item.technical_highlights_or_applications && crawler_item.technical_highlights_or_applications.length)
+    {
+        type = crawler_item.technical_highlights ? "application" : "technical_highlights";
+        result.push({key: type, type: type, value: crawler_item.technical_highlights_or_applications.filter(item => item)})
+    }
+
+    if (crawler_item.technical_highlights && crawler_item.technical_highlights.length){
+        type = "technical_highlights";
+        result.push({key: type, type: type, value: crawler_item.technical_highlights.filter(item => item)})
+    }
+
+
+    return result.length ? result : null
+};
+
+let mapping = {
+    "name"                   : "name",
+    "oid"                    : "oid",
+    "human_readable_id"      : record => import_utils.human_readable_id(record.name) + "_" + record.oid,
+    "external_links"         : record => [{"key": "capp", "id": record.oid}],
+    "price_model"            : record => _getPriceModel(record, record.crawler_item),
+    "supplier"               : record => import_utils.get_canonical("Adam Equipment", ":supplier"),
+    "distributor"            : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
+    "product_category"       : record => import_utils.get_canonical("Balance", ":product_category"),
+    "product_sub_category"   : record => _get_sub_category(record, record.crawler_item),
+    "description"            : _get_description,
+    "other_info"             : record => _get_other_info(record.crawler_item),
+    "images"                 : "images",
+    "videos"                 : record => _getVideos(record.crawler_item),
+    "product_relations"      : record => record.crawler_item && record.crawler_item["accessories"] ? record.crawler_item["accessories"].map(id => `PRODUCT_SOURCE:[ADAM_EQUIPMENT]_SUPPLIER:[RIDACOM]_ID:[${id}]`) : null,
+    "product_relations_count": record => record.crawler_item && record.crawler_item["accessories"] ? record.crawler_item["accessories"].length : null,
+    "specification"          : _get_specification,
+    "pdf"                    : record => _getPdf(record.crawler_item),
+    "original_link"          : "link"
+};
+
+let convert = (item, crawler_item) =>
+{
+    let record = Object.assign({}, item, {crawler_item: crawler_item || {}});
 
     let result = utils.mapping_transform(mapping, record);
     let service_data = import_utils.build_service_data(result, relation_fields);
@@ -99,52 +145,10 @@ let convert = (item, crawler_item, custom_data) =>
     return {
         converted_item : result,
         suggest_data,
-        ...missing_data.length ? {missing_data: missing_data} : ""
     }
-};
-
-let load_custom_data = async(mongo_db, crawler_db, result) => {
-
-    let ids = utils.uniq(result
-        .map(item => item.oid)
-        .filter(id => id)
-    );
-
-    let crawler_data = await crawler_db.read("product", {body: {"specification.oid" : {$in : ids}}});
-
-    let product_ids = utils.uniq(crawler_data.reduce((res, item) => {
-        (item.specification || []).forEach(({oid}) => res.push(oid));
-
-        return res;
-    }, []));
-
-    let products =  await mongo_db.read("product", {body: {"oid" : {$in : product_ids}}});
-
-    let product_hash = products.reduce((res, item) => {
-        res[item.oid] = item;
-        return res;
-    }, {});
-
-    let hash = crawler_data.reduce((res, item) =>
-    {
-        item.sub_products = (item.specification || []).reduce((sub_res, sub_item) => {
-            sub_res[sub_item.oid] = product_hash[sub_item.oid];
-            return sub_res
-        }, {});
-
-        item.specification.forEach(it => {
-            res[it.oid] = item
-        });
-
-        return res;
-    }, {});
-
-
-    return {result: hash};
 };
 
 module.exports = {
     convert,
-    load_custom_data,
-    version: 1
+    version: 6
 };

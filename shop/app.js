@@ -26,7 +26,7 @@ let start = async () =>
 let clean = async () =>
 {
     await init();
-    await ridacom.clean(mongo_db);
+    await ridacom.clean(mongo_db, crawler_db);
 };
 
 let st = () =>

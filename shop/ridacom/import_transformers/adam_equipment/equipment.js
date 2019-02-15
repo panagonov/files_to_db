@@ -18,7 +18,7 @@ let get_name = (value) =>
 };
 
 let mapping = {
-    "_id"              : record => `PRODUCT_SOURCE:[ADAM_EQUIPMENT]_SUPPLIER:[RIDACOM]_ID:[${ get_oid( record["Range/Model"] ) }].trim() || ""}]`,
+    "_id"              : record => `PRODUCT_SOURCE:[ADAM_EQUIPMENT]_SUPPLIER:[RIDACOM]_ID:[${ get_oid( record["Range/Model"] || "" ).trim().replace(/\s/g, "_") }]`,
     "oid"              : record => get_oid(record["Range/Model"]).trim(),
     "tid"              : record => "ridacom",
     "src"              : record => "adam_equipment",

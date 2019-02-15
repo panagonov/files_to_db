@@ -13,7 +13,8 @@ module.exports = {
                 "type": "string"
             },
             "description"   : {
-                "type": "string"
+                "type": "array",
+                "items" : {"type" : "string"}
             },
             "authors"       : {
                 "type" : ["array", "null"],

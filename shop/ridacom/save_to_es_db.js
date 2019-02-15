@@ -163,7 +163,7 @@ let run = async(mongo_db, crawler_db, distributor) =>
     }
 };
 
-let clean = async() =>
+let clean = async(mongo_db, crawler_db) =>
 {
     //todo
 };

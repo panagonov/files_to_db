@@ -12,7 +12,10 @@ exports.schema =
 
             "_id"               : {"type": "string"},
             "name"              : {"type": "string"},
-            "description"       : {"type": "string"},
+            "description"   : {
+                "type": "array",
+                "items" : {"type" : "string"}
+            },
             "oid"               : {"type": "string"},
             "human_readable_id" : {"type": "string"},
             "external_links"    : {
@@ -41,9 +44,23 @@ exports.schema =
                 "type" : "array",
                 "items": {"type": "string"}
             },
-            "specification"       : {
+            "product_relations"       : {
                 "type" : "array",
                 "items": {"type": "string"}
+            },
+            "product_relations_count" : {"type": "number"},
+            "specification"       : {
+                "type" : "array",
+                "items": {
+                    "type": "object",
+                    "properties" : {
+                        "key" : {"type": "string"},
+                        "value" : {
+                            "type" : "array",
+                            "items": {"type": "string"}
+                        }
+                    }
+                }
             },
             "table_specification"       : {
                 "type": "array",
@@ -71,6 +88,32 @@ exports.schema =
                         "text"      : {"type": "array", "items": {"type": "string"}},
                         "type"      : {"type": "string"},
                         "thumb_link": {"type": "string"}
+                    }
+                }
+            },
+            "videos"            : {
+                "type" : "array",
+                "items": {
+                    "type"      : "object",
+                    "properties": {
+                        "link"      : {"type": "string"},
+                        "text"      : {"type": "array", "items": {"type": "string"}},
+                        "type"      : {"type": "string"},
+                        "thumb_link": {"type": "string"}
+                    }
+                }
+            },
+            "other_info" : {
+                "type" : "array",
+                "items": {
+                    "type": "object",
+                    "properties" : {
+                        "key" : {"type": "string"},
+                        "type" : {"type":"string"},
+                        "value" : {
+                            "type" : "array",
+                            "items": {"type": "string"}
+                        }
                     }
                 }
             },
@@ -172,13 +215,21 @@ exports.settings = {
                             "id" : {"type": "keyword"}
                         }
                     },
-                    "oid"                    : {"type": "keyword"},
-                    "human_readable_id"      : {"type": "keyword"},
-                    "product_category_relations"     : {"type": "keyword"},
-                    "product_sub_category_relations" : {"type": "keyword"},
-                    "distributor_relations"  : {"type": "keyword"},
-                    "supplier_relations"     : {"type": "keyword"},
-                    "specification"          : {"type": "keyword"},
+                    "oid"                           : {"type": "keyword"},
+                    "human_readable_id"             : {"type": "keyword"},
+                    "product_category_relations"    : {"type": "keyword"},
+                    "product_sub_category_relations": {"type": "keyword"},
+                    "distributor_relations"         : {"type": "keyword"},
+                    "supplier_relations"            : {"type": "keyword"},
+                    "product_relations"             : {"type": "keyword"},
+                    "product_relations_count"       : {"type": "integer", "index": false, "doc_values": true},
+                    "specification"          : {
+                        "type": "object",
+                        "properties" : {
+                            "key" : {"type": "keyword"},
+                            "value" : {"type": "keyword"}
+                        }
+                    },
                     "table_specification"    : {"type": "object" },
                     "original_link"          : {"type": "keyword"},
                     "pdf"               : {
@@ -199,6 +250,23 @@ exports.settings = {
                             "text"      : {"type": "keyword"},
                             "type"      : {"type": "keyword"},
                             "thumb_link": {"type": "keyword"}
+                        }
+                    },
+                    "videos"     : {
+                        "type"      : "object",
+                        "properties": {
+                            "link"      : {"type": "keyword"},
+                            "text"      : {"type": "keyword"},
+                            "type"      : {"type": "keyword"},
+                            "thumb_link": {"type": "keyword"}
+                        }
+                    },
+                    "other_info"          : {
+                        "type": "object",
+                        "properties" : {
+                            "key" : {"type": "keyword"},
+                            "type" : {"type": "keyword"},
+                            "value" : {"type": "keyword"}
                         }
                     },
                     "price_model": shop_model.settings.price_model,
