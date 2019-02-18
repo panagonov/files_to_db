@@ -122,6 +122,7 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site) =>
             let {converted_item, suggest_data, missing_data} = converter.convert(item, crawler_item, custom_data);
 
             accumulated_suggest_data = Object.assign(accumulated_suggest_data, suggest_data);
+
             es_bulk.push({"model_title": type, "command_name": "index", "_id": item._id, "document": converted_item});
 
             if (missing_data)

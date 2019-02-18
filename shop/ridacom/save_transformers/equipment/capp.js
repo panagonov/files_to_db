@@ -66,7 +66,7 @@ let mapping = {
     "product_category"    : record => import_utils.get_canonical(record.crawler_item.category || "", ":product_category"),
     "product_sub_category": record => import_utils.get_canonical(record.crawler_item.sub_category || "", ":product_sub_category"),
     "distributor"         : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
-    "description"         : "crawler_item.description",
+    "description"         : record => record.crawler_item && record.crawler_item.description ? [record.crawler_item.description] : null,
     "table_specification" : "crawler_item.specification",
     "images"              : record => _getImages(record.crawler_item),
     "pdf"                 : record => _getPdf(record.crawler_item),
@@ -146,5 +146,5 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
 module.exports = {
     convert,
     load_custom_data,
-    version: 4
+    version: 6
 };

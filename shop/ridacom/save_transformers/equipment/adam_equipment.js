@@ -121,13 +121,13 @@ let mapping = {
     "product_sub_category"   : record => _get_sub_category(record, record.crawler_item),
     "description"            : _get_description,
     "other_info"             : record => _get_other_info(record.crawler_item),
-    "images"                 : "images",
+    "images"                 : "crawler_item.images",
     "videos"                 : record => _getVideos(record.crawler_item),
     "product_relations"      : record => record.crawler_item && record.crawler_item["accessories"] ? record.crawler_item["accessories"].map(id => `PRODUCT_SOURCE:[ADAM_EQUIPMENT]_SUPPLIER:[RIDACOM]_ID:[${id}]`) : null,
     "product_relations_count": record => record.crawler_item && record.crawler_item["accessories"] ? record.crawler_item["accessories"].length : null,
     "specification"          : _get_specification,
     "pdf"                    : record => _getPdf(record.crawler_item),
-    "original_link"          : "link"
+    "original_link"          : "crawler_item.link"
 };
 
 let convert = (item, crawler_item) =>
@@ -150,5 +150,5 @@ let convert = (item, crawler_item) =>
 
 module.exports = {
     convert,
-    version: 6
+    version: 1
 };
