@@ -1,0 +1,5 @@
+To generate product_list.json:
+1. Go to http://www.himedialabs.com
+2. Run command:
+    $("#sample-menu-1 li:not(:has(>ul)) a"))).each((index,item) item => item.attr("href")
+3. Copy result like array

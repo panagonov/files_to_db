@@ -31,26 +31,30 @@ let upload_images = async(db_index) => {
         {
             let product = result[i];
             let images = product.images;
-            if (!images || !images.length)
-                continue;
 
-            for (let j = 0; j < images.length; j++)
+            let document = {"image_crawler_version" : image_crawler_version};
+
+            if (images && images.length)
             {
-                let image_data = images[j];
-                let new_image_names = await upload_utils.upload_product_image({
-                    image_data,
-                    path: db_index,
-                    product_id: product._id,
-                    image_index: j,
-                    meta: {supplier: product.supplier_relations[0], distributor: product.distributor_relations[0]}}
-                );
-                new_image_names.link_id ? image_data.link = new_image_names.link_id : null;
-                new_image_names.thumb_link_id ? image_data.thumb_link = new_image_names.thumb_link_id : null
+                for (let j = 0; j < images.length; j++)
+                {
+                    let image_data = images[j];
+                    let new_image_names = await upload_utils.upload_product_image({
+                        image_data,
+                        path: db_index,
+                        product_id: product._id,
+                        image_index: j,
+                        meta: {supplier: product.supplier_relations[0], distributor: product.distributor_relations[0]}}
+                    );
+                    new_image_names.link_id ? image_data.link = new_image_names.link_id : null;
+                    new_image_names.thumb_link_id ? image_data.thumb_link = new_image_names.thumb_link_id : null
+                }
+                document.images = images;
+                console.log(`Uploaded ${i}/${result.length} - ${images.length} images`)
             }
 
-            es_bulk.push({"model_title": db_index, "command_name": "update", "_id": product._id, "document": {images: images, "image_crawler_version" : image_crawler_version}});
+            es_bulk.push({"model_title": db_index, "command_name": "update", "_id": product._id, "document": document});
 
-            console.log(`Uploaded ${i}/${result.length} - ${images.length} images`)
         }
 
         if (es_bulk.length)

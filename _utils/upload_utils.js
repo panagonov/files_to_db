@@ -26,7 +26,13 @@ let download_image = async(url, target) =>
         {
             if (err) return reject(err);
             resolve (fs.readFileSync(path));
-            fs.unlinkSync(path)
+            try {
+                fs.unlinkSync(path)
+            }
+            catch(e)
+            {
+                console.error(e)
+            }
         });
     });
 

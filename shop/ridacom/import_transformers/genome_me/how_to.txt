@@ -1,5 +1,6 @@
 To generate product_list.json:
 1. Go to http://www.genomeme.ca/molecular-pathology-v1/control/stickytestcontr.php
 2. Run command:
-    [].slice.call(document.querySelectorAll("div.grid-product a[href]")).map(item => item.href)
+    let a = []
+    $("#sample-menu-1 li:not(:has(>ul)) a").each((index,item) => a.push(item.getAttribute("href")))
 3. Copy result like array
