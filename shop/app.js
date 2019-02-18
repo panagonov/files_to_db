@@ -1,5 +1,6 @@
+require('module-alias/register');
 let MongoDb = require("../_utils/db.js");
-let es_db   = require("../_utils/elasticsearch/db.js");
+let es_db   = require("../_utils/es_db.js");
 let ridacom = require("./ridacom/app.js");
 
 let mongo_db;
