@@ -6,15 +6,27 @@ let exec     = require("child_process").exec;
 
 let temp_dir = `${__dirname}/_download/`;
 let bucket_name = "bioseek-shop/";
+let check_timeout = 20000;
 
 let check_is = {
     "pdf" : async(url) =>
-        new Promise((resolve, reject) =>{
+        new Promise((resolve, reject) => {
+
+            let timeout = setTimeout(() => {
+                timeout = null;
+                resolve({confirm: false})
+            }, check_timeout);
+
             request.get({
                 method: "HEAD",
                 url: url
             }, (err, response, body) =>
             {
+                if (!timeout)
+                    return;
+
+                clearTimeout(timeout);
+
                 if ( err || response.statusCode === 404 || ["application/pdf"].indexOf(response.headers["content-type"]) === -1 )
                     return resolve({confirm: false});
                 resolve({confirm: true, content_type: response.headers["content-type"]})
@@ -67,15 +79,20 @@ let upload_product_pdf = async({file_data, path, file_name, image_index, meta = 
     let thumb_name = "";
     let link_name = "";
 
-    if (file_data.link && !(await is_file_exists(path, file_name)))
+    console.time("Start PDF");
+    let file_exists = await is_file_exists(path, file_name);
+
+    if (file_data.link && !file_exists)
     {
         let link_data = await check_is.pdf(file_data.link);
+
         if (link_data.confirm)
         {
             link_name = file_name;
             thumb_name = file_name.split(".").shift() + "-000001.png";
 
             await download_file(file_data.link, file_name);
+
             await convert_pdf_to_image(temp_dir + file_name);
 
             await upload_to_s3(file_data.link, path, file_name, meta, link_data.content_type);
@@ -84,8 +101,8 @@ let upload_product_pdf = async({file_data, path, file_name, image_index, meta = 
             fs.unlinkSync(temp_dir + file_name);
             fs.unlinkSync(temp_dir + thumb_name);
         }
-
     }
+    console.timeEnd("Start PDF");
 
     return {link_name, thumb_name}
 };
