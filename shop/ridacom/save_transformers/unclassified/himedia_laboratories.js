@@ -3,7 +3,7 @@ let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
 let relation_fields = ["supplier", "distributor", "category", "sub_category", "all_categories"];
-let export_version  = 4;
+let export_version  = 1;
 let collection_name = "product";
 
 let category_mapping = {
@@ -11,7 +11,7 @@ let category_mapping = {
     "Animal Cell Culture"              : "tissue_and_cell_culture",
     "Plant Tissue Culture"             : "tissue_and_cell_culture",
     "Molecular Biology"                : "molecular_biology",
-    "Density Gradient Separation Media": "other",
+    "Density Gradient Separation Media": "unclassified",
     "Chemicals"                        : "chemical",
     "Laboratory Aids & Equipments"     : "equipment"
 };
@@ -35,7 +35,6 @@ let _load_original_products_data = async (items, mongo_db) =>
         return res
     }, {});
 };
-
 
 let custom_save_to_db = async(mongo_db, crawler_db, distributor, type, site, _save_suggest_data) =>
 {
@@ -62,7 +61,9 @@ let custom_save_to_db = async(mongo_db, crawler_db, distributor, type, site, _sa
 
                 accumulated_suggest_data = Object.assign(accumulated_suggest_data, suggest_data);
 
-                es_bulk.push({"model_title": product_type, "command_name": "index", "_id": item._id, "document": converted_item});
+                let _id = converted_item._id;
+                delete converted_item._id;
+                es_bulk.push({"model_title": product_type, "command_name": "index", "_id": _id, "document": converted_item});
             }
         });
 
@@ -149,7 +150,6 @@ let convert = (item, original_items) =>
     result = Object.assign(result, service_data);
 
     let type = category_mapping[item.categories[0]];
-
 
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, type);
 
