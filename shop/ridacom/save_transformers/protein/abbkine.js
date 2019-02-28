@@ -85,7 +85,7 @@ let _get_bio_object = record =>
 let mapping = {
     "name"                  : "name",
     "oid"                   : "oid",
-    "human_readable_id"     : record => import_utils.human_readable_id(record.name) + "_" + record.oid,
+    "human_readable_id"     : record => `abbkine_scientific_co_ltd_${import_utils.human_readable_id(record.name)}_${record.oid}`,
     "external_links"        : record => [{"key": "abbkine_scientific_co_ltd", "id": record.oid}],
     "bio_object"            : record => _get_bio_object(record),
     "price_model"           : record => _getPriceModel(record, record.crawler_item),

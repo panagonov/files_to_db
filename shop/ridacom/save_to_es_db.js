@@ -58,11 +58,17 @@ let _save_suggest_data = async (suggest_data) =>
         await es_db.bulk(es_bulk);
 };
 
-let _load_crawler_data = async (items, crawler_db) =>
+let _load_crawler_data = async (items, crawler_db, advance_crawler_search_field = []) =>
 {
     let crawler_ids = items.map(({oid}) => oid);
 
     let crawler_data = await crawler_db.read(collection_name, {body: {_id: {$in : crawler_ids}}});
+
+    for (let i = 0; i < (advance_crawler_search_field || []).length; i++)
+    {
+        let data =  await crawler_db.read(collection_name, {body: {[advance_crawler_search_field[i]]: {$in : crawler_ids}}});
+        crawler_data = crawler_data.concat(data)
+    }
 
     return crawler_data.reduce((res, item) =>
     {
@@ -83,6 +89,8 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site) =>
     if (converter.init)
         await converter.init();
 
+    let advance_crawler_search_field = converter.advance_crawler_search_field;
+
     let limit = 500;
     let page = 0;
     let result = [];
@@ -98,7 +106,7 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site) =>
 
         result = await mongo_db.read(collection_name, {body: {type: type, src: site, tid: distributor, export_version: {$ne : export_version}}, size: limit});
 
-        let crawler_hash = await _load_crawler_data(result, crawler_db);
+        let crawler_hash = await _load_crawler_data(result, crawler_db, advance_crawler_search_field);
 
         if (converter.load_custom_data)
         {
@@ -111,7 +119,7 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site) =>
         result.forEach(item =>
         {
             let id = item.oid;
-            let crawler_item = crawler_hash[id];
+            let crawler_item = converter.get_crawler_item ? converter.get_crawler_item(item, crawler_hash) : crawler_hash[id];
 
             if (!crawler_item)
             {
@@ -159,7 +167,11 @@ let run = async(mongo_db, crawler_db, distributor) =>
     {
         for (let site in converters[type])
         {
-           await save_to_db(mongo_db, crawler_db, distributor, type, site)
+            let converter = converters[type][site]
+            if (converter.custom_save_to_db)
+                await converter.custom_save_to_db(mongo_db, crawler_db, distributor, type, site, _save_suggest_data);
+            else
+                await save_to_db(mongo_db, crawler_db, distributor, type, site)
         }
     }
 };

@@ -1,7 +1,7 @@
 let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
-let relation_fields = ["supplier", "distributor", "product_category", "product_sub_category"];
+let relation_fields = ["supplier", "distributor", "category", "sub_category", "all_categories"];
 
 let _getImages = item => {
 
@@ -59,12 +59,13 @@ let _getPriceModel = (item, crawler_item) =>
 let mapping = {
     "name"                : "name",
     "oid"                 : "oid",
-    "human_readable_id"   : record => import_utils.human_readable_id(record.name) + "_" + record.oid,
+    "human_readable_id"   : record => `capp_${import_utils.human_readable_id(record.name)}_${record.oid}`,
     "external_links"      : record => [{"key": "capp", "id": record.oid}],
     "price_model"         : record => _getPriceModel(record, record.crawler_item),
     "supplier"            : record => import_utils.get_canonical("CAPP", ":supplier"),
-    "product_category"    : record => import_utils.get_canonical(record.crawler_item.category || "", ":product_category"),
-    "product_sub_category": record => import_utils.get_canonical(record.crawler_item.sub_category || "", ":product_sub_category"),
+    "category"            : record => import_utils.get_canonical(record.crawler_item.category || "", ":product_category"),
+    "sub_category"        : record => import_utils.get_canonical(record.crawler_item.sub_category || "", ":product_sub_category"),
+    "all_categories"      : record => import_utils.get_canonical(record.crawler_item.category || "", ":product_category").concat(import_utils.get_canonical(record.crawler_item.sub_category || "", ":product_sub_category")),
     "distributor"         : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
     "description"         : record => record.crawler_item && record.crawler_item.description ? [record.crawler_item.description] : null,
     "table_specification" : "crawler_item.specification",

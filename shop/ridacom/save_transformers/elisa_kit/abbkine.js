@@ -85,7 +85,7 @@ let _get_bio_object = record =>
 let mapping = {
     "name"               : "name",
     "oid"                : "oid",
-    "human_readable_id"  : record => import_utils.human_readable_id(record.name) + "_" + record.oid,
+    "human_readable_id"  : record => `abbkine_${import_utils.human_readable_id(record.name)}_${record.oid}`,
     "external_links"     : record => [{"key": "abbkine", "id": record.oid}],
     "description"        : "background",
     "bio_object"         : record => _get_bio_object(record),

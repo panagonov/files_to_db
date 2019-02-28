@@ -3,7 +3,7 @@ let import_utils       = require("../../../_utils/save_utils.js");
 let country_utils      = require("../../../../common-components/region_utils/country_utils.js");
 let currency_converter = require("../../../../common-components/region_utils/currency_converter.js");
 
-let relation_fields = ["supplier", "distributor", "product_category", "product_sub_category"];
+let relation_fields = ["supplier", "distributor", "category", "sub_category", "all_categories"];
 
 let _getPdf = item =>
 {
@@ -48,6 +48,21 @@ let _get_sub_category = (item, crawler_item) => {
     return import_utils.get_canonical(sub_categories[0] || "", ":product_sub_category")
 };
 
+let _get_all_categories = (item, crawler_item) => {
+
+    let result = import_utils.get_canonical("Balance", ":product_category");
+
+    if (item.accessories)
+        result = result.concat( import_utils.get_canonical("Accessories", ":product_sub_category"));
+    else
+    {
+        let sub_categories = utils.uniq((crawler_item.parent_sub_category || crawler_item.sub_category || []).filter(item => item !== crawler_item._id));
+        result = result.concat( import_utils.get_canonical((sub_categories || []).join("; "), ":product_sub_category"))
+    }
+
+    return result
+};
+
 let _get_specification = (item) =>
 {
     let crawler_item = item.crawler_item;
@@ -70,6 +85,18 @@ let _getVideos = (crawler_item) =>
     }));
 
     return result.length ? result : null
+};
+
+let _getImages = (crawler_item) =>
+{
+    if (!crawler_item.images || !crawler_item.images.length)
+        return null;
+
+    return crawler_item.images.map(item => {
+        item.link = item.href;
+        delete item.href;
+        return item
+    })
 };
 
 let _get_description = (item) =>
@@ -112,16 +139,17 @@ let _get_other_info = (crawler_item) =>
 let mapping = {
     "name"                   : "name",
     "oid"                    : "oid",
-    "human_readable_id"      : record => import_utils.human_readable_id(record.name) + "_" + record.oid,
-    "external_links"         : record => [{"key": "capp", "id": record.oid}],
+    "human_readable_id"      : record => `adam_equipment_${import_utils.human_readable_id(record.name)}_${record.oid}`,
+    "external_links"         : record => [{"key": "adam_equipment", "id": record.oid}],
     "price_model"            : record => _getPriceModel(record, record.crawler_item),
     "supplier"               : record => import_utils.get_canonical("Adam Equipment", ":supplier"),
     "distributor"            : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
-    "product_category"       : record => import_utils.get_canonical("Balance", ":product_category"),
-    "product_sub_category"   : record => _get_sub_category(record, record.crawler_item),
+    "category"               : record => import_utils.get_canonical("Balance", ":product_category"),
+    "sub_category"           : record => _get_sub_category(record, record.crawler_item),
+    "all_categories"         : record => _get_all_categories(record, record.crawler_item),
     "description"            : _get_description,
     "other_info"             : record => _get_other_info(record.crawler_item),
-    "images"                 : "crawler_item.images",
+    "images"                 :  record => _getImages(record.crawler_item) ,
     "videos"                 : record => _getVideos(record.crawler_item),
     "product_relations"      : record => record.crawler_item && record.crawler_item["accessories"] ? record.crawler_item["accessories"].map(id => `PRODUCT_SOURCE:[ADAM_EQUIPMENT]_SUPPLIER:[RIDACOM]_ID:[${id}]`) : null,
     "product_relations_count": record => record.crawler_item && record.crawler_item["accessories"] ? record.crawler_item["accessories"].length : null,

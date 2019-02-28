@@ -5,6 +5,7 @@
  * https://www.capp.dk/
  * http://www.genomeme.ca
  * https://www.adamequipment.co.uk
+ * http://www.himedialabs.com
  *
  ********************************************************************/
 
@@ -23,12 +24,12 @@ let run = async(mongo_db, crawler_db) =>
     for (let i = 0; i < suppliers.length; i++)
     {
         await file_importer.run(mongo_db, distributor, suppliers[i]);
-        // await aggregate_data.run(mongo_db, crawler_db, suppliers[i]);
+        await aggregate_data.run(mongo_db, crawler_db, suppliers[i]);
     }
 
-    // await save_to_es_db.run(mongo_db, crawler_db, distributor);
-    await image_uploader.run();
-    await pdf_uploader.run();
+    await save_to_es_db.run(mongo_db, crawler_db, distributor);
+    // await image_uploader.run();
+    // await pdf_uploader.run();
 };
 
 let clean = async(mongo_db, crawler_db) =>

@@ -91,6 +91,6 @@ module.exports = {
     run
 };
 
-run()
-.then(() => process.exit(0))
-.catch(e => console.error(e));
+// run()
+// .then(() => process.exit(0))
+// .catch(e => console.error(e));
