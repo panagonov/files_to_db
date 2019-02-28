@@ -61,17 +61,22 @@ let download_file = async(url, target) =>
 let is_file_exists = async (path, id) =>
     await s3.is_file_exists(bucket_name + path, id);
 
-let upload_to_s3 = async(url, path, id, meta = {}, content_type) =>
+let upload_to_s3 = async(path, id, meta = {}, content_type) =>
 {
-    let file = await download_file(url, id);
     await s3.upload({
         Bucket: bucket_name + path,
         ContentType: content_type,
-        Body: file,
+        Body: fs.readFileSync(temp_dir + id),
         Key: id,
         Metadata: meta
     });
     return id
+};
+
+let download_from_s3 = async(path, id) =>
+{
+    let res = await s3.download(bucket_name + path, id);
+    fs.writeFileSync(temp_dir + id, new Buffer(res.Body, 'base64'))
 };
 
 let upload_product_pdf = async({file_data, path, file_name, image_index, meta = {}}) => {
@@ -82,22 +87,37 @@ let upload_product_pdf = async({file_data, path, file_name, image_index, meta = 
     console.time("Start PDF");
     let file_exists = await is_file_exists(path, file_name);
 
-    if (file_data.link && !file_exists)
+    if (file_data.link)
     {
-        let link_data = await check_is.pdf(file_data.link);
+        if (!file_exists)
+        {
+            let link_data = await check_is.pdf(file_data.link);
 
-        if (link_data.confirm)
+            if (link_data.confirm)
+            {
+                link_name = file_name;
+                thumb_name = file_name.split(".").shift() + "-000001.png";
+
+                await download_file(file_data.link, file_name);
+
+                await convert_pdf_to_image(temp_dir + file_name);
+
+                await upload_to_s3(path, file_name, meta, link_data.content_type);
+                await upload_to_s3(path, thumb_name, meta, "image/png");
+
+                fs.unlinkSync(temp_dir + file_name);
+                fs.unlinkSync(temp_dir + thumb_name);
+            }
+        }
+        else
         {
             link_name = file_name;
             thumb_name = file_name.split(".").shift() + "-000001.png";
 
-            await download_file(file_data.link, file_name);
-
+            await download_from_s3(path,file_name);
             await convert_pdf_to_image(temp_dir + file_name);
 
-            await upload_to_s3(file_data.link, path, file_name, meta, link_data.content_type);
-            await upload_to_s3(file_data.link, path, thumb_name, meta);
-
+            await upload_to_s3(path, thumb_name, meta, "image/png");
             fs.unlinkSync(temp_dir + file_name);
             fs.unlinkSync(temp_dir + thumb_name);
         }
