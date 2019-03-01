@@ -96,31 +96,45 @@ let upload_product_pdf = async({file_data, path, file_name, image_index, meta = 
             if (link_data.confirm)
             {
                 link_name = file_name;
-                thumb_name = file_name.split(".").shift() + "-000001.png";
 
                 await download_file(file_data.link, file_name);
 
-                await convert_pdf_to_image(temp_dir + file_name);
+                try
+                {
+                    await convert_pdf_to_image(temp_dir + file_name);
+                    thumb_name = file_name.split(".").shift() + "-000001.png";
+                    await upload_to_s3(path, thumb_name, meta, "image/png");
+                    fs.unlinkSync(temp_dir + thumb_name);
+                }
+                catch (e)
+                {
+                    console.error(e)
+                }
 
                 await upload_to_s3(path, file_name, meta, link_data.content_type);
-                await upload_to_s3(path, thumb_name, meta, "image/png");
-
                 fs.unlinkSync(temp_dir + file_name);
-                fs.unlinkSync(temp_dir + thumb_name);
             }
         }
-        else
-        {
-            link_name = file_name;
-            thumb_name = file_name.split(".").shift() + "-000001.png";
-
-            await download_from_s3(path,file_name);
-            await convert_pdf_to_image(temp_dir + file_name);
-
-            await upload_to_s3(path, thumb_name, meta, "image/png");
-            fs.unlinkSync(temp_dir + file_name);
-            fs.unlinkSync(temp_dir + thumb_name);
-        }
+        // else
+        // {
+        //     link_name = file_name;
+        //
+        //     await download_from_s3(path,file_name);
+        //
+        //     try
+        //     {
+        //         await convert_pdf_to_image(temp_dir + file_name);
+        //         thumb_name = file_name.split(".").shift() + "-000001.png";
+        //         await upload_to_s3(path, thumb_name, meta, "image/png");
+        //         fs.unlinkSync(temp_dir + thumb_name);
+        //     }
+        //     catch (e)
+        //     {
+        //        console.error(e)
+        //     }
+        //
+        //     fs.unlinkSync(temp_dir + file_name);
+        // }
     }
     console.timeEnd("Start PDF");
 

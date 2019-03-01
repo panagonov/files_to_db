@@ -91,6 +91,10 @@ module.exports = {
     run
 };
 
-run()
-.then(() => process.exit(0))
-.catch(e => console.error(e));
+let r  = () => {
+   run()
+   .then(() => process.exit(0))
+   .catch(e => r())
+};
+
+r();
