@@ -5,6 +5,22 @@ let import_utils = require("../../../_utils/save_utils.js");
 let uniprot_db;
 
 let relation_fields = ["supplier", "distributor", "preparation_method"];
+let specification_fields = [
+    "sequence",
+    "activity",
+    "protein_length",
+    "purity",
+    "formulation",
+    "molecular_weight",
+    "usage",
+    "storage_conditions",
+    "delivery_conditions",
+    "aliases",
+    "precautions",
+    "gene_id",
+    "others"
+];
+
 
 let init = async() =>
 {
@@ -93,6 +109,9 @@ let mapping = {
     "distributor"           : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
     "preparation_method"    : record => import_utils.get_canonical(record.preparation_method, [":host", ":reactivity", ":preparation_method"]),
     "description"           : "background",
+    "images"                : record =>  _getImages(record.crawler_item),
+    "pdf"                   : record =>  _getPdf(record.crawler_item),
+    "original_link"         : "link",
     "sequence"              : "sequence",
     "activity"              : "activity",
     "protein_length"        : "protein_length",
@@ -104,13 +123,8 @@ let mapping = {
     "delivery_conditions"   : "shipping",
     "aliases"               : "alternative",
     "precautions"           : "precautions",
-    "images"                : record =>  _getImages(record.crawler_item),
-    "pdf"                   : record =>  _getPdf(record.crawler_item),
-    "original_link"         : "link",
-    "supplier_specific"     : record => ({
-        ...record.gene_id ? {"gene_id" : record.gene_id} : "",
-        ...record.others ? {"others" : record.others} : ""
-    })
+    "gene_id"               : "gene_id",
+    "others"                : "others"
 };
 
 let _get_bio_object_data = (item, custom_data) =>
@@ -143,6 +157,8 @@ let convert = (item, crawler_item, custom_data) =>
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "protein");
 
     relation_fields.forEach(name => delete result[name]);
+
+    result.specification = import_utils.create_specification_field(result, specification_fields, relation_fields);
 
     return {
         converted_item : result,

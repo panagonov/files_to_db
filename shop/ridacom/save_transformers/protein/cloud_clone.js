@@ -2,7 +2,22 @@ let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
 let relation_fields = ["supplier", "distributor", "reactivity", "preparation_method", "application", "research_area"];
-
+let specification_fields = [
+    "purity",
+    "fragment",
+    "molecular_weight",
+    "molecular_weight_predicted",
+    "shelf_life",
+    "storage_conditions",
+    "delivery_conditions",
+    "subcell_location",
+    "endotoxin_level",
+    "buffer_form",
+    "source",
+    "tag",
+    "traits",
+    "isoelectric_point"
+];
 
 
 let _getImages = item => {
@@ -96,6 +111,12 @@ let mapping = {
     "reactivity"         : record => import_utils.get_canonical(record.reactivity.join("; "), [":host", ":reactivity"]),
     "application"        : record => import_utils.get_canonical(record.application.join("; "), ":application"),
     "research_area"      : record => import_utils.get_canonical((record.research_area || []).join("; ") || "", ":research_area"),
+    "images"             : record =>  _getImages(record.crawler_item),
+    "pdf"                : record =>  _getPdf(record.crawler_item),
+    "original_link"      : "link",
+    "distributor_only" : record => ({
+        "price" : record.supplier_specific.price
+    }),
     "purity"                    : "purity",
     "fragment"                  : "fragment",                   //add str
     "molecular_weight"          : "a_mol_mass",
@@ -109,13 +130,7 @@ let mapping = {
     "source"                    : "traits",                     //add str
     "tag"                       : "tag",                        //add str
     "traits"                    : "traits",                     //add str
-    "isoelectric_point"         : "isoelectric_point",          //add float
-    "images"             : record =>  _getImages(record.crawler_item),
-    "pdf"                : record =>  _getPdf(record.crawler_item),
-    "original_link"      : "link",
-    "distributor_only" : record => ({
-        "price" : record.supplier_specific.price
-    })
+    "isoelectric_point"         : "isoelectric_point"          //add float
 };
 
 let convert = (item, crawler_item) =>
@@ -129,6 +144,8 @@ let convert = (item, crawler_item) =>
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "protein");
 
     relation_fields.forEach(name => delete result[name]);
+
+    result.specification = import_utils.create_specification_field(result, specification_fields, relation_fields);
 
     return {
         converted_item : result,

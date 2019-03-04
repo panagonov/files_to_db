@@ -5,6 +5,20 @@ let import_utils = require("../../../_utils/save_utils.js");
 let uniprot_db;
 
 let relation_fields = ["reactivity", "conjugate", "test_method", "supplier", "distributor"];
+let specification_fields = [
+    "formulation",
+    "usage",
+    "storage_conditions",
+    "delivery_conditions",
+    "calibration_range",
+    "alternative",
+    "precautions",
+    "gene_id",
+    "sensitivity",
+    "sample_type",
+    "assay_length",
+    "kit_components"
+];
 
 let init = async() =>
 {
@@ -94,23 +108,21 @@ let mapping = {
     "distributor"        : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
     "conjugate"          : record => import_utils.get_canonical(record.conjugate || "", [":conjugate", ":reactivity"]),
     "test_method"        : record => import_utils.get_canonical(record.detection_method || "", ":test_method"),
+    "images"             : record => _getImages(record.crawler_item),
+    "pdf"                : record => _getPdf(record.crawler_item),
+    "original_link"      : "link",
     "formulation"        : "formulation",
     "usage"              : "usage_notes",
     "storage_conditions" : "storage_instructions",
     "delivery_conditions": "shipping",
-    "images"             : record =>  _getImages(record.crawler_item),
-    "pdf"                : record =>  _getPdf(record.crawler_item),
-    "original_link"      : "link",
-    "supplier_specific"  : record => ({
-        ...record.calibration_range ? {"calibration_range": record.calibration_range}   : "",
-        ...record.alternative       ? {"alternative": record.alternative}               : "",
-        ...record.precautions       ? {"precautions": record.precautions}               : "",
-        ...record.gene_id           ? {"gene_id": record.gene_id}                       : ""
-    }),
-    "sensitivity"       : "limit_of_detection",
-    "sample_type"       : "sample_type",
-    "assay_length"      : "assay_duration",
-    "kit_components"    : "kit_components",
+    "calibration_range"  : "calibration_range",
+    "alternative"        : "alternative",
+    "precautions"        : "precautions",
+    "gene_id"            : "gene_id",
+    "sensitivity"        : "limit_of_detection",
+    "sample_type"        : "sample_type",
+    "assay_length"       : "assay_duration",
+    "kit_components"     : "kit_components",
 };
 
 let _get_bio_object_data = (item, custom_data) =>
@@ -143,6 +155,8 @@ let convert = (item, crawler_item, custom_data) =>
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "elisa_kit");
 
     relation_fields.forEach(name => delete result[name]);
+
+    result.specification = import_utils.create_specification_field(result, specification_fields, relation_fields);
 
     return {
         converted_item : result,

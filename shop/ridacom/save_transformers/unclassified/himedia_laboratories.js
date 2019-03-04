@@ -16,6 +16,18 @@ let category_mapping = {
     "Laboratory Aids & Equipments"     : "equipment"
 };
 
+let create_specification_field = (record) =>{
+    let specification_fields = record.specification.map(item => ({
+        key: item.key,
+        value: {value: item.value},
+        ui_text: utils.capitalizeFirstLetter(item.key.replace(/_/g, " "))
+    }));
+
+    let agg_specs =  import_utils.create_specification_field(record, null, relation_fields);
+
+    return specification_fields.concat(agg_specs)
+};
+
 let _load_original_products_data = async (items, mongo_db) =>
 {
     let ids = items.reduce((res, item) => {
@@ -154,6 +166,8 @@ let convert = (item, original_items) =>
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, type);
 
     relation_fields.forEach(name => delete result[name]);
+
+    result.specification = create_specification_field(result);
 
     return {
         product_type: type,

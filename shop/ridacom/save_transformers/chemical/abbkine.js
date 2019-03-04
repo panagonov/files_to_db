@@ -3,6 +3,24 @@ let import_utils = require("../../../_utils/save_utils.js");
 
 let relation_fields = ["supplier", "distributor", "application"];
 
+let specification_fields = [
+    "formulation",
+    "usage" ,
+    "storage_conditions" ,
+    "delivery_conditions",
+    "molecular_weight",
+    "purification",
+    "purity",
+    "preparation_method",
+    "formula",
+    "features",
+    "storage_buffer" ,
+    "precautions",
+    "aliases",
+    "original_link",
+    "app_notes"
+];
+
 let _getImages = item => {
     let result = null;
 
@@ -72,6 +90,8 @@ let mapping = {
     "supplier"           : record => import_utils.get_canonical("Abbkine Scientific Co., Ltd.", ":supplier"),
     "distributor"        : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
     "application"        : record => import_utils.get_canonical((record.application || []).join("; "), ":application"),
+    "images"             : record =>  _getImages(record.crawler_item),
+    "pdf"                : record =>  _getPdf(record.crawler_item),
     "formulation"        : "formulation",
     "usage"              : "usage_notes",
     "storage_conditions" : "storage_instructions",
@@ -85,12 +105,8 @@ let mapping = {
     "storage_buffer"     : "storage_buffer",
     "precautions"        : "precautions",
     "aliases"            : "alternative",
-    "images"             : record =>  _getImages(record.crawler_item),
-    "pdf"                : record =>  _getPdf(record.crawler_item),
     "original_link"      : "link",
-    "supplier_specific"  : record => ({
-        ...record.app_notes ? {"app_notes": record.app_notes} : "",
-    })
+    "app_notes"          : "app_notes"
 };
 
 let convert = (item, crawler_item) =>
@@ -104,6 +120,8 @@ let convert = (item, crawler_item) =>
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "antibody");
 
     relation_fields.forEach(name => delete result[name]);
+
+    result.specification = import_utils.create_specification_field(result, specification_fields, relation_fields);
 
     return {
         converted_item : result,

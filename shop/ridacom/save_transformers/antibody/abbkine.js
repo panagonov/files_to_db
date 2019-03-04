@@ -4,7 +4,23 @@ let import_utils = require("../../../_utils/save_utils.js");
 
 let uniprot_db;
 
-let relation_fields = ["host", "reactivity", "application", "isotype", "light_chain", "heavy_chain", "clonality" , "research_area", "supplier", "distributor", "conjugate"];
+let relation_fields = ["host", "reactivity", "application", "isotype", "light_chain", "heavy_chain", "clonality", "research_area", "supplier", "distributor", "conjugate"];
+let specification_fields = [
+    "usage",
+    "storage_conditions",
+    "delivery_conditions",
+    "buffer_form",
+    "immunogen",
+    "purification",
+    "formulation",
+    "original_link",
+    "precautions",
+    "alternative",
+    "accession",
+    "accession_link",
+    "antibody_category",
+    "gene_id"
+];
 
 let init = async() =>
 {
@@ -78,7 +94,6 @@ let _get_bio_object = record =>
         ...bio_object.gene                  ? {"gene": bio_object.gene}                                                 : "",
         ...bio_object.organism              ? {"organism": bio_object.organism}                                         : "",
         ...bio_object.ncbi_organism_tax_id  ? {"ncbi_organism_tax_id": bio_object.ncbi_organism_tax_id}                 : "",
-
     }));
 };
 
@@ -100,6 +115,8 @@ let mapping = {
     "heavy_chain"           : record => import_utils.get_canonical(record.isotype || "", ":heavy_chain"),
     "clonality"             : record => import_utils.get_canonical(record.clonality || "", ":clonality"),
     "conjugate"             : record => import_utils.get_canonical(record.conjugate || "", [":conjugate", ":reactivity"]),
+    "images"                : record =>  _getImages(record.crawler_item),
+    "pdf"                   : record =>  _getPdf(record.crawler_item),
     "usage"                 : record =>  record.background && record.background.trim() ? [record.background.replace(/\s+/g, " ").trim()] : null,
     "storage_conditions"    : "storage_instructions",
     "delivery_conditions"   : "shipping",
@@ -107,21 +124,13 @@ let mapping = {
     "immunogen"             : "immunogen",
     "purification"          : "purification",
     "formulation"           : "formulation",
-    "images"                : record =>  _getImages(record.crawler_item),
-    "pdf"                   : record =>  _getPdf(record.crawler_item),
     "original_link"         : "link",
-    "supplier_specific"     : record => ({
-        "precautions"   : record.precautions,
-        "alternative"   : record.alternative,
-        "accession"     : record.accession,
-        "accession_link": record.accession_link,
-        "category"      : record.category,
-        "gene_id"       : record.gene_id
-    })
-    // "research_area"      : record => import_utils.get_canonical((record.research_area || []).join("; ") || "", ":research_area"),
-    // "concentration"      : "concentration",
-    // "clone_id"           : "clone_num",
-    // "shelf_life"         : "shelf_life",
+    "precautions"           : "precautions",
+    "alternative"           : "alternative",
+    "accession"             : "accession",
+    "accession_link"        : "accession_link",
+    "antibody_category"     : "category",
+    "gene_id"               : "gene_id",
 };
 
 let _get_bio_object_data = (item, custom_data) =>
@@ -154,6 +163,8 @@ let convert = (item, crawler_item, custom_data) =>
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "antibody");
 
     relation_fields.forEach(name => delete result[name]);
+
+    result.specification = import_utils.create_specification_field(result, specification_fields, relation_fields);
 
     return {
         converted_item : result,

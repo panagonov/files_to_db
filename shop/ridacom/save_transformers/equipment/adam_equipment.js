@@ -5,6 +5,18 @@ let currency_converter = require("../../../../common-components/region_utils/cur
 
 let relation_fields = ["supplier", "distributor", "category", "sub_category", "all_categories"];
 
+let create_specification_field = (record) =>{
+    let specification_fields = record.specification.map(item => ({
+        key: item.key,
+        value: {value: item.value},
+        ui_text: utils.capitalizeFirstLetter(item.key.replace(/_/g, " "))
+    }));
+
+    let agg_specs =  import_utils.create_specification_field(record, null, relation_fields);
+
+    return specification_fields.concat(agg_specs)
+};
+
 let _getPdf = item =>
 {
     if (item.pdf) {
@@ -169,6 +181,8 @@ let convert = (item, crawler_item) =>
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "equipment");
 
     relation_fields.forEach(name => delete result[name]);
+
+    result.specification = create_specification_field(result);
 
     return {
         converted_item : result,

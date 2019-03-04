@@ -224,13 +224,50 @@ let build_service_data = (record, relation_fields) => {
     return result
 };
 
+let create_specification_field = (record, specification_fields, relation_fields) => {
+    let specifications = [];
+
+    if (specification_fields)
+    {
+        specification_fields.forEach(field_name =>
+        {
+            let value = record[field_name];
+            if (!value)
+                return;
+
+            value = typeof value === "string" ? [value] : value;
+
+            specifications.push({
+                key: field_name,
+                value: value.map(item => ({value: item})),
+                ui_text: utils.capitalizeFirstLetter(field_name.replace(/_/g, " "))
+            })
+        });
+    }
+
+    relation_fields.forEach(field_name => {
+        let real_name = field_name + "_relations";
+
+        let value = record[real_name];
+
+        specifications.push({
+            key: field_name,
+            value: value.map(item => ({value: item})),
+            ui_text: record.ui[field_name]
+        })
+    });
+
+    return specifications
+};
+
 module.exports = {
     human_readable_id,
     size_parser,
     get_canonical,
     build_suggest_data_antibody_elisa_kit,
     build_search_data,
-    build_service_data
+    build_service_data,
+    create_specification_field
 };
 
 // console.log(get_canonical("Baculovirus-Insect Cells", [":preparation_method"]));

@@ -98,10 +98,16 @@ let get_node_type = (node) =>
     return node._type || "";
 };
 
+let capitalizeFirstLetter = (string) =>
+{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
 module.exports = {
     mapping_transform,
     wait,
     uniq,
     normalize_string,
-    get_node_type
+    get_node_type,
+    capitalizeFirstLetter
 };

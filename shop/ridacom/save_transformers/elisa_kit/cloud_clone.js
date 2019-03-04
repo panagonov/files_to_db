@@ -2,6 +2,20 @@ let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
 let relation_fields = ["reactivity", "application", "test_method", "research_area", "supplier", "distributor"];
+let specification_fields = [
+    "original_link",
+    "shelf_life",
+    "usage",
+    "storage_conditions",
+    "delivery_conditions",
+    "sensitivity",
+    "sample_type",
+    "assay_length",
+    "specificity",
+    "precision",
+    "stability",
+    "procedure"
+];
 
 let _getImages = item => {
     let result = [];
@@ -102,13 +116,13 @@ let mapping = {
     "application"        : record => import_utils.get_canonical((record.application || []).join("; "), ":application"),
     "research_area"      : record => import_utils.get_canonical((record.research_area || []).join("; ") || "", ":research_area"),
     "test_method"        : record => import_utils.get_canonical(record.method, ":test_method"),
+    "images"             : record =>  _getImages(record.crawler_item),
+    "pdf"                : record =>  _getPdf(record.crawler_item),
+    "original_link"      : "link",
     "shelf_life"         : "shelf_life",
     "usage"              : record => record["test_principle"] ? [record["test_principle"]] : null,
     "storage_conditions" : "storage_conditions",
     "delivery_conditions": "delivery_conditions",
-    "images"             : record =>  _getImages(record.crawler_item),
-    "pdf"                : record =>  _getPdf(record.crawler_item),
-    "original_link"      : "link",
     "sensitivity"       : "sensitivity",  //str
     "sample_type"       : "sample_type",  //arr
     "assay_length"      : "assay_length",  //str
@@ -133,6 +147,8 @@ let convert = (item, crawler_item) =>
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "elisa_kit");
 
     relation_fields.forEach(name => delete result[name]);
+
+    result.specification = import_utils.create_specification_field(result, specification_fields, relation_fields);
 
     return {
         converted_item : result,

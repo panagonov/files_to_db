@@ -3,6 +3,29 @@ let import_utils = require("../../../_utils/save_utils.js");
 
 let relation_fields = ["supplier", "distributor", "category", "sub_category", "all_categories"];
 
+let create_specification_field = (record) =>{
+    let specification_fields = [];
+    record.table_specification.forEach(item => {
+
+        for (let key in item)
+        {
+            if (key === "oid")
+                continue
+
+            specification_fields.push({
+                product_id: item.oid,
+                key: key.toLowerCase().replace(/\s/g , "_"),
+                value: {value : item[key]},
+                ui_text: key
+            })
+        }
+    });
+
+    let agg_specs =  import_utils.create_specification_field(record, null, relation_fields);
+
+    return specification_fields.concat(agg_specs)
+};
+
 let _getImages = item => {
 
     if(item.image)
@@ -96,6 +119,8 @@ let convert = (item, crawler_item, custom_data) =>
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "equipment");
 
     relation_fields.forEach(name => delete result[name]);
+
+    result.specification = create_specification_field(result);
 
     return {
         converted_item : result,

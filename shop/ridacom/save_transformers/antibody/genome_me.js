@@ -2,6 +2,10 @@ let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
 let relation_fields = ["host", "clonality", "supplier", "distributor"];
+let specification_fields = [
+    "positive_control",
+    "dilution_range"
+];
 
 let _getImages = item =>
 {
@@ -73,27 +77,26 @@ let _getPriceModel = (item, crawler_item) =>
 };
 
 let mapping = {
-    "name"               : "name",
-    "oid"                : "oid",
-    "human_readable_id"  : record => `genomeme_${import_utils.human_readable_id(record.name)}_${record.oid}`,
-    "external_links"     : record => [{"key": "genomeme", "id": record.oid}],
-    "bio_object"         : record => [{
+    "name"             : "name",
+    "oid"              : "oid",
+    "human_readable_id": record => `genomeme_${import_utils.human_readable_id(record.name)}_${record.oid}`,
+    "external_links"   : record => [{"key": "genomeme", "id": record.oid}],
+    "bio_object"       : record => [{
         "type": "protein",
         ...record.name ? {"name": record.name} : ""
     }],
-    "price_model"        : record => _getPriceModel(record, record.crawler_item),
-    "description"        : "crawler_item.description",
-    "supplier"           : record => import_utils.get_canonical("GenomeMe", ":supplier"),
-    "distributor"        : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
-    "host"               : record => import_utils.get_canonical(record.crawler_item.host || "", [":host", ":reactivity"]),
-    "clonality"          : record => import_utils.get_canonical(record.crawler_item.host || "", ":clonality"),
-    "images"             : record =>  _getImages(record.crawler_item),
-    "pdf"                : record =>  _getPdf(record.crawler_item),
-    "original_link"      : record => record.crawler_item && record.crawler_item.url ? record.crawler_item.url : null,
-    "supplier_specific"  : record => ({
-        ...record.crawler_item && record.crawler_item.positive_control ? {"positive_control" : record.crawler_item.positive_control} : "",
-        ...record.crawler_item && record.crawler_item.range ? {"dilution_range"  : record.crawler_item.range} : ""
-    })
+    "price_model"      : record => _getPriceModel(record, record.crawler_item),
+    "description"      : "crawler_item.description",
+    "supplier"         : record => import_utils.get_canonical("GenomeMe", ":supplier"),
+    "distributor"      : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
+    "host"             : record => import_utils.get_canonical(record.crawler_item.host || "", [":host", ":reactivity"]),
+    "clonality"        : record => import_utils.get_canonical(record.crawler_item.host || "", ":clonality"),
+    "images"           : record => _getImages(record.crawler_item),
+    "pdf"              : record => _getPdf(record.crawler_item),
+    "original_link"    : record => record.crawler_item && record.crawler_item.url ? record.crawler_item.url : null,
+    "positive_control" : "crawler_item.positive_control",
+    "dilution_range"   : "crawler_item.range"
+
 };
 
 let convert = (item, crawler_item) =>
@@ -107,6 +110,8 @@ let convert = (item, crawler_item) =>
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "antibody");
 
     relation_fields.forEach(name => delete result[name]);
+
+    result.specification = import_utils.create_specification_field(result, specification_fields, relation_fields);
 
     return {
         converted_item : result,
