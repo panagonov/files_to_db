@@ -38,7 +38,7 @@ let convert_pdf_to_image = async(source) =>
     new Promise((resolve, reject) =>
     {
         let dest = source.split(".").shift();
-        exec(`pdftopng -r 72 -f 1 -l 1 ${source} ${dest}`, (err, result) =>
+        exec(`pdftopng -r 72 -f 1 -l 1 "${source}" "${dest}"`, (err, result) =>
         {
             if (err)
                 return reject(err);
@@ -85,56 +85,60 @@ let upload_product_pdf = async({file_data, path, file_name, image_index, meta = 
     let link_name = "";
 
     console.time("Start PDF");
-    let file_exists = await is_file_exists(path, file_name);
-
-    if (file_data.link)
+    try
     {
-        if (!file_exists)
+        let file_exists = await is_file_exists(path, file_name);
+        if (file_data.link)
         {
-            let link_data = await check_is.pdf(file_data.link);
-
-            if (link_data.confirm)
+            if (!file_exists)
             {
-                link_name = file_name;
+                let link_data = await check_is.pdf(file_data.link);
 
-                await download_file(file_data.link, file_name);
-
-                try
+                if (link_data.confirm)
                 {
-                    await convert_pdf_to_image(temp_dir + file_name);
-                    thumb_name = file_name.split(".").shift() + "-000001.png";
-                    await upload_to_s3(path, thumb_name, meta, "image/png");
-                    fs.unlinkSync(temp_dir + thumb_name);
-                }
-                catch (e)
-                {
-                    console.error(e)
-                }
+                    link_name = file_name;
 
-                await upload_to_s3(path, file_name, meta, link_data.content_type);
-                fs.unlinkSync(temp_dir + file_name);
+                    await download_file(file_data.link, file_name);
+
+                    try
+                    {
+                        await convert_pdf_to_image(temp_dir + file_name);
+                        thumb_name = file_name.split(".").shift() + "-000001.png";
+                        await upload_to_s3(path, thumb_name, meta, "image/png");
+                        fs.unlinkSync(temp_dir + thumb_name);
+                    } catch (e)
+                    {
+                        console.error(e)
+                    }
+
+                    await upload_to_s3(path, file_name, meta, link_data.content_type);
+                    fs.unlinkSync(temp_dir + file_name);
+                }
             }
+            // else  //recreate thumbnails only
+            // {
+            //     link_name = file_name;
+            //
+            //     await download_from_s3(path,file_name);
+            //
+            //     try
+            //     {
+            //         await convert_pdf_to_image(temp_dir + file_name);
+            //         thumb_name = file_name.split(".").shift() + "-000001.png";
+            //         await upload_to_s3(path, thumb_name, meta, "image/png");
+            //         fs.unlinkSync(temp_dir + thumb_name);
+            //     }
+            //     catch (e)
+            //     {
+            //        console.error(e)
+            //     }
+            //
+            //     fs.unlinkSync(temp_dir + file_name);
+            // }
         }
-        // else
-        // {
-        //     link_name = file_name;
-        //
-        //     await download_from_s3(path,file_name);
-        //
-        //     try
-        //     {
-        //         await convert_pdf_to_image(temp_dir + file_name);
-        //         thumb_name = file_name.split(".").shift() + "-000001.png";
-        //         await upload_to_s3(path, thumb_name, meta, "image/png");
-        //         fs.unlinkSync(temp_dir + thumb_name);
-        //     }
-        //     catch (e)
-        //     {
-        //        console.error(e)
-        //     }
-        //
-        //     fs.unlinkSync(temp_dir + file_name);
-        // }
+    }
+    catch(e) {
+
     }
     console.timeEnd("Start PDF");
 

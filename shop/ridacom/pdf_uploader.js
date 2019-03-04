@@ -45,7 +45,7 @@ let upload = async(db_index) => {
                     let new_image_names = await upload_pdf_utils.upload_product_pdf({
                         file_data,
                         path: `pdf/${distributor}/${supplier}`,
-                        file_name: file_data.link.split("/").pop(),
+                        file_name: (file_data.link || file_data.href).split("/").pop(),
                         image_index: j,
                         meta: {supplier: supplier, distributor: distributor}}
                     );
@@ -94,7 +94,16 @@ module.exports = {
 let r  = () => {
    run()
    .then(() => process.exit(0))
-   .catch(e => r())
+   .catch(e => {
+       console.error(e);
+       r()
+   })
 };
 
 r();
+
+process.on('uncaughtException', function (err, data)
+{
+    console.error("--- UNCAUGHT EXCEPTION ---", err);
+    r()
+});
