@@ -103,11 +103,24 @@ let capitalizeFirstLetter = (string) =>
     return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
+let objEach = (obj, callback) => {
+    let counter = 0;
+    for (let key in obj)
+    {
+        if ( obj.hasOwnProperty(key) )
+        {
+            callback( key, obj[key], counter );
+        }
+        counter ++;
+    }
+};
+
 module.exports = {
     mapping_transform,
     wait,
     uniq,
     normalize_string,
     get_node_type,
-    capitalizeFirstLetter
+    capitalizeFirstLetter,
+    objEach
 };

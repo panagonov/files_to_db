@@ -1,0 +1,291 @@
+{
+    "title"               : "product",
+    "database"            : "elasticsearch",
+    "json_schema" : {
+        "additionalProperties": false,
+        "required" : [],
+        "properties"          : {
+            "_id" : {
+                "visible_for": ["all"],
+                "schema" : {"type" :  "string"}
+            },
+            "name" : {
+                "visible_for": ["all"],
+                "schema" : {"type" :  "string"}
+            },
+            "description" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" :  "array",
+                    "items" :  {"type" :  "string"}
+                }
+            },
+            "oid" : {
+                "visible_for": ["all"],
+                "schema" : {"type" :  "string"}
+            },
+            "human_readable_id" : {
+                "visible_for": ["all"],
+                "schema" : {"type" :  "string"}
+            },
+            "external_links" : {
+                "visible_for": ["all"],
+                "schema" :  {
+                    "type" : "array",
+                    "items": {
+                        "type"      : "object",
+                        "properties": {
+                            "key": {"type": "string"},
+                            "id" : {"type": "string"}
+                        }
+                    }
+                }
+            },
+            "price_model" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type"      : "object",
+                    "properties": {
+                        "sort_price"       : {
+                            "type": "number"
+                        },
+                        "is_multiple"      : {
+                            "type": "boolean"
+                        },
+                        "is_ids_are_unique": {
+                            "type": "boolean"
+                        },
+                        "discount"         : {
+                            "type"                : "object",
+                            "properties"          : {
+                                "default": {
+                                    "type"          : "object",
+                                    "properties"    : {
+                                        "discount_type": {
+                                            "enums": [
+                                                "absolute",
+                                                "percent"
+                                            ]
+                                        }
+                                    },
+                                    "discount_value": {
+                                        "type": "number"
+                                    }
+                                }
+                            },
+                            "additionalProperties": true
+                        },
+                        "variation"        : {
+                            "type" : "array",
+                            "items": {
+                                "type"      : "object",
+                                "properties": {
+                                    "price"                   : {
+                                        "type"                : "object",
+                                        "properties"          : {
+                                            "value"   : {
+                                                "type": "number"
+                                            },
+                                            "currency": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "additionalProperties": false
+                                    },
+                                    "product_id"              : {
+                                        "type": "string"
+                                    },
+                                    "final_price"             : {
+                                        "type": "number"
+                                    },
+                                    "size"                    : {
+                                        "type"                : "object",
+                                        "properties"          : {
+                                            "value"    : {
+                                                "type": "number"
+                                            },
+                                            "dimension": {
+                                                "type": "string"
+                                            },
+                                            "more_data": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "additionalProperties": false
+                                    },
+                                    "user_price"              : {
+                                        "type": "float"
+                                    },
+                                    "user_price_format"       : {
+                                        "type": "string"
+                                    },
+                                    "distributor_price"       : {
+                                        "type": "float"
+                                    },
+                                    "distributor_price_format": {
+                                        "type": "string"
+                                    },
+                                    "payment_price"           : {
+                                        "type": "float"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "search_data" : {
+                "schema" : {
+                    "type": "array",
+                    "items" : {
+                        "type" : "object",
+                        "properties" : {
+                            "key" : {"type" : "string"},
+                            "text": {"type" : "string"}
+                        }
+                    }
+                }
+            },
+            "original_link" : {
+                "visible_for": ["all"],
+                "schema" : {"type" :  "string"}
+            },
+            "pdf" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {
+                        "type"      : "object",
+                        "properties": {
+                            "link"      : {"type": "string"},
+                            "text"      : {"type": "string"},
+                            "type"      : {"type": "string"},
+                            "thumb_link": {"type": "string"},
+                            "lang"      : {"type": "string"}
+                        }
+                    }
+                }
+            },
+            "images" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {
+                        "type"      : "object",
+                        "properties": {
+                            "link"      : {"type": "string"},
+                            "text"      : {"type": "array", "items": {"type": "string"}},
+                            "type"      : {"type": "string"},
+                            "thumb_link": {"type": "string"}
+                        }
+                    }
+                }
+            },
+            "videos" : {
+                "visible_for": ["all"],
+                "schema"            : {
+                    "type" : "array",
+                    "items": {
+                        "type"      : "object",
+                        "properties": {
+                            "link"      : {"type": "string"},
+                            "text"      : {"type": "array", "items": {"type": "string"}},
+                            "type"      : {"type": "string"},
+                            "thumb_link": {"type": "string"}
+                        }
+                    }
+                }
+            },
+            "distributor_only": {
+                "visible_for" : ["distributor"],
+                "schema" : {
+                    "type" : "object",
+                    "properties": {},
+                    "additionalProperties": true
+                }
+            },
+            "distributor_relations" : {
+                "visible_for": ["all"],
+                "aggregate" : true,
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "supplier_relations" : {
+                "visible_for": ["all"],
+                "aggregate" : true,
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "category_relations" : {
+                "aggregate" : true,
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "aliases" : {
+                "visible_for" : ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    },
+    "db_settings" : {
+        "index" : "shop_product",
+        "properties" : {
+            "name" : {
+                "fields": {
+                    "raw"    : {
+                        "type"    : "text",
+                        "analyzer": "term_lowercase"
+                    },
+                    "main"   : {
+                        "type"           : "text",
+                        "analyzer"       : "edge_phrase_analyzer",
+                        "search_analyzer": "term_lowercase"
+                    },
+                    "suggest": {
+                        "type"           : "text",
+                        "analyzer"       : "edge_analyzer",
+                        "search_analyzer": "lowercase_whitespace"
+                    },
+                    "phrase" : {
+                        "type"    : "text",
+                        "analyzer": "standard"
+                    }
+                }
+            },
+            "description"       : {
+                "index": false
+            },
+            "search_data" : {
+                "properties" : {
+                    "key"       : {"type": "keyword"},
+                    "text"      : {
+                        "type": "keyword",
+                        "fields": {
+                            "raw"    : {
+                                "type"    : "text",
+                                "analyzer": "term_lowercase"
+                            },
+                            "main"   : {
+                                "type"           : "text",
+                                "analyzer"       : "edge_phrase_analyzer",
+                                "search_analyzer": "term_lowercase"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "swagger_definition" : true
+}

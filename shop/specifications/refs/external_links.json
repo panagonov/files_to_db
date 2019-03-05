@@ -1,0 +1,13 @@
+{
+    "$ref" : "external_links",
+    "schema" : {
+        "type" : "array",
+        "items": {
+            "type"      : "object",
+            "properties": {
+                "key": {"type": "string"},
+                "id" : {"type": "string"}
+            }
+        }
+    }
+}

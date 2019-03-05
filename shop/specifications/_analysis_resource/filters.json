@@ -1,0 +1,46 @@
+{
+    "edge_filter"        : {
+        "type"    : "edge_ngram",
+        "min_gram": 1,
+        "max_gram": 256
+    },
+    "synonym_filter":{
+        "type": "synonym",
+        "synonyms":[
+            "Α,α,a,Alpha",
+            "Β,β,b,Beta",
+            "Γ,γ,g,Gamma",
+            "Δ,δ,d,Delta",
+            "Ε,ε,e,Epsilon",
+            "Ζ,ζ,z,Zeta",
+            "Η,η,e,Eta",
+            "Θ,θ,t,Theta",
+            "Ι,ι,i,Iota",
+            "Κ,κ,k,Kappa",
+            "Λ,λ,l,Lambda",
+            "Μ,μ,m,Mu",
+            "Ν,ν,n,Nu",
+            "Ξ,ξ,h,Xi",
+            "Ο,ο,o,Omicron",
+            "Π,π,p,Pi",
+            "Ρ,ρ,r,Rho",
+            "Σ,σς,s,Sigma",
+            "Τ,τ,t,Tau",
+            "Υ,υ,y,Upsilon",
+            "Φ,φ,f,Phi",
+            "Χ,χ,k,Chi",
+            "Psi,Ψ,ψ,ps",
+            "Ω,ω,o,Omega"
+        ]
+    },
+    "word_delimeter": {
+        "type"                   : "word_delimiter",
+        "generate_word_parts"    : true,
+        "generate_number_parts"  : true,
+        "catenate_all"           : true,
+        "split_on_case_change"   : true,
+        "preserve_original"      : true,
+        "split_on_numerics"      : true,
+        "stem_english_possessive": false
+    }
+}

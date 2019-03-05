@@ -1,3 +1,4 @@
+let utils    = require("../../_utils/utils.js");
 let semantica    = require("../../common-components/search-engine-3/domains/genetics/index.js");
 
 let human_readable_id = str => str.replace(/\W/g, "_").replace(/\s/g, "_").replace(/_+/g, "_").replace(/^_/, "").replace(/_$/, "");
@@ -224,8 +225,8 @@ let build_service_data = (record, relation_fields) => {
     return result
 };
 
-let create_specification_field = (record, specification_fields, relation_fields) => {
-    let specifications = [];
+let create_specification_field = (record, specification_fields) => {
+    let result = [];
 
     if (specification_fields)
     {
@@ -237,27 +238,53 @@ let create_specification_field = (record, specification_fields, relation_fields)
 
             value = typeof value === "string" ? [value] : value;
 
-            specifications.push({
-                key: field_name,
-                value: value.map(item => ({value: item})),
-                ui_text: utils.capitalizeFirstLetter(field_name.replace(/_/g, " "))
-            })
+            if (value && value.length)
+            {
+                result.push({
+                    key: field_name,
+                    value: value.map(item => ({value: item})),
+                    ui_text: utils.capitalizeFirstLetter(field_name.replace(/_/g, " "))
+                })
+            }
+
         });
     }
+
+    return result
+};
+
+let create_relation_field = (record, relation_fields) => {
+    let result = [];
 
     relation_fields.forEach(field_name => {
         let real_name = field_name + "_relations";
 
         let value = record[real_name];
 
-        specifications.push({
-            key: field_name,
-            value: value.map(item => ({value: item})),
-            ui_text: record.ui[field_name]
-        })
+        if (value && value.length)
+        {
+            result.push({
+                key: field_name,
+                value: value.map((item, index) => ({value: item, ui_text: record.ui[field_name][index]})),
+                ui_text: utils.capitalizeFirstLetter(field_name.replace(/_/g, " "))
+            })
+        }
+
     });
 
-    return specifications
+    return result
+};
+
+let clear_result_data = (result, relation_fields, specification_fields) => {
+    relation_fields.forEach(name => {
+        delete result[name];
+        delete result[name + "_relations"]
+    });
+    specification_fields.forEach(name => delete result[name]);
+
+    delete result.ui;
+
+    return result;
 };
 
 module.exports = {
@@ -267,7 +294,9 @@ module.exports = {
     build_suggest_data_antibody_elisa_kit,
     build_search_data,
     build_service_data,
-    create_specification_field
+    create_specification_field,
+    create_relation_field,
+    clear_result_data
 };
 
 // console.log(get_canonical("Baculovirus-Insect Cells", [":preparation_method"]));

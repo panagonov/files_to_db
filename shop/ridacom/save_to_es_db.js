@@ -131,7 +131,7 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site) =>
 
             accumulated_suggest_data = Object.assign(accumulated_suggest_data, suggest_data);
 
-            es_bulk.push({"model_title": type, "command_name": "index", "_id": item._id, "document": converted_item});
+            es_bulk.push({"model_title": "product", "command_name": "index", "_id": item._id, "document": converted_item});
 
             if (missing_data)
                 not_found_custom = not_found_custom.concat(missing_data);

@@ -52,17 +52,9 @@ let _getPriceModel = (item, crawler_item) =>
     return result;
 };
 
-let _get_sub_category = (item, crawler_item) => {
-    if (item.accessories)
-        return import_utils.get_canonical("Accessories", ":product_sub_category");
-
-    let sub_categories = utils.uniq((crawler_item.parent_sub_category || crawler_item.sub_category || []).filter(item => item !== crawler_item._id));
-    return import_utils.get_canonical(sub_categories[0] || "", ":product_sub_category")
-};
-
 let _get_all_categories = (item, crawler_item) => {
 
-    let result = import_utils.get_canonical("Balance", ":product_category");
+    let result = import_utils.get_canonical("Equipment Balance", ":product_category");
 
     if (item.accessories)
         result = result.concat( import_utils.get_canonical("Accessories", ":product_sub_category"));
@@ -156,9 +148,7 @@ let mapping = {
     "price_model"            : record => _getPriceModel(record, record.crawler_item),
     "supplier"               : record => import_utils.get_canonical("Adam Equipment", ":supplier"),
     "distributor"            : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
-    "category"               : record => import_utils.get_canonical("Balance", ":product_category"),
-    "sub_category"           : record => _get_sub_category(record, record.crawler_item),
-    "all_categories"         : record => _get_all_categories(record, record.crawler_item),
+    "category"               : record => _get_all_categories(record, record.crawler_item),
     "description"            : _get_description,
     "other_info"             : record => _get_other_info(record.crawler_item),
     "images"                 :  record => _getImages(record.crawler_item) ,

@@ -4,7 +4,7 @@ let import_utils = require("../../../_utils/save_utils.js");
 
 let uniprot_db;
 
-let relation_fields = ["host", "reactivity", "application", "isotype", "light_chain", "heavy_chain", "clonality", "research_area", "supplier", "distributor", "conjugate"];
+let relation_fields = ["category", "host", "reactivity", "application", "isotype", "light_chain", "heavy_chain", "clonality", "research_area", "supplier", "distributor", "conjugate"];
 let specification_fields = [
     "usage",
     "storage_conditions",
@@ -38,7 +38,7 @@ let _getImages = item => {
             text = text.replace(/\s+/g, " ").trim();
             return {
                 link: link,
-                ...text ? {text: text} : ""
+                ...text ? {text: [text]} : ""
             }
         })
     }
@@ -100,13 +100,14 @@ let _get_bio_object = record =>
 let mapping = {
     "name"                  : "name",
     "oid"                   : "oid",
-    "human_readable_id"     : record => `abbkine_${import_utils.human_readable_id(record.name)}_${record.oid}`,
+    "human_readable_id"     : record => `abbkine_scientific_co_ltd_${import_utils.human_readable_id(record.name)}_${record.oid}`,
     "external_links"        : record => [{"key": "abbkine_scientific_co_ltd", "id": record.oid}],
     "bio_object"            : record => _get_bio_object(record),
     "price_model"           : record => _getPriceModel(record, record.crawler_item),
-    "description"           : "description",
+    "description"           : record => record["description"] ? [record["description"]] : null,
     "supplier"              : record => import_utils.get_canonical("Abbkine Scientific Co., Ltd.", ":supplier"),
     "distributor"           : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
+    "category"              : record => import_utils.get_canonical("Antibody", ":product_category"),
     "host"                  : record => import_utils.get_canonical(record.host || "", [":host", ":reactivity"]),
     "reactivity"            : record => import_utils.get_canonical((record.reactivity || []).join("; "), [":host", ":reactivity"]),
     "application"           : record => import_utils.get_canonical((record.application || []).join("; "), ":application"),
@@ -162,9 +163,9 @@ let convert = (item, crawler_item, custom_data) =>
 
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "antibody");
 
-    relation_fields.forEach(name => delete result[name]);
-
-    result.specification = import_utils.create_specification_field(result, specification_fields, relation_fields);
+    // result.specification = import_utils.create_specification_field(result, specification_fields);
+    // result.relation      = import_utils.create_relation_field(result, relation_fields);
+    // result               = import_utils.clear_result_data(result, relation_fields, specification_fields);
 
     return {
         converted_item : result,
@@ -203,5 +204,5 @@ module.exports = {
     convert,
     load_custom_data,
     init,
-    version: 7
+    version: 1
 };

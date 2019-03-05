@@ -21,11 +21,11 @@ let suppliers   = fs.readdirSync(__dirname + "/import_transformers");
 
 let run = async(mongo_db, crawler_db) =>
 {
-    for (let i = 0; i < suppliers.length; i++)
-    {
-        await file_importer.run(mongo_db, distributor, suppliers[i]);
-        await aggregate_data.run(mongo_db, crawler_db, suppliers[i]);
-    }
+    // for (let i = 0; i < suppliers.length; i++)
+    // {
+    //     await file_importer.run(mongo_db, distributor, suppliers[i]);
+    //     await aggregate_data.run(mongo_db, crawler_db, suppliers[i]);
+    // }
 
     await save_to_es_db.run(mongo_db, crawler_db, distributor);
     // await image_uploader.run();

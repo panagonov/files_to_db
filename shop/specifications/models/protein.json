@@ -1,0 +1,259 @@
+{
+    "title" : "protein",
+    "parents" : ["product"],
+    "json_schema" : {
+        "additionalProperties": false,
+        "required" : [],
+        "properties"          : {
+            "bio_object" : {
+                "visible_for" : ["all"],
+                "schema" : {"$ref" : "bio_object"}
+            },
+            "host_relations" : {
+                "aggregate" : true,
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "reactivity_relations" : {
+                "aggregate" : true,
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "application_relations" : {
+                "aggregate" : true,
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "isotype_relations" : {
+                "aggregate" : true,
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "light_chain_relations" : {
+                "aggregate" : true,
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "heavy_chain_relations" : {
+                "aggregate" : true,
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "clonality_relations" : {
+                "aggregate" : true,
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "research_area_relations" : {
+                "aggregate" : true,
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "conjugate_relations" : {
+                "aggregate" : true,
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "preparation_method_relations" : {
+                "aggregate" : true,
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "purification" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "formulation" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "concentration" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "clone_id" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "buffer_form" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "shelf_life" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "storage_conditions" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "delivery_conditions" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "immunogen" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "research_area" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "usage" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "fragment" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "purity"   : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "molecular_weight"   : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "molecular_weight_predicted"   : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "subcell_location"   : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "endotoxin_level"   : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "source"   : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "tag"   : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "string"
+                }
+            },
+            "traits"   : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "string"
+                }
+            },
+            "isoelectric_point"   : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "float"
+                }
+            },
+            "sequence"   : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "string"
+                }
+            },
+            "protein_length"   : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "string"
+                }
+            },
+            "precautions"   : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "gene_id" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "string"
+                }
+            },
+            "others" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "string"
+                }
+            }
+        }
+    }
+}

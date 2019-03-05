@@ -91,19 +91,19 @@ module.exports = {
     run
 };
 
-let r  = () => {
-   run()
-   .then(() => process.exit(0))
-   .catch(e => {
-       console.error(e);
-       r()
-   })
-};
-
-r();
-
-process.on('uncaughtException', function (err, data)
-{
-    console.error("--- UNCAUGHT EXCEPTION ---", err);
-    r()
-});
+// let r  = () => {
+//    run()
+//    .then(() => process.exit(0))
+//    .catch(e => {
+//        console.error(e);
+//        r()
+//    })
+// };
+//
+// r();
+//
+// process.on('uncaughtException', function (err, data)
+// {
+//     console.error("--- UNCAUGHT EXCEPTION ---", err);
+//     r()
+// });
