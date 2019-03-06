@@ -1,0 +1,92 @@
+{
+    "title" : "pipette",
+    "parents" : ["equipment"],
+    "json_schema" : {
+        "properties" : {
+            "imprecision" : {
+                "visible_for" : ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items" : {
+                        "type" : "object",
+                        "properties" : {
+                            "product_id" : {"type" :  "string"},
+                            "value" :  {"type": "number"},
+                            "value_range" : {
+                                "type" :  "object",
+                                "properties" : {
+                                    "from" : {"type": "number"},
+                                    "to" : {"type": "number"}
+                                }
+                            },
+                            "dimension" : {"type" :  "string"}
+                        }
+                    }
+                }
+            },
+            "inaccuracy" : {
+                "visible_for" : ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items" : {
+                        "type" : "object",
+                        "properties" : {
+                            "product_id" : {"type" :  "string"},
+                            "value" :  {"type": "number"},
+                            "value_range" : {
+                                "type" :  "object",
+                                "properties" : {
+                                    "from" : {"type": "number"},
+                                    "to" : {"type": "number"}
+                                }
+                            },
+                            "dimension" : {"type" :  "string"}
+                        }
+                    }
+                }
+            },
+            "color" : {
+                "visible_for" : ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items" : {
+                        "type" : "object",
+                        "properties" : {
+                            "product_id" : {"type" :  "string"},
+                            "value" : {"type" :  "string"}
+                        }
+                    }
+                }
+            },
+            "channel" : {
+                "visible_for" : ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items" : {
+                        "type" : "object",
+                        "properties" : {
+                            "product_id" : {"type" :  "string"},
+                            "value" : {"type" :  "integer"}
+                        }
+                    }
+                }
+            },
+            "product_relations" : {
+                "visible_for" : ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items" : {
+                        "type" : "string"
+                    }
+                }
+            },
+            "sub_category_relations" : {
+                "aggregate" : true,
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            }
+        }
+    }
+}

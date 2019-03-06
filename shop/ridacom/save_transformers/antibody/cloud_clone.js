@@ -1,18 +1,7 @@
 let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
-let relation_fields = ["host", "reactivity", "application", "isotype", "light_chain", "heavy_chain", "clonality", "research_area", "supplier", "distributor"];
-let specification_fields = [
-    "concentration",
-    "clone_id",
-    "usage",
-    "shelf_life",
-    "storage_conditions",
-    "delivery_conditions",
-    "buffer_form",
-    "immunogen"
-];
-
+let relation_fields = ["host", "reactivity", "application", "isotype", "light_chain", "heavy_chain", "clonality", "research_area", "supplier", "distributor", "category"];
 
 let _getImages = item => {
     let result = [];
@@ -102,6 +91,7 @@ let mapping = {
     "description"        : "description",
     "supplier"           : record => import_utils.get_canonical("Cloud-Clone Corp.", ":supplier"),
     "distributor"        : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
+    "category"           : record => import_utils.get_canonical("Antibody", ":product_category"),
     "host"               : record => import_utils.get_canonical(record.host || "", [":host", ":reactivity"]),
     "reactivity"         : record => import_utils.get_canonical(record.reactivity.join("; "), [":host", ":reactivity"]),
     "application"        : record => import_utils.get_canonical(record.application.join("; "), ":application"),
@@ -135,10 +125,7 @@ let convert = (item, crawler_item) =>
     result = Object.assign(result, service_data);
 
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "antibody");
-
-    relation_fields.forEach(name => delete result[name]);
-
-    result.specification = import_utils.create_specification_field(result, specification_fields, relation_fields);
+    result           = import_utils.clean_result_data(result, relation_fields);
 
     return {
         converted_item : result,

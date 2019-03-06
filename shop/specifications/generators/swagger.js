@@ -1,4 +1,3 @@
-let fs    = require("fs");
 let utils = require("../../../_utils/utils.js");
 
 let extract_schema = (value) => {
@@ -24,15 +23,14 @@ let extract_schema = (value) => {
 
 /**
  *
+ * @param {String} type
  * @param {Object} model
  * @param {String} model.title
  * @param {Object} model.json_schema
  * @param {Boolean} [model.swagger_definition]
- * @param {Object} props
- * @param {String} props.output - output directory
- * @returns {null}
+ * @returns {Object|null}
  */
-let run = (model, props) => {
+let run = ({type, model}) => {
     if (!model.swagger_definition)
         return null;
 
@@ -42,17 +40,13 @@ let run = (model, props) => {
         schema[key] = extract_schema(value.schema)
     });
 
-    let name = utils.capitalizeFirstLetter(model.title);
-
-    let result = {
-        [name] : {
+    return {
+        [utils.capitalizeFirstLetter(model.title)] : {
             "type" : "object",
             "properties": schema,
             ...model.json_schema.required ? {"required" : model.json_schema.required} : "",
         }
     };
-
-    fs.writeFileSync(`${props.output}/swagger/${model.title}.json`, JSON.stringify(result), "utf8");
 };
 
 module.exports = {

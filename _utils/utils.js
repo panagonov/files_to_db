@@ -115,6 +115,16 @@ let objEach = (obj, callback) => {
     }
 };
 
+let isEmptyObj = (obj) =>
+{
+    for(let prop in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+            return false;
+        }
+    }
+    return true;
+};
+
 module.exports = {
     mapping_transform,
     wait,
@@ -122,5 +132,6 @@ module.exports = {
     normalize_string,
     get_node_type,
     capitalizeFirstLetter,
-    objEach
+    objEach,
+    isEmptyObj
 };

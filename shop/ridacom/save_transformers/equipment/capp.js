@@ -3,29 +3,6 @@ let import_utils = require("../../../_utils/save_utils.js");
 
 let relation_fields = ["supplier", "distributor", "category", "sub_category", "all_categories"];
 
-let create_specification_field = (record) =>{
-    let specification_fields = [];
-    record.table_specification.forEach(item => {
-
-        for (let key in item)
-        {
-            if (key === "oid")
-                continue
-
-            specification_fields.push({
-                product_id: item.oid,
-                key: key.toLowerCase().replace(/\s/g , "_"),
-                value: {value : item[key]},
-                ui_text: key
-            })
-        }
-    });
-
-    let agg_specs =  import_utils.create_specification_field(record, null, relation_fields);
-
-    return specification_fields.concat(agg_specs)
-};
-
 let _getImages = item => {
 
     if(item.image)
@@ -79,6 +56,127 @@ let _getPriceModel = (item, crawler_item) =>
     return result;
 };
 
+let _get_imprecision = crawler_item =>
+{
+    let result = [];
+
+    if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
+        return null;
+
+    crawler_item.specification.forEach(data => {
+        if (data["imprecision_%"])
+        {
+            let params = data["imprecision_%"].split("/").map(val => parseFloat(val)).sort((a,b) => a-b);
+            result.push({
+                "product_id" : data.oid,
+                ...params[1] ? {"value_range": {from: params[0], to: params[1]}} : {"value" : params[0]},
+                "dimension"  : "%"
+            })
+        }
+    });
+
+    return result.length ? result : null
+};
+
+
+let _get_inaccuracy = crawler_item =>
+{
+    let result = [];
+
+    if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
+        return null;
+
+    crawler_item.specification.forEach(data => {
+
+        if (data["inaccuracy_%"])
+        {
+            let params = data["inaccuracy_%"].split("/").map(val => parseFloat(val)).sort((a,b) => a-b);
+            result.push({
+                "product_id" : data.oid,
+                ...params[1] ? {"value_range": {from: params[0], to: params[1]}} : {"value" : params[0]},
+                "dimension" : "%"
+            })
+        }
+    });
+
+    return result.length ? result : null
+};
+
+let _get_color = crawler_item =>
+{
+    let result = [];
+
+    if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
+        return null;
+
+    crawler_item.specification.forEach(data => {
+        if (data["Color"])
+        {
+            result.push({
+                "product_id": data.oid,
+                "value"     : data["Color"],
+            });
+        }
+    });
+
+    return result.length ? result : null
+};
+
+let _get_channel = crawler_item =>
+{
+    let result = [];
+
+    if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
+        return null;
+
+    crawler_item.specification.forEach(data => {
+        if (data["name"])
+        {
+            let value = 0;
+            if (data["name"].indexOf("single channel") !== -1)
+                value = 1;
+            else{
+                let match = /(\d+)\-channel/.exec(data["name"]);
+                if (match && match[1])
+                    value = parseInt(match[1], 10)
+            }
+            if (value)
+            {
+                result.push({
+                    "product_id": data.oid,
+                    "value"     : value,
+                });
+            }
+        }
+    });
+
+    return result.length ? result : null
+};
+
+let _get_product_relations = crawler_item =>
+{
+    let result = [];
+
+    if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
+        return null;
+
+    let cat_with_potential_product_relations = false;
+
+    crawler_item.specification.forEach(data => {
+
+        if (data["imprecision_%"] || data["inaccuracy_%"] || data["Color"])
+        {
+            cat_with_potential_product_relations = true;
+        }
+        else if(data["oid"] && cat_with_potential_product_relations)
+        {
+             result.push(`PRODUCT_SOURCE:[CAPP]_SUPPLIER:[RIDACOM]_ID:[${data["oid"].trim() || ""}]`)
+        }
+    });
+
+    return result.length ? result : null
+};
+
 let mapping = {
     "name"                : "name",
     "oid"                 : "oid",
@@ -88,10 +186,13 @@ let mapping = {
     "supplier"            : record => import_utils.get_canonical("CAPP", ":supplier"),
     "category"            : record => import_utils.get_canonical(record.crawler_item.category || "", ":product_category"),
     "sub_category"        : record => import_utils.get_canonical(record.crawler_item.sub_category || "", ":product_sub_category"),
-    "all_categories"      : record => import_utils.get_canonical(record.crawler_item.category || "", ":product_category").concat(import_utils.get_canonical(record.crawler_item.sub_category || "", ":product_sub_category")),
     "distributor"         : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
     "description"         : record => record.crawler_item && record.crawler_item.description ? [record.crawler_item.description] : null,
-    "table_specification" : "crawler_item.specification",
+    "imprecision"         : record => _get_imprecision(record.crawler_item),
+    "inaccuracy"          : record => _get_inaccuracy(record.crawler_item),
+    "color"               : record => _get_color(record.crawler_item),
+    "channel"             : record => _get_channel(record.crawler_item),
+    "product_relations"   : record => _get_product_relations(record.crawler_item),
     "images"              : record => _getImages(record.crawler_item),
     "pdf"                 : record => _getPdf(record.crawler_item),
     "original_link"      : "link",
@@ -117,10 +218,7 @@ let convert = (item, crawler_item, custom_data) =>
     result = Object.assign(result, service_data);
 
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "equipment");
-
-    relation_fields.forEach(name => delete result[name]);
-
-    result.specification = create_specification_field(result);
+    result           = import_utils.clean_result_data(result, relation_fields);
 
     return {
         converted_item : result,
@@ -172,5 +270,5 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
 module.exports = {
     convert,
     load_custom_data,
-    version: 6
+    version: 7
 };

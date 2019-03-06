@@ -9,7 +9,7 @@ let build_validation_schema = props =>
     return result
 };
 
-let run = (model, props) => {
+let run = ({type, model}) => {
 
     let json_schema = model.json_schema || {};
 
@@ -22,8 +22,8 @@ let run = (model, props) => {
         ...json_schema.required ? { "required": json_schema.required} : ""
     };
 
-    fs.writeFileSync(`${props.output}/validation_schema/${model.title}.json`, JSON.stringify(result), "utf8")
-} ;
+    return result
+};
 
 module.exports = {
     run

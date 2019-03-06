@@ -5,22 +5,6 @@ let import_utils = require("../../../_utils/save_utils.js");
 let uniprot_db;
 
 let relation_fields = ["category", "host", "reactivity", "application", "isotype", "light_chain", "heavy_chain", "clonality", "research_area", "supplier", "distributor", "conjugate"];
-let specification_fields = [
-    "usage",
-    "storage_conditions",
-    "delivery_conditions",
-    "buffer_form",
-    "immunogen",
-    "purification",
-    "formulation",
-    "original_link",
-    "precautions",
-    "alternative",
-    "accession",
-    "accession_link",
-    "antibody_category",
-    "gene_id"
-];
 
 let init = async() =>
 {
@@ -162,10 +146,7 @@ let convert = (item, crawler_item, custom_data) =>
     result = Object.assign(result, service_data);
 
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "antibody");
-
-    // result.specification = import_utils.create_specification_field(result, specification_fields);
-    // result.relation      = import_utils.create_relation_field(result, relation_fields);
-    // result               = import_utils.clear_result_data(result, relation_fields, specification_fields);
+    result           = import_utils.clean_result_data(result, relation_fields);
 
     return {
         converted_item : result,

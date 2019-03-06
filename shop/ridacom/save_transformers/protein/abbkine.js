@@ -4,7 +4,7 @@ let import_utils = require("../../../_utils/save_utils.js");
 
 let uniprot_db;
 
-let relation_fields = ["supplier", "distributor", "preparation_method"];
+let relation_fields = ["supplier", "distributor", "preparation_method", "category"];
 let specification_fields = [
     "sequence",
     "activity",
@@ -107,6 +107,7 @@ let mapping = {
     "price_model"           : record => _getPriceModel(record, record.crawler_item),
     "supplier"              : record => import_utils.get_canonical("Abbkine Scientific Co., Ltd.", ":supplier"),
     "distributor"           : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
+    "category"              : record => import_utils.get_canonical("Protein", ":product_category"),
     "preparation_method"    : record => import_utils.get_canonical(record.preparation_method, [":host", ":reactivity", ":preparation_method"]),
     "description"           : "background",
     "images"                : record =>  _getImages(record.crawler_item),
@@ -117,7 +118,7 @@ let mapping = {
     "protein_length"        : "protein_length",
     "purity"                : "purity",
     "formulation"           : "formulation",
-    "molecular_weight"      : "mol_weight",
+    "molecular_weight"      : record => !record["mol_weight"] ? null : import_utils.size_parser(record["mol_weight"]),
     "usage"                 : "usage_notes",
     "storage_conditions"    : "storage_instructions",
     "delivery_conditions"   : "shipping",
@@ -155,10 +156,7 @@ let convert = (item, crawler_item, custom_data) =>
     result = Object.assign(result, service_data);
 
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "protein");
-
-    relation_fields.forEach(name => delete result[name]);
-
-    result.specification = import_utils.create_specification_field(result, specification_fields, relation_fields);
+    result           = import_utils.clean_result_data(result, relation_fields);
 
     return {
         converted_item : result,

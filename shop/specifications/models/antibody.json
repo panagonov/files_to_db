@@ -93,6 +93,28 @@
                     "items": {"type": "string"}
                 }
             },
+            "precautions"   : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "alternative"   : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "accession"   : {
+                "visible_for": ["all"],
+                "schema" : {"type": "string"}
+            },
+            "accession_link"   : {
+                "visible_for": ["all"],
+                "schema" : {"type": "string"}
+            },
             "clone_id" : {
                 "visible_for": ["all"],
                 "schema" : {
@@ -135,13 +157,6 @@
                     "items": {"type": "string"}
                 }
             },
-            "research_area" : {
-                "visible_for": ["all"],
-                "schema" : {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                }
-            },
             "usage" : {
                 "visible_for": ["all"],
                 "schema" : {
@@ -149,6 +164,12 @@
                     "items": {"type": "string"}
                 }
             },
+            "gene_id" : {
+                        "visible_for": ["all"],
+                        "schema" : {
+                            "type" : "string"
+                        }
+                    },
             "positive_control" : {
                 "visible_for": ["all"],
                 "schema" : {
@@ -164,8 +185,5 @@
                 }
             }
         }
-    },
-    "db_settings" : {
-        "properties" : {}
     }
 }

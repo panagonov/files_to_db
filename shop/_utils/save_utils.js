@@ -275,14 +275,14 @@ let create_relation_field = (record, relation_fields) => {
     return result
 };
 
-let clear_result_data = (result, relation_fields, specification_fields) => {
+let clean_result_data = (result, relation_fields, specification_fields) => {
     relation_fields.forEach(name => {
         delete result[name];
-        delete result[name + "_relations"]
+        // delete result[name + "_relations"]
     });
-    specification_fields.forEach(name => delete result[name]);
+    // specification_fields.forEach(name => delete result[name]);
 
-    delete result.ui;
+    // delete result.ui;
 
     return result;
 };
@@ -296,7 +296,7 @@ module.exports = {
     build_service_data,
     create_specification_field,
     create_relation_field,
-    clear_result_data
+    clean_result_data
 };
 
 // console.log(get_canonical("Baculovirus-Insect Cells", [":preparation_method"]));

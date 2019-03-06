@@ -3,7 +3,7 @@ let es_db    = require("../../_utils/es_db.js");
 let utils    = require("../../_utils/utils.js");
 
 let collection_name         = "product";
-let suggest_collection_name = "shop_suggest";
+let suggest_collection_name = "shop_suggest_new";
 
 let directory_reader = require("../../_utils/directory_reader.js");
 
@@ -137,13 +137,13 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site) =>
                 not_found_custom = not_found_custom.concat(missing_data);
         });
 
-        if (es_bulk.length)
-            await es_db.bulk(es_bulk);
-
-        await _save_suggest_data(accumulated_suggest_data);
-
-        let ids = result.map(({_id}) => _id);
-        await mongo_db.update_many(collection_name, {query: {_id: {$in: ids}}, data: {export_version: export_version}});
+        // if (es_bulk.length)
+        //     await es_db.bulk(es_bulk);
+        //
+        // await _save_suggest_data(accumulated_suggest_data);
+        //
+        // let ids = result.map(({_id}) => _id);
+        // await mongo_db.update_many(collection_name, {query: {_id: {$in: ids}}, data: {export_version: export_version}});
 
         page++;
         console.log(distributor, type, site, `${page * limit}/${count}`)

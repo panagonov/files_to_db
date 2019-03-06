@@ -1,0 +1,25 @@
+{
+    "$ref" : "size",
+    "schema" : {
+        "type"                : "object",
+        "properties"          : {
+            "value"    : {
+                "type": "number"
+            },
+            "value_range"    : {
+                "type": "object",
+                "properties" : {
+                    "from" : {"type": "number"},
+                    "to" : {"type": "number"}
+                }
+            },
+            "dimension": {
+                "type": "string"
+            },
+            "more_data": {
+                "type": "string"
+            }
+        },
+        "additionalProperties": false
+    }
+}

@@ -1,7 +1,7 @@
 let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
-let relation_fields = ["host", "clonality", "supplier", "distributor"];
+let relation_fields = ["host", "clonality", "supplier", "distributor", "category"];
 let specification_fields = [
     "positive_control",
     "dilution_range"
@@ -89,6 +89,7 @@ let mapping = {
     "description"      : "crawler_item.description",
     "supplier"         : record => import_utils.get_canonical("GenomeMe", ":supplier"),
     "distributor"      : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
+    "category"         : record => import_utils.get_canonical("Antibody", ":product_category"),
     "host"             : record => import_utils.get_canonical(record.crawler_item.host || "", [":host", ":reactivity"]),
     "clonality"        : record => import_utils.get_canonical(record.crawler_item.host || "", ":clonality"),
     "images"           : record => _getImages(record.crawler_item),
@@ -108,10 +109,7 @@ let convert = (item, crawler_item) =>
     result = Object.assign(result, service_data);
 
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "antibody");
-
-    relation_fields.forEach(name => delete result[name]);
-
-    result.specification = import_utils.create_specification_field(result, specification_fields, relation_fields);
+    result           = import_utils.clean_result_data(result, relation_fields);
 
     return {
         converted_item : result,

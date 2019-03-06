@@ -1,5 +1,5 @@
 {
-    "title" : "protein",
+    "title" : "elisa_kit",
     "parents" : ["product"],
     "json_schema" : {
         "additionalProperties": false,
@@ -9,7 +9,7 @@
                 "visible_for" : ["all"],
                 "schema" : {"$ref" : "bio_object"}
             },
-            "preparation_method_relations" : {
+            "reactivity_relations" : {
                 "aggregate" : true,
                 "schema" : {
                     "type" : "array",
@@ -23,7 +23,7 @@
                     "items": {"type": "string"}
                 }
             },
-            "reactivity_relations" : {
+            "test_method_relations" : {
                 "aggregate" : true,
                 "schema" : {
                     "type" : "array",
@@ -37,13 +37,14 @@
                     "items": {"type": "string"}
                 }
             },
-            "activity" : {
-                "visible_for": ["all"],
+            "conjugate_relations" : {
+                "aggregate" : true,
                 "schema" : {
                     "type" : "array",
                     "items": {"type": "string"}
                 }
             },
+
             "formulation" : {
                 "visible_for": ["all"],
                 "schema" : {
@@ -51,7 +52,14 @@
                     "items": {"type": "string"}
                 }
             },
-            "buffer_form" : {
+            "precautions"   : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "alternative"   : {
                 "visible_for": ["all"],
                 "schema" : {
                     "type" : "array",
@@ -79,120 +87,7 @@
                     "items": {"type": "string"}
                 }
             },
-            "research_area" : {
-                "visible_for": ["all"],
-                "schema" : {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                }
-            },
             "usage" : {
-                "visible_for": ["all"],
-                "schema" : {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                }
-            },
-            "fragment" : {
-                "visible_for": ["all"],
-                "schema" : {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                }
-            },
-            "purity"   : {
-                "visible_for": ["all"],
-                "schema" : {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                }
-            },
-            "molecular_weight"   : {
-                "visible_for": ["all"],
-                "schema" : {
-                    "type"                : "object",
-                    "properties"          : {
-                        "value"    : {
-                            "type": "float"
-                        },
-                        "dimension": {
-                            "type": "string"
-                        },
-                        "more_data": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "molecular_weight_predicted"   : {
-                "visible_for": ["all"],
-                "schema" : {
-                    "type"                : "object",
-                    "properties"          : {
-                        "value"    : {
-                            "type": "float"
-                        },
-                        "dimension": {
-                            "type": "string"
-                        },
-                        "more_data": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "subcell_location"   : {
-                "visible_for": ["all"],
-                "schema" : {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                }
-            },
-            "endotoxin_level"   : {
-                "visible_for": ["all"],
-                "schema" : {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                }
-            },
-            "source"   : {
-                "visible_for": ["all"],
-                "schema" : {
-                    "type" : "array",
-                    "items": {"type": "string"}
-                }
-            },
-            "tag"   : {
-                "visible_for": ["all"],
-                "schema" : {
-                    "type" : "string"
-                }
-            },
-            "traits"   : {
-                "visible_for": ["all"],
-                "schema" : {
-                    "type" : "string"
-                }
-            },
-            "isoelectric_point"   : {
-                "visible_for": ["all"],
-                "schema" : {
-                    "type" : "float"
-                }
-            },
-            "sequence"   : {
-                "visible_for": ["all"],
-                "schema" : {
-                    "type" : "string"
-                }
-            },
-            "protein_length"   : {
-                "visible_for": ["all"],
-                "schema" : {
-                    "type" : "string"
-                }
-            },
-            "precautions"   : {
                 "visible_for": ["all"],
                 "schema" : {
                     "type" : "array",
@@ -205,10 +100,58 @@
                     "type" : "string"
                 }
             },
-            "others" : {
+            "sensitivity" : {
                 "visible_for": ["all"],
                 "schema" : {
                     "type" : "string"
+                }
+            },
+            "sample_type" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "assay_length" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "string"
+                }
+            },
+            "kit_components" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "specificity" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "precision" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "stability" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "procedure" : {
+                "visible_for": ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
                 }
             }
         }

@@ -1,7 +1,6 @@
-let fs                 = require("fs");
 let utils              = require("../../../_utils/utils.js");
 
-let run = (model, props) => {
+let run = ({type, model}) => {
 
     let result = {};
 
@@ -18,9 +17,9 @@ let run = (model, props) => {
         }
     });
 
-    fs.writeFileSync(`${props.output}/aggregate/${model.title}.json`, JSON.stringify(result), "utf8");
+    return result;
 };
 
 module.exports = {
     run
-}
+};

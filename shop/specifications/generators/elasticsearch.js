@@ -1,9 +1,8 @@
-let fs                 = require("fs");
 let utils              = require("../../../_utils/utils.js");
 let stopwords          = require("../../../common-components/search-engine-3/domains/genetics/cli-tools/stopwords.en.json");
-let char_filter        = require("../_analysis_resource/char_filter.json");
-let analysis_filters   = require("../_analysis_resource/filters.json");
-let analysis_analyzers = require("../_analysis_resource/analyzers.json");
+let char_filter        = require("./elasticsearch/char_filter.json");
+let analysis_filters   = require("./elasticsearch/filters.json");
+let analysis_analyzers = require("./elasticsearch/analyzers.json");
 
 let build_index_mapping =  (value, custom_schema_data) =>
 {
@@ -76,6 +75,7 @@ let build_settings = model =>
 
 /**
  *
+ * @param {String} type
  * @param {Object} model
  * @param {String} model.title
  * @param {String} model.database
@@ -83,18 +83,16 @@ let build_settings = model =>
  * @param {String} [model.schema_dependencies]
  * @param {Object} model.json_schema
  * @param {Boolean} [model.swagger_definition]
- * @param {Object} props
- * @param {String} props.output - output directory
- * @returns {null}
+ * @returns {Object}
  */
-let run = (model, props) => {
+let run = ({type, model}) => {
 
     if (model.database !== "elasticsearch")
         return null;
 
     let result = build_settings(model);
 
-    fs.writeFileSync(`${props.output}/db_schema/${model.title}.json`, JSON.stringify(result), "utf8")
+    return result
 };
 
 module.exports = {

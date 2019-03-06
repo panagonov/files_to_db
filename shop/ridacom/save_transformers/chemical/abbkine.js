@@ -1,25 +1,7 @@
 let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
-let relation_fields = ["supplier", "distributor", "application"];
-
-let specification_fields = [
-    "formulation",
-    "usage" ,
-    "storage_conditions" ,
-    "delivery_conditions",
-    "molecular_weight",
-    "purification",
-    "purity",
-    "preparation_method",
-    "formula",
-    "features",
-    "storage_buffer" ,
-    "precautions",
-    "aliases",
-    "original_link",
-    "app_notes"
-];
+let relation_fields = ["supplier", "distributor", "application", "category"];
 
 let _getImages = item => {
     let result = null;
@@ -89,6 +71,7 @@ let mapping = {
     "price_model"        : record => _getPriceModel(record, record.crawler_item),
     "supplier"           : record => import_utils.get_canonical("Abbkine Scientific Co., Ltd.", ":supplier"),
     "distributor"        : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
+    "category"           : record => import_utils.get_canonical("Chemical", ":product_category"),
     "application"        : record => import_utils.get_canonical((record.application || []).join("; "), ":application"),
     "images"             : record =>  _getImages(record.crawler_item),
     "pdf"                : record =>  _getPdf(record.crawler_item),
@@ -96,9 +79,9 @@ let mapping = {
     "usage"              : "usage_notes",
     "storage_conditions" : "storage_instructions",
     "delivery_conditions": "shipping",
-    "molecular_weight"   : "mol_weight",
+    "molecular_weight"   : record => !record["mol_weight"] ? null : import_utils.size_parser(record["mol_weight"]),
     "purification"       : "purification",
-    "purity"             : "purity",
+    "purity"             : record => record["purity"] ? [record["purity"]] : null,
     "preparation_method" : "preparation_method",
     "formula"            : "formula",
     "features"           : "features",
@@ -117,11 +100,8 @@ let convert = (item, crawler_item) =>
     let service_data = import_utils.build_service_data(result, relation_fields);
     result = Object.assign(result, service_data);
 
-    let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "antibody");
-
-    relation_fields.forEach(name => delete result[name]);
-
-    result.specification = import_utils.create_specification_field(result, specification_fields, relation_fields);
+    let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "chemical");
+    result           = import_utils.clean_result_data(result, relation_fields);
 
     return {
         converted_item : result,

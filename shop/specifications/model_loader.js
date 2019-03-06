@@ -31,11 +31,44 @@ let replace_refs_in_models = (models, refs) =>
 
     utils.objEach(models, (key, value) =>
     {
+        if (! value.json_schema)
+            return;
+
         let props = value.json_schema.properties;
 
         utils.objEach(props, (schema_key, schema_value) =>
             schema_value.schema = replace_ref(schema_value.schema));
     });
+};
+
+let merge_with_conflict_check = (from, to) =>
+{
+    utils.objEach(from, (key, value) => {
+        if(to.hasOwnProperty(key))
+        {
+            if (JSON.stringify(to[key]) !== JSON.stringify(value))
+            {
+                console.error("Different props into json schema:", key);
+                console.error("Parent:", JSON.stringify(to[key]));
+                console.error("Child:", JSON.stringify(value));
+                process.exit(1);
+            }
+        }
+
+        to[key] = value
+    });
+};
+
+let remove_models_with_parents = (models_hash) =>
+{
+    let result = {};
+    utils.objEach(models_hash, (key, value) => {
+        if (value.parents && value.parents.length)
+           return;
+        result[key] = value;
+    });
+
+    return result
 };
 
 let merge_related_models = (all_models) => {
@@ -60,34 +93,52 @@ let merge_related_models = (all_models) => {
         }, [])
     };
 
-
     utils.objEach(all_models, (key, value) =>
     {
         let first_parents = utils.uniq(find_first_parent_name(value)).filter(name => name !== value.title);
         if (first_parents.length)
         {
             first_parents.forEach(model_name => {
-                let schema_props = value.json_schema && value.json_schema.properties ?   value.json_schema.properties : {};
-                models_hash[model_name].json_schema.properties = Object.assign(models_hash[model_name].json_schema.properties, schema_props);
+                let schema_props = value.json_schema && value.json_schema.properties ? value.json_schema.properties : {};
+                let parent_props = models_hash[model_name].json_schema.properties;
+                merge_with_conflict_check(schema_props, parent_props);
 
-                let db_props = value.db_settings && value.db_settings.properties ?   value.db_settings.properties : {}
-                models_hash[model_name].db_settings.properties = Object.assign(models_hash[model_name].db_settings.properties, db_props)
+                let db_props = value.db_settings && value.db_settings.properties ? value.db_settings.properties : {};
+                let parent_db_props = models_hash[model_name].db_settings.properties;
+                merge_with_conflict_check(db_props, parent_db_props);
             })
         }
     });
 
-    utils.objEach(models_hash, (key, value) => {
-        if (value.parents && value.parents.length)
-            delete models_hash[key]
-    });
+    let only_root_models = remove_models_with_parents(all_models);
 
-    return models_hash;
+    return only_root_models;
 };
 
+let check_for_duplicated_model_names = all_models =>
+{
+    let temp = {};
+
+    utils.objEach(all_models, (key, value) => {
+        if (temp.hasOwnProperty(value.title))
+        {
+            console.error("Duplicate model title:", value.title, " - file name:", key);
+            process.exit(1)
+        }
+
+        temp[value.title] = 1
+    })
+};
+
+let get_all_models = () => {
+    return directory_reader(`${__dirname}/models/`, "json", true)
+}
+
 let run = () => {
-    let all_models = directory_reader(`${__dirname}/models/`, "json", true);
+    let all_models = get_all_models();
     let refs       = directory_reader(`${__dirname}/refs/`, "json", true);
 
+    check_for_duplicated_model_names(all_models);
     replace_refs_in_models(all_models, refs);
 
     let merged_models = merge_related_models(all_models);
@@ -96,5 +147,6 @@ let run = () => {
 };
 
 module.exports = {
-    run
+    run,
+    get_all_models
 };

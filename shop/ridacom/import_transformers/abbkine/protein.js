@@ -178,7 +178,7 @@ let mapping = {
         if (!record["Molecular weight"] || record["Molecular weight"] === "Null")
             return null;
 
-        return record["Molecular weight"]
+        return  parseFloat(record["Molecular weight"])
     },
     "app_notes" : record => {
         if (!record["Applications notes"] || record["Applications notes"] === "Null")

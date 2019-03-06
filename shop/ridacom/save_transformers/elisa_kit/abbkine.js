@@ -106,6 +106,7 @@ let mapping = {
     "price_model"        : record => _getPriceModel(record, record.crawler_item),
     "supplier"           : record => import_utils.get_canonical("Abbkine Scientific Co., Ltd.", ":supplier"),
     "distributor"        : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
+    "category"           : record => import_utils.get_canonical("Elisa Kit", ":product_category"),
     "conjugate"          : record => import_utils.get_canonical(record.conjugate || "", [":conjugate", ":reactivity"]),
     "test_method"        : record => import_utils.get_canonical(record.detection_method || "", ":test_method"),
     "images"             : record => _getImages(record.crawler_item),
@@ -153,10 +154,7 @@ let convert = (item, crawler_item, custom_data) =>
     result = Object.assign(result, service_data);
 
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "elisa_kit");
-
-    relation_fields.forEach(name => delete result[name]);
-
-    result.specification = import_utils.create_specification_field(result, specification_fields, relation_fields);
+    result           = import_utils.clean_result_data(result, relation_fields);
 
     return {
         converted_item : result,

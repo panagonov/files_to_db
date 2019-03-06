@@ -105,13 +105,14 @@ let mapping = {
     "human_readable_id"  : record => `cloud_clone_${import_utils.human_readable_id(record.name)}_${record.oid}`,
     "external_links"     : record => [{"key": "cloud_clone", "id": record.oid}],
     "bio_object"         : record => [{
-        "type": "protein",
-        ...record.item_name ? {"name": record.item_name} : "",
-        ...record.aliases ? {"aliases": record.aliases} : ""
-    }],
+                                "type": "protein",
+                                ...record.item_name ? {"name": record.item_name} : "",
+                                ...record.aliases ? {"aliases": record.aliases} : ""
+                            }],
     "price_model"        : record => _getPriceModel(record, record.crawler_item),
     "supplier"           : record => import_utils.get_canonical("Cloud-Clone Corp.", ":supplier"),
     "distributor"        : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
+    "category"           : record => import_utils.get_canonical("Elisa Kit", ":product_category"),
     "reactivity"         : record => import_utils.get_canonical(record.reactivity.join("; "), [":host", ":reactivity"]),
     "application"        : record => import_utils.get_canonical((record.application || []).join("; "), ":application"),
     "research_area"      : record => import_utils.get_canonical((record.research_area || []).join("; ") || "", ":research_area"),
@@ -123,13 +124,13 @@ let mapping = {
     "usage"              : record => record["test_principle"] ? [record["test_principle"]] : null,
     "storage_conditions" : "storage_conditions",
     "delivery_conditions": "delivery_conditions",
-    "sensitivity"       : "sensitivity",  //str
-    "sample_type"       : "sample_type",  //arr
-    "assay_length"      : "assay_length",  //str
-    "specificity"       : "specificity",  //arr
-    "precision"         : "precision",  //arr
-    "stability"         : "stability",  //arr
-    "procedure"         : "procedure",  //arr
+    "sensitivity"        : "sensitivity",  //str
+    "sample_type"        : "sample_type",  //arr
+    "assay_length"       : "assay_length",  //str
+    "specificity"        : "specificity",  //arr
+    "precision"          : "precision",  //arr
+    "stability"          : "stability",  //arr
+    "procedure"          : "procedure",  //arr
     "distributor_only" : record => ({
         "price" : record.supplier_specific.price
     }),
@@ -145,10 +146,7 @@ let convert = (item, crawler_item) =>
     result = Object.assign(result, service_data);
 
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "elisa_kit");
-
-    relation_fields.forEach(name => delete result[name]);
-
-    result.specification = import_utils.create_specification_field(result, specification_fields, relation_fields);
+    result           = import_utils.clean_result_data(result, relation_fields);
 
     return {
         converted_item : result,
