@@ -131,7 +131,7 @@ let check_for_duplicated_model_names = all_models =>
 };
 
 let get_all_models = () => {
-    return directory_reader(`${__dirname}/models/`, "json", true)
+    return JSON.parse(JSON.stringify(directory_reader(`${__dirname}/models/`, "json", true)));
 }
 
 let run = () => {

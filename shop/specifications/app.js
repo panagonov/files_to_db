@@ -17,7 +17,9 @@ let transformers = {
 };
 
 let tools = {
-    "model_tree"       : {transformer : require("./tools/model_tree.js")                               }
+    "model_tree"        : {transformer : require("./tools/model_tree.js")                              },
+    "aggregation_fields": {transformer : require("./tools/aggregation_fields.js")                      },
+    "visible_fields"    : {transformer : require("./tools/visible_fields.js")                          }
 };
 
 let write_result = (output, type, file_name, result) =>
@@ -53,7 +55,7 @@ let run = () => {
     utils.objEach(tools, (name, {type, transformer}) =>{
         type = type || name;
         tools_result[name] = {type: type || name, value: transformer.run({type, props, temp_result: tools_result})};
-        write_result(props.output, type, type, tools_result[name].value)
+        write_result(props.output, "tools", type, tools_result[name].value)
     })
 };
 
