@@ -1,0 +1,4 @@
+{
+    "title" : "pcr_consumables",
+    "parents" : ["consumable"]
+}

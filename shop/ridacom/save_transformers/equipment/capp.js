@@ -1,7 +1,15 @@
 let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
-let relation_fields = ["supplier", "distributor", "category", "sub_category", "all_categories"];
+let relation_fields = ["supplier", "distributor", "category", "sub_category", "sub_sub_category", "categories"];
+
+let enrich = {
+    pipette         : require("./capp/pipette.js"),
+    centrifuge      : require("./capp/centrifuge.js"),
+    centrifuge_tubes: require("./capp/centrifuge_tubes.js")
+};
+
+let fixator = require("./capp/fixator.js");
 
 let _getImages = item => {
 
@@ -56,125 +64,18 @@ let _getPriceModel = (item, crawler_item) =>
     return result;
 };
 
-let _get_imprecision = crawler_item =>
-{
-    let result = [];
+let get_additional_category_data = (record, result) => {
+    if (! result.category_relations)
+        return {};
 
-    if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
-        return null;
+    let category = result.category_relations[0];
 
-    crawler_item.specification.forEach(data => {
-        if (data["imprecision_%"])
-        {
-            let params = data["imprecision_%"].split("/").map(val => parseFloat(val)).sort((a,b) => a-b);
-            result.push({
-                "product_id" : data.oid,
-                ...params[1] ? {"value_range": {from: params[0], to: params[1]}} : {"value" : params[0]},
-                "dimension"  : "%"
-            })
-        }
-    });
-
-    return result.length ? result : null
-};
-
-
-let _get_inaccuracy = crawler_item =>
-{
-    let result = [];
-
-    if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
-        return null;
-
-    crawler_item.specification.forEach(data => {
-
-        if (data["inaccuracy_%"])
-        {
-            let params = data["inaccuracy_%"].split("/").map(val => parseFloat(val)).sort((a,b) => a-b);
-            result.push({
-                "product_id" : data.oid,
-                ...params[1] ? {"value_range": {from: params[0], to: params[1]}} : {"value" : params[0]},
-                "dimension" : "%"
-            })
-        }
-    });
-
-    return result.length ? result : null
-};
-
-let _get_color = crawler_item =>
-{
-    let result = [];
-
-    if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
-        return null;
-
-    crawler_item.specification.forEach(data => {
-        if (data["Color"])
-        {
-            result.push({
-                "product_id": data.oid,
-                "value"     : data["Color"],
-            });
-        }
-    });
-
-    return result.length ? result : null
-};
-
-let _get_channel = crawler_item =>
-{
-    let result = [];
-
-    if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
-        return null;
-
-    crawler_item.specification.forEach(data => {
-        if (data["name"])
-        {
-            let value = 0;
-            if (data["name"].indexOf("single channel") !== -1)
-                value = 1;
-            else{
-                let match = /(\d+)\-channel/.exec(data["name"]);
-                if (match && match[1])
-                    value = parseInt(match[1], 10)
-            }
-            if (value)
-            {
-                result.push({
-                    "product_id": data.oid,
-                    "value"     : value,
-                });
-            }
-        }
-    });
-
-    return result.length ? result : null
-};
-
-let _get_product_relations = crawler_item =>
-{
-    let result = [];
-
-    if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
-        return null;
-
-    let cat_with_potential_product_relations = false;
-
-    crawler_item.specification.forEach(data => {
-
-        if (data["imprecision_%"] || data["inaccuracy_%"] || data["Color"])
-        {
-            cat_with_potential_product_relations = true;
-        }
-        else if(data["oid"] && cat_with_potential_product_relations)
-        {
-             result.push(`PRODUCT_SOURCE:[CAPP]_SUPPLIER:[RIDACOM]_ID:[${data["oid"].trim() || ""}]`)
-        }
-    });
-
-    return result.length ? result : null
+    if (enrich[category])
+    {
+        let new_data = enrich[category](record, result);
+        return  Object.assign(result, new_data)
+    }
+    return {}
 };
 
 let mapping = {
@@ -184,18 +85,34 @@ let mapping = {
     "external_links"      : record => [{"key": "capp", "id": record.oid}],
     "price_model"         : record => _getPriceModel(record, record.crawler_item),
     "supplier"            : record => import_utils.get_canonical("CAPP", ":supplier"),
-    "category"            : record => import_utils.get_canonical(record.crawler_item.category || "", ":product_category"),
+    "category"            : record => import_utils.get_canonical(record.crawler_item.category || "equipment", ":product_category"),
     "sub_category"        : record => import_utils.get_canonical(record.crawler_item.sub_category || "", ":product_sub_category"),
+    "sub_sub_category"    : record => import_utils.get_canonical(record.crawler_item.sub_sub_category || "", ":product_sub_sub_category"),
     "distributor"         : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
     "description"         : record => record.crawler_item && record.crawler_item.description ? [record.crawler_item.description] : null,
-    "imprecision"         : record => _get_imprecision(record.crawler_item),
-    "inaccuracy"          : record => _get_inaccuracy(record.crawler_item),
-    "color"               : record => _get_color(record.crawler_item),
-    "channel"             : record => _get_channel(record.crawler_item),
-    "product_relations"   : record => _get_product_relations(record.crawler_item),
+    "table_specification" : "crawler_item.specification",
     "images"              : record => _getImages(record.crawler_item),
     "pdf"                 : record => _getPdf(record.crawler_item),
-    "original_link"      : "link",
+    "original_link"       : "link"
+};
+
+let index = 0;
+let show_in_console = (result, crawler_item1, record) =>
+{
+    console.table({
+        index : index,
+        name        : result.name,
+        category    : (result.category_relations || []).toString(),
+        sub_category: (result.sub_category_relations || []).toString(),
+        volume      : JSON.stringify(result.volume),
+        r_category  : crawler_item1 ? crawler_item1.category : "",
+        r_s_category  : crawler_item1 ? crawler_item1.sub_category : "",
+        r_s_s_category  : crawler_item1 ? crawler_item1.sub_sub_category : ""
+    });
+
+    if (index > 293)
+        debugger;
+    index++;
 };
 
 let convert = (item, crawler_item, custom_data) =>
@@ -214,8 +131,15 @@ let convert = (item, crawler_item, custom_data) =>
     let record = Object.assign({}, item, {crawler_item: crawler_item1 || {}});
 
     let result = utils.mapping_transform(mapping, record);
+    result = fixator(result, record);
+
     let service_data = import_utils.build_service_data(result, relation_fields);
     result = Object.assign(result, service_data);
+
+    let additional_data = get_additional_category_data(record, result);
+    result = Object.assign(result, additional_data);
+
+    show_in_console(result, crawler_item1, record);
 
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "equipment");
     result           = import_utils.clean_result_data(result, relation_fields);
@@ -270,5 +194,7 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
 module.exports = {
     convert,
     load_custom_data,
-    version: 7
+    version: 6
 };
+
+// console.log(import_utils.get_canonical("other benchtop", ":product_sub_category"))

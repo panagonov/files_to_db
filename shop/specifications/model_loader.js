@@ -131,12 +131,12 @@ let check_for_duplicated_model_names = all_models =>
 };
 
 let get_all_models = () => {
-    return JSON.parse(JSON.stringify(directory_reader(`${__dirname}/models/`, "json", true)));
-}
+    return  JSON.parse(JSON.stringify(directory_reader(`${__dirname}/models/`, "json", {recursive: true, flat_recursive_tree: true})));
+};
 
 let run = () => {
     let all_models = get_all_models();
-    let refs       = directory_reader(`${__dirname}/refs/`, "json", true);
+    let refs       = directory_reader(`${__dirname}/refs/`, "json", {recursive: true});
 
     check_for_duplicated_model_names(all_models);
     replace_refs_in_models(all_models, refs);

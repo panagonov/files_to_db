@@ -3,7 +3,11 @@ let import_utils       = require("../../../_utils/save_utils.js");
 let country_utils      = require("../../../../common-components/region_utils/country_utils.js");
 let currency_converter = require("../../../../common-components/region_utils/currency_converter.js");
 
-let relation_fields = ["supplier", "distributor", "category", "sub_category", "all_categories"];
+let relation_fields = ["supplier", "distributor", "category", "sub_category", "calibration"];
+
+let enrich = {
+    balance         : require("./adam_aquipment/balance.js")
+};
 
 let create_specification_field = (record) =>{
     let specification_fields = record.specification.map(item => ({
@@ -52,19 +56,21 @@ let _getPriceModel = (item, crawler_item) =>
     return result;
 };
 
-let _get_all_categories = (item, crawler_item) => {
-
-    let result = import_utils.get_canonical("Equipment Balance", ":product_category");
+let _get_category = (item, crawler_item) => {
 
     if (item.accessories)
-        result = result.concat( import_utils.get_canonical("Accessories", ":product_sub_category"));
+        return import_utils.get_canonical("Accessories", ":product_sub_category");
     else
     {
-        let sub_categories = utils.uniq((crawler_item.parent_sub_category || crawler_item.sub_category || []).filter(item => item !== crawler_item._id));
-        result = result.concat( import_utils.get_canonical((sub_categories || []).join("; "), ":product_sub_category"))
+       return import_utils.get_canonical("Balance", ":product_category")
     }
+};
 
-    return result
+let _get_sub_category = (item, crawler_item) =>
+{
+    let sub_categories = utils.uniq((crawler_item.parent_sub_category || crawler_item.sub_category || []).filter(item => item !== crawler_item._id));
+    return  import_utils.get_canonical(sub_categories[0], ":product_sub_category")
+
 };
 
 let _get_specification = (item) =>
@@ -140,6 +146,20 @@ let _get_other_info = (crawler_item) =>
     return result.length ? result : null
 };
 
+let get_additional_category_data = (record, result) => {
+    if (! result.category)
+        return {};
+
+    let category = result.category[0][1];
+
+    if (enrich[category])
+    {
+        let new_data = enrich[category](record, result);
+        return new_data
+    }
+    return {}
+};
+
 let mapping = {
     "name"                   : "name",
     "oid"                    : "oid",
@@ -148,7 +168,8 @@ let mapping = {
     "price_model"            : record => _getPriceModel(record, record.crawler_item),
     "supplier"               : record => import_utils.get_canonical("Adam Equipment", ":supplier"),
     "distributor"            : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
-    "category"               : record => _get_all_categories(record, record.crawler_item),
+    "category"               : record => _get_category(record, record.crawler_item),
+    "sub_category"           : record => _get_sub_category(record, record.crawler_item),
     "description"            : _get_description,
     "other_info"             : record => _get_other_info(record.crawler_item),
     "images"                 :  record => _getImages(record.crawler_item) ,
@@ -160,16 +181,40 @@ let mapping = {
     "original_link"          : "crawler_item.link"
 };
 
+let index = 0;
+let show_in_console = (result, crawler_item1, record) =>
+{
+    console.table({
+        index : index,
+        name        : result.name,
+        category    : (result.category_relations || []).toString(),
+        sub_category: (result.sub_category_relations || []).toString(),
+        capacity    : JSON.stringify(result.capacity),
+        calibration_relations    : JSON.stringify(result.calibration_relations)
+    });
+
+    if (index >= 0)
+
+        debugger;
+    index++;
+};
+
 let convert = (item, crawler_item) =>
 {
     let record = Object.assign({}, item, {crawler_item: crawler_item || {}});
 
     let result = utils.mapping_transform(mapping, record);
+    let additional_data = get_additional_category_data(record, result);
+    result = Object.assign(result, additional_data);
+
     let service_data = import_utils.build_service_data(result, relation_fields);
     result = Object.assign(result, service_data);
 
+    show_in_console(result, crawler_item, record);
+
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "equipment");
     result           = import_utils.clean_result_data(result, relation_fields);
+
 
     return {
         converted_item : result,
@@ -179,5 +224,5 @@ let convert = (item, crawler_item) =>
 
 module.exports = {
     convert,
-    version: 1
+    version: 2
 };

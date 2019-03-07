@@ -1,5 +1,6 @@
-let utils    = require("../../_utils/utils.js");
-let semantica    = require("../../common-components/search-engine-3/domains/genetics/index.js");
+let utils     = require("../../_utils/utils.js");
+let semantica = require("../../common-components/search-engine-3/domains/genetics/index.js");
+let parents   = require("../specifications/_auto_generate_output/tools/parents.json");
 
 let human_readable_id = str => str.replace(/\W/g, "_").replace(/\s/g, "_").replace(/_+/g, "_").replace(/^_/, "").replace(/_$/, "");
 
@@ -153,9 +154,9 @@ let build_search_data = (record, relation_fields) =>
 {
     let result = [];
 
-    let name_alias = record.name.split("(").pop().trim();
+    let name_alias = record.name ? record.name.split("(").pop().trim() : null;
 
-    if (name_alias.indexOf(")") !== -1)
+    if (name_alias && name_alias.indexOf(")") !== -1)
     {
         result.push({key: "name", text : name_alias.replace(")", "").trim()});
     }
@@ -221,6 +222,7 @@ let build_service_data = (record, relation_fields) => {
     }, {});
 
     result["search_data"] = build_search_data(record, relation_fields);
+    result["all_categories"] = record.category  && record.category.length ? get_all_categories(record.category[0][1]) : [];
 
     return result
 };
@@ -275,17 +277,18 @@ let create_relation_field = (record, relation_fields) => {
     return result
 };
 
-let clean_result_data = (result, relation_fields, specification_fields) => {
+let clean_result_data = (result, relation_fields) => {
     relation_fields.forEach(name => {
         delete result[name];
-        // delete result[name + "_relations"]
     });
-    // specification_fields.forEach(name => delete result[name]);
 
-    // delete result.ui;
-
+    delete result.sub_sub_category;
     return result;
 };
+
+let get_all_categories = (category) => {
+    return parents[category] || []
+}
 
 module.exports = {
     human_readable_id,

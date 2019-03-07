@@ -1,0 +1,23 @@
+{
+    "title" : "pipette_tips",
+    "parents" : ["consumable"],
+    "properties" : {
+        "sub_category_relations" : {
+            "aggregate" : true,
+            "schema" : {
+                "type" : "array",
+                "items": {"type": "string"}
+            }
+        },
+        "volume" : {
+            "visible_for" : ["all"],
+            "schema" : {
+                "type" : "object",
+                "properties" : {
+                    "value" :  {"type": "number"},
+                    "dimension" : {"type" :  "string"}
+                }
+            }
+        }
+    }
+}

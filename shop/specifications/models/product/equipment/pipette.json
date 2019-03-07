@@ -86,6 +86,34 @@
                     "type" : "array",
                     "items": {"type": "string"}
                 }
+            },
+            "volume" : {
+                "visible_for" : ["all"],
+                "schema" : {
+                    "type" : "object",
+                    "properties" : {
+                        "product_id" : {"type" :  "string"},
+                        "value" :  {"type": "number"},
+                        "value_range" : {
+                            "type" :  "object",
+                            "properties" : {
+                                "from" : {"type": "number"},
+                                "to" : {"type": "number"}
+                            }
+                        },
+                        "value_step" : {
+                            "type" :  "array",
+                            "items" : {
+                                "type" :  "object",
+                                "properties" : {
+                                    "value" : {"type": "number"},
+                                    "dimension" : {"type": "string"}
+                                }
+                            }
+                        },
+                        "dimension" : {"type" :  "string"}
+                    }
+                }
             }
         }
     }

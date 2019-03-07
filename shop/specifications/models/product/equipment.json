@@ -1,0 +1,17 @@
+{
+    "title" : "equipment",
+    "parents": ["product"],
+    "properties" : {
+        "table_specification" : {
+            "visible_for" : ["all"],
+            "schema" : {
+                "type" : "array",
+                "items" : {
+                    "type" : "object",
+                    "properties" : {},
+                    "additionalProperties": true
+                }
+            }
+        }
+    }
+}

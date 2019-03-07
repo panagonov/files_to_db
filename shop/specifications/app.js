@@ -2,7 +2,10 @@ let fs           = require("fs");
 let utils        = require("../../_utils/utils.js");
 let model_loader = require("./model_loader.js");
 
-let props = {output: `${__dirname}/_auto_generate_output`};
+let props = {
+    output: `${__dirname}/_auto_generate_output`,
+    output_tool_directory: "tools"
+};
 
 let transformers = {
     "validation_schema": {transformer : require("./generators/validation_schema.js")                   },
@@ -19,7 +22,8 @@ let transformers = {
 let tools = {
     "model_tree"        : {transformer : require("./tools/model_tree.js")                              },
     "aggregation_fields": {transformer : require("./tools/aggregation_fields.js")                      },
-    "visible_fields"    : {transformer : require("./tools/visible_fields.js")                          }
+    "visible_fields"    : {transformer : require("./tools/visible_fields.js")                          },
+    "parents"           : {transformer : require("./tools/parents.js")                                 }
 };
 
 let write_result = (output, type, file_name, result) =>
@@ -31,14 +35,15 @@ let write_result = (output, type, file_name, result) =>
         fs.mkdirSync(output);
 
     let output_path = `${output}/${type}`;
+
     if (!fs.existsSync(output_path))
         fs.mkdirSync(output_path);
 
     fs.writeFileSync(`${output_path}/${file_name}.json`, JSON.stringify(result), "utf8");
 };
 
-let run = () => {
-
+let build_model_structure = (props, transformers) =>
+{
     let models = model_loader.run();
 
     utils.objEach(models, (key, model) =>
@@ -50,13 +55,22 @@ let run = () => {
             write_result(props.output, type, model.title, result[name].value)
         })
     });
+};
 
+let build_tools_result = (props, tools) =>
+{
     let tools_result = {};
     utils.objEach(tools, (name, {type, transformer}) =>{
         type = type || name;
         tools_result[name] = {type: type || name, value: transformer.run({type, props, temp_result: tools_result})};
-        write_result(props.output, "tools", type, tools_result[name].value)
+        write_result(props.output, props.output_tool_directory, type, tools_result[name].value)
     })
+};
+
+let run = () =>
+{
+    build_model_structure(props, transformers);
+    build_tools_result(props, tools);
 };
 
 module.exports = run;

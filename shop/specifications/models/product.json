@@ -3,7 +3,7 @@
     "database"            : "elasticsearch",
     "json_schema" : {
         "additionalProperties": false,
-        "required" : [],
+        "required" : ["category", "all_categories"],
         "properties"          : {
             "_id" : {
                 "visible_for": ["all"],
@@ -201,6 +201,12 @@
             },
             "category_relations" : {
                 "aggregate" : true,
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            },
+            "all_categories" : {
                 "schema" : {
                     "type" : "array",
                     "items": {"type": "string"}

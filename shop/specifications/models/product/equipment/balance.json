@@ -1,0 +1,32 @@
+{
+    "title" : "balance",
+    "parents" : ["equipment"],
+    "json_schema" : {
+        "properties" : {
+            "capacity" : {
+                "visible_for" : ["all"],
+                "schema" : {
+                    "type" : "object",
+                    "properties" : {
+                        "value_range" : {
+                            "type" :  "object",
+                            "properties" : {
+                                "from" : {"type": "number"},
+                                "to" : {"type": "number"}
+                            }
+                        },
+                        "dimension" : {"type" :  "string"}
+                    }
+                }
+            },
+            "calibration_relations" : {
+                "aggregate" : true,
+                "visible_for" : ["all"],
+                "schema" : {
+                    "type" : "array",
+                    "items": {"type": "string"}
+                }
+            }
+        }
+    }
+}

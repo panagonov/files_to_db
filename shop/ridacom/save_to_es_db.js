@@ -7,7 +7,7 @@ let suggest_collection_name = "shop_suggest_new";
 
 let directory_reader = require("../../_utils/directory_reader.js");
 
-let converters = directory_reader(`${__dirname}/save_transformers/`, "js", true);
+let converters = directory_reader(`${__dirname}/save_transformers/`, "js", {recursive: true, recursive_dept: 1});
 
 let build_index = async(mongo_db) =>
 {

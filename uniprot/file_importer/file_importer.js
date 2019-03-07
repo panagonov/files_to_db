@@ -76,7 +76,7 @@ let run = async (db) =>
         if (transformers.hasOwnProperty(type) && !transformers[type].disable)
         {
             let dir_path = `${files_path}/${type}/`;
-            let files = directory_reader(dir_path, "xml", null, null, () => "");
+            let files = directory_reader(dir_path, "xml", {}, () => "");
             let files_array = Object.keys(files);
 
             console.log(`Start import directory "${type}" - ${files_array.length} files.`);
