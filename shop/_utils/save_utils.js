@@ -5,7 +5,7 @@ let parents   = require("../specifications/_auto_generate_output/tools/parents.j
 let human_readable_id = str => str.replace(/\W/g, "_").replace(/\s/g, "_").replace(/_+/g, "_").replace(/^_/, "").replace(/_$/, "");
 
 let size_parser = size => {
-    let match = /^([\d|\.]+)\s?([.|\S]+)\s?(.+)?/.exec(size);
+    let match = /^([\d|\.]+)\s?([.|\S]+)?\s?(.+)?/.exec(size);
     let value = match && match[1] ? parseFloat(match[1]) : 0;
     let dimension = match && match[2] ? match[2].trim() : "";
     let more_data = match && match[3] ? match[3].trim() : "";
@@ -303,3 +303,5 @@ module.exports = {
 };
 
 // console.log(get_canonical("Baculovirus-Insect Cells", [":preparation_method"]));
+
+// console.log(size_parser("0.01mg"))

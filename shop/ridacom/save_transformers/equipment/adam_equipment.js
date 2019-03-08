@@ -2,6 +2,7 @@ let utils              = require("../../../../_utils/utils.js");
 let import_utils       = require("../../../_utils/save_utils.js");
 let country_utils      = require("../../../../common-components/region_utils/country_utils.js");
 let currency_converter = require("../../../../common-components/region_utils/currency_converter.js");
+let id_fixes_map       = require("./adam_aquipment/id_mapping.json");
 
 let relation_fields = ["supplier", "distributor", "category", "sub_category", "calibration"];
 
@@ -9,24 +10,14 @@ let enrich = {
     balance         : require("./adam_aquipment/balance.js")
 };
 
-let create_specification_field = (record) =>{
-    let specification_fields = record.specification.map(item => ({
-        key: item.key,
-        value: {value: item.value},
-        ui_text: utils.capitalizeFirstLetter(item.key.replace(/_/g, " "))
-    }));
-
-    let agg_specs =  import_utils.create_specification_field(record, null, relation_fields);
-
-    return specification_fields.concat(agg_specs)
-};
+let fixator = require("./adam_aquipment/fixator.js");
 
 let _getPdf = item =>
 {
     if (item.pdf) {
         return item.pdf.map(item => {
             if (["Multi-Language", "Multi_Language"].indexOf(item.lang) !== -1)
-                delete item.lang
+                delete item.lang;
             else if (item.lang) {
                 let lang = country_utils.getLangByLangugageName(item.lang);
                 if (lang)
@@ -69,19 +60,8 @@ let _get_category = (item, crawler_item) => {
 let _get_sub_category = (item, crawler_item) =>
 {
     let sub_categories = utils.uniq((crawler_item.parent_sub_category || crawler_item.sub_category || []).filter(item => item !== crawler_item._id));
-    return  import_utils.get_canonical(sub_categories[0], ":product_sub_category")
-
-};
-
-let _get_specification = (item) =>
-{
-    let crawler_item = item.crawler_item;
-    let specifications = crawler_item ? crawler_item["specifications"] : null;
-    if (specifications)
-    {
-        return Object.keys(specifications).map(key => ({key, value: specifications[key] instanceof Array ? specifications[key] : [specifications[key]]}))
-    }
-
+    if (sub_categories[0])
+        return  import_utils.get_canonical(sub_categories[0], ":product_sub_category");
     return null;
 };
 
@@ -103,7 +83,6 @@ let _getImages = (crawler_item) =>
         return null;
 
     return crawler_item.images.map(item => {
-        item.link = item.href;
         delete item.href;
         return item
     })
@@ -176,26 +155,28 @@ let mapping = {
     "videos"                 : record => _getVideos(record.crawler_item),
     "product_relations"      : record => record.crawler_item && record.crawler_item["accessories"] ? record.crawler_item["accessories"].map(id => `PRODUCT_SOURCE:[ADAM_EQUIPMENT]_SUPPLIER:[RIDACOM]_ID:[${id}]`) : null,
     "product_relations_count": record => record.crawler_item && record.crawler_item["accessories"] ? record.crawler_item["accessories"].length : null,
-    "specification"          : _get_specification,
     "pdf"                    : record => _getPdf(record.crawler_item),
     "original_link"          : "crawler_item.link"
 };
 
 let index = 0;
-let show_in_console = (result, crawler_item1, record) =>
+let show_in_console = (result, crawler_item, record) =>
 {
     console.table({
-        index : index,
-        name        : result.name,
-        category    : (result.category_relations || []).toString(),
-        sub_category: (result.sub_category_relations || []).toString(),
-        capacity    : JSON.stringify(result.capacity),
-        calibration_relations    : JSON.stringify(result.calibration_relations)
+        index                : index,
+        name                 : result.name,
+        category             : (result.category_relations || []).toString(),
+        sub_category         : (result.sub_category_relations || []).toString(),
+        capacity             : JSON.stringify(result.capacity),
+        calibration_relations: JSON.stringify(result.calibration_relations),
+        readability          : JSON.stringify(result.readability),
+        operating_temperature: JSON.stringify(result.operating_temperature),
+        specs                : crawler_item && crawler_item.specifications ? Object.keys(crawler_item.specifications).toString() : "",
+        oid                  : result.oid,
+        craw_id              : crawler_item  ? crawler_item.oid || crawler_item._id : ""
     });
 
-    if (index >= 0)
-
-        debugger;
+    if (index >= 500) debugger;
     index++;
 };
 
@@ -204,6 +185,7 @@ let convert = (item, crawler_item) =>
     let record = Object.assign({}, item, {crawler_item: crawler_item || {}});
 
     let result = utils.mapping_transform(mapping, record);
+    result = fixator(result, record);
     let additional_data = get_additional_category_data(record, result);
     result = Object.assign(result, additional_data);
 
@@ -222,7 +204,13 @@ let convert = (item, crawler_item) =>
     }
 };
 
+let get_crawler_ids = items => items.map(({oid}) => id_fixes_map[oid] || oid);
+
+let get_crawler_item = (item, crawler_hash) =>  crawler_hash[id_fixes_map[item.oid] || item.oid];
+
 module.exports = {
     convert,
-    version: 2
+    version: 2,
+    get_crawler_ids,
+    get_crawler_item
 };

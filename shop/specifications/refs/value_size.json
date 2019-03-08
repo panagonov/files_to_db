@@ -1,0 +1,12 @@
+{
+    "$ref" : "value_size",
+    "schema" : {
+        "type"                : "object",
+        "properties"          : {
+            "value"    : { "type": "number"},
+            "dimension": { "type": "string"},
+            "more_data": { "type": "string"}
+        },
+        "additionalProperties": false
+    }
+}

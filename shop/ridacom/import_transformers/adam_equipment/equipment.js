@@ -36,6 +36,7 @@ let mapping = {
 };
 
 let index = 0;
+let link_hash = {}
 
 let accessories = false;
 
@@ -54,11 +55,18 @@ let transform = (record) =>
 
     accessories ? result.sub_category = "accessories" : null;
 
-    if(product_list[index])
+    if (link_hash[result._id])
+        result.link = link_hash[result._id];
+    else
     {
-        result.link = product_list[index];  //todo hack -> this url is not product url.
-        index++
+        if(product_list[index])
+        {
+            result.link = product_list[index];  //todo hack -> this url is not product url.
+            link_hash[result._id] = result.link;
+            index++
+        }
     }
+
 
     return result;
 };

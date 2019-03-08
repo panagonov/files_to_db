@@ -300,6 +300,9 @@ Mongo.prototype.bulk = async function(model_title, data)
                 bulk.find( { _id: bulk_data._id } )[bulk_data.command_name]( document );
                 break;
             case "upsert":
+                bulk.find( { _id: bulk_data._id } ).upsert().updateOne(document);
+                break;
+            case "index":
                 bulk.find( { _id: bulk_data._id } ).upsert().replaceOne(document);
                 break;
             default:

@@ -3,3 +3,11 @@ To generate product_list.json:
 2. Run in console:
     [].slice.call(document.querySelectorAll(".slp.lsmh ul.mpl li a")).map(item => item.href)
 3. Copy result like array
+
+4. add:
+    "https://www.adamequipment.co.uk/3012014259-in-use-wet-cover-for-eab-and-sab",
+    "https://www.adamequipment.co.uk/calibration-certificate-2919",
+    "https://www.adamequipment.co.uk/calibration-certificate",
+    "https://www.adamequipment.co.uk/3022014061-in-use-wet-cover-for-lbx",
+    "https://www.adamequipment.co.uk/2020014062-in-use-cover-for-lbx-pack-of-5",
+    "https://www.adamequipment.co.uk/2020014063-in-use-cover-for-lbx-pack-of-10"
