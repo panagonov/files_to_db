@@ -1,8 +1,9 @@
 let utils        = require("../../../../../_utils/utils.js");
 let import_utils = require("../../../../_utils/save_utils.js");
 
-let _get_voltage = crawler_item =>
+let _get_voltage = record =>
 {
+    let crawler_item = record.crawler_item;
     let result = [];
 
     if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
@@ -28,8 +29,9 @@ let _get_voltage = crawler_item =>
 };
 
 
-let _get_rpm = crawler_item =>
+let _get_rpm = record =>
 {
+    let crawler_item = record.crawler_item;
     let result = [];
 
     if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
@@ -54,8 +56,9 @@ let _get_rpm = crawler_item =>
     return result.length ? result : null
 };
 
-let _get_weight = crawler_item =>
+let _get_weight = record =>
 {
+    let crawler_item = record.crawler_item;
     let result = [];
 
     if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
@@ -80,8 +83,9 @@ let _get_weight = crawler_item =>
     return result.length ? result : null
 };
 
-let _get_product_relations = crawler_item =>
+let _get_product_relations = record =>
 {
+    let crawler_item = record.crawler_item;
     let result = [];
 
     if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
@@ -105,10 +109,10 @@ let _get_product_relations = crawler_item =>
 };
 
 let mapping = {
-    "voltage"         : record => _get_voltage(record.crawler_item),
-    "rpm"          : record => _get_rpm(record.crawler_item),
-    "weight"               : record => _get_weight(record.crawler_item),
-    "product_relations"   : record => _get_product_relations(record.crawler_item),
+    "voltage"          : _get_voltage,
+    "rpm"              : _get_rpm,
+    "weight"           : _get_weight,
+    "product_relations": _get_product_relations
 };
 
 let convert = (record, result_to_enrich) =>

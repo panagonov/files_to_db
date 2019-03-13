@@ -192,7 +192,7 @@ let convert = (item, crawler_item) =>
     let service_data = import_utils.build_service_data(result, relation_fields);
     result = Object.assign(result, service_data);
 
-    show_in_console(result, crawler_item, record);
+    // show_in_console(result, crawler_item, record);
 
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "equipment");
     result           = import_utils.clean_result_data(result, relation_fields);
@@ -210,7 +210,7 @@ let get_crawler_item = (item, crawler_hash) =>  crawler_hash[id_fixes_map[item.o
 
 module.exports = {
     convert,
-    version: 2,
+    version: 5,
     get_crawler_ids,
     get_crawler_item
 };

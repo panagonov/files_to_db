@@ -20,6 +20,9 @@ let category_fixer = (result, record) => {
         }
     }
 
+    if (result.name.indexOf("Calibration Certificate") !== -1)
+        result.sub_category = import_utils.get_canonical("Calibration certificate", ":product_sub_category");
+
     return result
 };
 

@@ -1,8 +1,9 @@
 let utils        = require("../../../../../_utils/utils.js");
 let import_utils = require("../../../../_utils/save_utils.js");
 
-let _get_imprecision = crawler_item =>
+let _get_imprecision = record =>
 {
+    let crawler_item = record.crawler_item;
     let result = [];
 
     if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
@@ -24,8 +25,9 @@ let _get_imprecision = crawler_item =>
 };
 
 
-let _get_inaccuracy = crawler_item =>
+let _get_inaccuracy = record =>
 {
+    let crawler_item = record.crawler_item;
     let result = [];
 
     if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
@@ -47,8 +49,9 @@ let _get_inaccuracy = crawler_item =>
     return result.length ? result : null
 };
 
-let _get_color = crawler_item =>
+let _get_color = record =>
 {
+    let crawler_item = record.crawler_item;
     let result = [];
 
     if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
@@ -69,10 +72,8 @@ let _get_color = crawler_item =>
 
 let _get_channel = record =>
 {
-    let result = [];
-
     let crawler_item = record.crawler_item;
-
+    let result = [];
 
     let extract_channel = data => {
         let value = 0;
@@ -110,8 +111,9 @@ let _get_channel = record =>
 };
 
 
-let _get_product_relations = crawler_item =>
+let _get_product_relations = record =>
 {
+    let crawler_item = record.crawler_item;
     let result = [];
 
     if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
@@ -134,8 +136,9 @@ let _get_product_relations = crawler_item =>
     return result.length ? result : null
 };
 
-let get_step_volume = name =>
+let get_step_volume = record =>
 {
+    let name = record.name;
     let volume = [];
     let regexp = /\d+\.?(\d+)?(ul|ml)/g;
 
@@ -151,9 +154,10 @@ let get_step_volume = name =>
     return volume.length ? {value_step : volume} : null
 };
 
-let _get_volume = name =>
+let _get_volume = record =>
 {
-   let match = /(vol\.|volume)?\s\d+\.?(\d+)?\-?(\d+\.?(\d+)?)?\s(ul|ml)/i.exec(name);
+    let name = record.name;
+    let match = /(vol\.|volume)?\s\d+\.?(\d+)?\-?(\d+\.?(\d+)?)?\s(ul|ml)/i.exec(name);
 
     if (match)
     {
@@ -183,12 +187,12 @@ let _get_volume = name =>
 };
 
 let mapping = {
-    "imprecision"         : record => _get_imprecision(record.crawler_item),
-    "inaccuracy"          : record => _get_inaccuracy(record.crawler_item),
-    "color"               : record => _get_color(record.crawler_item),
-    "channel"             : record => _get_channel(record),
-    "product_relations"   : record => _get_product_relations(record.crawler_item),
-    "volume"              : record => _get_volume(record.name),
+    "imprecision"         : _get_imprecision,
+    "inaccuracy"          : _get_inaccuracy,
+    "color"               : _get_color,
+    "channel"             : _get_channel,
+    "product_relations"   : _get_product_relations,
+    "volume"              : _get_volume,
 };
 
 let convert = (record, result_to_enrich) =>

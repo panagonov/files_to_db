@@ -87,7 +87,7 @@ let mapping = {
     "supplier"            : record => import_utils.get_canonical("CAPP", ":supplier"),
     "category"            : record => import_utils.get_canonical(record.crawler_item.category || "equipment", ":product_category"),
     "sub_category"        : record => import_utils.get_canonical(record.crawler_item.sub_category || "", ":product_sub_category"),
-    "sub_sub_category"    : record => import_utils.get_canonical(record.crawler_item.sub_sub_category || "", ":product_sub_sub_category"),
+    // "sub_sub_category"    : record => import_utils.get_canonical(record.crawler_item.sub_sub_category || "", ":product_sub_sub_category"),
     "distributor"         : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
     "description"         : record => record.crawler_item && record.crawler_item.description ? [record.crawler_item.description] : null,
     "table_specification" : "crawler_item.specification",
@@ -139,7 +139,7 @@ let convert = (item, crawler_item, custom_data) =>
     let additional_data = get_additional_category_data(record, result);
     result = Object.assign(result, additional_data);
 
-    show_in_console(result, crawler_item1, record);
+    // show_in_console(result, crawler_item1, record);
 
     let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "equipment");
     result           = import_utils.clean_result_data(result, relation_fields);

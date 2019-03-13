@@ -135,13 +135,13 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site) =>
                 not_found_custom = not_found_custom.concat(missing_data);
         });
 
-        // if (es_bulk.length)
-        //     await es_db.bulk(es_bulk);
-        //
-        // await _save_suggest_data(accumulated_suggest_data);
-        //
-        // let ids = result.map(({_id}) => _id);
-        // await mongo_db.update_many(collection_name, {query: {_id: {$in: ids}}, data: {export_version: export_version}});
+        if (es_bulk.length)
+            await es_db.bulk(es_bulk);
+
+        await _save_suggest_data(accumulated_suggest_data);
+
+        let ids = result.map(({_id}) => _id);
+        await mongo_db.update_many(collection_name, {query: {_id: {$in: ids}}, data: {export_version: export_version}});
 
         page++;
         console.log(distributor, type, site, `${page * limit}/${count}`)
