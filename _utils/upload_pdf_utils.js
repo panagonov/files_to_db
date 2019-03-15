@@ -110,7 +110,7 @@ let upload_pdf_preview = async(path, file_name, meta) => {
 
         await upload_to_s3({path, id: thumb_name, meta, content_type: "image/png", file_body: compressed_image});
         try {
-            fs.unlinkSync(temp_dir + file_name);
+            fs.unlinkSync(temp_dir + thumb_name);
         }
         catch (e){}
 
@@ -127,7 +127,7 @@ let upload_product_pdf = async({file_data, path, file_name, image_index, meta = 
     let thumb_name = "";
     let link_name = "";
 
-    // console.time("Start PDF");
+    console.time("Start PDF");
     try
     {
         if (file_data.link)
@@ -165,7 +165,7 @@ let upload_product_pdf = async({file_data, path, file_name, image_index, meta = 
     catch(e) {
 
     }
-    // console.timeEnd("Start PDF");
+    console.timeEnd("Start PDF");
 
     return {link_name, thumb_name}
 };
