@@ -6,7 +6,7 @@ let upload_pdf_utils = require("../../_utils/upload_pdf_utils.js");
 let product_types =  fs.readdirSync(`${__dirname}/save_transformers`);
 let field_name = "pdf_crawler_version";
 let collection_name = "product";
-let crawler_version = 1;
+let crawler_version = 4;
 
 let upload = async(product_type) => {
     let limit = 1;

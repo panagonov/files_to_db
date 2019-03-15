@@ -6,7 +6,7 @@ let upload_utils = require("../../_utils/upload_utils.js");
 let product_types =  fs.readdirSync(`${__dirname}/save_transformers`);
 let field_name = "image_crawler_version";
 let collection_name = "product";
-let crawler_version = 3;
+let crawler_version = 4;
 
 let upload = async(product_type) => {
     let limit = 1;

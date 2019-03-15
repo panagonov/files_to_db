@@ -127,10 +127,10 @@ let upload_product_pdf = async({file_data, path, file_name, image_index, meta = 
     let thumb_name = "";
     let link_name = "";
 
-    console.time("Start PDF");
+    console.time("PDF");
     try
     {
-        if (file_data.link)
+        if (file_data.link && file_data.link.indexOf("http") === 0)
         {
             let file_exists = await is_file_exists(path, file_name);
             if (!file_exists)
@@ -162,10 +162,9 @@ let upload_product_pdf = async({file_data, path, file_name, image_index, meta = 
             }
         }
     }
-    catch(e) {
+    catch(e) {}
 
-    }
-    console.timeEnd("Start PDF");
+    console.timeEnd("PDF");
 
     return {link_name, thumb_name}
 };

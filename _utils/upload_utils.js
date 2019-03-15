@@ -79,7 +79,9 @@ let upload_product_image = async({file_data, path, product_id, image_index, meta
     let image_name = product_id.replace(/\W/g, "_") + "_" + image_index;
     let link_id = image_name, thumb_link_id;
 
-    if (file_data.link)
+    console.time("IMAGE");
+
+    if (file_data.link && file_data.link.indexOf("http") === 0)
     {
         link_id = await upload_to_s3(file_data.link, path, image_name, meta, "image");
         try {
@@ -87,7 +89,7 @@ let upload_product_image = async({file_data, path, product_id, image_index, meta
         }
         catch(e){}
     }
-    if (file_data.thumb_link)
+    if (file_data.thumb_link && file_data.link.indexOf("http") === 0)
     {
         thumb_link_id = await upload_to_s3(file_data.link, path, image_name + "_thumb", meta, "image");
         try {
@@ -95,7 +97,7 @@ let upload_product_image = async({file_data, path, product_id, image_index, meta
         }
         catch(e){}
     }
-
+    console.timeEnd("IMAGE");
     return {link_id, thumb_link_id}
 };
 

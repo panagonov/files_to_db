@@ -189,7 +189,7 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
 module.exports = {
     convert,
     load_custom_data,
-    version: 1
+    version: 2
 };
 
 // console.log(import_utils.get_canonical("other benchtop", ":product_sub_category"))
