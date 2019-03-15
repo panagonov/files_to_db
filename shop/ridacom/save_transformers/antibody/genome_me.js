@@ -2,10 +2,6 @@ let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
 let relation_fields = ["host", "clonality", "supplier", "distributor", "category"];
-let specification_fields = [
-    "positive_control",
-    "dilution_range"
-];
 
 let _getImages = item =>
 {
@@ -18,7 +14,7 @@ let _getImages = item =>
             return {
                 link: img_data.link.replace("../../", "/"),
                 ...img_data.thumb ? {thumb_link: img_data.thumb.replace("../../", "/")} : "",
-                ...img_text       ? {text: img_text.replace(/\s+/g, " ").trim()} : ""
+                ...img_text       ? {text: [img_text.replace(/\s+/g, " ").trim()]} : ""
             }
         })
     }
@@ -86,7 +82,7 @@ let mapping = {
         ...record.name ? {"name": record.name} : ""
     }],
     "price_model"      : record => _getPriceModel(record, record.crawler_item),
-    "description"      : "crawler_item.description",
+    "description"      : record => record.crawler_item && record.crawler_item.description ? [record.crawler_item.description] : null,
     "supplier"         : record => import_utils.get_canonical("GenomeMe", ":supplier"),
     "distributor"      : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
     "category"         : record => import_utils.get_canonical("Antibody", ":product_category"),
@@ -119,5 +115,5 @@ let convert = (item, crawler_item) =>
 
 module.exports = {
     convert,
-    version: 7
+    version: 4
 };

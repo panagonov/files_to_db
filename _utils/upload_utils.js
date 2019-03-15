@@ -1,18 +1,26 @@
-let fs = require("fs");
-let request = require("request");
-let uuid    = require("uuid/v4");
-let s3      = require("../../bioseek/discovery/core/s3.js");
-let exec     = require("child_process").exec;
+let fs              = require("fs");
+let request         = require("request");
+let s3              = require("../../bioseek/discovery/core/s3.js");
+let image_minimizer = require('../../bioseek/discovery/core/utilities/image_minimizer.js');
 
 let temp_dir = `${__dirname}/_download/`;
 let bucket_name = "bioseek-shop/";
 
+let cookies = request.jar();
+let browser = request.defaults({proxy: "http://69.46.80.226:12360"});
+
 let check_is = {
     "image" : async(url) =>
         new Promise((resolve, reject) =>{
-            request.get({
+            url = url.replace(".co.uk", ".com");
+            browser.get({
                 method: "HEAD",
-                url: url
+                url: url,
+                headers : {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"},
+                followAllRedirects: true,
+                maxRedirects: 100,
+                jar: cookies,
+                strictSSL: false
             }, (err, response, body) =>
             {
                 if ( err || response.statusCode === 404 || ["image/png", "image/jpg", "image/jpeg"].indexOf(response.headers["content-type"]) === -1 )
@@ -25,7 +33,8 @@ let check_is = {
 let download_file = async(url, target) =>
     new Promise((resolve, reject) => {
         let path = temp_dir + target;
-        request(url).pipe(fs.createWriteStream(path)).on("close", function(err, res)
+        url = url.replace(".co.uk", ".com");
+        browser(url).pipe(fs.createWriteStream(path)).on("close", function(err, res)
         {
             if (err) return reject(err);
             resolve (fs.readFileSync(path));
@@ -41,7 +50,6 @@ let download_file = async(url, target) =>
 
 let upload_to_s3 = async(url, path, id, meta = {}, file_type) =>
 {
-    id = id || uuid();
     let is_exists = await s3.is_file_exists(bucket_name + path, id);
 
     if (is_exists)
@@ -51,10 +59,12 @@ let upload_to_s3 = async(url, path, id, meta = {}, file_type) =>
     if (file_data.confirm)
     {
         let file = await download_file(url, id);
+        let compressed_image = file // await image_minimizer(file);
+
         await s3.upload({
             Bucket: bucket_name + path,
             ContentType: file_data.content_type,
-            Body: file,
+            Body: compressed_image,
             Key: id,
             Metadata: meta
         });
@@ -72,12 +82,18 @@ let upload_product_image = async({file_data, path, product_id, image_index, meta
     if (file_data.link)
     {
         link_id = await upload_to_s3(file_data.link, path, image_name, meta, "image");
-        fs.unlinkSync(temp_dir + link_id)
+        try {
+            fs.unlinkSync(temp_dir + link_id)
+        }
+        catch(e){}
     }
     if (file_data.thumb_link)
     {
         thumb_link_id = await upload_to_s3(file_data.link, path, image_name + "_thumb", meta, "image");
-        fs.unlinkSync(temp_dir + thumb_link_id);
+        try {
+            fs.unlinkSync(temp_dir + thumb_link_id);
+        }
+        catch(e){}
     }
 
     return {link_id, thumb_link_id}

@@ -1,139 +1,92 @@
 let utils        = require("../../../../../_utils/utils.js");
 let import_utils = require("../../../../_utils/save_utils.js");
 
-let _get_imprecision = record =>
-{
+let _get_current_specs = (record) => {
     let crawler_item = record.crawler_item;
-    let result = [];
 
     if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
         return null;
 
-    crawler_item.specification.forEach(data => {
-        if (data["imprecision_%"])
-        {
-            let params = data["imprecision_%"].split("/").map(val => parseFloat(val)).sort((a,b) => a-b);
-            result.push({
-                "product_id" : data.oid,
-                ...params[1] ? {"value_range": {from: params[0], to: params[1]}} : {"value" : params[0]},
-                "dimension"  : "%"
-            })
-        }
-    });
+    return crawler_item.specification.filter(data => data.oid === record.oid)[0];
+};
 
-    return result.length ? result : null
+let _get_imprecision = record =>
+{
+    let current_specs = _get_current_specs(record);
+    let result = {};
+
+    if (current_specs  && current_specs["imprecision_%"])
+    {
+        let params = current_specs["imprecision_%"].split("/").map(val => parseFloat(val)).sort((a,b) => a-b);
+        if (params[1]) {
+            result.value_range = {
+                from: {"value": params[0], "dimension" : "%"},
+                to: {"value": params[1], "dimension" : "%"}
+            }
+        }
+        else {
+            result.value =  params[0];
+            result.dimension = "%"
+        }
+    }
+
+    return utils.isEmptyObj(result) ? null : result
 };
 
 
 let _get_inaccuracy = record =>
 {
-    let crawler_item = record.crawler_item;
-    let result = [];
+    let current_specs = _get_current_specs(record);
+    let result = {};
 
-    if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
-        return null;
-
-    crawler_item.specification.forEach(data => {
-
-        if (data["inaccuracy_%"])
-        {
-            let params = data["inaccuracy_%"].split("/").map(val => parseFloat(val)).sort((a,b) => a-b);
-            result.push({
-                "product_id" : data.oid,
-                ...params[1] ? {"value_range": {from: params[0], to: params[1]}} : {"value" : params[0]},
-                "dimension" : "%"
-            })
+    if (current_specs  && current_specs["inaccuracy_%"])
+    {
+        let params = current_specs["inaccuracy_%"].split("/").map(val => parseFloat(val)).sort((a,b) => a-b);
+        if (params[1]) {
+            result.value_range = {
+                from: {"value": params[0], "dimension" : "%"},
+                to: {"value": params[1], "dimension" : "%"}
+            }
         }
-    });
+        else {
+            result.value =  params[0];
+            result.dimension = "%"
+        }
+    }
 
-    return result.length ? result : null
+    return utils.isEmptyObj(result) ? null : result;
 };
 
 let _get_color = record =>
 {
-    let crawler_item = record.crawler_item;
-    let result = [];
+    let current_specs = _get_current_specs(record);
+    let result = "";
 
-    if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
-        return null;
+    if (current_specs  && current_specs["Color"])
+    {
+        result =  current_specs["Color"]
+    }
 
-    crawler_item.specification.forEach(data => {
-        if (data["Color"])
-        {
-            result.push({
-                "product_id": data.oid,
-                "value"     : data["Color"],
-            });
-        }
-    });
-
-    return result.length ? result : null
+    return result ? result : null
 };
 
 let _get_channel = record =>
 {
     let crawler_item = record.crawler_item;
-    let result = [];
+    let value = 0;
 
-    let extract_channel = data => {
-        let value = 0;
-        if (data.name.indexOf("single channel") !== -1 || (crawler_item.sub_sub_category || "").toLowerCase().indexOf("single channel") !== -1)
-            value = 1;
-        else{
-            let match = /(\d+)\-channel/.exec(data.name);
-            if (match && match[1])
-                value = parseInt(match[1], 10)
-        }
-        if (value)
-        {
-            result.push({
-                "product_id": data.oid,
-                "value"     : value,
-            });
-        }
-    };
-
-    if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
+    if (record.name.indexOf("single channel") !== -1 || (crawler_item.sub_sub_category || "").toLowerCase().indexOf("single channel") !== -1)
     {
-        extract_channel({name: record["name"], oid: record.oid})
+        value = 1;
     }
     else
     {
-        crawler_item.specification.forEach(data => {
-            if (data["name"])
-            {
-                extract_channel(data)
-            }
-        });
+        let match = /(\d+)\-channel/.exec(record.name);
+        if (match && match[1])
+            value = parseInt(match[1], 10)
     }
 
-    return result.length ? result : null
-};
-
-
-let _get_product_relations = record =>
-{
-    let crawler_item = record.crawler_item;
-    let result = [];
-
-    if (!crawler_item || !crawler_item.specification || !crawler_item.specification.length)
-        return null;
-
-    let cat_with_potential_product_relations = false;
-
-    crawler_item.specification.forEach(data => {
-
-        if (data["imprecision_%"] || data["inaccuracy_%"] || data["Color"])
-        {
-            cat_with_potential_product_relations = true;
-        }
-        else if(data["oid"] && cat_with_potential_product_relations)
-        {
-            result.push(`PRODUCT_SOURCE:[CAPP]_SUPPLIER:[RIDACOM]_ID:[${data["oid"].trim() || ""}]`)
-        }
-    });
-
-    return result.length ? result : null
+    return value
 };
 
 let get_step_volume = record =>
@@ -162,21 +115,19 @@ let _get_volume = record =>
     if (match)
     {
         let result = {};
-        let [a, volume, dimension] = match[0].split(" ");
+        let [, volume, dimension] = match[0].split(" ");
         if (volume.indexOf("-") !== -1)
         {
             let range = volume.split("-");
             result.value_range = {
-                from :  parseFloat(range[0]),
-                to :  parseFloat(range[1])
+                from :  { value: parseFloat(range[0]), dimension: dimension },
+                to :  { value: parseFloat(range[1]), dimension: dimension }
             }
         }
         else
         {
-            result.value = parseFloat(volume)
+            result = { value: parseFloat(volume), dimension: dimension }
         }
-
-        result.dimension = dimension;
 
         return result;
     }
@@ -191,7 +142,6 @@ let mapping = {
     "inaccuracy"          : _get_inaccuracy,
     "color"               : _get_color,
     "channel"             : _get_channel,
-    "product_relations"   : _get_product_relations,
     "volume"              : _get_volume,
 };
 

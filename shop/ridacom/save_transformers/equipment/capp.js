@@ -47,22 +47,16 @@ let _getPriceModel = (item, crawler_item) =>
         }]
     };
 
-    (sub_products || []).forEach(sub_product_oid =>
-    {
-        let sub_product = crawler_item.sub_products[sub_product_oid];
-        if (!sub_product.price)
-            return;
-        result.variation.push({
-            "price" : {
-                "value"   : sub_product.price[0].value || 0,
-                "currency": sub_product.price[0].currency || "usd",
-            },
-            "product_id": sub_product_oid
-        })
-    });
-
     return result;
 };
+
+let _getProductRelations = record => {
+    let sub_products = Object.keys(record.crawler_item.sub_products || {})
+    .filter(id => id !== record.oid);
+
+    let result = sub_products.map(id => `PRODUCT_SOURCE:[CAPP]_SUPPLIER:[RIDACOM]_ID:[${id}]`)
+    return result
+}
 
 let get_additional_category_data = (record, result) => {
     if (! result.category_relations)
@@ -91,9 +85,10 @@ let mapping = {
     "distributor"         : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
     "description"         : record => record.crawler_item && record.crawler_item.description ? [record.crawler_item.description] : null,
     "table_specification" : "crawler_item.specification",
+    "product_relations"   : record => _getProductRelations(record),
     "images"              : record => _getImages(record.crawler_item),
     "pdf"                 : record => _getPdf(record.crawler_item),
-    "original_link"       : "link"
+    "original_link"       : "crawler_item.link"
 };
 
 let index = 0;
@@ -194,7 +189,7 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
 module.exports = {
     convert,
     load_custom_data,
-    version: 6
+    version: 1
 };
 
 // console.log(import_utils.get_canonical("other benchtop", ":product_sub_category"))

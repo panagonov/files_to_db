@@ -25,6 +25,12 @@ let _getPdf = item =>
                     item.lang = lang
                 }
             }
+
+            if(item.href)
+            {
+                item.link = item.href;
+                delete item.href;
+            }
             return item
         })
     }
@@ -210,7 +216,7 @@ let get_crawler_item = (item, crawler_hash) =>  crawler_hash[id_fixes_map[item.o
 
 module.exports = {
     convert,
-    version: 5,
+    version: 1,
     get_crawler_ids,
     get_crawler_item
 };

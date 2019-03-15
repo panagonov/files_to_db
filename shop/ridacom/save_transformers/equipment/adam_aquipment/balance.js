@@ -18,10 +18,9 @@ let _get_range_value = (crawler_item, field_name, splitter = "/") => {
                 return null;
             return {
                 value_range: {
-                    from: from.value,
-                    to  : to.value,
-                },
-                dimension  : to.dimension
+                    from: from,
+                    to  : to,
+                }
             }
         }
         else
@@ -31,9 +30,8 @@ let _get_range_value = (crawler_item, field_name, splitter = "/") => {
                 return null;
             return {
                 value_range : {
-                    to: to.value,
-                },
-                dimension: to.dimension
+                    to: to,
+                }
             }
         }
     }

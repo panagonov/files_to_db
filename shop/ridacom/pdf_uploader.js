@@ -5,10 +5,11 @@ let upload_pdf_utils = require("../../_utils/upload_pdf_utils.js");
 
 let product_types =  fs.readdirSync(`${__dirname}/save_transformers`);
 let field_name = "pdf_crawler_version";
-let crawler_version = 3;
+let collection_name = "product";
+let crawler_version = 1;
 
-let upload = async(db_index) => {
-    let limit = 10;
+let upload = async(product_type) => {
+    let limit = 1;
     let page = 0;
     let result = [];
 
@@ -24,7 +25,7 @@ let upload = async(db_index) => {
     };
 
     do {
-        let db_data = await es_db.read_unlimited(db_index, {body: body, size : limit});
+        let db_data = await es_db.read_unlimited(collection_name, {body: body, size : limit});
         result = db_data.data;
         let es_bulk = [];
 
@@ -56,18 +57,18 @@ let upload = async(db_index) => {
                 console.log(`Uploaded ${i}/${result.length} - ${pdfs.length} pdf`)
             }
 
-            es_bulk.push({"model_title": db_index, "command_name": "update", "_id": product._id, "document": document});
+            es_bulk.push({"model_title": collection_name, "command_name": "update", "_id": product._id, "document": document});
         }
 
         if (es_bulk.length)
             await es_db.bulk(es_bulk);
 
         page++;
-        console.log(db_index, `${page * limit}/${db_data.count}`)
+        console.log(product_type, `${page * limit}/${db_data.count}`)
     }
     while(result.length === limit);
 
-    progress[db_index] = 1;
+    progress[product_type] = 1;
     fs.writeFileSync(__dirname + "/_cache/pdf_uploader_progress.json", JSON.stringify(progress), "utf8");
 };
 
@@ -79,11 +80,11 @@ let run = async () => {
 
     for (let i = 0; i < product_types.length; i++)
     {
-        let db_index = product_types[i];
+        let product_type = product_types[i];
 
-        if (progress[db_index])
+        if (progress[product_type])
             continue;
-        await upload(db_index)
+        await upload(product_type)
     }
 };
 
@@ -91,19 +92,19 @@ module.exports = {
     run
 };
 
-// let r  = () => {
-//    run()
-//    .then(() => process.exit(0))
-//    .catch(e => {
-//        console.error(e);
-//        r()
-//    })
-// };
-//
-// r();
-//
-// process.on('uncaughtException', function (err, data)
-// {
-//     console.error("--- UNCAUGHT EXCEPTION ---", err);
-//     r()
-// });
+let r  = () => {
+   run()
+   .then(() => process.exit(0))
+   .catch(e => {
+       console.error(e);
+       r()
+   })
+};
+
+r();
+
+process.on('uncaughtException', function (err, data)
+{
+    console.error("--- UNCAUGHT EXCEPTION ---", err);
+    r()
+});
