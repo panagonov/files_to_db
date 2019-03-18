@@ -64,7 +64,13 @@ let _get_color = record =>
 
     if (current_specs  && current_specs["Color"])
     {
-        result =  current_specs["Color"]
+        result = current_specs["Color"]
+    }
+    else
+    {
+        let match = /Violet|Grey|Red|Yellow|White|Blue|Green|Orange|Purple/i.exec(record.name);
+        if (match && match.length)
+            result = match[0]
     }
 
     return result ? result : null
@@ -110,7 +116,7 @@ let get_step_volume = record =>
 let _get_volume = record =>
 {
     let name = record.name;
-    let match = /(vol\.|volume)?\s\d+\.?(\d+)?\-?(\d+\.?(\d+)?)?\s(ul|ml)/i.exec(name);
+    let match = /\s\d+\.?(\d+)?\-?(\d+\.?(\d+)?)?\s?(ul|ml)/i.exec(name);
 
     if (match)
     {
@@ -119,6 +125,12 @@ let _get_volume = record =>
         if (volume.indexOf("-") !== -1)
         {
             let range = volume.split("-");
+            if (!dimension && range[1]){
+                let size = import_utils.size_parser(range[1]);
+                range[1] = size.value;
+                dimension = size.dimension;
+            }
+
             result.value_range = {
                 from :  { value: parseFloat(range[0]), dimension: dimension },
                 to :  { value: parseFloat(range[1]), dimension: dimension }

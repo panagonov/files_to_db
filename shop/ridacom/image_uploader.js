@@ -6,7 +6,7 @@ let upload_utils = require("../../_utils/upload_utils.js");
 let product_types =  fs.readdirSync(`${__dirname}/save_transformers`);
 let field_name = "image_crawler_version";
 let collection_name = "product";
-let crawler_version = 4;
+let crawler_version = 1;
 
 let upload = async(product_type) => {
     let limit = 1;
@@ -18,6 +18,9 @@ let upload = async(product_type) => {
             "bool" : {
                 "must_not": {
                     "term" : {[field_name] : crawler_version}
+                },
+                "must" : {
+                    "term" : {"all_categories" : product_type}
                 }
             }
         },
