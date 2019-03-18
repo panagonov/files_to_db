@@ -114,7 +114,7 @@ let mapping = {
     "alternative"           : "alternative",
     "accession"             : "accession",
     "accession_link"        : "accession_link",
-    "antibody_category"     : "category",
+    // "antibody_category"     : "category",
     "gene_id"               : "gene_id",
 };
 
@@ -185,5 +185,5 @@ module.exports = {
     convert,
     load_custom_data,
     init,
-    version: 1
+    version: 2
 };

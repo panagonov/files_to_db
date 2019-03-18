@@ -88,7 +88,7 @@ let mapping = {
     "storage_buffer"     : "storage_buffer",
     "precautions"        : "precautions",
     "aliases"            : "alternative",
-    "original_link"      : "link",
+    "original_link"      : record => record.crawler_item && record.crawler_item.url ? record.crawler_item.url : null,
     "app_notes"          : "app_notes"
 };
 

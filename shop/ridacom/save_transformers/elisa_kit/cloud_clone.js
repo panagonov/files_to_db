@@ -121,9 +121,9 @@ let mapping = {
     "pdf"                : record =>  _getPdf(record.crawler_item),
     "original_link"      : "link",
     "shelf_life"         : "shelf_life",
-    "usage"              : record => record["test_principle"] ? [record["test_principle"]] : null,
     "storage_conditions" : "storage_conditions",
     "delivery_conditions": "delivery_conditions",
+    "usage"              : record => record["test_principle"] ? [record["test_principle"]] : null,
     "sensitivity"        : "sensitivity",  //str
     "sample_type"        : "sample_type",  //arr
     "assay_length"       : "assay_length",  //str

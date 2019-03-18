@@ -54,9 +54,9 @@ let _getProductRelations = record => {
     let sub_products = Object.keys(record.crawler_item.sub_products || {})
     .filter(id => id !== record.oid);
 
-    let result = sub_products.map(id => `PRODUCT_SOURCE:[CAPP]_SUPPLIER:[RIDACOM]_ID:[${id}]`)
+    let result = sub_products.map(id => `PRODUCT_SOURCE:[CAPP]_SUPPLIER:[RIDACOM]_ID:[${id}]`);
     return result
-}
+};
 
 let get_additional_category_data = (record, result) => {
     if (! result.category_relations)
@@ -189,7 +189,7 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
 module.exports = {
     convert,
     load_custom_data,
-    version: 2
+    version: 1
 };
 
 // console.log(import_utils.get_canonical("other benchtop", ":product_sub_category"))

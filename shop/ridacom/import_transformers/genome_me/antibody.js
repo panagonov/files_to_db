@@ -6,7 +6,7 @@ let id_url_mapping = product_list.reduce((res, url) =>
     let product_id = decodeURIComponent(url.split("/").pop().replace(".html", "").toLowerCase()).trim();
     res[product_id] = url;
     return res
-}, {})
+}, {});
 
 let mapping = {
     "_id"              : (record) => `PRODUCT_SOURCE:[GENOME_ME]_SUPPLIER:[RIDACOM]_ID:[${record["Clone"] || ""}]`,

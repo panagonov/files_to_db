@@ -17,7 +17,7 @@ let _getImages = item => {
                 result.push({link: data});
             else
             {
-                result.push({link: data.link, text: data.text})
+                result.push({link: data.link, text: [data.text]})
             }
         })
     }
@@ -100,7 +100,7 @@ let mapping = {
     "heavy_chain"        : record => import_utils.get_canonical(record.isotype || "", ":heavy_chain"),
     "clonality"          : record => import_utils.get_canonical(record.source || "", ":clonality"),
     "research_area"      : record => import_utils.get_canonical((record.research_area || []).join("; ") || "", ":research_area"),
-    "concentration"      : "concentration",
+    "concentration"      : record => record["concentration"] ?import_utils.size_parser(record.concentration) : null,
     "clone_id"           : "clone_num",
     "usage"              : "usage",
     "shelf_life"         : "shelf_life",
@@ -135,5 +135,5 @@ let convert = (item, crawler_item) =>
 
 module.exports = {
     convert,
-    version: 7
+    version: 2
 };

@@ -112,7 +112,7 @@ let mapping = {
     "description"           : "background",
     "images"                : record =>  _getImages(record.crawler_item),
     "pdf"                   : record =>  _getPdf(record.crawler_item),
-    "original_link"         : "link",
+    "original_link"         : record => record.crawler_item && record.crawler_item.url ? record.crawler_item.url : null,
     "sequence"              : "sequence",
     "activity"              : "activity",
     "protein_length"        : "protein_length",
