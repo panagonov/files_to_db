@@ -60,7 +60,7 @@ let _getPriceModel = (item, crawler_item) =>
 let mapping = {
     "name"               : "name",
     "oid"                : "oid",
-    "human_readable_id"  : record => `abbkine_scientific_co_ltd_${import_utils.human_readable_id(record.name)}_${record.oid}`,
+    "human_readable_id"  : record => `abbkine_scientific_co_ltd_${import_utils.human_readable_id(record.name, record.oid)}`,
     "external_links"     : record => {
                                         let result = [{"key": "abbkine", "id": record.oid}];
                                         if (record.cas_number)

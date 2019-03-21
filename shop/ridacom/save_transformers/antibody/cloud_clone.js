@@ -80,7 +80,7 @@ let _getPriceModel = (item, crawler_item) =>
 let mapping = {
     "name"               : "name",
     "oid"                : "oid",
-    "human_readable_id"  : record => `cloud_clone_${import_utils.human_readable_id(record.name)}_${record.oid}`,
+    "human_readable_id"  : record => `cloud_clone_${import_utils.human_readable_id(record.name, record.oid)}`,
     "external_links"     : record => [{"key": "cloud_clone", "id": record.oid}],
     "bio_object"         : record => [{
         "type": "protein",

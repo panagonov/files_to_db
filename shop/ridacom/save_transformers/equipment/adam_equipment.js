@@ -148,7 +148,7 @@ let get_additional_category_data = (record, result) => {
 let mapping = {
     "name"                   : "name",
     "oid"                    : "oid",
-    "human_readable_id"      : record => `adam_equipment_${import_utils.human_readable_id(record.name)}_${record.oid}`,
+    "human_readable_id"      : record => `adam_equipment_${import_utils.human_readable_id(record.name, record.oid)}`,
     "external_links"         : record => [{"key": "adam_equipment", "id": record.oid}],
     "price_model"            : record => _getPriceModel(record, record.crawler_item),
     "supplier"               : record => import_utils.get_canonical("Adam Equipment", ":supplier"),

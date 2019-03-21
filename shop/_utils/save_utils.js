@@ -2,7 +2,10 @@ let utils     = require("../../_utils/utils.js");
 let semantica = require("../../common-components/search-engine-3/domains/genetics/index.js");
 let parents   = require("./_auto_generate/parents.json");
 
-let human_readable_id = str => str.replace(/\W/g, "_").replace(/\s/g, "_").replace(/_+/g, "_").replace(/^_/, "").replace(/_$/, "");
+let human_readable_id = (str, oid) => {
+    let convert_str = (str) => str.replace(/\W/g, "_").replace(/\s/g, "_").replace(/_+/g, "_").replace(/^_/, "").replace(/_$/, "");
+    return [convert_str(str || ""), convert_str(oid || "")].join("_")
+};
 
 let size_parser = size => {
     let match = /^([\d|\.]+)\s?([.|\S]+)?\s?(.+)?/.exec(size);

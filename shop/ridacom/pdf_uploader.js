@@ -9,7 +9,7 @@ let collection_name = "product";
 let crawler_version = 1;
 
 let upload = async(product_type) => {
-    let limit = 1;
+    let limit = 10;
     let page = 0;
     let result = [];
 
@@ -137,7 +137,7 @@ process.on('uncaughtException', function (err, data) {
     r()
 });
 
-// r();
+r();
 
 // upload_single("EAB 125i")
 // .then(() => process.exit(0))

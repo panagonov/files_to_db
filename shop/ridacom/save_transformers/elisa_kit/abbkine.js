@@ -102,7 +102,7 @@ let _getCalibrationRange = record => {
 let mapping = {
     "name"               : "name",
     "oid"                : "oid",
-    "human_readable_id"  : record => `abbkine_scientific_co_ltd_${import_utils.human_readable_id(record.name)}_${record.oid}`,
+    "human_readable_id"  : record => `abbkine_scientific_co_ltd_${import_utils.human_readable_id(record.name, record.oid)}`,
     "external_links"     : record => [{"key": "abbkine", "id": record.oid}],
     "description"        : record => record["background"] ? [record["background"]] : null,
     "bio_object"         : record => _get_bio_object(record),

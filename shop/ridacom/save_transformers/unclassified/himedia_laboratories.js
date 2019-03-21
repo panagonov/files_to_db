@@ -138,7 +138,7 @@ let mapping = {
     "_id"                   :  record => `PRODUCT_SOURCE:[HIMEDIA]_SUPPLIER:[RIDACOM]_ID:[${record["oid"].trim() || ""}]`,
     "name"                  : "name",
     "oid"                   : "oid",
-    "human_readable_id"     : record => `himedia_laboratories_${import_utils.human_readable_id(record.name)}_${record.oid}`,
+    "human_readable_id"     : record => `himedia_laboratories_${import_utils.human_readable_id(record.name, record.oid)}`,
     "external_links"        : record => [{"key": "himedia_laboratories", "id": record.oid}],
     "price_model"           : record => _getPriceModel(record, record.original_items),
     "description"           : record => record["description"] ? [record["description"]] : null,
