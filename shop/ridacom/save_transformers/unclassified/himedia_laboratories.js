@@ -48,7 +48,7 @@ let _load_original_products_data = async (items, mongo_db) =>
     }, {});
 };
 
-let custom_save_to_db = async(mongo_db, crawler_db, distributor, type, site, _save_suggest_data) =>
+let custom_save_to_db = async(mongo_db, crawler_db, distributor, type, site, _save_suggest_data, update_fields_list) =>
 {
     let limit = 500;
     let page = 0;
@@ -75,7 +75,19 @@ let custom_save_to_db = async(mongo_db, crawler_db, distributor, type, site, _sa
 
                 let _id = converted_item._id;
                 delete converted_item._id;
-                es_bulk.push({"model_title": product_type, "command_name": "index", "_id": _id, "document": converted_item});
+
+                let document = {};
+
+                if (update_fields_list)
+                {
+                    utils.objEach(update_fields_list, key => document[key] = converted_item[key])
+                }
+                else
+                {
+                    document = converted_item
+                }
+
+                es_bulk.push({"model_title": product_type, "command_name": "index", "_id": _id, "document": document});
             }
         });
 

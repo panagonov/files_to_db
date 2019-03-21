@@ -77,7 +77,7 @@ let _load_crawler_data = async (items, crawler_db, converter) =>
     }, {});
 };
 
-let save_to_db = async(mongo_db, crawler_db, distributor, type, site) =>
+let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fields_list) =>
 {
     let converter = converters[type][site];
 
@@ -129,7 +129,18 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site) =>
 
             accumulated_suggest_data = Object.assign(accumulated_suggest_data, suggest_data);
 
-            es_bulk.push({"model_title": "product", "command_name": "index", "_id": item._id, "document": converted_item});
+            let document = {};
+
+            if (update_fields_list)
+            {
+                utils.objEach(update_fields_list, key => document[key] = converted_item[key])
+            }
+            else
+            {
+                document = converted_item
+            }
+
+            es_bulk.push({"model_title": "product", "command_name": "index", "_id": item._id, "document": document});
 
             if (missing_data)
                 not_found_custom = not_found_custom.concat(missing_data);
@@ -157,7 +168,7 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site) =>
         fs.writeFileSync(__dirname + `/_missing_data/errors_custom_${site}_${type}.json`, JSON.stringify(utils.uniq(custom_errors)), "utf8");
 };
 
-let run = async(mongo_db, crawler_db, distributor) =>
+let run = async(mongo_db, crawler_db, distributor, update_fields_list) =>
 {
     await build_index(mongo_db);
 
@@ -167,9 +178,9 @@ let run = async(mongo_db, crawler_db, distributor) =>
         {
             let converter = converters[type][site]
             if (converter.custom_save_to_db)
-                await converter.custom_save_to_db(mongo_db, crawler_db, distributor, type, site, _save_suggest_data);
+                await converter.custom_save_to_db(mongo_db, crawler_db, distributor, type, site, _save_suggest_data, update_fields_list);
             else
-                await save_to_db(mongo_db, crawler_db, distributor, type, site)
+                await save_to_db(mongo_db, crawler_db, distributor, type, site, update_fields_list)
         }
     }
 };
