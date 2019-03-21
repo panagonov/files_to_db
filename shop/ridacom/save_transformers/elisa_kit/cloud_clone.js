@@ -1,7 +1,7 @@
 let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
-let relation_fields = ["reactivity", "application", "test_method", "research_area", "supplier", "distributor"];
+let relation_fields = ["category", "reactivity", "application", "test_method", "research_area", "supplier", "distributor"];
 let specification_fields = [
     "original_link",
     "shelf_life",
@@ -31,7 +31,7 @@ let _getImages = item => {
                 result.push({link: data});
             else
             {
-                result.push({link: data.link, text: data.text})
+                result.push({link: data.link, text: [data.text]})
             }
         })
     }
@@ -156,5 +156,5 @@ let convert = (item, crawler_item) =>
 
 module.exports = {
     convert,
-    version: 7
+    version: 4
 };

@@ -222,7 +222,7 @@ let build_service_data = (record, relation_fields) => {
     }, {});
 
     result["search_data"] = build_search_data(record, relation_fields);
-    result["all_categories"] = record.category  && record.category.length ? get_all_categories(record.category[0][1]) : [];
+    result["all_categories_relations"] = record.category  && record.category.length ? get_all_categories(record.category[0][1]) : [];
 
     return result
 };

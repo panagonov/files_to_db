@@ -4,21 +4,7 @@ let import_utils = require("../../../_utils/save_utils.js");
 
 let uniprot_db;
 
-let relation_fields = ["reactivity", "conjugate", "test_method", "supplier", "distributor"];
-let specification_fields = [
-    "formulation",
-    "usage",
-    "storage_conditions",
-    "delivery_conditions",
-    "calibration_range",
-    "alternative",
-    "precautions",
-    "gene_id",
-    "sensitivity",
-    "sample_type",
-    "assay_length",
-    "kit_components"
-];
+let relation_fields = ["category", "reactivity", "conjugate", "test_method", "supplier", "distributor"];
 
 let init = async() =>
 {
@@ -36,7 +22,7 @@ let _getImages = item => {
             text = text.replace(/\s+/g, " ").trim();
             return {
                 link: link,
-                ...text ? {text: text} : ""
+                ...text ? {text: [text]} : ""
             }
         })
     }
@@ -96,12 +82,29 @@ let _get_bio_object = record =>
     }));
 };
 
+let _getCalibrationRange = record => {
+    let result = null;
+    let value = record["calibration_range"];
+    if (value && value.indexOf("-") !== -1)
+    {
+        let range = value.split("-");
+        let from = import_utils.size_parser(range[0]);
+        let to = import_utils.size_parser(range[1]);
+
+        result = {
+            from ,
+            to
+        }
+    }
+    return result;
+};
+
 let mapping = {
     "name"               : "name",
     "oid"                : "oid",
     "human_readable_id"  : record => `abbkine_scientific_co_ltd_${import_utils.human_readable_id(record.name)}_${record.oid}`,
     "external_links"     : record => [{"key": "abbkine", "id": record.oid}],
-    "description"        : "background",
+    "description"        : record => record["background"] ? [record["background"]] : null,
     "bio_object"         : record => _get_bio_object(record),
     "price_model"        : record => _getPriceModel(record, record.crawler_item),
     "supplier"           : record => import_utils.get_canonical("Abbkine Scientific Co., Ltd.", ":supplier"),
@@ -116,7 +119,7 @@ let mapping = {
     "usage"              : "usage_notes",
     "storage_conditions" : "storage_instructions",
     "delivery_conditions": "shipping",
-    "calibration_range"  : "calibration_range",
+    "calibration_range"  : _getCalibrationRange,
     "alternative"        : "alternative",
     "precautions"        : "precautions",
     "gene_id"            : "gene_id",
@@ -193,5 +196,5 @@ module.exports = {
     convert,
     load_custom_data,
     init,
-    version: 7
+    version: 5
 };

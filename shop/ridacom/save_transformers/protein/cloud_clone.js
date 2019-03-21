@@ -34,7 +34,7 @@ let _getImages = item => {
                 result.push({link: data});
             else
             {
-                result.push({link: data.link, text: data.text})
+                result.push({link: data.link, text: [data.text]})
             }
         })
     }
@@ -153,5 +153,5 @@ let convert = (item, crawler_item) =>
 
 module.exports = {
     convert,
-    version: 7
+    version: 2
 };

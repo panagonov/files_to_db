@@ -13,7 +13,7 @@ let _getImages = item => {
             text = text.replace(/\s+/g, " ").trim();
             return {
                 link: link,
-                ...text ? {text: text} : ""
+                ...text ? {text: [text]} : ""
             }
         })
     }
@@ -67,7 +67,7 @@ let mapping = {
                                             result.push({"key": "cas_number", "id": record.cas_number});
                                         return result;
                            },
-    "description"        : "background",
+    "description"        : record => record["background"] ? [record["background"]] : null,
     "price_model"        : record => _getPriceModel(record, record.crawler_item),
     "supplier"           : record => import_utils.get_canonical("Abbkine Scientific Co., Ltd.", ":supplier"),
     "distributor"        : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
@@ -81,7 +81,7 @@ let mapping = {
     "delivery_conditions": "shipping",
     "molecular_weight"   : record => !record["mol_weight"] ? null : import_utils.size_parser(record["mol_weight"]),
     "purification"       : "purification",
-    "purity"             : record => record["purity"] ? [record["purity"]] : null,
+    "purity"             : "purity",
     "preparation_method" : "preparation_method",
     "formula"            : "formula",
     "features"           : "features",
@@ -111,5 +111,5 @@ let convert = (item, crawler_item) =>
 
 module.exports = {
     convert,
-    version: 7
+    version: 3
 };

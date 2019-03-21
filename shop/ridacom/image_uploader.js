@@ -20,7 +20,7 @@ let upload = async(product_type) => {
                     "term" : {[field_name] : crawler_version}
                 },
                 "must" : {
-                    "term" : {"all_categories" : product_type}
+                    "term" : {"all_categories_relations" : product_type}
                 }
             }
         },
@@ -39,41 +39,48 @@ let upload = async(product_type) => {
             let supplier = product.supplier_relations[0];
             let distributor = product.distributor_relations[0];
 
-            let document = {[field_name] : crawler_version};
-
-            if (images && images.length)
-            {
-                for (let j = 0; j < images.length; j++)
-                {
-                    let file_data = images[j];
-                    let new_image_names = await upload_utils.upload_product_image({
-                        file_data,
-                        path: `image/${distributor}/${supplier}`,
-                        product_id: product._id,
-                        image_index: j,
-                        meta: {supplier: product.supplier_relations[0], distributor: product.distributor_relations[0]}}
-                    );
-                    new_image_names.link_id ? file_data.link = new_image_names.link_id : null;
-                    new_image_names.thumb_link_id ? file_data.thumb_link = new_image_names.thumb_link_id : null
-                }
-                document.images = images;
-                console.log(`Uploaded ${i}/${result.length} - ${images.length} images`)
-            }
+            let document = await single_product_upload({images, supplier, distributor, _id: product._id, crawler_version});
 
             es_bulk.push({"model_title": collection_name, "command_name": "update", "_id": product._id, "document": document});
-
         }
 
         if (es_bulk.length)
             await es_db.bulk(es_bulk);
 
         page++;
-        console.log(`${page * limit}/${db_data.count}`)
+        console.log(product_type, `${page * limit}/${db_data.count}`)
     }
     while(result.length === limit);
 
     progress[product_type] = 1;
     fs.writeFileSync(__dirname + "/_cache/image_uploader_progress.json", JSON.stringify(progress), "utf8");
+};
+
+let single_product_upload = async({images, supplier, distributor, _id, crawler_version}) => {
+    let document = {
+        ...crawler_version ? {[field_name] : crawler_version} : ""
+    };
+
+    if (images && images.length)
+    {
+        for (let i = 0; i < images.length; i++)
+        {
+            let file_data = images[i];
+            let new_image_names = await upload_utils.upload_product_image({
+                file_data,
+                path: `image/${distributor}/${supplier}`,
+                product_id: _id,
+                image_index: i,
+                meta: {supplier: supplier, distributor: distributor}}
+            );
+            new_image_names.link_id ? file_data.link = new_image_names.link_id : null;
+            new_image_names.thumb_link_id ? file_data.thumb_link = new_image_names.thumb_link_id : null
+        }
+        document.images = images;
+        console.log(`Uploaded ${images.length} images: ${supplier}`)
+    }
+
+    return document
 };
 
 
@@ -91,6 +98,29 @@ let run = async () => {
     }
 };
 
+let upload_single = async (oid) => {
+    let MongoDb = require("../../_utils/db.js");
+
+    let crawler_db = new MongoDb();
+    await crawler_db.init({host: "172.16.1.11", database: "crawlers", user: "hashstyle", "pass": "Ha5h5tylE"});
+
+    await es_db.init();
+
+    let product = await crawler_db.read_one(collection_name, {"body" : {"oid" : oid}});
+    let es_product = await es_db.read_one(collection_name, {"body" : {"query" : {"term" : {"oid" : oid}}}});
+
+    let images = es_product.images.map((item, index) => {
+        item.link = product.images[index].link || product.images[index].href;
+        return item
+    });
+    let supplier = es_product.supplier_relations[0];
+    let distributor = es_product.distributor_relations[0];
+    let document = await single_product_upload({images, supplier, distributor, _id: es_product._id});
+
+    document._id = es_product._id;
+    await es_db.update(collection_name, {data : document})
+};
+
 module.exports = {
     run
 };
@@ -98,16 +128,16 @@ module.exports = {
 let r  = () => {
    run()
    .then(() => process.exit(0))
-   .catch(e => {
-       console.error(e);
-       r()
-   })
+   .catch(e => { console.error(e); r() })
 };
 
-r();
-
-process.on('uncaughtException', function (err, data)
-{
+process.on('uncaughtException', function (err, data) {
     console.error("--- UNCAUGHT EXCEPTION ---", err);
     r()
 });
+
+// r();
+
+// upload_single("SAB 514i")
+// .then(() => process.exit(0))
+// .catch(e => console.error(e));

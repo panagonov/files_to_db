@@ -5,22 +5,6 @@ let import_utils = require("../../../_utils/save_utils.js");
 let uniprot_db;
 
 let relation_fields = ["supplier", "distributor", "preparation_method", "category"];
-let specification_fields = [
-    "sequence",
-    "activity",
-    "protein_length",
-    "purity",
-    "formulation",
-    "molecular_weight",
-    "usage",
-    "storage_conditions",
-    "delivery_conditions",
-    "aliases",
-    "precautions",
-    "gene_id",
-    "others"
-];
-
 
 let init = async() =>
 {
@@ -38,7 +22,7 @@ let _getImages = item => {
             text = text.replace(/\s+/g, " ").trim();
             return {
                 link: link,
-                ...text ? {text: text} : ""
+                ...text ? {text: [text]} : ""
             }
         })
     }
@@ -109,7 +93,7 @@ let mapping = {
     "distributor"           : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
     "category"              : record => import_utils.get_canonical("Protein", ":product_category"),
     "preparation_method"    : record => import_utils.get_canonical(record.preparation_method, [":host", ":reactivity", ":preparation_method"]),
-    "description"           : "background",
+    "description"           : record => record["background"] ? [record["background"]] : null,
     "images"                : record =>  _getImages(record.crawler_item),
     "pdf"                   : record =>  _getPdf(record.crawler_item),
     "original_link"         : record => record.crawler_item && record.crawler_item.url ? record.crawler_item.url : null,
@@ -198,5 +182,5 @@ module.exports = {
     convert,
     load_custom_data,
     init,
-    version: 7
+    version: 5
 };

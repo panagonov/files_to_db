@@ -115,5 +115,5 @@ let convert = (item, crawler_item) =>
 
 module.exports = {
     convert,
-    version: 1
+    version: 3
 };

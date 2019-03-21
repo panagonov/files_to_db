@@ -20,7 +20,7 @@ let upload = async(product_type) => {
                     "term" : {[field_name] : crawler_version}
                 },
                 "must" : {
-                    "term" : {"all_categories" : product_type}
+                    "term" : {"all_categories_relations" : product_type}
                 }
             }
         },
@@ -39,28 +39,10 @@ let upload = async(product_type) => {
             let supplier = product.supplier_relations[0];
             let distributor = product.distributor_relations[0];
 
-            let document = {[field_name] : crawler_version};
-
-            if (pdfs && pdfs.length)
-            {
-                for (let j = 0; j < pdfs.length; j++)
-                {
-                    let file_data = pdfs[j];
-                    let new_image_names = await upload_pdf_utils.upload_product_pdf({
-                        file_data,
-                        path: `pdf/${distributor}/${supplier}`,
-                        file_name: (file_data.link || file_data.href).split("/").pop(),
-                        image_index: j,
-                        meta: {supplier: supplier, distributor: distributor}}
-                    );
-                    new_image_names.link_name ? file_data.link = new_image_names.link_name : null;
-                    new_image_names.thumb_name ? file_data.thumb_link = new_image_names.thumb_name : null
-                }
-                document.pdf = pdfs;
-                console.log(`Uploaded ${i}/${result.length} - ${pdfs.length} pdf`)
-            }
+            let document = await single_product_upload({pdfs, supplier, distributor, crawler_version});
 
             es_bulk.push({"model_title": collection_name, "command_name": "update", "_id": product._id, "document": document});
+            console.log(`Ready - ${i+1}/${limit} products`)
         }
 
         if (es_bulk.length)
@@ -76,6 +58,32 @@ let upload = async(product_type) => {
 };
 
 
+let single_product_upload = async({pdfs, supplier, distributor, crawler_version}) => {
+    let document = {
+        ...crawler_version ? {[field_name] : crawler_version} : ""
+    };
+
+    if (pdfs && pdfs.length)
+    {
+        for (let i = 0; i < pdfs.length; i++)
+        {
+            let file_data = pdfs[i];
+            let new_image_names = await upload_pdf_utils.upload_product_pdf({
+                file_data,
+                path: `pdf/${distributor}/${supplier}`,
+                file_name: (file_data.link || file_data.href).split("/").pop(),
+                image_index: i,
+                meta: {supplier: supplier, distributor: distributor}}
+            );
+            new_image_names.link_name ? file_data.link = new_image_names.link_name : null;
+            new_image_names.thumb_name ? file_data.thumb_link = new_image_names.thumb_name : null
+        }
+        document.pdf = pdfs;
+        console.log(`Uploaded ${pdfs.length} pdfs: ${supplier}`)
+    }
+
+    return document
+};
 
 let run = async () => {
 
@@ -91,6 +99,29 @@ let run = async () => {
     }
 };
 
+let upload_single = async (oid) => {
+    let MongoDb = require("../../_utils/db.js");
+
+    let crawler_db = new MongoDb();
+    await crawler_db.init({host: "172.16.1.11", database: "crawlers", user: "hashstyle", "pass": "Ha5h5tylE"});
+
+    await es_db.init();
+
+    let product = await crawler_db.read_one(collection_name, {"body" : {"oid" : oid}});
+    let es_product = await es_db.read_one(collection_name, {"body" : {"query" : {"term" : {"oid" : oid}}}});
+
+    let pdfs = es_product.pdf.map((item, index) => {
+        item.link = product.pdf[index].link || product.pdf[index].href;
+        return item
+    });
+    let supplier = es_product.supplier_relations[0];
+    let distributor = es_product.distributor_relations[0];
+    let document = await single_product_upload({pdfs, supplier, distributor});
+
+    document._id = es_product._id;
+    await es_db.update(collection_name, {data : document})
+};
+
 module.exports = {
     run
 };
@@ -98,16 +129,16 @@ module.exports = {
 let r  = () => {
    run()
    .then(() => process.exit(0))
-   .catch(e => {
-       console.error(e);
-       r()
-   })
+   .catch(e => { console.error(e); r() })
 };
 
-r();
-
-process.on('uncaughtException', function (err, data)
-{
+process.on('uncaughtException', function (err, data) {
     console.error("--- UNCAUGHT EXCEPTION ---", err);
     r()
 });
+
+// r();
+
+// upload_single("EAB 125i")
+// .then(() => process.exit(0))
+// .catch(e => console.error(e))
