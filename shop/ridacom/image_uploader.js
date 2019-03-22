@@ -136,7 +136,7 @@ process.on('uncaughtException', function (err, data) {
     r()
 });
 
-// r();
+r();
 
 // upload_single("SAB 514i")
 // .then(() => process.exit(0))

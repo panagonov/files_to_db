@@ -3,7 +3,7 @@ let es_db    = require("../../_utils/es_db.js");
 let utils    = require("../../_utils/utils.js");
 
 let collection_name         = "product";
-let suggest_collection_name = "shop_suggest_new";
+let suggest_collection_name = "shop_suggest";
 
 let directory_reader = require("../../_utils/directory_reader.js");
 
@@ -51,7 +51,8 @@ let _save_suggest_data = async (suggest_data) =>
         if (item_in_type_hash) {
             document.type = utils.uniq(document.type.concat(item_in_type_hash));
         }
-
+        if (typeof document.name !== "string")
+            debugger
         return {model_title: suggest_collection_name, command_name: command, "_id": id, "document":document}});
 
     if (es_bulk.length)
@@ -140,7 +141,7 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fie
                 document = converted_item
             }
 
-            es_bulk.push({"model_title": "product", "command_name": "index", "_id": item._id, "document": document});
+            es_bulk.push({"model_title": "product", "command_name": update_fields_list ? "update" : "index", "_id": item._id, "document": document});
 
             if (missing_data)
                 not_found_custom = not_found_custom.concat(missing_data);

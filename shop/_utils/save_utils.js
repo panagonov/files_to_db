@@ -4,7 +4,7 @@ let parents   = require("./_auto_generate/parents.json");
 
 let human_readable_id = (str, oid) => {
     let convert_str = (str) => str.replace(/\W/g, "_").replace(/\s/g, "_").replace(/_+/g, "_").replace(/^_/, "").replace(/_$/, "");
-    return [convert_str(str || ""), convert_str(oid || "")].join("_")
+    return [convert_str(str || ""), convert_str(oid || "")].filter(item => item).join("_")
 };
 
 let size_parser = size => {
@@ -79,24 +79,50 @@ let build_suggest_data_antibody_elisa_kit = (record, relation_fields, category) 
         return {aliases, syn}
     };
 
-    let name_alias = record.name.split("(").pop().trim();
+    let add_to_suggest_result = (key, value) =>
+    {
+        if (!result.hasOwnProperty(key)) {
+            result[key] = value
+        }
+        else
+        {
+            utils.objEach(value, (sub_key, sub_value) =>
+            {
+                if (!result[key].hasOwnProperty(sub_key)){
+                    result[key][sub_key] = sub_value;
+                }
+                else if (result[key][sub_key] instanceof Array) {
+                    result[key][sub_key] = utils.uniq(result[key][sub_key].concat(sub_value))
+                }
+                else {
+                    result[key][sub_key] = sub_value
+                }
+            })
+        }
+    };
 
+    //add product name
+    add_to_suggest_result(human_readable_id(record.name), {
+        type    : ["name"],
+        category: [category],
+        name    : record.name,
+        aliases : [record.oid]
+    });
+
+    //add product alias
+    let name_alias = record.name.split("(").pop().trim();
     if (name_alias.indexOf(")") !== -1)
     {
         let alias = name_alias.replace(")", "").trim();
-        let _id = human_readable_id(alias);
-        if (result[_id])
-            result[_id].type.push(category);
-        else
-        {
-            result[_id] = {
-                type    : [category],
-                category: [category],
-                name    : alias
-            }
-        }
+
+        add_to_suggest_result(human_readable_id(alias), {
+            type    : [category],
+            category: [category],
+            name    : alias
+        });
     }
 
+    //add bio object
     if (record.bio_object && record.bio_object.length)
     {
         record.bio_object.forEach(bio_object =>{
@@ -108,21 +134,17 @@ let build_suggest_data_antibody_elisa_kit = (record, relation_fields, category) 
 
             let  {aliases, syn} = separate_aliases_and_synonyms(all_aliases);
 
-            if (result[id])
-                result[id].type.push("protein");
-            else
-                {
-                result[id] = {
-                    type    : ["protein"],
-                    category: [category],
-                    name    : bio_object.name,
-                    ...aliases.length ? {aliases : aliases} : "",
-                    ...syn.length ? {synonyms : syn} : ""
-                }
-            }
+            add_to_suggest_result(id, {
+                type    : [bio_object.type],
+                category: [category],
+                name    : bio_object.name,
+                ...aliases.length ? {aliases : aliases} : "",
+                ...syn.length ? {synonyms : syn} : ""
+            });
         })
     }
 
+    //add relation fields
     relation_fields.forEach(field_name =>
     {
         if (!record[field_name] || !record[field_name].length)
@@ -136,17 +158,13 @@ let build_suggest_data_antibody_elisa_kit = (record, relation_fields, category) 
             let all_aliases = (synonyms || []).map(({name}) => name);
             let  {aliases, syn} = separate_aliases_and_synonyms(all_aliases);
 
-            if (result[id])
-                result[id].type.push(field_name);
-            else {
-                result[id] = {
-                    type    : [field_name],
-                    category: [category],
-                    name    : name,
-                    ...aliases.length ? {aliases : aliases} : "",
-                    ...syn.length ? {synonyms : syn} : ""
-                };
-            }
+            add_to_suggest_result(id, {
+                type    : [field_name],
+                category: [category],
+                name    : name,
+                ...aliases.length ? {aliases : aliases} : "",
+                ...syn.length ? {synonyms : syn} : ""
+            });
         })
     });
 

@@ -16,16 +16,20 @@ let category_mapping = {
     "Laboratory Aids & Equipments"     : "equipment"
 };
 
-let create_specification_field = (record) =>{
-    let specification_fields = record.specification.map(item => ({
-        key: item.key,
-        value: {value: item.value},
-        ui_text: utils.capitalizeFirstLetter(item.key.replace(/_/g, " "))
-    }));
+let specification_mapping = {
+    "Safety #" : "",
 
-    let agg_specs =  import_utils.create_specification_field(record, null, relation_fields);
+    "Risk #" : ""
+};
 
-    return specification_fields.concat(agg_specs)
+let _get_string_data = data => {
+    if (data) {
+        let value = data.value.toString();
+        if (value !== "N/A")
+            return value
+    }
+
+    return null
 };
 
 let _load_original_products_data = async (items, mongo_db) =>
@@ -87,7 +91,7 @@ let custom_save_to_db = async(mongo_db, crawler_db, distributor, type, site, _sa
                     document = converted_item
                 }
 
-                es_bulk.push({"model_title": product_type, "command_name": "index", "_id": _id, "document": document});
+                es_bulk.push({"model_title": product_type, "command_name": update_fields_list ? "update" : "index", "_id": _id, "document": document});
             }
         });
 
@@ -146,15 +150,83 @@ let _getAllCategories = (record) => {
     return import_utils.get_canonical(all_categories.join("; "), ":product_category");
 };
 
+let _get_external_links = record => {
+    let result = [{"key": "himedia_laboratories", "id": record.oid}];
+
+    if (record.specification && record.specification.length)
+    {
+        let cas_no = record.specification.filter(item => item.key === "CAS No.")[0];
+        if (cas_no && cas_no.value !== "N/A")
+            result.push({"key": "cas_number", "id": cas_no.value})
+    }
+
+    return result
+};
+
+let _get_shelf_life = record => {
+    if (!record.specification || !record.specification.length)
+        return null;
+
+    let data = record.specification.filter(item => item.key === "Shelf Life")[0];
+    return _get_string_data(data)
+};
+
+let _get_formula = record => {
+    if (!record.specification || !record.specification.length)
+        return null;
+
+    let data = record.specification.filter(item => item.key === "Molecular Formula")[0];
+    return _get_string_data(data)
+};
+
+let _get_molecular_weight = record => {
+    if (!record.specification || !record.specification.length)
+        return null;
+
+    let data = record.specification.filter(item => item.key === "Molecular Weight")[0];
+
+    return data ? parseFloat(data.value) : null
+};
+
+let _get_storage_conditions = record => {
+    if (!record.specification || !record.specification.length)
+        return null;
+
+    let data = record.specification.filter(item => item.key === "Storage")[0];
+    return _get_string_data(data)
+};
+
+let _get_aliases = record => {
+    if (!record.specification || !record.specification.length)
+        return null;
+
+    let data = record.specification.filter(item => item.key === "Synonyms")[0];
+
+    return data ? data.split(",").map(item => item.trim()).filter(item => item) : null
+};
+
+let _get_buffer_form = record => {
+    if (!record.specification || !record.specification.length)
+        return null;
+
+    let data = record.specification.filter(item => item.key === "Form")[0];
+    return _get_string_data(data)
+};
+
 let mapping = {
     "_id"                   :  record => `PRODUCT_SOURCE:[HIMEDIA]_SUPPLIER:[RIDACOM]_ID:[${record["oid"].trim() || ""}]`,
     "name"                  : "name",
     "oid"                   : "oid",
     "human_readable_id"     : record => `himedia_laboratories_${import_utils.human_readable_id(record.name, record.oid)}`,
-    "external_links"        : record => [{"key": "himedia_laboratories", "id": record.oid}],
+    "external_links"        : _get_external_links,
     "price_model"           : record => _getPriceModel(record, record.original_items),
     "description"           : record => record["description"] ? [record["description"]] : null,
-    "specification"         : "specification",
+    "shelf_life"            : _get_shelf_life,
+    "formula"               : _get_formula,
+    "molecular_weight"      : _get_molecular_weight,
+    "storage_conditions"    : _get_storage_conditions,
+    "aliases"               : _get_aliases,
+    "buffer_form"           : _get_buffer_form,
     "supplier"              : record => import_utils.get_canonical("Himedia Laboratories", ":supplier"),
     "distributor"           : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
     "category"              : record => import_utils.get_canonical(record.categories[1], ":product_category"),
