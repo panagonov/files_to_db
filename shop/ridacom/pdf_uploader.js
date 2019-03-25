@@ -20,11 +20,11 @@ let upload = async(product_type) => {
                     "term" : {[field_name] : crawler_version}
                 },
                 "must" : {
-                    "term" : {"all_categories_relations" : product_type}
+                    "term" : {"all_categories" : product_type}
                 }
             }
         },
-        "_source" : ["pdf", "supplier_relations", "distributor_relations"]
+        "_source" : ["pdf", "supplier", "distributor"]
     };
 
     do {
@@ -36,8 +36,8 @@ let upload = async(product_type) => {
         {
             let product = result[i];
             let pdfs = product.pdf;
-            let supplier = product.supplier_relations[0];
-            let distributor = product.distributor_relations[0];
+            let supplier = product.supplier[0];
+            let distributor = product.distributor[0];
 
             let document = await single_product_upload({pdfs, supplier, distributor, crawler_version});
 
@@ -107,15 +107,23 @@ let upload_single = async (oid) => {
 
     await es_db.init();
 
-    let product = await crawler_db.read_one(collection_name, {"body" : {"oid" : oid}});
     let es_product = await es_db.read_one(collection_name, {"body" : {"query" : {"term" : {"oid" : oid}}}});
+
+    let product = await crawler_db.read_one(collection_name, {"body" : {"oid" : oid}});
+    if (!product)
+        product = await crawler_db.read_one(collection_name, {"body" : {"specification.oid" : oid, }});
+
+
+    if (!es_product || !product)
+        return console.error("Product not found");
+
 
     let pdfs = es_product.pdf.map((item, index) => {
         item.link = product.pdf[index].link || product.pdf[index].href;
         return item
     });
-    let supplier = es_product.supplier_relations[0];
-    let distributor = es_product.distributor_relations[0];
+    let supplier = es_product.supplier[0];
+    let distributor = es_product.distributor[0];
     let document = await single_product_upload({pdfs, supplier, distributor});
 
     document._id = es_product._id;
@@ -139,6 +147,6 @@ process.on('uncaughtException', function (err, data) {
 
 r();
 
-// upload_single("EAB 125i")
+// upload_single("5100513C")
 // .then(() => process.exit(0))
 // .catch(e => console.error(e))

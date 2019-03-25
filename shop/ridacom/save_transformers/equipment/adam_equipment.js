@@ -171,10 +171,10 @@ let show_in_console = (result, crawler_item, record) =>
     console.table({
         index                : index,
         name                 : result.name,
-        category             : (result.category_relations || []).toString(),
-        sub_category         : (result.sub_category_relations || []).toString(),
+        category             : (result.category || []).toString(),
+        sub_category         : (result.sub_category || []).toString(),
         capacity             : JSON.stringify(result.capacity),
-        calibration_relations: JSON.stringify(result.calibration_relations),
+        calibration          : JSON.stringify(result.calibration),
         readability          : JSON.stringify(result.readability),
         operating_temperature: JSON.stringify(result.operating_temperature),
         specs                : crawler_item && crawler_item.specifications ? Object.keys(crawler_item.specifications).toString() : "",
@@ -200,7 +200,7 @@ let convert = (item, crawler_item) =>
 
     // show_in_console(result, crawler_item, record);
 
-    let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "equipment");
+    let suggest_data = import_utils.build_suggest_data(result, relation_fields, result.category[0][1]);
     result           = import_utils.clean_result_data(result, relation_fields);
 
 
@@ -216,7 +216,7 @@ let get_crawler_item = (item, crawler_hash) =>  crawler_hash[id_fixes_map[item.o
 
 module.exports = {
     convert,
-    version: 1,
+    version: 11,
     get_crawler_ids,
     get_crawler_item
 };

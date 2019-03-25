@@ -59,10 +59,10 @@ let _getProductRelations = record => {
 };
 
 let get_additional_category_data = (record, result) => {
-    if (! result.category_relations)
+    if (! result.category)
         return {};
 
-    let category = result.category_relations[0];
+    let category = result.category[0];
 
     if (enrich[category])
     {
@@ -97,8 +97,8 @@ let show_in_console = (result, crawler_item1, record) =>
     console.table({
         index : index,
         name        : result.name,
-        category    : (result.category_relations || []).toString(),
-        sub_category: (result.sub_category_relations || []).toString(),
+        category    : (result.category || []).toString(),
+        sub_category: (result.sub_category || []).toString(),
         volume      : JSON.stringify(result.volume),
         r_category  : crawler_item1 ? crawler_item1.category : "",
         r_s_category  : crawler_item1 ? crawler_item1.sub_category : "",
@@ -136,7 +136,7 @@ let convert = (item, crawler_item, custom_data) =>
 
     // show_in_console(result, crawler_item1, record);
 
-    let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "equipment");
+    let suggest_data = import_utils.build_suggest_data(result, relation_fields, result.category[0][1]);
     result           = import_utils.clean_result_data(result, relation_fields);
 
     return {
@@ -189,7 +189,7 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
 module.exports = {
     convert,
     load_custom_data,
-    version: 2
+    version: 11
 };
 
 // console.log(import_utils.get_canonical("other benchtop", ":product_sub_category"))

@@ -20,11 +20,11 @@ let upload = async(product_type) => {
                     "term" : {[field_name] : crawler_version}
                 },
                 "must" : {
-                    "term" : {"all_categories_relations" : product_type}
+                    "term" : {"all_categories" : product_type}
                 }
             }
         },
-        "_source" : ["images", "supplier_relations", "distributor_relations"]
+        "_source" : ["images", "supplier", "distributor"]
     };
 
     do {
@@ -36,8 +36,8 @@ let upload = async(product_type) => {
         {
             let product = result[i];
             let images = product.images;
-            let supplier = product.supplier_relations[0];
-            let distributor = product.distributor_relations[0];
+            let supplier = product.supplier[0];
+            let distributor = product.distributor[0];
 
             let document = await single_product_upload({images, supplier, distributor, _id: product._id, crawler_version});
 
@@ -113,8 +113,8 @@ let upload_single = async (oid) => {
         item.link = product.images[index].link || product.images[index].href;
         return item
     });
-    let supplier = es_product.supplier_relations[0];
-    let distributor = es_product.distributor_relations[0];
+    let supplier = es_product.supplier[0];
+    let distributor = es_product.distributor[0];
     let document = await single_product_upload({images, supplier, distributor, _id: es_product._id});
 
     document._id = es_product._id;

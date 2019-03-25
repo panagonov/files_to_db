@@ -68,7 +68,7 @@ let get_canonical = (text, type) =>
     return atoms
 };
 
-let build_suggest_data_antibody_elisa_kit = (record, relation_fields, category) => {
+let build_suggest_data = (record, relation_fields, category) => {
     let result = {};
 
     let separate_aliases_and_synonyms = (data) =>
@@ -102,11 +102,16 @@ let build_suggest_data_antibody_elisa_kit = (record, relation_fields, category) 
     };
 
     //add product name
+    let show_on_match = [{key: "supplier", value: record.ui.supplier[0]}];
+    if (record.images  && record.images.length)
+        show_on_match.push({key: "image", value: record.images[0].link});
+
     add_to_suggest_result(human_readable_id(record.name), {
         type    : ["name"],
         category: [category],
         name    : record.name,
-        aliases : [record.oid]
+        synonyms : [record.oid],
+        show_on_match: show_on_match
     });
 
     //add product alias
@@ -232,9 +237,6 @@ let build_search_data = (record, relation_fields) =>
 let build_service_data = (record, relation_fields) => {
 
     let result = {};
-    relation_fields.forEach(field_name =>
-        record[field_name] && record[field_name].length ? result[field_name + "_relations"] =  record[field_name].map(([,key]) => key) : null
-    );
 
     result["ui"] = relation_fields.reduce((res, field_name) => {
         if (record[field_name] && record[field_name].length)
@@ -243,83 +245,30 @@ let build_service_data = (record, relation_fields) => {
     }, {});
 
     result["search_data"] = build_search_data(record, relation_fields);
-    result["all_categories_relations"] = record.category  && record.category.length ? get_all_categories(record.category[0][1]) : [];
-
-    return result
-};
-
-let create_specification_field = (record, specification_fields) => {
-    let result = [];
-
-    if (specification_fields)
-    {
-        specification_fields.forEach(field_name =>
-        {
-            let value = record[field_name];
-            if (!value)
-                return;
-
-            value = typeof value === "string" ? [value] : value;
-
-            if (value && value.length)
-            {
-                result.push({
-                    key: field_name,
-                    value: value.map(item => ({value: item})),
-                    ui_text: utils.capitalizeFirstLetter(field_name.replace(/_/g, " "))
-                })
-            }
-
-        });
-    }
-
-    return result
-};
-
-let create_relation_field = (record, relation_fields) => {
-    let result = [];
-
-    relation_fields.forEach(field_name => {
-        let real_name = field_name + "_relations";
-
-        let value = record[real_name];
-
-        if (value && value.length)
-        {
-            result.push({
-                key: field_name,
-                value: value.map((item, index) => ({value: item, ui_text: record.ui[field_name][index]})),
-                ui_text: utils.capitalizeFirstLetter(field_name.replace(/_/g, " "))
-            })
-        }
-
-    });
+    result["all_categories"] = record.category  && record.category.length ? get_all_categories(record.category[0][1]) : [];
 
     return result
 };
 
 let clean_result_data = (result, relation_fields) => {
-    relation_fields.forEach(name => {
-        delete result[name];
-    });
 
+    relation_fields.forEach(field_name =>
+        result[field_name] && result[field_name].length ? result[field_name] =  result[field_name].map(([,key]) => key) : null
+    );
     delete result.sub_sub_category;
     return result;
 };
 
 let get_all_categories = (category) => {
     return parents[category] || []
-}
+};
 
 module.exports = {
     human_readable_id,
     size_parser,
     get_canonical,
-    build_suggest_data_antibody_elisa_kit,
-    build_search_data,
+    build_suggest_data,
     build_service_data,
-    create_specification_field,
-    create_relation_field,
     clean_result_data
 };
 

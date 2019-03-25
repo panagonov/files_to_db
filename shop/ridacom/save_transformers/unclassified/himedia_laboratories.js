@@ -247,7 +247,7 @@ let convert = (item, original_items) =>
 
     let type = category_mapping[item.categories[0]];
 
-    let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, type);
+    let suggest_data = import_utils.build_suggest_data(result, relation_fields, type);
     result           = import_utils.clean_result_data(result, relation_fields);
 
     return {

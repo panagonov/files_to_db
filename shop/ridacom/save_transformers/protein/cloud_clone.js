@@ -2,23 +2,6 @@ let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
 let relation_fields = ["supplier", "distributor", "reactivity", "preparation_method", "application", "research_area", "category"];
-let specification_fields = [
-    "purity",
-    "fragment",
-    "molecular_weight",
-    "molecular_weight_predicted",
-    "shelf_life",
-    "storage_conditions",
-    "delivery_conditions",
-    "subcell_location",
-    "endotoxin_level",
-    "buffer_form",
-    "source",
-    "tag",
-    "traits",
-    "isoelectric_point"
-];
-
 
 let _getImages = item => {
     let result = [];
@@ -142,7 +125,7 @@ let convert = (item, crawler_item) =>
     let service_data = import_utils.build_service_data(result, relation_fields);
     result = Object.assign(result, service_data);
 
-    let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "protein");
+    let suggest_data = import_utils.build_suggest_data(result, relation_fields, "protein");
     result           = import_utils.clean_result_data(result, relation_fields);
 
     return {
@@ -153,5 +136,5 @@ let convert = (item, crawler_item) =>
 
 module.exports = {
     convert,
-    version: 1
+    version: 11
 };

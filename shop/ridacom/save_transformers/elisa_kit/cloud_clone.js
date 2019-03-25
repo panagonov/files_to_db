@@ -145,7 +145,7 @@ let convert = (item, crawler_item) =>
     let service_data = import_utils.build_service_data(result, relation_fields);
     result = Object.assign(result, service_data);
 
-    let suggest_data = import_utils.build_suggest_data_antibody_elisa_kit(result, relation_fields, "elisa_kit");
+    let suggest_data = import_utils.build_suggest_data(result, relation_fields, "elisa_kit");
     result           = import_utils.clean_result_data(result, relation_fields);
 
     return {
@@ -156,5 +156,5 @@ let convert = (item, crawler_item) =>
 
 module.exports = {
     convert,
-    version: 1
+    version: 11
 };
