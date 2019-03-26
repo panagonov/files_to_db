@@ -36,7 +36,7 @@ let mapping = {
 };
 
 let index = 0;
-let link_hash = {}
+let link_hash = {};
 
 let accessories = false;
 

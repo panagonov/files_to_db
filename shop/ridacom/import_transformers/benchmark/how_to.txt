@@ -1,0 +1,3 @@
+To generate product_list.json:
+
+1. Go to http://www.benchmarkscientific.com/rpproducts-sitemap.xml

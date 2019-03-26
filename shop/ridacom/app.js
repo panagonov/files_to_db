@@ -6,6 +6,7 @@
  * http://www.genomeme.ca
  * https://www.adamequipment.co.uk
  * http://www.himedialabs.com
+ * http://www.benchmarkscientific.com/
  *
  ********************************************************************/
 
@@ -13,8 +14,8 @@ let fs             = require("fs");
 let file_importer  = require("./file_importer.js");
 let aggregate_data = require("./aggregate.js");
 let save_to_es_db  = require("./save_to_es_db.js");
-let image_uploader = require("./image_uploader.js");
-let pdf_uploader   = require("./pdf_uploader.js");
+// let image_uploader = require("./image_uploader.js");
+// let pdf_uploader   = require("./pdf_uploader.js");
 
 let update_fields_list = /*{human_readable_id: 1}*/ null;
 
@@ -30,8 +31,8 @@ let run = async(mongo_db, crawler_db) =>
     }
 
     await save_to_es_db.run(mongo_db, crawler_db, distributor, update_fields_list);
-    // await image_uploader.run();
-    // await pdf_uploader.run();
+    // await image_uploader.run(crawler_db);
+    // await pdf_uploader.run(crawler_db);
 };
 
 let clean = async(mongo_db, crawler_db) =>

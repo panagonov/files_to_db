@@ -62,7 +62,7 @@ let get_additional_category_data = (record, result) => {
     if (! result.category)
         return {};
 
-    let category = result.category[0];
+    let category = result.category[0][1];
 
     if (enrich[category])
     {
@@ -189,7 +189,7 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
 module.exports = {
     convert,
     load_custom_data,
-    version: 11
+    version: 12
 };
 
 // console.log(import_utils.get_canonical("other benchtop", ":product_sub_category"))
