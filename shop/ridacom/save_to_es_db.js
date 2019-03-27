@@ -51,8 +51,7 @@ let _save_suggest_data = async (suggest_data) =>
         if (item_in_type_hash) {
             document.type = utils.uniq(document.type.concat(item_in_type_hash));
         }
-        if (typeof document.name !== "string")
-            debugger
+
         return {model_title: suggest_collection_name, command_name: command, "_id": id, "document":document}});
 
     if (es_bulk.length)
@@ -61,6 +60,9 @@ let _save_suggest_data = async (suggest_data) =>
 
 let _load_crawler_data = async (items, crawler_db, converter) =>
 {
+    if (converter.load_crawler_data)
+        return converter.load_crawler_data(items, crawler_db);
+
     let crawler_ids = converter.get_crawler_ids ? converter.get_crawler_ids(items) : items.map(({oid}) => oid);
 
     let crawler_data = await crawler_db.read(collection_name, {body: {_id: {$in : crawler_ids}}});
@@ -90,7 +92,7 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fie
     if (converter.init)
         await converter.init();
 
-    let limit = 500;
+    let limit = 600;
     let page = 0;
     let result = [];
     let count = await mongo_db.read(collection_name, {body: {type: type, src: site, tid: distributor, export_version: {$ne : export_version}}, count_only: true});
@@ -122,7 +124,10 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fie
 
             if (!crawler_item)
             {
-                not_found.push(id);
+                if (!custom_data || !custom_data[id])
+                {
+                    not_found.push(id);
+                }
                 crawler_item = {}
             }
 
@@ -147,14 +152,13 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fie
                 not_found_custom = not_found_custom.concat(missing_data);
         });
 
-        if (es_bulk.length)
-            await es_db.bulk(es_bulk);
-
-        await _save_suggest_data(accumulated_suggest_data);
-
-        let ids = result.map(({_id}) => _id);
-        await mongo_db.update_many(collection_name, {query: {_id: {$in: ids}}, data: {export_version: export_version}});
-
+        // if (es_bulk.length)
+        //     await es_db.bulk(es_bulk);
+        //
+        // await _save_suggest_data(accumulated_suggest_data);
+        //
+        // let ids = result.map(({_id}) => _id);
+        // await mongo_db.update_many(collection_name, {query: {_id: {$in: ids}}, data: {export_version: export_version}});
         page++;
         console.log(distributor, type, site, `${page * limit}/${count}`)
 

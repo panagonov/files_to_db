@@ -1,7 +1,7 @@
 let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
-let relation_fields = ["supplier", "distributor", "category", "sub_category", "sub_sub_category", "categories"];
+let relation_fields = ["supplier", "distributor", "category", "sub_category"];
 
 let enrich = {
     pipette         : require("./capp/pipette.js"),

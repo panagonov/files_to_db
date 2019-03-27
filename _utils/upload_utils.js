@@ -118,13 +118,13 @@ let upload_product_image = async({file_data, path, product_id, image_index, meta
             let thumbnail;
             try {
                 thumbnail = await image_minimizer(file, {width: thumbnail_size}, {no_minimize: true});
+                await upload_to_s3({path, id: thumb_link_id, meta, content_type: content_type, file_body: thumbnail});
             }
             catch(e)
             {
                 console.error(e);
-                return process.exit(1)
+                thumb_link_id = null
             }
-            await upload_to_s3({path, id: thumb_link_id, meta, content_type: content_type, file_body: thumbnail});
         }
     }
 

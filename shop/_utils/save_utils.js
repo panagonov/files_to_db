@@ -245,7 +245,12 @@ let build_service_data = (record, relation_fields) => {
     }, {});
 
     result["search_data"] = build_search_data(record, relation_fields);
-    result["all_categories"] = record.category  && record.category.length ? get_all_categories(record.category[0][1]) : [];
+    result["all_categories"] = record.category  && record.category.length ? record.category.reduce((res, item) =>{
+        res = res.concat(get_all_categories(item[1]) || []);
+        return res;
+    }, []) : [];
+
+    result["all_categories"] = utils.uniq(result["all_categories"]);
 
     return result
 };

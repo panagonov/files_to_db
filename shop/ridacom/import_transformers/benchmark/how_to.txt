@@ -1,3 +1,7 @@
 To generate product_list.json:
 
 1. Go to http://www.benchmarkscientific.com/rpproducts-sitemap.xml
+3. Copy result like array
+
+4.collect product links into http://www.accuris-usa.com in every category page and start:
+    [].slice.call(document.querySelectorAll(".product2 a")).map(item => item.href)
