@@ -1,16 +1,39 @@
 let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
+let fixator      = require("./benchmark/fixator.js");
 
 let collection_name = "product";
 let relation_fields = ["supplier", "distributor", "category", "sub_category"];
 
 let id_fixes_map = {
     "BV1003-T150" : "BV1003-150",
-    "BV1003-T500" : "BV1003-500"
+    "BV1003-T500" : "BV1003-500",
+    "B2000-8-T500" : "B2000-8-500",
+    "H2505-40E" : "H2505-40",
+    "H2505-70E" : "H2505-70",
+    "H2505-130E" : "H2505-130"
 };
 
+let get_real_oid = oid =>
+{
+    return id_fixes_map[oid] || oid.replace(/\-E$/, "")
+}
+
 let load_crawler_data = async(items, crawler_db) => {
-    let crawler_ids = items.map(({oid}) => id_fixes_map[oid] || oid.replace(/\-E$/, ""));
+    let crawler_ids = items.reduce((res, {oid}) => {
+        if (id_fixes_map[oid])
+        {
+            res.push(id_fixes_map[oid]);
+        }
+        else if (/\-E$/.test(oid))
+        {
+            res.push(oid, oid.replace(/\-E$/, ""))
+        }
+        else {
+            res.push(oid)
+        }
+        return res;
+    }, []);
     let crawler_data = await crawler_db.read(collection_name, {body: {oid: {$in : crawler_ids}}});
 
     let result = crawler_data.reduce((res, item) =>
@@ -29,29 +52,32 @@ let load_crawler_data = async(items, crawler_db) => {
     return result
 };
 
-let _getProductRelations = (record) =>
-{
-    let oid = record.oid.replace(/\-E$/, "");
-    if(record.supplies)
-    {
-        return record.supplies.related.reduce((res, item) =>{
+let _getProductRelations = (record) => {
+    let oid = get_real_oid(record.oid);
+    if (record.supplies) {
+        return record.supplies.related.reduce((res, item) => {
             if (item.oid) {
                 let related = typeof item.oid === "string" ? [item.oid] : item.oid;
-                related.forEach(oid => res.push(`PRODUCT_SOURCE:[BENCHMARK]_SUPPLIER:[RIDACOM]_ID:[${oid}]`))
+                related.forEach(oid => res.push(`PRODUCT_SOURCE:[BENCHMARK]_SUPPLIER:[RIDACOM]_ID:[${oid}]`));
             }
             return res;
         }, []);
-    }
-    else if (record.crawler_item && record.crawler_item[oid])
-    {
+    } else if (record.crawler_item) {
         let res = [];
-        (record.crawler_item[oid].related).forEach(item => {
-            if (item.oid) {
-                let related = typeof item.oid === "string" ? [item.oid] : item.oid;
-                related.forEach(oid => res.push(`PRODUCT_SOURCE:[BENCHMARK]_SUPPLIER:[RIDACOM]_ID:[${oid}]`))
-            }
 
-        });
+        if (record.crawler_item[id_fixes_map[record.oid] || record.oid])
+            oid = id_fixes_map[record.oid] || record.oid;
+
+        let relations = record.crawler_item[oid];
+        if (relations) {
+            (record.crawler_item[oid].related).forEach(item => {
+                if (item.oid) {
+                    let related = typeof item.oid === "string" ? [item.oid] : item.oid;
+                    related.forEach(oid => res.push(`PRODUCT_SOURCE:[BENCHMARK]_SUPPLIER:[RIDACOM]_ID:[${oid}]`));
+                }
+
+            });
+        }
         if (res.length)
             return res;
     }
@@ -114,18 +140,19 @@ let mapping = {
 let index = 0;
 let show_in_console = (result, crawler_item, record) =>
 {
-    console.table({
-        index : index,
-        name        : result.name,
-        oid         : result.oid,
-        category    : (result.category || []).toString(),
-        sub_category: (result.sub_category || []).toString(),
-        all_categories: (result.all_categories || []).toString(),
-        product_relations: (result.product_relations || []).toString(),
-    });
+    if (index >= 314) {
+        console.table({
+            index : index,
+            name        : result.name,
+            oid         : result.oid,
+            category    : (result.category || []).toString(),
+            sub_category: (result.sub_category || []).toString(),
+            all_categories: (result.all_categories || []).toString(),
+            product_relations: (result.product_relations || []).toString(),
+        });
 
-    if (index >= 103)
         debugger;
+    }
     index++;
 };
 
@@ -134,13 +161,10 @@ let convert = (item, crawler_item, custom_data) =>
     let missing_data =  [];
     let supplies = custom_data[id_fixes_map[item.oid] || item.oid];
 
-    // // if (utils.isEmptyObj(crawler_item))
-    //     supplies = custom_data[id_fixes_map[item.oid] || item.oid];
-
     let record = Object.assign({}, item, {crawler_item: crawler_item || {}, supplies : supplies});
 
     let result = utils.mapping_transform(mapping, record);
-
+    result = fixator(result, record);
 
     let service_data = import_utils.build_service_data(result, relation_fields);
     result = Object.assign(result, service_data);
@@ -171,7 +195,7 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
         .filter(id => id)
     );
 
-    let crawler_data = await crawler_db.read("product", {body: {"table_specification.oid" : {$in : ids}}});
+    let crawler_data = await crawler_db.read("product", {body: {"src" : "benchmark", "table_specification.oid" : {$in : ids}}});
 
     let hash = {};
     crawler_data.forEach(item => {
@@ -185,11 +209,27 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
         });
     });
 
+    let crawler_data_by_name = await crawler_db.read("product", {body: {"src" : "benchmark", "table_specification.name" : {$in : ids}}});
+
+    crawler_data_by_name.forEach(item => {
+        (item.table_specification || []).forEach(res => {
+            hash[res.name] = hash[res.name] || {};
+            hash[res.name].item = res;
+            hash[res.name].related = hash[res.name].related || [];
+            hash[res.name].related.push(item)
+
+
+        });
+    });
+
 
     return {result: hash};
 };
 
-let get_crawler_item = (item, crawler_hash) =>  crawler_hash[id_fixes_map[item.oid] || item.oid.replace(/\-E$/, "")];
+let get_crawler_item = (item, crawler_hash) =>  {
+    let oid = get_real_oid(item.oid);
+    return crawler_hash[oid] || crawler_hash[item.oid];
+};
 
 
 module.exports = {
@@ -199,3 +239,5 @@ module.exports = {
     get_crawler_item,
     version: 1
 };
+
+// console.log(import_utils.get_canonical("BactiZapper™ Infrared MicroSterilizer, 230V", ":product_sub_category"))

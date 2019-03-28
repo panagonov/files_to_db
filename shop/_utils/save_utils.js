@@ -1,6 +1,6 @@
 let utils     = require("../../_utils/utils.js");
 let semantica = require("../../common-components/search-engine-3/domains/genetics/index.js");
-let parents   = require("./_auto_generate/parents.json");
+let parents   = require("../../../bioseek/discovery/core/_auto_generate_config/parents.json");
 
 let human_readable_id = (str, oid) => {
     let convert_str = (str) => str.replace(/\W/g, "_").replace(/\s/g, "_").replace(/_+/g, "_").replace(/^_/, "").replace(/_$/, "");
