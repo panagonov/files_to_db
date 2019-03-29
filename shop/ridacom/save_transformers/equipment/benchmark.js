@@ -1,9 +1,12 @@
+let fs           = require("fs");
 let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 let fixator      = require("./benchmark/fixator.js");
 
 let collection_name = "product";
 let relation_fields = ["supplier", "distributor", "category", "sub_category"];
+
+let category_hash = {};
 
 let id_fixes_map = {
     "BV1003-T150" : "BV1003-150",
@@ -140,7 +143,7 @@ let mapping = {
 let index = 0;
 let show_in_console = (result, crawler_item, record) =>
 {
-    if (index >= 314) {
+    if (index >= 330) {
         console.table({
             index : index,
             name        : result.name,
@@ -176,10 +179,13 @@ let convert = (item, crawler_item, custom_data) =>
     let suggest_data = import_utils.build_suggest_data(result, relation_fields, result.category[0][1]);
     result           = import_utils.clean_result_data(result, relation_fields);
 
-    show_in_console(result, crawler_item, record);
+    // show_in_console(result, crawler_item, record);
 
     // if (utils.isEmptyObj(crawler_item) && !supplies)
     //     debugger
+
+    category_hash[result.oid] = {category: result.category, sub_category: result.sub_category};
+    fs.writeFileSync("cat.json", JSON.stringify(category_hash), "utf8");
 
     return {
         converted_item : result,
@@ -237,7 +243,8 @@ module.exports = {
     load_crawler_data,
     load_custom_data,
     get_crawler_item,
-    version: 1
+    version: 15,
+    // disable: true
 };
 
-// console.log(import_utils.get_canonical("BactiZapper™ Infrared MicroSterilizer, 230V", ":product_sub_category"))
+// console.log(import_utils.get_canonical("hybex™ Media storage bottle, 50ml with standard (GL32) blue cap, 10/pk.", ":product_category"))

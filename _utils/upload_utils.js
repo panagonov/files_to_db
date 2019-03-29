@@ -2,6 +2,7 @@ let fs              = require("fs");
 let request         = require("request");
 let s3              = require("../../bioseek/discovery/core/s3.js");
 let image_minimizer = require('../../bioseek/discovery/core/utilities/image_minimizer.js');
+let errors          = require("./errors.json");
 
 let temp_dir = `${__dirname}/_download/`;
 let bucket_name = "bioseek-shop/";
@@ -51,8 +52,17 @@ let download_file = async(url, target) =>
 
 let download_from_s3 = async(path, id) =>
 {
-    let res = await s3.download(bucket_name + path, id);
-    return {file: res.Body, content_type : res.ContentType}
+    try {
+        let res = await s3.download(bucket_name + path, id);
+        return {file: res.Body, content_type : res.ContentType}
+
+    }
+    catch(e)
+    {
+        errors.push(id);
+        fs.writeFileSync(__dirname + "/errors.json", JSON.stringify(errors), "utf8");
+        return {error: e}
+    }
 };
 
 let upload_to_s3 = async ({path, id, meta = {}, content_type, file_body}) =>
@@ -76,27 +86,31 @@ let upload_product_image = async({file_data, path, product_id, image_index, meta
 
     if (file_data.link && file_data.link.indexOf("http") === 0)
     {
-        let file_exists = await s3.is_file_exists(bucket_name + path, product_id);
+        let file_exists = await s3.is_file_exists(bucket_name + path, link_id);
         if (!file_exists)
         {
-            let file_data = await check_is.image(link_id);
+            let check_file_data = await check_is.image(file_data.link);
 
-            if (file_data.confirm)
+            if (check_file_data.confirm)
             {
                 let file = await download_file(file_data.link, link_id);
                 let compressed_image = file; // await image_minimizer(file);
-                await upload_to_s3({path, id: link_id, meta, content_type: file_data.content_type, file_body: compressed_image});
+                await upload_to_s3({path, id: link_id, meta, content_type: check_file_data.content_type, file_body: compressed_image});
 
                 let thumbnail = await image_minimizer(file, {width: thumbnail_size});
-                await upload_to_s3({path, id: thumb_link_id, meta, content_type: file_data.content_type, file_body: thumbnail});
+                await upload_to_s3({path, id: thumb_link_id, meta, content_type: check_file_data.content_type, file_body: thumbnail});
 
                 try {
                     fs.unlinkSync(temp_dir + link_id)
                 }
-                catch(e){}
+                catch(e){
+                    link_id = null;
+                    thumb_link_id = null;
+                }
             }
             else
             {
+                link_id = null
                 thumb_link_id = null;
             }
         }
@@ -104,26 +118,40 @@ let upload_product_image = async({file_data, path, product_id, image_index, meta
         {
             if(!await s3.is_file_exists(bucket_name + path, thumb_link_id))
             {
-                let {file, content_type} = await download_from_s3(path, link_id);
-                let thumbnail = await image_minimizer(file, {width: thumbnail_size}, {no_minimize: true});
-                await upload_to_s3({path, id: thumb_link_id, meta, content_type: content_type, file_body: thumbnail});
+                let {file, content_type, error} = await download_from_s3(path, link_id);
+                if (error){
+                    link_id = null
+                    thumb_link_id = null;
+                }
+                else {
+                    let thumbnail = await image_minimizer(file, {width: thumbnail_size}, {no_minimize: true});
+                    await upload_to_s3({path, id: thumb_link_id, meta, content_type: content_type, file_body: thumbnail});
+                }
             }
         }
     }
-    else if (!file_data.thumb_link || file_data.link.indexOf("http") === 0)
+    else if (!file_data.thumb_link || file_data.thumb_link.indexOf("http") === 0)
     {
         if(!await s3.is_file_exists(bucket_name + path, thumb_link_id))
         {
-            let {file, content_type} = await download_from_s3(path, link_id);
-            let thumbnail;
-            try {
-                thumbnail = await image_minimizer(file, {width: thumbnail_size}, {no_minimize: true});
-                await upload_to_s3({path, id: thumb_link_id, meta, content_type: content_type, file_body: thumbnail});
+            let {file, content_type, error} = await download_from_s3(path, link_id);
+            if (error){
+                if (error){
+                    link_id = null
+                    thumb_link_id = null;
+                }
             }
-            catch(e)
-            {
-                console.error(e);
-                thumb_link_id = null
+            else {
+                let thumbnail;
+                try {
+                    thumbnail = await image_minimizer(file, {width: thumbnail_size}, {no_minimize: true});
+                    await upload_to_s3({path, id: thumb_link_id, meta, content_type: content_type, file_body: thumbnail});
+                }
+                catch(e)
+                {
+                    console.error(e);
+                    thumb_link_id = null
+                }
             }
         }
     }

@@ -80,6 +80,23 @@ let _load_crawler_data = async (items, crawler_db, converter) =>
     }, {});
 };
 
+let load_cache_images = async(ids, crawler_db) => {
+    let cache_data = await crawler_db.read("product_image", {body: {_id: {$in: ids}}});
+    return cache_data.reduce((res, item) =>{
+        res[item._id] = item;
+        return res;
+    }, {})
+};
+
+
+let load_cache_pdfs = async(ids, crawler_db) => {
+    let cache_data = await crawler_db.read("product_pdf", {body: {_id: {$in: ids}}});
+    return cache_data.reduce((res, item) =>{
+        res[item._id] = item;
+        return res;
+    }, {})
+};
+
 let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fields_list) =>
 {
     let converter = converters[type][site];
@@ -133,6 +150,10 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fie
 
             let {converted_item, suggest_data, missing_data} = converter.convert(item, crawler_item, custom_data);
 
+            if (!converted_item){
+                return;
+            }
+
             accumulated_suggest_data = Object.assign(accumulated_suggest_data, suggest_data);
 
             let document = {};
@@ -152,13 +173,27 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fie
                 not_found_custom = not_found_custom.concat(missing_data);
         });
 
-        // if (es_bulk.length)
-        //     await es_db.bulk(es_bulk);
-        //
-        // await _save_suggest_data(accumulated_suggest_data);
-        //
-        // let ids = result.map(({_id}) => _id);
-        // await mongo_db.update_many(collection_name, {query: {_id: {$in: ids}}, data: {export_version: export_version}});
+
+        if (es_bulk.length){
+
+            let ids = es_bulk.map(({_id}) => _id);
+            let cached_pdfs = await load_cache_pdfs(ids, crawler_db);
+            let cached_images = await load_cache_images(ids, crawler_db);
+
+            es_bulk.forEach(item => {
+                if (cached_pdfs[item._id])
+                    item.document.pdf = cached_pdfs[item._id].pdf;
+                if (cached_images[item._id])
+                    item.document.images = cached_images[item._id].images;
+            });
+
+            await es_db.bulk(es_bulk);
+        }
+
+        await _save_suggest_data(accumulated_suggest_data);
+
+        let ids = result.map(({_id}) => _id);
+        await mongo_db.update_many(collection_name, {query: {_id: {$in: ids}}, data: {export_version: export_version}});
         page++;
         console.log(distributor, type, site, `${page * limit}/${count}`)
 
@@ -181,11 +216,19 @@ let run = async(mongo_db, crawler_db, distributor, update_fields_list) =>
     {
         for (let site in converters[type])
         {
-            let converter = converters[type][site]
+            let converter = converters[type][site];
+
+            if(converter.disable)
+                continue;
+
             if (converter.custom_save_to_db)
+            {
                 await converter.custom_save_to_db(mongo_db, crawler_db, distributor, type, site, _save_suggest_data, update_fields_list);
+            }
             else
+            {
                 await save_to_db(mongo_db, crawler_db, distributor, type, site, update_fields_list)
+            }
         }
     }
 };

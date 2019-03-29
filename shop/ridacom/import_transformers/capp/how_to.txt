@@ -1,5 +1,5 @@
 To generate product_list.json:
-1. Go to https://www.capp.dk
+1. Go to https://www.capp.dk/sitemap.xml
 2. Run in console:
-    [].slice.call(document.querySelectorAll("ul.groups ul.categories ul li a")).map(item => item.href)
-3. Copy result like array
+    [].slice.call(document.querySelectorAll("table.sitemap a")).map(item => item.href)
+3. Copy result like array only links with "*/product/*"

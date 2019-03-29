@@ -17,10 +17,8 @@ let _get_range_value = (crawler_item, field_name, splitter = "/") => {
             if (utils.isEmptyObj(from) && utils.isEmptyObj(to))
                 return null;
             return {
-                value_range: {
-                    from: from,
-                    to  : to,
-                }
+                from: from,
+                to  : to,
             }
         }
         else
@@ -29,9 +27,7 @@ let _get_range_value = (crawler_item, field_name, splitter = "/") => {
             if (utils.isEmptyObj(to))
                 return null;
             return {
-                value_range : {
-                    to: to,
-                }
+                to: to,
             }
         }
     }

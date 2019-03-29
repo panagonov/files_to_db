@@ -1,7 +1,7 @@
 let utils        = require("../../../../../_utils/utils.js");
 let import_utils = require("../../../../_utils/save_utils.js");
 
-let _get_voltage = (record) =>
+let _get_voltage = record =>
 {
     let result = {};
 
@@ -28,10 +28,8 @@ let _get_rpm = record =>
     {
         let size = import_utils.size_parser(match[0]);
         result = {
-            "to" : {
-                "value": size.value,
-                ...size.dimension ? {"dimension" : size.dimension.toLowerCase()} : ""
-            }
+            "value": size.value,
+            ...size.dimension ? {"dimension" : size.dimension.toLowerCase()} : ""
         }
     }
 

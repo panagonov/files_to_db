@@ -65,6 +65,20 @@ let category_fixer = (result, record) => {
        result.category = import_utils.get_canonical("Accessories", ":product_category");
        result.sub_category = import_utils.get_canonical("mini centrifuge", ":product_category");
     }
+    else if  (["A2505", "A2501"].indexOf(result.oid) !== -1){
+       result.category = import_utils.get_canonical("Agarose", ":product_category");
+       result.sub_category = import_utils.get_canonical("Agarose tablets", ":product_sub_category");
+    }
+    else if  (["A1801-LM", "A1801-HR", "A1801-31"].indexOf(result.oid) !== -1){
+       result.category = import_utils.get_canonical("Agarose", ":product_category");
+       result.sub_category = import_utils.get_canonical("Specialty Agarose", ":product_sub_category");
+    }
+    else if  (["A1700", "A1701", "A1705"].indexOf(result.oid) !== -1){
+       result.category = import_utils.get_canonical("Agarose", ":product_category");
+    }
+    else if  (["B3000-CAP*", "B3000-RIN", "B3000-CAP2", "B3000-RIN2", "B3000-CAP-HTC"].indexOf(result.oid) !== -1){
+       result.sub_category = import_utils.get_canonical("Bottle", ":product_category");
+    }
 
     return result
 };

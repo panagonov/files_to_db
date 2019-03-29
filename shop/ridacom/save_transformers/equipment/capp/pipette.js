@@ -115,7 +115,7 @@ let get_step_volume = record =>
 
 let _get_volume = record =>
 {
-    let name = record.name;
+    let name = record.name.replace(/,/g, ".");
     let match = /\s\d+\.?(\d+)?\-?(\d+\.?(\d+)?)?\s?(ul|ml)/i.exec(name);
 
     if (match)

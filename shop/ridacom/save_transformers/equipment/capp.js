@@ -1,13 +1,29 @@
-let utils        = require("../../../../_utils/utils.js");
-let import_utils = require("../../../_utils/save_utils.js");
+const csvtojson          = require("csvtojson");
+let utils                = require("../../../../_utils/utils.js");
+let import_utils         = require("../../../_utils/save_utils.js");
+let product_props_parser = require("./parse_from_csv/equipment_universal_parser.js");
 
 let relation_fields = ["supplier", "distributor", "category", "sub_category"];
 
 let enrich = {
-    pipette         : require("./capp/pipette.js"),
-    centrifuge      : require("./capp/centrifuge.js"),
-    centrifuge_tubes: require("./capp/centrifuge_tubes.js")
+    pipette            : require("./capp/pipette.js"),
+    centrifuge         : require("./capp/centrifuge.js"),
+    micro_centrifuge   : require("./capp/centrifuge.js"),
+    clinical_centrifuge: require("./capp/centrifuge.js"),
+    centrifuge_tubes   : require("./capp/centrifuge_tubes.js"),
+    balance            : require("./capp/balance.js")
 };
+
+let product_props = {};
+
+csvtojson().fromFile(__dirname +"/capp/props.csv")
+.then((jsonObj)=>{
+    product_props = jsonObj.reduce((res, item) => {
+        res[item.oid] = item;
+        return res
+    }, {})
+});
+
 
 let fixator = require("./capp/fixator.js");
 
@@ -81,7 +97,6 @@ let mapping = {
     "supplier"            : record => import_utils.get_canonical("CAPP", ":supplier"),
     "category"            : record => import_utils.get_canonical(record.crawler_item.category || "equipment", ":product_category"),
     "sub_category"        : record => import_utils.get_canonical(record.crawler_item.sub_category || "", ":product_sub_category"),
-    // "sub_sub_category"    : record => import_utils.get_canonical(record.crawler_item.sub_sub_category || "", ":product_sub_sub_category"),
     "distributor"         : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
     "description"         : record => record.crawler_item && record.crawler_item.description ? [record.crawler_item.description] : null,
     "table_specification" : "crawler_item.specification",
@@ -97,15 +112,15 @@ let show_in_console = (result, crawler_item1, record) =>
     console.table({
         index : index,
         name        : result.name,
+        oid    : result.oid,
         category    : (result.category || []).toString(),
         sub_category: (result.sub_category || []).toString(),
         volume      : JSON.stringify(result.volume),
         r_category  : crawler_item1 ? crawler_item1.category : "",
-        r_s_category  : crawler_item1 ? crawler_item1.sub_category : "",
-        r_s_s_category  : crawler_item1 ? crawler_item1.sub_sub_category : ""
+        r_s_category  : crawler_item1 ? crawler_item1.sub_category : ""
     });
 
-    if (index > 293)
+    if (index >= 0)
         debugger;
     index++;
 };
@@ -134,10 +149,15 @@ let convert = (item, crawler_item, custom_data) =>
     let additional_data = get_additional_category_data(record, result);
     result = Object.assign(result, additional_data);
 
-    // show_in_console(result, crawler_item1, record);
+    if (product_props[result.oid]){
+        result = Object.assign(result, product_props_parser(product_props[result.oid]));
+    }
+
 
     let suggest_data = import_utils.build_suggest_data(result, relation_fields, result.category[0][1]);
     result           = import_utils.clean_result_data(result, relation_fields);
+
+    // show_in_console(result, crawler_item1, record);
 
     return {
         converted_item : result,
@@ -189,7 +209,7 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
 module.exports = {
     convert,
     load_custom_data,
-    version: 12
+    version: 17
 };
 
 // console.log(import_utils.get_canonical("other benchtop", ":product_sub_category"))

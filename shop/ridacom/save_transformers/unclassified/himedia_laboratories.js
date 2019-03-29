@@ -260,5 +260,6 @@ let convert = (item, original_items) =>
 module.exports = {
     convert,
     custom_save_to_db,
-    version: export_version
+    version: export_version,
+    disable: true
 };
