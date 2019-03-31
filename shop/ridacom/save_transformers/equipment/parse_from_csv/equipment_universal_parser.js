@@ -101,13 +101,19 @@ let _string_parser = value =>
     (value || "").replace(/\s/g," ").trim();
 
 let _category_parser = value => {
-    let res = _text_to_array(value)
-    return res.map(item => import_utils.get_canonical(value.replace(/_/g, " "), ":product_category"))
+    let result = _text_to_array(value);
+    return result.reduce((res, value) =>{
+        res = res.concat(import_utils.get_canonical(value.replace(/_/g, " "), ":product_category"));
+        return res;
+    }, [])
 };
 
 let _sub_category_parser = value => {
-    let res = _text_to_array(value)
-    return res.map(item => import_utils.get_canonical(value.replace(/_/g, " "), ":product_sub_category"))
+    let result = _text_to_array(value);
+    return result.reduce((res, value) =>{
+        res = res.concat(import_utils.get_canonical(value.replace(/_/g, " "), ":product_sub_category"));
+        return res;
+    }, [])
 };
 
 let parsers = {

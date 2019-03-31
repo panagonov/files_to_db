@@ -7,7 +7,7 @@ let exec            = require("child_process").exec;
 
 let temp_dir = `${__dirname}/_download/`;
 let bucket_name = "bioseek-shop/";
-let check_timeout = 20000;
+let check_timeout = 60000;
 
 let cookies = request.jar();
 let browser = request.defaults({proxy: "http://69.46.80.226:12361"});
@@ -18,8 +18,10 @@ let check_is = {
 
             let timeout = setTimeout(() => {
                 timeout = null;
+                console.error("File Check Timeout");
                 resolve({confirm: false})
             }, check_timeout);
+
             url = url.replace(".co.uk", ".com");
             browser.get({
                 method: "HEAD",
@@ -61,7 +63,17 @@ let download_file = async(url, target) =>
     new Promise((resolve, reject) => {
         let path = temp_dir + target;
         url = url.replace(".co.uk", ".com");
-        browser(url).pipe(fs.createWriteStream(path)).on("close", function(err, res)
+        browser({
+            method: "GET",
+            url : url,
+            headers : {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"},
+            followAllRedirects: true,
+            maxRedirects: 100,
+            jar: cookies,
+            strictSSL: false
+        }).pipe(fs.createWriteStream(path))
+        .on('error', function(err) {console.log(err); })
+        .on("finish", function(err, res)
         {
             if (err) return reject(err);
             resolve (fs.readFileSync(path));
@@ -122,7 +134,18 @@ let upload_pdf_preview = async(path, file_name, meta) => {
     return thumb_name
 };
 
-let upload_product_pdf = async({file_data, path, file_name, image_index, meta = {}}) => {
+/**
+ *
+ * @param {Object} file_data
+ * @param {String} path
+ * @param {String} file_name
+ * @param {Number} image_index
+ * @param {Object} [meta]
+ * @param {Object} [options]
+ * @param {Boolean} [options.force] - force file download
+ * @returns {Promise<{thumb_name: string, link_name: string}>}
+ */
+let upload_product_pdf = async({file_data, path, file_name, image_index, meta = {}, options = {}}) => {
 
     let thumb_name = "";
     let link_name = "";
@@ -132,7 +155,7 @@ let upload_product_pdf = async({file_data, path, file_name, image_index, meta = 
     {
         if (file_data.link && file_data.link.indexOf("http") === 0)
         {
-            let file_exists = await is_file_exists(path, file_name);
+            let file_exists = options.force ? false : await is_file_exists(path, file_name);
             if (!file_exists)
             {
                 let link_data = await check_is.pdf(file_data.link);

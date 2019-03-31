@@ -14,7 +14,7 @@ let size_parser = size => {
     let more_data = match && match[3] ? match[3].trim() : "";
     return {
         ...value ? {value: value} : "",
-        ...dimension ? {dimension:dimension} : "",
+        ...dimension ? {dimension:dimension.replace("ul", "μl")} : "",
         ...more_data ? {more_data: more_data} : "",
     }
 };
@@ -251,6 +251,10 @@ let build_service_data = (record, relation_fields) => {
     }, []) : [];
 
     result["all_categories"] = utils.uniq(result["all_categories"]);
+
+    result.distributor_only = record.distributor_only || {};
+    record.pdf ? result.distributor_only.pdf = record.pdf : null;
+    record.images ? result.distributor_only.images = record.images : null;
 
     return result
 };

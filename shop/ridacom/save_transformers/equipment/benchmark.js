@@ -243,7 +243,7 @@ module.exports = {
     load_crawler_data,
     load_custom_data,
     get_crawler_item,
-    version: 15,
+    version: 17,
     // disable: true
 };
 

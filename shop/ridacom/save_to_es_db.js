@@ -1,6 +1,12 @@
-let fs       = require("fs");
-let es_db    = require("../../_utils/es_db.js");
-let utils    = require("../../_utils/utils.js");
+let fs           = require("fs");
+let es_db        = require("../../_utils/es_db.js");
+let utils        = require("../../_utils/utils.js");
+let image_errors = require("../../_utils/errors.json");
+
+image_errors = image_errors.reduce((res, item) =>{
+    res[item] = 1;
+    return res;
+}, {})
 
 let collection_name         = "product";
 let suggest_collection_name = "shop_suggest";
@@ -46,10 +52,10 @@ let _save_suggest_data = async (suggest_data) =>
 
         let document = suggest_data[id];
         if (item_in_category_hash) {
-            document.category = utils.uniq(document.category.concat(item_in_category_hash));
+            document.category = utils.uniq(document.category.concat(item_in_category_hash)).filter(item => item);
         }
         if (item_in_type_hash) {
-            document.type = utils.uniq(document.type.concat(item_in_type_hash));
+            document.type = utils.uniq(document.type.concat(item_in_type_hash)).filter(item => item);
         }
 
         return {model_title: suggest_collection_name, command_name: command, "_id": id, "document":document}});
@@ -183,7 +189,8 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fie
             es_bulk.forEach(item => {
                 if (cached_pdfs[item._id])
                     item.document.pdf = cached_pdfs[item._id].pdf;
-                if (cached_images[item._id])
+
+                if (cached_images[item._id] && !cached_images[item._id].images.some(({link}) => image_errors[link]))
                     item.document.images = cached_images[item._id].images;
             });
 

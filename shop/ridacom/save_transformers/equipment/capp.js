@@ -77,14 +77,16 @@ let _getProductRelations = record => {
 let get_additional_category_data = (record, result) => {
     if (! result.category)
         return {};
+    try {
+        let category = result.category[0][1];
 
-    let category = result.category[0][1];
-
-    if (enrich[category])
-    {
-        let new_data = enrich[category](record, result);
-        return  Object.assign(result, new_data)
+        if (enrich[category])
+        {
+            let new_data = enrich[category](record, result);
+            return  Object.assign(result, new_data)
+        }
     }
+    catch(e){}
     return {}
 };
 
@@ -115,13 +117,11 @@ let show_in_console = (result, crawler_item1, record) =>
         oid    : result.oid,
         category    : (result.category || []).toString(),
         sub_category: (result.sub_category || []).toString(),
-        volume      : JSON.stringify(result.volume),
-        r_category  : crawler_item1 ? crawler_item1.category : "",
-        r_s_category  : crawler_item1 ? crawler_item1.sub_category : ""
+        volume      : JSON.stringify(result.volume)
     });
 
-    if (index >= 0)
-        debugger;
+    // if (index >= 31)
+    //     debugger;
     index++;
 };
 
@@ -141,10 +141,8 @@ let convert = (item, crawler_item, custom_data) =>
     let record = Object.assign({}, item, {crawler_item: crawler_item1 || {}});
 
     let result = utils.mapping_transform(mapping, record);
-    result = fixator(result, record);
 
-    let service_data = import_utils.build_service_data(result, relation_fields);
-    result = Object.assign(result, service_data);
+    // result = fixator(result, record);
 
     let additional_data = get_additional_category_data(record, result);
     result = Object.assign(result, additional_data);
@@ -153,6 +151,11 @@ let convert = (item, crawler_item, custom_data) =>
         result = Object.assign(result, product_props_parser(product_props[result.oid]));
     }
 
+    let service_data = import_utils.build_service_data(result, relation_fields);
+    result = Object.assign(result, service_data);
+
+    if (!result.category[0])
+        debugger
 
     let suggest_data = import_utils.build_suggest_data(result, relation_fields, result.category[0][1]);
     result           = import_utils.clean_result_data(result, relation_fields);
@@ -212,4 +215,4 @@ module.exports = {
     version: 17
 };
 
-// console.log(import_utils.get_canonical("other benchtop", ":product_sub_category"))
+// console.log(import_utils.get_canonical("plate_washer".replace("_", " "), ":product_category"))

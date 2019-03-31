@@ -7,7 +7,7 @@ let product_types =  fs.readdirSync(`${__dirname}/save_transformers`);
 let field_name = "pdf_crawler_version";
 let collection_name = "product";
 let cache_collection = "product_pdf";
-let crawler_version = 1;
+let crawler_version = 3;
 
 let upload = async(product_type, crawler_db) => {
     let limit = 10;
@@ -87,7 +87,7 @@ let upload = async(product_type, crawler_db) => {
     fs.writeFileSync(__dirname + "/_cache/pdf_uploader_progress.json", JSON.stringify(progress), "utf8");
 };
 
-let single_product_upload = async({pdfs, supplier, distributor}) => {
+let single_product_upload = async({pdfs, supplier, distributor, options}) => {
 
     if (pdfs && pdfs.length)
     {
@@ -99,7 +99,9 @@ let single_product_upload = async({pdfs, supplier, distributor}) => {
                 path: `pdf/${distributor}/${supplier}`,
                 file_name: (file_data.link || file_data.href).split("/").pop(),
                 image_index: i,
-                meta: {supplier: supplier, distributor: distributor}}
+                meta: {supplier: supplier, distributor: distributor},
+                options
+                },
             );
             new_item_names.link_name ? pdfs[i].link = new_item_names.link_name : null;
             new_item_names.thumb_name ? pdfs[i].thumb_link = new_item_names.thumb_name : null
@@ -133,32 +135,30 @@ let init_crawler_db = async() =>{
     return crawler_db
 };
 
-let upload_single = async (oid) => {
+let upload_single = async (es_oid) => {
 
     let crawler_db = await init_crawler_db();
     await es_db.init();
 
-    let es_product = await es_db.read_one(collection_name, {"body" : {"query" : {"term" : {"oid" : oid}}}});
+    let es_product = await es_db.read_one(collection_name, {"body" : {"query" : {"term" : {"oid" : es_oid}}}});
 
-    let product = await crawler_db.read_one(collection_name, {"body" : {"oid" : oid}});
-    if (!product)
-        product = await crawler_db.read_one(collection_name, {"body" : {"specification.oid" : oid, }});
-
-
-    if (!es_product || !product)
+    if (!es_product)
         return console.error("Product not found");
 
+    let pdfs = es_product.distributor_only.pdf;
 
-    let pdfs = es_product.pdf.map((item, index) => {
-        item.link = product.pdf[index].link || product.pdf[index].href;
-        return item
-    });
+    if (!pdfs  || !pdfs.length)
+        return console.error("No pdfs");
+
     let supplier = es_product.supplier[0];
     let distributor = es_product.distributor[0];
-    let document = await single_product_upload({pdfs, supplier, distributor});
+    let document = {
+        _id: es_product._id,
+        pdf : await single_product_upload({pdfs, supplier, distributor, options: {force: true}})
+    };
 
-    document._id = es_product._id;
-    await es_db.update(collection_name, {data : document})
+    await es_db.update(collection_name, {data : document});
+    await crawler_db.update(cache_collection, {data : document})
 };
 
 module.exports = {
@@ -178,6 +178,6 @@ process.on('uncaughtException', function (err, data) {
 
 r();
 
-// upload_single("5100513C")
+// upload_single("H2010-E")
 // .then(() => process.exit(0))
-// .catch(e => console.error(e))
+// .catch(e => console.error(e));

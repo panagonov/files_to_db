@@ -7,7 +7,7 @@ let product_types =  fs.readdirSync(`${__dirname}/save_transformers`);
 let field_name = "image_crawler_version";
 let collection_name = "product";
 let cache_collection = "product_image";
-let crawler_version = 1;
+let crawler_version = 7;
 
 let upload = async(product_type, crawler_db) => {
     let limit = 10;
@@ -20,9 +20,11 @@ let upload = async(product_type, crawler_db) => {
                 "must_not": {
                     "term" : {[field_name] : crawler_version}
                 },
-                "must" : {
-                    "term" : {"all_categories" : product_type}
-                }
+                "must" : [
+                    {
+                        "term" : {"all_categories" : product_type}
+                    }
+                ]
             }
         },
         "_source" : ["images", "supplier", "distributor"]
@@ -88,7 +90,7 @@ let upload = async(product_type, crawler_db) => {
     fs.writeFileSync(__dirname + "/_cache/image_uploader_progress.json", JSON.stringify(progress), "utf8");
 };
 
-let single_product_upload = async({images, supplier, distributor, _id}) => {
+let single_product_upload = async({images, supplier, distributor, _id, options}) => {
 
     if (images && images.length)
     {
@@ -100,7 +102,9 @@ let single_product_upload = async({images, supplier, distributor, _id}) => {
                 path: `image/${distributor}/${supplier}`,
                 product_id: _id,
                 image_index: i,
-                meta: {supplier: supplier, distributor: distributor}}
+                meta: {supplier: supplier, distributor: distributor},
+                options
+            }
             );
             new_item_names.link_id ? images[i].link = new_item_names.link_id : null;
             new_item_names.thumb_link_id ? images[i].thumb_link = new_item_names.thumb_link_id : null
@@ -134,24 +138,30 @@ let init_crawler_db = async() =>{
     return crawler_db
 };
 
-let upload_single = async (oid) => {
+let upload_single = async (es_oid) => {
 
     let crawler_db = await init_crawler_db();
     await es_db.init();
 
-    let product = await crawler_db.read_one(collection_name, {"body" : {"oid" : oid}});
-    let es_product = await es_db.read_one(collection_name, {"body" : {"query" : {"term" : {"oid" : oid}}}});
+    let es_product = await es_db.read_one(collection_name, {"body" : {"query" : {"term" : {"oid" : es_oid}}}});
 
-    let images = es_product.images.map((item, index) => {
-        item.link = product.images[index].link || product.images[index].href;
-        return item
-    });
+    if (!es_product)
+        return console.error("Product not found");
+
+    let images = es_product.distributor_only.images;
+
+    if (!images  || !images.length)
+        return console.error("No images");
+
     let supplier = es_product.supplier[0];
     let distributor = es_product.distributor[0];
-    let document = await single_product_upload({images, supplier, distributor, _id: es_product._id});
+    let document = {
+        _id : es_product._id,
+        images: await single_product_upload({images, supplier, distributor, _id: es_product._id, options: {force: true}})
+    };
 
-    document._id = es_product._id;
-    await es_db.update(collection_name, {data : document})
+    await es_db.update(collection_name, {data : document});
+    await crawler_db.update(cache_collection, {data : document})
 };
 
 module.exports = {
@@ -171,6 +181,6 @@ process.on('uncaughtException', function (err, data) {
 
 r();
 
-// upload_single("SAB 514i")
+// upload_single("B3D1020-E")
 // .then(() => process.exit(0))
 // .catch(e => console.error(e));
