@@ -168,10 +168,18 @@ module.exports = {
     run
 };
 
-let r  = () => {
-   run()
-   .then(() => process.exit(0))
-   .catch(e => { console.error(e); r() })
+let r  = (oid) => {
+    if (oid) {
+        upload_single(oid)
+        .then(() => process.exit(0))
+        .catch(e => console.error(e));
+    }
+    else
+    {
+        run()
+       .then(() => process.exit(0))
+       .catch(e => { console.error(e); r() })
+    }
 };
 
 process.on('uncaughtException', function (err, data) {
@@ -179,8 +187,4 @@ process.on('uncaughtException', function (err, data) {
     r()
 });
 
-r();
-
-// upload_single("B3D1020-E")
-// .then(() => process.exit(0))
-// .catch(e => console.error(e));
+r("STB 6202i");

@@ -10,7 +10,7 @@ let thumbnail_size = 100; //width in pixels
 let check_timeout = 60000;
 
 let cookies = request.jar();
-let browser = request.defaults({proxy: "http://69.46.80.226:12368"});
+let browser = request.defaults(/*{proxy: "http://69.46.80.226:12368"}*/);
 
 let check_is = {
     "image" : async(url) =>
@@ -21,7 +21,7 @@ let check_is = {
                 resolve({confirm: false})
             }, check_timeout);
 
-            url = url.replace(".co.uk", ".com");
+            // url = url.replace(".co.uk", ".com");
 
             browser.get({
                 method: "HEAD",
