@@ -186,18 +186,20 @@ let upload_product_pdf = async({file_data, path, file_name, image_index, meta = 
                 }
             }
         }
-        // else
-        // {
-        //     link_name = file_name;
-        //     thumb_name = file_name.split(".").shift() + "-000001.png";
-        //
-        //
-        //         await download_from_s3(path,file_name);
-        //         await upload_pdf_preview(path, file_name, meta);
-        //
-        //         fs.unlinkSync(temp_dir + file_name);
-        //
-        // }
+        else
+        {
+            link_name = file_name;
+            thumb_name = file_name.split(".").shift() + "-000001.png";
+
+            let file_exists = options.force ? false : await is_file_exists(path, thumb_name);
+            if(!file_exists) {
+                await download_from_s3(path,file_name);
+                await upload_pdf_preview(path, file_name, meta);
+
+                fs.unlinkSync(temp_dir + file_name);
+            }
+
+        }
     }
     catch(e) {}
 

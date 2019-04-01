@@ -114,7 +114,7 @@ let mapping = {
     "test_method"        : record => import_utils.get_canonical(record.detection_method || "", ":test_method"),
     "images"             : record => _getImages(record.crawler_item),
     "pdf"                : record => _getPdf(record.crawler_item),
-    "original_link"      : record => record.crawler_item && record.crawler_item.url ? record.crawler_item.url : null,
+    "original_link"      : "link",
     "formulation"        : "formulation",
     "usage"              : "usage_notes",
     "storage_conditions" : "storage_instructions",
@@ -196,5 +196,5 @@ module.exports = {
     convert,
     load_custom_data,
     init,
-    version: 17
+    version: 18
 };

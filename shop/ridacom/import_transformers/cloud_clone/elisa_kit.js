@@ -71,7 +71,7 @@ let mapping = {
             return record["Sample type"].replace(/\n|\t|\r/g, " ").replace(/\s+/, " ").split(",").map(item => item.trim().replace(/\.$/, ""))
     },
 
-    "link"             : "Web links",
+    "link"             : "Web Links",
     "pdf"              : record => record["Manual Links"] ? ({link: record["Manual Links"]}) : null,
     "images"           : record => record["OD Images"] ? [record["OD Images"]] : null,
     "assay_length"     : "Assay length",

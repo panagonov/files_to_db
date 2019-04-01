@@ -7,7 +7,7 @@ let product_types =  fs.readdirSync(`${__dirname}/save_transformers`);
 let field_name = "pdf_crawler_version";
 let collection_name = "product";
 let cache_collection = "product_pdf";
-let crawler_version = 11;
+let crawler_version = 12;
 
 let upload = async(product_type, crawler_db) => {
     let limit = 10;
@@ -156,14 +156,11 @@ let upload_single = async (es_oid) => {
 
     let supplier = es_product.supplier[0];
     let distributor = es_product.distributor[0];
-    let document = {
-        _id: es_product._id,
-        pdf : await single_product_upload({pdfs, supplier, distributor, options: {force: true}})
-    };
+    let ready_pdfs = await single_product_upload({pdfs, supplier, distributor, options: {force: true}});
 
-    await es_db.update(collection_name, {data : JSON.parse(JSON.stringify(document))});
-    console.log(document._id)
-    await crawler_db.create(cache_collection, {data : document})
+    await es_db.update(collection_name, {data : {_id : es_product._id, pdf: ready_pdfs}});
+    console.log(es_product._id)
+    await crawler_db.create(cache_collection, {data :{_id : es_product._id, pdf: ready_pdfs}})
 };
 
 module.exports = {

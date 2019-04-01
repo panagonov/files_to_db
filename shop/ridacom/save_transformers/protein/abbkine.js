@@ -96,7 +96,7 @@ let mapping = {
     "description"           : record => record["background"] ? [record["background"]] : null,
     "images"                : record =>  _getImages(record.crawler_item),
     "pdf"                   : record =>  _getPdf(record.crawler_item),
-    "original_link"         : record => record.crawler_item && record.crawler_item.url ? record.crawler_item.url : null,
+    "original_link"         : "link",
     "sequence"              : "sequence",
     "activity"              : "activity",
     "protein_length"        : "protein_length",
@@ -182,5 +182,5 @@ module.exports = {
     convert,
     load_custom_data,
     init,
-    version: 17
+    version: 18
 };
