@@ -45,6 +45,10 @@ let _range_parser = value => {
     return null
 };
 
+let _array_range_parser = value =>
+    _text_to_array(value).filter(item => item).map(item => _range_parser(item));
+
+
 let _size_parser = value => {
     let result = import_utils.size_parser(value);
     return utils.isEmptyObj(result) ? null : result;
@@ -118,7 +122,7 @@ let _sub_category_parser = value => {
 
 let parsers = {
     rpm                 : _range_parser,
-    capacity            : _range_parser,
+    capacity            : _array_range_parser,
     noise_level         : _range_parser,
     overall_dimensions  : _dimension_parser,
     voltage             : _step_parser,
@@ -140,6 +144,7 @@ let parsers = {
     imprecision         : _range_parser,
     color               : _string_parser,
     name                : _string_parser,
+    original_link       : _string_parser,
 };
 
 let convert = (specifications) => {

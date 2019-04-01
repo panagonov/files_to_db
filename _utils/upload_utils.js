@@ -21,7 +21,7 @@ let check_is = {
                 resolve({confirm: false})
             }, check_timeout);
 
-            // url = url.replace(".co.uk", ".com");
+            url = url.replace(".co.uk", ".com");
 
             browser.get({
                 method: "HEAD",

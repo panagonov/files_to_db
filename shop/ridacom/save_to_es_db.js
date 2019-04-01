@@ -1,12 +1,13 @@
 let fs           = require("fs");
 let es_db        = require("../../_utils/es_db.js");
 let utils        = require("../../_utils/utils.js");
+let save_utils   = require("../_utils/save_utils.js");
 let image_errors = require("../../_utils/errors.json");
 
 image_errors = image_errors.reduce((res, item) =>{
     res[item] = 1;
     return res;
-}, {})
+}, {});
 
 let collection_name         = "product";
 let suggest_collection_name = "shop_suggest";
@@ -30,32 +31,29 @@ let _save_suggest_data = async (suggest_data) =>
     let all_ids = Object.keys(suggest_data);
     let start_index = 0;
     let end_index = 0;
-    let suggest_category_hash = {};
-    let suggest_type_hash = {};
+    let db_data_hash = {};
 
     do {
         start_index = page * size;
         end_index = start_index + size;
         let ids = all_ids.slice(start_index, end_index).filter(id => id);
 
-        let db_data = await es_db.read_unlimited(suggest_collection_name, {body: {"query" : {"terms" : {"_id" : ids}}, "_source" : ["category", "type"]}, size: ids.length});
-        db_data.data.forEach(item => suggest_category_hash[item._id] = item.category);
-        db_data.data.forEach(item => suggest_type_hash[item._id] = item.type);
+        let db_data = await es_db.read_unlimited(suggest_collection_name, {body: {"query" : {"terms" : {"_id" : ids}}, "_source" : ["category", "type", "synonyms"]}, size: ids.length});
+        db_data.data.forEach(item => db_data_hash[item._id] = item);
         page++;
     }
     while(end_index < all_ids.length);
 
     let es_bulk = Object.keys(suggest_data).map(id => {
-        let item_in_category_hash = suggest_category_hash[id];
-        let item_in_type_hash = suggest_type_hash[id];
-        let command = item_in_category_hash || item_in_type_hash ? "update" : "index";
+        let item_in_db_hash = db_data_hash[id];
+
+        let command = item_in_db_hash ? "update" : "index";
 
         let document = suggest_data[id];
-        if (item_in_category_hash) {
-            document.category = utils.uniq(document.category.concat(item_in_category_hash)).filter(item => item);
-        }
-        if (item_in_type_hash) {
-            document.type = utils.uniq(document.type.concat(item_in_type_hash)).filter(item => item);
+        if (item_in_db_hash) {
+            document.category = utils.uniq([].concat(document.category || [], item_in_db_hash.category || [])).filter(item => item);
+            document.type = utils.uniq([].concat(document.type || [], item_in_db_hash.type || [])).filter(item => item);
+            document.synonyms = utils.uniq([].concat(document.synonyms || [], item_in_db_hash.synonyms || [])).filter(item => item);
         }
 
         return {model_title: suggest_collection_name, command_name: command, "_id": id, "document":document}});
@@ -160,7 +158,7 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fie
                 return;
             }
 
-            accumulated_suggest_data = Object.assign(accumulated_suggest_data, suggest_data);
+            accumulated_suggest_data = save_utils.accumulate_suggest(accumulated_suggest_data, suggest_data);
 
             let document = {};
 

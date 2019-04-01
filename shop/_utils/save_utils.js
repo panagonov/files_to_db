@@ -272,13 +272,40 @@ let get_all_categories = (category) => {
     return parents[category] || []
 };
 
+let accumulate_suggest = (accumulated_suggest_data, suggest_data) =>
+{
+    utils.objEach(suggest_data, (key, value) => {
+        if (!accumulated_suggest_data[key])
+        {
+            accumulated_suggest_data[key] = value;
+        }
+        else
+        {
+            utils.objEach(value, (sub_key, sub_value) => {
+                if (!accumulated_suggest_data[key].hasOwnProperty(sub_key)){
+                    accumulated_suggest_data[key][sub_key] = sub_value;
+                }
+                else if (accumulated_suggest_data[key][sub_key] instanceof Array) {
+                    accumulated_suggest_data[key][sub_key] = utils.uniq(accumulated_suggest_data[key][sub_key].concat(sub_value))
+                }
+                else {
+                    accumulated_suggest_data[key][sub_key] = sub_value
+                }
+            })
+        }
+    });
+
+    return accumulated_suggest_data
+}
+
 module.exports = {
     human_readable_id,
     size_parser,
     get_canonical,
     build_suggest_data,
     build_service_data,
-    clean_result_data
+    clean_result_data,
+    accumulate_suggest
 };
 
 // console.log(get_canonical("Baculovirus-Insect Cells", [":preparation_method"]));

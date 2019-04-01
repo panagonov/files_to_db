@@ -88,8 +88,9 @@ let mapping = {
     "storage_buffer"     : "storage_buffer",
     "precautions"        : "precautions",
     "aliases"            : "alternative",
-    "original_link"      : record => record.crawler_item && record.crawler_item.url ? record.crawler_item.url : null,
-    "app_notes"          : "app_notes"
+    "original_link"      : "link",
+    "app_notes"          : "app_notes",
+
 };
 
 let convert = (item, crawler_item) =>
@@ -111,5 +112,5 @@ let convert = (item, crawler_item) =>
 
 module.exports = {
     convert,
-    version: 17
+    version: 20
 };

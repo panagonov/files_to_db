@@ -2,8 +2,8 @@ let es_db        = require("../../../../_utils/es_db.js");
 let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
-let relation_fields = ["supplier", "distributor", "category", "sub_category", "all_categories"];
-let export_version  = 1;
+let relation_fields = ["supplier", "distributor", "category", "sub_category"];
+let export_version  = 4;
 let collection_name = "product";
 
 let category_mapping = {
@@ -18,7 +18,6 @@ let category_mapping = {
 
 let specification_mapping = {
     "Safety #" : "",
-
     "Risk #" : ""
 };
 
@@ -73,9 +72,9 @@ let custom_save_to_db = async(mongo_db, crawler_db, distributor, type, site, _sa
 
             if (original_items.length)
             {
-                let {product_type, converted_item, suggest_data} = convert(item, original_items);
+                let {converted_item, suggest_data} = convert(item, original_items);
 
-                accumulated_suggest_data = Object.assign(accumulated_suggest_data, suggest_data);
+                accumulated_suggest_data = import_utils.accumulate_suggest(accumulated_suggest_data, suggest_data);
 
                 let _id = converted_item._id;
                 delete converted_item._id;
@@ -91,7 +90,7 @@ let custom_save_to_db = async(mongo_db, crawler_db, distributor, type, site, _sa
                     document = converted_item
                 }
 
-                es_bulk.push({"model_title": product_type, "command_name": update_fields_list ? "update" : "index", "_id": _id, "document": document});
+                es_bulk.push({"model_title": collection_name, "command_name": update_fields_list ? "update" : "index", "_id": _id, "document": document});
             }
         });
 
@@ -142,22 +141,23 @@ let _getPriceModel = (item, original_items) =>
     return result;
 };
 
-let _getAllCategories = (record) => {
-
-    let classification = (record.classification || []).map(item => item.type);
-    let all_categories = utils.uniq([].concat(record.categories || [], classification));
-
-    return import_utils.get_canonical(all_categories.join("; "), ":product_category");
-};
-
 let _get_external_links = record => {
     let result = [{"key": "himedia_laboratories", "id": record.oid}];
 
     if (record.specification && record.specification.length)
     {
         let cas_no = record.specification.filter(item => item.key === "CAS No.")[0];
-        if (cas_no && cas_no.value !== "N/A")
-            result.push({"key": "cas_number", "id": cas_no.value})
+        if (cas_no && cas_no.value !== "N/A"){
+            if (cas_no.value instanceof Array)
+            {
+                cas_no.value = cas_no.value.filter(item => item !== "0" && item !== "N/A")
+                if (cas_no.value.length)
+                    result.push({"key": "cas_number", "id": cas_no.value[0]})
+            }
+            else {
+                debugger
+            }
+        }
     }
 
     return result
@@ -185,7 +185,7 @@ let _get_molecular_weight = record => {
 
     let data = record.specification.filter(item => item.key === "Molecular Weight")[0];
 
-    return data ? parseFloat(data.value) : null
+    return data ? import_utils.size_parser(data.value) : null
 };
 
 let _get_storage_conditions = record => {
@@ -202,7 +202,7 @@ let _get_aliases = record => {
 
     let data = record.specification.filter(item => item.key === "Synonyms")[0];
 
-    return data ? data.split(",").map(item => item.trim()).filter(item => item) : null
+    return data ? data.value.map(item => item.trim()).filter(item => item) : null
 };
 
 let _get_buffer_form = record => {
@@ -229,9 +229,8 @@ let mapping = {
     "buffer_form"           : _get_buffer_form,
     "supplier"              : record => import_utils.get_canonical("Himedia Laboratories", ":supplier"),
     "distributor"           : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
-    "category"              : record => import_utils.get_canonical(record.categories[1], ":product_category"),
-    "sub_category"          : record => import_utils.get_canonical([record.categories[2], record.categories[3]].join("; "), ":product_category").slice(0, 1),
-    "all_categories"        : record => _getAllCategories(record),
+    "category"              : record => import_utils.get_canonical(record.categories[0], ":product_category"),
+    "sub_category"          : record => import_utils.get_canonical([record.categories[1], record.categories[2], record.categories[3]].join("; "), ":product_category").slice(0, 1),
     "pdf"                   : record =>  _getPdf(record),
     "original_link"         : "original_link",
 };
@@ -242,16 +241,16 @@ let convert = (item, original_items) =>
     let record = Object.assign({}, item, {original_items: original_items});
 
     let result = utils.mapping_transform(mapping, record);
+
     let service_data = import_utils.build_service_data(result, relation_fields);
     result = Object.assign(result, service_data);
 
-    let type = category_mapping[item.categories[0]];
+    let type = result.category[0][1];
 
     let suggest_data = import_utils.build_suggest_data(result, relation_fields, type);
     result           = import_utils.clean_result_data(result, relation_fields);
 
     return {
-        product_type: type,
         converted_item : result,
         suggest_data
     }
@@ -261,5 +260,5 @@ module.exports = {
     convert,
     custom_save_to_db,
     version: export_version,
-    disable: true
+    // disable: true
 };

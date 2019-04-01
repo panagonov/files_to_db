@@ -1,9 +1,9 @@
 let fs              = require("fs");
 let request         = require("request");
-let uuid            = require("uuid/v4");
 let s3              = require("../../bioseek/discovery/core/s3.js");
 let image_minimizer = require('../../bioseek/discovery/core/utilities/image_minimizer.js');
 let exec            = require("child_process").exec;
+let errors          = require("./pdf_errors.json");
 
 let temp_dir = `${__dirname}/_download/`;
 let bucket_name = "bioseek-shop/";
@@ -128,6 +128,8 @@ let upload_pdf_preview = async(path, file_name, meta) => {
 
     } catch (e)
     {
+        errors.push(id);
+        fs.writeFileSync(__dirname + "/pdf_errors.json", JSON.stringify(errors), "utf8");
         console.error(e)
     }
 
@@ -184,6 +186,18 @@ let upload_product_pdf = async({file_data, path, file_name, image_index, meta = 
                 }
             }
         }
+        // else
+        // {
+        //     link_name = file_name;
+        //     thumb_name = file_name.split(".").shift() + "-000001.png";
+        //
+        //
+        //         await download_from_s3(path,file_name);
+        //         await upload_pdf_preview(path, file_name, meta);
+        //
+        //         fs.unlinkSync(temp_dir + file_name);
+        //
+        // }
     }
     catch(e) {}
 

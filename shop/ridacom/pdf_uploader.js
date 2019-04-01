@@ -7,7 +7,7 @@ let product_types =  fs.readdirSync(`${__dirname}/save_transformers`);
 let field_name = "pdf_crawler_version";
 let collection_name = "product";
 let cache_collection = "product_pdf";
-let crawler_version = 5;
+let crawler_version = 11;
 
 let upload = async(product_type, crawler_db) => {
     let limit = 10;
@@ -20,9 +20,14 @@ let upload = async(product_type, crawler_db) => {
                 "must_not": {
                     "term" : {[field_name] : crawler_version}
                 },
-                "must" : {
-                    "term" : {"all_categories" : product_type}
-                }
+                "must" : [
+                    {
+                        "term" : {"all_categories" : product_type}
+                    }/*,
+                    {
+                        "term" : {"supplier" : "capp"}
+                    }*/
+                ]
             }
         },
         "_source" : ["pdf", "supplier", "distributor"]
@@ -66,7 +71,6 @@ let upload = async(product_type, crawler_db) => {
                     document.pdf = hash_product.pdf
                 }
             }
-
 
             es_bulk.push({"model_title": collection_name, "command_name": "update", "_id": product._id, "document": document});
             console.log(`Ready - ${i+1}/${limit} products`)
@@ -157,18 +161,27 @@ let upload_single = async (es_oid) => {
         pdf : await single_product_upload({pdfs, supplier, distributor, options: {force: true}})
     };
 
-    await es_db.update(collection_name, {data : document});
-    await crawler_db.update(cache_collection, {data : document})
+    await es_db.update(collection_name, {data : JSON.parse(JSON.stringify(document))});
+    console.log(document._id)
+    await crawler_db.create(cache_collection, {data : document})
 };
 
 module.exports = {
     run
 };
 
-let r  = () => {
-   run()
-   .then(() => process.exit(0))
-   .catch(e => { console.error(e); r() })
+let r  = (oid) => {
+    if (oid) {
+        upload_single(oid)
+        .then(() => process.exit(0))
+        .catch(e => console.error(e));
+    }
+    else
+    {
+       run()
+       .then(() => process.exit(0))
+       .catch(e => { console.error(e); r() })
+    }
 };
 
 process.on('uncaughtException', function (err, data) {
@@ -177,7 +190,3 @@ process.on('uncaughtException', function (err, data) {
 });
 
 r();
-
-// upload_single("H2010-E")
-// .then(() => process.exit(0))
-// .catch(e => console.error(e));
