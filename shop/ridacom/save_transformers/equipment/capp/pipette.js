@@ -19,7 +19,7 @@ let _get_imprecision = record =>
     {
         let params = current_specs["imprecision_%"].split("/").map(val => parseFloat(val)).sort((a,b) => a-b);
         if (params[1]) {
-            result.value_range = {
+            result = {
                 from: {"value": params[0], "dimension" : "%"},
                 to: {"value": params[1], "dimension" : "%"}
             }
@@ -43,7 +43,7 @@ let _get_inaccuracy = record =>
     {
         let params = current_specs["inaccuracy_%"].split("/").map(val => parseFloat(val)).sort((a,b) => a-b);
         if (params[1]) {
-            result.value_range = {
+            result = {
                 from: {"value": params[0], "dimension" : "%"},
                 to: {"value": params[1], "dimension" : "%"}
             }
@@ -79,7 +79,7 @@ let _get_color = record =>
 let _get_channel = record =>
 {
     let crawler_item = record.crawler_item;
-    let value = 0;
+    let value = null;
 
     if (record.name.indexOf("single channel") !== -1 || (crawler_item.sub_sub_category || "").toLowerCase().indexOf("single channel") !== -1)
     {
@@ -92,7 +92,7 @@ let _get_channel = record =>
             value = parseInt(match[1], 10)
     }
 
-    return value
+    return value || null
 };
 
 let get_step_volume = record =>
@@ -110,7 +110,7 @@ let get_step_volume = record =>
     while(match);
 
 
-    return volume.length ? {value_step : volume} : null
+    return volume.length ? volume : null
 };
 
 let _get_volume = record =>
@@ -131,7 +131,7 @@ let _get_volume = record =>
                 dimension = size.dimension;
             }
 
-            result.value_range = {
+            result = {
                 from :  { value: parseFloat(range[0]), dimension: dimension },
                 to :  { value: parseFloat(range[1]), dimension: dimension }
             }

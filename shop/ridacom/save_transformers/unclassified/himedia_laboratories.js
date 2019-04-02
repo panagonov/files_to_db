@@ -3,7 +3,7 @@ let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
 let relation_fields = ["supplier", "distributor", "category", "sub_category"];
-let export_version  = 4;
+let export_version  = 30;
 let collection_name = "product";
 
 let category_mapping = {
@@ -14,11 +14,6 @@ let category_mapping = {
     "Density Gradient Separation Media": "unclassified",
     "Chemicals"                        : "chemical",
     "Laboratory Aids & Equipments"     : "equipment"
-};
-
-let specification_mapping = {
-    "Safety #" : "",
-    "Risk #" : ""
 };
 
 let _get_string_data = data => {
@@ -213,6 +208,22 @@ let _get_buffer_form = record => {
     return _get_string_data(data)
 };
 
+let _get_safety = record => {
+    if (!record.specification || !record.specification.length)
+        return null;
+
+    let data = record.specification.filter(item => item.key === "Safety #")[0];
+    return _get_string_data(data)
+};
+
+let _get_risk = record => {
+    if (!record.specification || !record.specification.length)
+        return null;
+
+    let data = record.specification.filter(item => item.key ===  "Risk #")[0];
+    return _get_string_data(data)
+};
+
 let mapping = {
     "_id"                   :  record => `PRODUCT_SOURCE:[HIMEDIA]_SUPPLIER:[RIDACOM]_ID:[${record["oid"].trim() || ""}]`,
     "name"                  : "name",
@@ -227,12 +238,16 @@ let mapping = {
     "storage_conditions"    : _get_storage_conditions,
     "aliases"               : _get_aliases,
     "buffer_form"           : _get_buffer_form,
+    "safety"                : _get_safety,
+    "risk"                  : _get_risk,
     "supplier"              : record => import_utils.get_canonical("Himedia Laboratories", ":supplier"),
     "distributor"           : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
     "category"              : record => import_utils.get_canonical(record.categories[0], ":product_category"),
     "sub_category"          : record => import_utils.get_canonical([record.categories[1], record.categories[2], record.categories[3]].join("; "), ":product_category").slice(0, 1),
     "pdf"                   : record =>  _getPdf(record),
     "original_link"         : "original_link",
+    "others"                : record => record.used_for ? record.used_for[0] : null,
+    "images"                : "original_items.images"
 };
 
 
@@ -249,6 +264,12 @@ let convert = (item, original_items) =>
 
     let suggest_data = import_utils.build_suggest_data(result, relation_fields, type);
     result           = import_utils.clean_result_data(result, relation_fields);
+
+    if (result.images )
+    {
+        count++;
+        console.log(count)
+    }
 
     return {
         converted_item : result,

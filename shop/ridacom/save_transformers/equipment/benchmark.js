@@ -133,11 +133,19 @@ let mapping = {
         }
     },
     "description"         : "crawler_item.description",
-
     "product_relations"   : record => _getProductRelations(record),
     "images"              : "crawler_item.images",
     "pdf"                 : "crawler_item.pdf",
-    "original_link"       : "crawler_item.link"
+    "original_link"       : record =>{
+        if(record.crawler_item.link){
+            return record.crawler_item.link
+        }
+        else if(record.supplies && record.supplies.related && record.supplies.related.length){
+            return record.supplies.related[0].link
+        }
+
+        return null
+    }
 };
 
 let index = 0;
@@ -243,7 +251,7 @@ module.exports = {
     load_crawler_data,
     load_custom_data,
     get_crawler_item,
-    version: 17,
+    version: 30,
     // disable: true
 };
 

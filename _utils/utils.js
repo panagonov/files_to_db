@@ -125,6 +125,26 @@ let isEmptyObj = (obj) =>
     return true;
 };
 
+let format = function(str) //in arrow function arguments not working!!!
+{
+    for( let i = 1; i < arguments.length; i++ )
+    {
+        let regexp = new RegExp( '\\{' + (i - 1) + '\\}', 'gim' );
+        str = str.replace( regexp, arguments[i] );
+    }
+    return str;
+};
+
+let addZero = (value, symbol_count, symbol = "0") =>
+{
+    value = value.toString();
+    let start_length = value.length;
+
+    for (let i = start_length; i < symbol_count; i++)
+        value =  symbol + value;
+    return value;
+};
+
 module.exports = {
     mapping_transform,
     wait,
@@ -133,5 +153,7 @@ module.exports = {
     get_node_type,
     capitalizeFirstLetter,
     objEach,
-    isEmptyObj
+    isEmptyObj,
+    format,
+    addZero
 };

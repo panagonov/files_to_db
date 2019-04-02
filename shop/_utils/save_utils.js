@@ -106,11 +106,14 @@ let build_suggest_data = (record, relation_fields, category) => {
     if (record.images  && record.images.length)
         show_on_match.push({key: "image", value: record.images[0].link});
 
+    let sub_products_id = [record.oid].concat(record.price_model.variation.map(item => item.product_id).filter(item => item));
+    sub_products_id = utils.uniq(sub_products_id);
+
     add_to_suggest_result(human_readable_id(record.name), {
         type    : ["name"],
         category: [category],
         name    : record.name,
-        synonyms : [record.oid],
+        synonyms : sub_products_id,
         show_on_match: show_on_match
     });
 
