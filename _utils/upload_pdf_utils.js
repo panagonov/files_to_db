@@ -210,5 +210,7 @@ let upload_product_pdf = async({file_data, path, file_name, image_index, meta = 
 
 
 module.exports = {
-    upload_product_pdf
+    upload_product_pdf,
+    check_is,
+    download_file
 };
