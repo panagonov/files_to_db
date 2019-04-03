@@ -1,48 +1,39 @@
 let fs              = require("fs");
-let request         = require("request");
+let path            = require("path");
 let s3              = require("../../bioseek/discovery/core/s3.js");
 let image_minimizer = require('../../bioseek/discovery/core/utilities/image_minimizer.js');
 let exec            = require("child_process").exec;
 let errors          = require("./pdf_errors.json");
+let HeadlessBrowser = require("./headless_browser.js");
+let RequestBrowser  = require("./request_browser.js");
 
 let temp_dir = `${__dirname}/_download/`;
 let bucket_name = "bioseek-shop/";
-let check_timeout = 60000;
+let browser        = null;
 
-let cookies = request.jar();
-let browser = request.defaults({proxy: "http://69.46.80.226:12361"});
 
-let check_is = {
-    "pdf" : async(url) =>
-        new Promise((resolve, reject) => {
+/**
+ *
+ * @param {Object} [options]
+ * @param {String} [options.download_dir]
+ */
 
-            let timeout = setTimeout(() => {
-                timeout = null;
-                console.error("File Check Timeout");
-                resolve({confirm: false})
-            }, check_timeout);
+let init = async (options = {}) => {
+    temp_dir = options.download_dir || temp_dir;
 
-            url = url.replace(".co.uk", ".com");
-            browser.get({
-                method: "HEAD",
-                url: url,
-                headers : {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"},
-                followAllRedirects: true,
-                maxRedirects: 100,
-                jar: cookies,
-                strictSSL: false
-            }, (err, response, body) =>
-            {
-                if (!timeout)
-                    return;
+    if(browser)
+        return;
 
-                clearTimeout(timeout);
+    browser = new RequestBrowser();
+    await browser.init();
+};
 
-                if ( err || response.statusCode === 404 || ["application/pdf"].indexOf(response.headers["content-type"]) === -1 )
-                    return resolve({confirm: false});
-                resolve({confirm: true, content_type: response.headers["content-type"]})
-            })
-        }),
+let check_is = async(url, types = []) => {
+    return await browser.check_is(url, types)
+};
+
+let download_file = async(url, file_name) => {
+    return await browser.load(url, file_name)
 };
 
 let convert_pdf_to_image = async(source) =>
@@ -58,27 +49,6 @@ let convert_pdf_to_image = async(source) =>
         })
     });
 
-
-let download_file = async(url, target) =>
-    new Promise((resolve, reject) => {
-        let path = temp_dir + target;
-        url = url.replace(".co.uk", ".com");
-        browser({
-            method: "GET",
-            url : url,
-            headers : {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"},
-            followAllRedirects: true,
-            maxRedirects: 100,
-            jar: cookies,
-            strictSSL: false
-        }).pipe(fs.createWriteStream(path))
-        .on('error', function(err) {console.log(err); })
-        .on("finish", function(err, res)
-        {
-            if (err) return reject(err);
-            resolve (fs.readFileSync(path));
-        });
-    });
 
 let is_file_exists = async (path, id) =>
     await s3.is_file_exists(bucket_name + path, id);
@@ -103,10 +73,10 @@ let download_from_s3 = async(path, id) =>
 
 let generate_pdf_preview = async (file_name) =>
 {
-    await convert_pdf_to_image(temp_dir + file_name);
+    await convert_pdf_to_image(path.join(temp_dir,file_name));
     let thumb_name = file_name.split(".").shift() + "-000001.png";
 
-    let fileBody = fs.readFileSync(temp_dir + thumb_name);
+    let fileBody = fs.readFileSync(path.join(temp_dir,thumb_name));
     let compressed_image = await image_minimizer(fileBody, {width: 200});
 
     return {preview_file_name : thumb_name, compressed_image};
@@ -160,11 +130,12 @@ let upload_product_pdf = async({file_data, path, file_name, image_index, meta = 
             let file_exists = options.force ? false : await is_file_exists(path, file_name);
             if (!file_exists)
             {
-                let link_data = await check_is.pdf(file_data.link);
+                let link_data = await browser.check_is(file_data.link, ["application/pdf"]);
 
                 if (link_data.confirm)
                 {
-                    await download_file(file_data.link, file_name);
+                    let {html} = await browser.load(file_data.link, file_name);
+                    fs.writeFileSync(temp_dir + file_name, html);
                     thumb_name = await upload_pdf_preview(path, file_name, meta);
 
                     await upload_to_s3({path, id: file_name, meta, content_type: link_data.content_type});
@@ -212,5 +183,7 @@ let upload_product_pdf = async({file_data, path, file_name, image_index, meta = 
 module.exports = {
     upload_product_pdf,
     check_is,
-    download_file
+    download_file,
+    init,
+    upload_pdf_preview
 };

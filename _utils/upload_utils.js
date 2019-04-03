@@ -3,66 +3,23 @@ let request         = require("request");
 let s3              = require("../../bioseek/discovery/core/s3.js");
 let image_minimizer = require('../../bioseek/discovery/core/utilities/image_minimizer.js');
 let errors          = require("./errors.json");
+let HeadlessBrowser = require("./headless_browser.js");
+let RequestBrowser  = require("./request_browser.js");
 
-let temp_dir = `${__dirname}/_download/`;
-let bucket_name = "bioseek-shop/";
+let temp_dir       = `${__dirname}/_download/`;
+let bucket_name    = "bioseek-shop/";
 let thumbnail_size = 100; //width in pixels
-let check_timeout = 60000;
+let browser        = null;
 
-let cookies = request.jar();
-let browser = request.defaults({proxy: "http://69.46.80.226:12368"});
+/**
+ *
+ * @param {Object} options
+ * @param {String} options.download_dir
+ */
 
-let check_is = {
-    "image" : async(url) =>
-        new Promise((resolve, reject) =>{
-            let timeout = setTimeout(() => {
-                timeout = null;
-                console.error("File Check Timeout");
-                resolve({confirm: false})
-            }, check_timeout);
-
-            url = url.replace(".co.uk", ".com");
-
-            browser.get({
-                method: "HEAD",
-                url: url,
-                headers : {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"},
-                followAllRedirects: true,
-                maxRedirects: 100,
-                jar: cookies,
-                strictSSL: false
-            }, (err, response, body) => {
-
-                if (!timeout)
-                    return;
-
-                clearTimeout(timeout);
-
-                if ( err || response.statusCode === 404 || ["image/png", "image/jpg", "image/jpeg", "image/gif"].indexOf(response.headers["content-type"]) === -1 )
-                    return resolve({confirm: false});
-                resolve({confirm: true, content_type: response.headers["content-type"]})
-            })
-        })
+let init = (options) => {
+    temp_dir = options.download_dir || temp_dir
 };
-
-let download_file = async(url, target) =>
-    new Promise((resolve, reject) => {
-        let path = temp_dir + target;
-        url = url.replace(".co.uk", ".com");
-        browser({
-            method: "GET",
-            url : url,
-            headers : {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"},
-            followAllRedirects: true,
-            maxRedirects: 100,
-            jar: cookies,
-            strictSSL: false
-        }).pipe(fs.createWriteStream(path)).on("close", function(err, res)
-        {
-            if (err) return reject(err);
-            resolve (fs.readFileSync(path));
-        });
-    });
 
 let download_from_s3 = async(path, id) =>
 {
@@ -100,9 +57,14 @@ let upload_to_s3 = async ({path, id, meta = {}, content_type, file_body}) =>
  * @param {Object} [meta]
  * @param {Object} [options]
  * @param {Boolean} [options.force] - force file download
- * @returns {Promise<{thumb_name: string, link_name: string}>}
+ * @returns {Promise<{link_id: string, thumb_link_id: string}>}
  */
 let upload_product_image = async({file_data, path, product_id, image_index, meta = {}, options = {}}) => {
+    if (!browser)
+    {
+        browser = new RequestBrowser();
+        await browser.init();
+    }
 
     let link_id = product_id.replace(/\W/g, "_") + "_" + image_index;
     let thumb_link_id = link_id + "_thumb_" + thumbnail_size;
@@ -114,30 +76,29 @@ let upload_product_image = async({file_data, path, product_id, image_index, meta
         let file_exists = options.force ? false : await s3.is_file_exists(bucket_name + path, link_id);
         if (!file_exists)
         {
-            let check_file_data = await check_is.image(file_data.link);
+            let check_file_data = await browser.check_is(file_data.link, ["image/png", "image/jpg", "image/jpeg", "image/gif"]);
 
             if (check_file_data.confirm)
             {
-                let file = await download_file(file_data.link, link_id);
-                let compressed_image = file; // await image_minimizer(file);
-                await upload_to_s3({path, id: link_id, meta, content_type: check_file_data.content_type, file_body: compressed_image});
+                let {html} = await browser.load(file_data.link, link_id);
+                if (html)
+                {
+                    let compressed_image = html; // await image_minimizer(file);
+                    await upload_to_s3({path, id: link_id, meta, content_type: check_file_data.content_type, file_body: compressed_image});
 
-                try {
-                    let thumbnail = await image_minimizer(file, {width: thumbnail_size});
-                    await upload_to_s3({path, id: thumb_link_id, meta, content_type: check_file_data.content_type, file_body: thumbnail});
+                    try {
+                        let thumbnail = await image_minimizer(compressed_image, {width: thumbnail_size});
+                        await upload_to_s3({path, id: thumb_link_id, meta, content_type: check_file_data.content_type, file_body: thumbnail});
+                    }
+                    catch(e){
+                        thumb_link_id = null;
+                        console.error("1 thumb error")
+                    }
                 }
-                catch(e){
-                    thumb_link_id = null;
-                    console.error("1 thumb error")
-                }
-
-                try {
-                    fs.unlinkSync(temp_dir + link_id)
-                }
-                catch(e){
+                else
+                {
                     link_id = null;
                     thumb_link_id = null;
-                    console.error("2 unlink error")
                 }
             }
             else
@@ -205,5 +166,6 @@ let upload_product_image = async({file_data, path, product_id, image_index, meta
 };
 
 module.exports = {
-    upload_product_image
+    upload_product_image,
+    init
 };

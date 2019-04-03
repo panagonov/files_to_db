@@ -17,6 +17,7 @@
     "module-alias": "^2.2.0",
     "mongodb": "^3.1.13",
     "node-aho-corasick": "0.0.2",
+    "puppeteer": "^1.14.0",
     "request": "^2.88.0",
     "stream-transform": "^1.0.8",
     "underscore": "^1.9.1",

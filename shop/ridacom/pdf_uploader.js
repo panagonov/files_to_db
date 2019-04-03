@@ -119,6 +119,7 @@ let single_product_upload = async({pdfs, supplier, distributor, options}) => {
 let run = async (crawler_db) => {
 
     await es_db.init();
+    await upload_pdf_utils.init();
     crawler_db = crawler_db || await init_crawler_db();
 
     for (let i = 0; i < product_types.length; i++)
@@ -143,6 +144,7 @@ let upload_single = async (es_oid) => {
 
     let crawler_db = await init_crawler_db();
     await es_db.init();
+    await upload_pdf_utils.init();
 
     let es_product = await es_db.read_one(collection_name, {"body" : {"query" : {"term" : {"oid" : es_oid}}}});
 
@@ -186,4 +188,4 @@ process.on('uncaughtException', function (err, data) {
     r()
 });
 
-r("LA999");
+r("APA028Hu61");
