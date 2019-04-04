@@ -43,11 +43,11 @@ let run = async({url, file_prefix = "", page_count = 616, download_dir}) => {
 let upload = async (dir_name, distributor, supplier) =>
 {
     let thumb_path = `${__dirname}/pdf_thumbs.json`;
-    if (fs.existsSync(thumb_path))
-        return JSON.parse(fs.readFileSync(thumb_path, "utf8"));
-
-
     let pdf_thumbs = {};
+
+    if (fs.existsSync(thumb_path))
+        pdf_thumbs = JSON.parse(fs.readFileSync(thumb_path, "utf8"));
+
     let pdfs = directory_reader(`${dir_name}/`, "pdf", {}, () => "");
     let s3_path = `pdf/${distributor}/${supplier}`;
     let s3_bucket_path = bucket_name + s3_path;
@@ -61,6 +61,10 @@ let upload = async (dir_name, distributor, supplier) =>
     for (let key in pdfs)
     {
         let file_name = `${key}.pdf`;
+        if (pdf_thumbs[file_name]) {
+            continue
+        }
+
         if (!await s3.is_file_exists(s3_bucket_path, file_name))
         {
             await s3.upload({

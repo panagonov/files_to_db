@@ -15,13 +15,13 @@ let extract_pdf_text = async(source) =>
 
 let run = async (path) =>
 {
-    if (fs.existsSync(`${path}.text`))
+    if (fs.existsSync(`${path}.txt`))
     {
-        return fs.readFileSync(`${path}.text`, "utf8");
+        return fs.readFileSync(`${path}.txt`, "utf8");
     }
 
     let text = await extract_pdf_text(`${path}.pdf`);
-    fs.writeFileSync(`${path}.text`, text, "utf8");
+    fs.writeFileSync(`${path}.txt`, text, "utf8");
     return text
 };
 

@@ -66,20 +66,14 @@ let wait = async(delay) =>
 
 let uniq = (arr, fn) =>
 {
-    if(!fn)
+    let result = arr.reduce((res, item) =>
     {
-        let result = arr.reduce((res, item) =>
-        {
-            res[item] = item;
-            return res
-        }, {});
+        let key = fn ? fn(item) : item;
+        res[key] = item;
+        return res
+    }, {});
 
-        return Object.keys(result).map(key => result[key])
-    }
-    else
-    {
-        return fn(arr)
-    }
+    return Object.keys(result).map(key => result[key])
 };
 
 let normalize_string = (str) => {

@@ -9,6 +9,7 @@ let fs                  = require('fs');
  * @param {Boolean} [options.flat_recursive_tree] - return flat object - files with a same names in a different directories will be overlap!!!
  * @param {Number} [options.recursive_dept] - number of recursive cycles - if missing -> infinity
  * @param {Array} [options.allowFilesList] - list of file names without extensions
+ * @param {Array} [options.denyFilesList] - list of file names without extensions
  * @param {Number} [options.current_recursive_step] - service info don't use!!!
  * @param {Function} [transformFn] - transform file content
  * @returns {Object} - key = fileName, value = file content
@@ -43,6 +44,9 @@ let readFiles = (path, file_type, options = {}, transformFn) => {
         let name = fileName.split(".").shift();
         let type = fileName.split(".").pop();
         if (type === file_type) {
+            if (options.denyFilesList && options.denyFilesList.indexOf(fileName) !== -1)
+                return;
+
             if (!options.allowFilesList || (options.allowFilesList && options.allowFilesList.length && options.allowFilesList.indexOf(name) !== -1))
             {
                 result[name] = transformFn ? transformFn(fileName, file) : require(file);
