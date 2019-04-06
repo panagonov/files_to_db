@@ -6,9 +6,7 @@ let default_settings = {
     temp_dir     : `${__dirname}/_download/`
 };
 
-function RequestBrowser(){
-
-}
+function RequestBrowser(){}
 
 /**
  *
@@ -19,7 +17,7 @@ function RequestBrowser(){
  * @returns {Promise<void>}
  */
 RequestBrowser.prototype.init = async function(options) {
-    this.options = options || default_settings;
+    this.options = Object.assign(default_settings, options || {});
     this.cookies = request.jar();
 
     if (this.options.no_proxy)
@@ -28,18 +26,22 @@ RequestBrowser.prototype.init = async function(options) {
     }
     else
     {
-        this.browser = request.defaults({proxy: "http://69.46.80.226:12368"});
+        this.browser = request.defaults({/*proxy: "http://69.46.80.226:12368"*/});
     }
 };
-
 
 RequestBrowser.prototype.close = async function() {
 
 };
 
-RequestBrowser.prototype.load = async function(url, target) {
+RequestBrowser.prototype.load = async function(url, types = []) {
     return new Promise((resolve, reject) => {
-        let path = this.options.temp_dir + target;
+
+        let timeout = setTimeout(() => {
+            timeout = null;
+            console.error("File Check Timeout");
+            resolve({confirm: false})
+        }, this.options.check_timeout);
 
         this.browser({
             method: "GET",
@@ -48,16 +50,23 @@ RequestBrowser.prototype.load = async function(url, target) {
             followAllRedirects: true,
             maxRedirects: 100,
             jar: this.cookies,
-            strictSSL: false
-        }).pipe(fs.createWriteStream(path)).on("close", function(err, res)
+            strictSSL: false,
+            encoding: null
+        }, (err, response, body) =>
         {
-            if (err){
-                console.error("Browser Load Error", err);
-                return resolve({html: null});
+            if (!timeout)
+                return;
+
+            clearTimeout(timeout);
+
+            if ( err || response.statusCode === 404 || types.indexOf(response.headers["content-type"]) === -1 ){
+                console.error("Download Error:",url)
+                return resolve({confirm: false});
             }
-            let html = fs.readFileSync(path);
-            fs.unlinkSync(path);
-            resolve ({html : html});
+
+            let content_type = response.headers["content-type"];
+            // let html = new Buffer.from(body, "base64")
+            resolve ({confirm: true, html : body, content_type: content_type});
         });
     });
 };

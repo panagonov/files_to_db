@@ -48,57 +48,53 @@ let upload_to_s3 = async ({path, id, meta = {}, content_type, file_body}) =>
     return id;
 };
 
+let s3_check_is_file_exists = async(path, id) =>
+    await s3.is_file_exists(bucket_name + path, id);
 /**
  *
- * @param {Object} file_data
+ * @param {String} link
  * @param {String} path
  * @param {String} product_id
- * @param {Number} image_index
+ * @param {Number} file_index
  * @param {Object} [meta]
  * @param {Object} [options]
  * @param {Boolean} [options.force] - force file download
  * @returns {Promise<{link_id: string, thumb_link_id: string}>}
  */
-let upload_product_image = async({file_data, path, product_id, image_index, meta = {}, options = {}}) => {
+let upload_product_image = async({link, path, product_id, file_index, meta = {}, options = {}}) => {
     if (!browser)
     {
         browser = new RequestBrowser();
         await browser.init();
     }
 
-    let link_id = product_id.replace(/\W/g, "_") + "_" + image_index;
+    let link_id = product_id.replace(/\W/g, "_") + "_" + file_index;
     let thumb_link_id = link_id + "_thumb_" + thumbnail_size;
 
-    console.time("IMAGE");
+    console.time("IMAGE " + product_id);
 
-    if (file_data.link && file_data.link.indexOf("http") === 0)
+    let file_exists = options.force ? false : await s3.is_file_exists(bucket_name + path, link_id);
+
+    if (!file_exists)
     {
-        let file_exists = options.force ? false : await s3.is_file_exists(bucket_name + path, link_id);
-        if (!file_exists)
+        link = link.replace("/500x/", "/x800/")/*.replace(".co.uk", ".com")*/;
+        let check_file_data = await browser.load(link, ["image/png", "image/jpg", "image/jpeg", "image/gif"]);
+
+        if (check_file_data.confirm)
         {
-            let check_file_data = await browser.check_is(file_data.link, ["image/png", "image/jpg", "image/jpeg", "image/gif"]);
-
-            if (check_file_data.confirm)
+            let html = check_file_data.html;
+            if (html)
             {
-                let {html} = await browser.load(file_data.link, link_id);
-                if (html)
-                {
-                    let compressed_image = html; // await image_minimizer(file);
-                    await upload_to_s3({path, id: link_id, meta, content_type: check_file_data.content_type, file_body: compressed_image});
+                let compressed_image = html; // await image_minimizer(file);
+                await upload_to_s3({path, id: link_id, meta, content_type: check_file_data.content_type, file_body: compressed_image});
 
-                    try {
-                        let thumbnail = await image_minimizer(compressed_image, {width: thumbnail_size});
-                        await upload_to_s3({path, id: thumb_link_id, meta, content_type: check_file_data.content_type, file_body: thumbnail});
-                    }
-                    catch(e){
-                        thumb_link_id = null;
-                        console.error("1 thumb error")
-                    }
+                try {
+                    let thumbnail = await image_minimizer(compressed_image, {width: thumbnail_size});
+                    await upload_to_s3({path, id: thumb_link_id, meta, content_type: check_file_data.content_type, file_body: thumbnail});
                 }
-                else
-                {
-                    link_id = null;
+                catch(e){
                     thumb_link_id = null;
+                    console.error("1 thumb error")
                 }
             }
             else
@@ -109,63 +105,42 @@ let upload_product_image = async({file_data, path, product_id, image_index, meta
         }
         else
         {
-            let file_exists = options.force ? false : await s3.is_file_exists(bucket_name + path, thumb_link_id);
+            link_id = null;
+            thumb_link_id = null;
+        }
+    }
+    else
+    {
+        let thumb_exists = options.force ? false : await s3.is_file_exists(bucket_name + path, thumb_link_id);
 
-            if(!file_exists)
-            {
-                let {file, content_type, error} = await download_from_s3(path, link_id);
-                if (error){
-                    console.error("13 download error");
-                    link_id = null;
-                    thumb_link_id = null;
+        if(!thumb_exists)
+        {
+            let {file, content_type, error} = await download_from_s3(path, link_id);
+            if (error){
+                console.error("13 download error");
+                link_id = null;
+                thumb_link_id = null;
+            }
+            else {
+                try {
+                    let thumbnail = await image_minimizer(file, {width: thumbnail_size});
+                    await upload_to_s3({path, id: thumb_link_id, meta, content_type: content_type, file_body: thumbnail});
                 }
-                else {
-                    try {
-                        let thumbnail = await image_minimizer(file, {width: thumbnail_size}, {no_minimize: true});
-                        await upload_to_s3({path, id: thumb_link_id, meta, content_type: content_type, file_body: thumbnail});
-                    }
-                    catch(e){
-                        console.error("2 thumb error");
-                        thumb_link_id = null;
-                    }
+                catch(e){
+                    console.error("2 thumb error");
+                    thumb_link_id = null;
                 }
             }
         }
     }
-    // else if (!file_data.thumb_link || file_data.thumb_link.indexOf("http") === 0)
-    // {
-    //     if(!await s3.is_file_exists(bucket_name + path, thumb_link_id))
-    //     {
-    //         let {file, content_type, error} = await download_from_s3(path, link_id);
-    //         if (error){
-    //             if (error){
-    //                 console.error("4 download error")
-    //                 link_id = null
-    //                 thumb_link_id = null;
-    //             }
-    //         }
-    //         else {
-    //             let thumbnail;
-    //             try {
-    //                 thumbnail = await image_minimizer(file, {width: thumbnail_size}, {no_minimize: true});
-    //                 await upload_to_s3({path, id: thumb_link_id, meta, content_type: content_type, file_body: thumbnail});
-    //             }
-    //             catch(e)
-    //             {
-    //                 console.error("5 thumb error")
-    //                 console.error(e);
-    //                 thumb_link_id = null
-    //             }
-    //         }
-    //     }
-    // }
 
-    console.timeEnd("IMAGE");
+    console.timeEnd("IMAGE " + product_id);
 
     return {link_id, thumb_link_id}
 };
 
 module.exports = {
     upload_product_image,
-    init
+    init,
+    s3_check_is_file_exists
 };

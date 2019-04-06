@@ -113,7 +113,9 @@ let get_battery_life = crawler_item =>
 
 let mapping = {
     "capacity"              : record => {
-        return record.crawler_item.oid && record.crawler_item.oid.indexOf("Calibration Weight") !== -1 ? null :  _get_range_value(record.crawler_item, "Capacity");
+        return record.crawler_item.oid && record.crawler_item.oid.indexOf("Calibration Weight") !== -1 ?
+            null :
+            [_get_range_value(record.crawler_item, "Capacity")].filter(item => item);
     },
     "readability"           : record => _get_range_value(record.crawler_item, "Readability"),
     "linearity"             : record => _get_range_value(record.crawler_item, "Linearity"),

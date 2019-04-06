@@ -20,12 +20,6 @@ let browser        = null;
 
 let init = async (options = {}) => {
     temp_dir = options.download_dir || temp_dir;
-
-    if(browser)
-        return;
-
-    browser = new RequestBrowser();
-    await browser.init();
 };
 
 let check_is = async(url, types = []) => {
@@ -64,6 +58,9 @@ let upload_to_s3 = async({path, id, meta = {}, content_type, file_body}) =>
     });
     return id
 };
+
+let s3_check_is_file_exists = async(path, id) =>
+    await s3.is_file_exists(bucket_name + path, id);
 
 let download_from_s3 = async(path, id) =>
 {
@@ -108,75 +105,73 @@ let upload_pdf_preview = async(path, file_name, meta) => {
 
 /**
  *
- * @param {Object} file_data
+ * @param {String} link
  * @param {String} path
  * @param {String} file_name
- * @param {Number} image_index
  * @param {Object} [meta]
  * @param {Object} [options]
  * @param {Boolean} [options.force] - force file download
- * @returns {Promise<{thumb_name: string, link_name: string}>}
+ * @returns {Promise<{link_id: string, thumb_link_id: string}>}
  */
-let upload_product_pdf = async({file_data, path, file_name, image_index, meta = {}, options = {}}) => {
+let upload_product_pdf = async({link, path, file_name, meta = {}, options = {}}) => {
+    if (!browser)
+    {
+        browser = new RequestBrowser();
+        await browser.init();
+    }
 
-    let thumb_name = "";
-    let link_name = "";
+    let link_id = "";
+    let thumb_link_id = "";
 
     console.time("PDF");
-    try
+
+    let file_exists = options.force ? false : await s3.is_file_exists(bucket_name + path, file_name);
+
+    if (!file_exists)
     {
-        if (file_data.link && file_data.link.indexOf("http") === 0)
+        link = link.replace(".co.uk", ".com");
+        let check_file_data = await browser.load(link, ["application/pdf"]);
+
+        if (check_file_data.confirm)
         {
-            let file_exists = options.force ? false : await is_file_exists(path, file_name);
-            if (!file_exists)
+            let html = check_file_data.html;
+            if (html)
             {
-                let link_data = await browser.check_is(file_data.link, ["application/pdf"]);
+                fs.writeFileSync(temp_dir + file_name, html);
+                thumb_link_id = await upload_pdf_preview(path, file_name, meta);
 
-                if (link_data.confirm)
-                {
-                    let {html} = await browser.load(file_data.link, file_name);
-                    fs.writeFileSync(temp_dir + file_name, html);
-                    thumb_name = await upload_pdf_preview(path, file_name, meta);
-
-                    await upload_to_s3({path, id: file_name, meta, content_type: link_data.content_type});
-                    link_name = file_name;
-
-                    fs.unlinkSync(temp_dir + file_name);
-                }
-            }
-            else
-            {
-                link_name = file_name;
-                thumb_name = file_name.split(".").shift() + "-000001.png";
-
-                if(!await is_file_exists(path, thumb_name)) {
-                    await download_from_s3(path,file_name);
-                    thumb_name = await upload_pdf_preview(path, file_name, meta);
-
-                    fs.unlinkSync(temp_dir + file_name);
-                }
-            }
-        }
-        else
-        {
-            link_name = file_name;
-            thumb_name = file_name.split(".").shift() + "-000001.png";
-
-            let file_exists = options.force ? false : await is_file_exists(path, thumb_name);
-            if(!file_exists) {
-                await download_from_s3(path,file_name);
-                await upload_pdf_preview(path, file_name, meta);
+                await upload_to_s3({path, id: file_name, meta, content_type: check_file_data.content_type});
+                link_id = file_name;
 
                 fs.unlinkSync(temp_dir + file_name);
             }
-
         }
     }
-    catch(e) {}
+    else
+    {
+        link_id = file_name;
+        thumb_link_id = file_name.split(".").shift() + "-000001.png";
+
+        let thumb_exists = options.force ? false : await s3.is_file_exists(bucket_name + path, thumb_link_id);
+
+        if(!thumb_exists) {
+            let {file, content_type, error} = await download_from_s3(path,file_name);
+            if (error){
+                console.error("13 download error");
+                link_id = "";
+                thumb_link_id = "";
+            }
+            else
+            {
+                thumb_link_id = await upload_pdf_preview(path, file_name, meta);
+                fs.unlinkSync(temp_dir + file_name);
+            }
+        }
+    }
 
     console.timeEnd("PDF");
 
-    return {link_name, thumb_name}
+    return {link_id, thumb_link_id}
 };
 
 
@@ -185,5 +180,6 @@ module.exports = {
     check_is,
     download_file,
     init,
-    upload_pdf_preview
+    upload_pdf_preview,
+    s3_check_is_file_exists
 };

@@ -1,44 +1,35 @@
 let puppeteer       = require('puppeteer');
 
 let default_settings = {
-    check_timeout: 60000,
+    check_timeout: 1200000,
     temp_dir     : `${__dirname}/_download/`
 };
 
-function HeadlessBrowser(){
-
-}
+function HeadlessBrowser(){}
 
 HeadlessBrowser.prototype.init = async function(options)
 {
-    this.options = options || default_settings;
+    this.options = Object.assign(default_settings, options || {});
 
-    if (options.no_proxy)
+    if (this.options.no_proxy)
     {
-        this.browser = await puppeteer.launch({headless: options.headless});
+        this.browser = await puppeteer.launch({headless: this.options.headless});
     }
     else
     {
-        this.proxy_settings = "69.46.80.226:12360";
+        this.proxy_settings = {server: "69.46.80.226:12360"};
         this.browser = await puppeteer.launch({
-            headless: options.headless,
+            headless: this.options.headless,
             args    : [ `--proxy-server=${this.proxy_settings.server}` ]
         });
     }
 
     this.page = await this.browser.newPage();
     await this.page.setViewport({width: 1600, height: 1000});
-    await this.page.setRequestInterception(true);
+    // await this.page.setRequestInterception(true);
 
     if (this.proxy_settings && this.proxy_settings.authenticate)
         await this.page.authenticate(this.proxy_settings.authenticate);
-
-    // this.page.on('request', request => {
-    //     // if (request.resourceType() === 'image')
-    //     //     request.abort();
-    //     // else
-    //     //     request.continue();
-    // });
 };
 
 HeadlessBrowser.prototype.close = async function () {
@@ -74,7 +65,7 @@ HeadlessBrowser.prototype.check_is = async function (url, types) {
     }, this.options.check_timeout);
 
 
-    let {html, content_type, headers} = await load(url);
+    let {html, content_type, headers} = await this.load(url);
 
     if (timeout)
     {
@@ -84,7 +75,7 @@ HeadlessBrowser.prototype.check_is = async function (url, types) {
         {
             return {confirm: false};
         }
-        return {confirm: true, content_type: content_type}
+        return {confirm: true, content_type: content_type, html: html}
     }
 };
 

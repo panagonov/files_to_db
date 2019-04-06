@@ -1,16 +1,25 @@
-let fs               = require("fs");
-let es_db            = require("../../_utils/es_db.js");
-let progress         = require("./_cache/image_uploader_progress.json");
+let fs           = require("fs");
+let es_db        = require("../../_utils/es_db.js");
+let progress     = require("./_cache/image_uploader_progress.json");
 let upload_utils = require("../../_utils/upload_utils.js");
 
 let product_types =  fs.readdirSync(`${__dirname}/save_transformers`);
 let field_name = "image_crawler_version";
 let collection_name = "product";
 let cache_collection = "product_image";
-let crawler_version = 12;
+let crawler_version = 20;
 
-let upload = async(product_type, crawler_db) => {
-    let limit = 10;
+/**
+ *
+ * @param product_type
+ * @param crawler_db
+ * @param {Object} options
+ * @param {Boolean} options.force - re-craw all images
+ * @param {Boolean} options.check_uploaded
+ * @returns {Promise<void>}
+ */
+let upload = async(product_type, crawler_db, options = {}) => {
+    let limit = options.force ? 1 : 10;
     let page = 0;
     let result = [];
 
@@ -27,7 +36,7 @@ let upload = async(product_type, crawler_db) => {
                 ]
             }
         },
-        "_source" : ["images", "supplier", "distributor"]
+        "_source" : ["images", "supplier", "distributor", "distributor_only"]
     };
 
     do {
@@ -47,7 +56,7 @@ let upload = async(product_type, crawler_db) => {
         for (let i = 0; i < result.length; i++)
         {
             let product = result[i];
-            let images = product.images;
+            let images = options.force ? product.distributor_only.images : product.images;
             let document = {
                 ...crawler_version ? {[field_name] : crawler_version} : ""
             };
@@ -57,12 +66,19 @@ let upload = async(product_type, crawler_db) => {
                 let hash_product = ready_products_hash[product._id];
 
 
-                if (!hash_product)
+                if (!hash_product || options.force)
                 {
                     let supplier = product.supplier[0];
                     let distributor = product.distributor[0];
 
-                    document.images = await single_product_upload({images, supplier, distributor, _id: product._id, crawler_version});
+                    document.images = await single_product_upload({
+                        images,
+                        originals : product.distributor_only.images,
+                        supplier,
+                        distributor,
+                        _id: product._id,
+                        options: options
+                    });
                     mongo_bulk.push({"command_name": "upsert", "_id": product._id, "document": {images: document.images}})
                 }
                 else
@@ -90,15 +106,26 @@ let upload = async(product_type, crawler_db) => {
     fs.writeFileSync(__dirname + "/_cache/image_uploader_progress.json", JSON.stringify(progress), "utf8");
 };
 
-let single_product_upload = async({images, supplier, distributor, _id, options}) => {
+let single_product_upload = async({items, originals, supplier, distributor, _id, options}) => {
 
-    if (images && images.length)
+    for (let i = 0; i < (items || []).length; i++)
     {
-        for (let i = 0; i < images.length; i++)
+        let file_data = items[i];
+
+        if(file_data.link.indexOf("http") !== 0 && options.check_uploaded)
         {
-            let file_data = images[i];
+            if (!(await upload_utils.s3_check_is_file_exists(`image/${distributor}/${supplier}`, file_data.link)))
+            {
+                console.error(`image/${distributor}/${supplier}/${_id} is missing`);
+                items[i] = originals[i];
+                file_data = items[i]
+            }
+        }
+
+        if (file_data.link.indexOf("http") === 0)
+        {
             let new_item_names = await upload_utils.upload_product_image({
-                file_data,
+                link: file_data.link,
                 path: `image/${distributor}/${supplier}`,
                 product_id: _id,
                 image_index: i,
@@ -106,16 +133,17 @@ let single_product_upload = async({images, supplier, distributor, _id, options})
                 options
             }
             );
-            new_item_names.link_id ? images[i].link = new_item_names.link_id : null;
-            new_item_names.thumb_link_id ? images[i].thumb_link = new_item_names.thumb_link_id : null
+            new_item_names.link_id ? items[i].link = new_item_names.link_id : null;
+            new_item_names.thumb_link_id ? items[i].thumb_link = new_item_names.thumb_link_id : null
         }
-        console.log(`Uploaded ${images.length} images: ${supplier}`)
-    }
 
-    return images
+    }
+    console.log(`Uploaded ${items.length} images: ${supplier}`);
+
+    return items
 };
 
-let run = async (crawler_db) => {
+let run = async (crawler_db, options) => {
 
     await es_db.init();
     crawler_db = crawler_db || await init_crawler_db();
@@ -126,7 +154,7 @@ let run = async (crawler_db) => {
 
         if (progress[product_type])
             continue;
-        await upload(product_type, crawler_db)
+        await upload(product_type, crawler_db, options)
     }
 };
 
@@ -148,25 +176,26 @@ let upload_single = async (es_oid) => {
     if (!es_product)
         return console.error("Product not found");
 
-    let images = es_product.distributor_only.images;
+    let items = es_product.distributor_only.images;
 
-    if (!images  || !images.length)
+    if (!items  || !items.length)
         return console.error("No images");
 
     let supplier = es_product.supplier[0];
     let distributor = es_product.distributor[0];
-    let ready_images =  await single_product_upload({images, supplier, distributor, _id: es_product._id, options: {force: true}});
+    let ready_items =  await single_product_upload({items, supplier, distributor, _id: es_product._id, options: {force: true}});
 
-    await es_db.update(collection_name, {data : {_id : es_product._id, images: ready_images}});
-    console.log(es_product._id)
-    await crawler_db.create(cache_collection, {data : {_id : es_product._id, images: ready_images}})
+    await es_db.update(collection_name, {data : {_id : es_product._id, images: ready_items}});
+    console.log(es_product._id);
+    console.log(ready_items);
+    await crawler_db.create(cache_collection, {data : {_id : es_product._id, images: ready_items}})
 };
 
 module.exports = {
     run
 };
 
-let r  = (oid) => {
+let r  = (oid, options) => {
     if (oid) {
         upload_single(oid)
         .then(() => process.exit(0))
@@ -174,7 +203,7 @@ let r  = (oid) => {
     }
     else
     {
-        run()
+        run("", options)
        .then(() => process.exit(0))
        .catch(e => { console.error(e); r() })
     }
@@ -185,4 +214,4 @@ process.on('uncaughtException', function (err, data) {
     r()
 });
 
-r("5030005C");
+r("" , {check_uploaded: true});
