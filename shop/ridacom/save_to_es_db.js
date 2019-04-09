@@ -177,7 +177,6 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fie
                 not_found_custom = not_found_custom.concat(missing_data);
         });
 
-
         if (es_bulk.length){
 
             let ids = es_bulk.map(({_id}) => _id);
@@ -188,7 +187,7 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fie
                 if (cached_pdfs[item._id])
                     item.document.pdf = cached_pdfs[item._id].pdf;
 
-                if (cached_images[item._id] && !cached_images[item._id].images.some(({link}) => image_errors[link]))
+                if (cached_images[item._id] && cached_images[item._id].images && !cached_images[item._id].images.some(({link}) => image_errors[link]))
                     item.document.images = cached_images[item._id].images;
             });
 
@@ -199,6 +198,7 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fie
 
         let ids = result.map(({_id}) => _id);
         await mongo_db.update_many(collection_name, {query: {_id: {$in: ids}}, data: {export_version: export_version}});
+
         page++;
         console.log(distributor, type, site, `${page * limit}/${count}`)
 

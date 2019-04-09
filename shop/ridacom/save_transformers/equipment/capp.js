@@ -24,9 +24,6 @@ csvtojson().fromFile(__dirname +"/capp/props.csv")
     }, {})
 });
 
-
-let fixator = require("./capp/fixator.js");
-
 let _getImages = item => {
 
     if(item.image)
@@ -141,8 +138,6 @@ let convert = (item, crawler_item, custom_data) =>
     let record = Object.assign({}, item, {crawler_item: crawler_item1 || {}});
 
     let result = utils.mapping_transform(mapping, record);
-
-    // result = fixator(result, record);
 
     let additional_data = get_additional_category_data(record, result);
     result = Object.assign(result, additional_data);

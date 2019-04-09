@@ -58,10 +58,15 @@ let s3_check_is_file_exists = async(path, id) =>
  * @param {Number} file_index
  * @param {Object} [meta]
  * @param {Object} [options]
+ * @param {Object} [file_content]
+ * @param {Buffer} [file_content.html]
+ * @param {String} [file_content.content_type]
+ * @param {Boolean} [file_content.confirm]
+ *
  * @param {Boolean} [options.force] - force file download
  * @returns {Promise<{link_id: string, thumb_link_id: string}>}
  */
-let upload_product_image = async({link, path, product_id, file_index, meta = {}, options = {}}) => {
+let upload_product_image = async({link, path, product_id, file_index, meta = {}, options = {}, file_content}) => {
     if (!browser)
     {
         browser = new RequestBrowser();
@@ -77,8 +82,8 @@ let upload_product_image = async({link, path, product_id, file_index, meta = {},
 
     if (!file_exists)
     {
-        link = link.replace("/500x/", "/x800/")/*.replace(".co.uk", ".com")*/;
-        let check_file_data = await browser.load(link, ["image/png", "image/jpg", "image/jpeg", "image/gif"]);
+        link ? link = link.replace("/500x/", "/x800/")/*.replace(".co.uk", ".com")*/ : null;
+        let check_file_data = file_content || await browser.load(link, ["image/png", "image/jpg", "image/jpeg", "image/gif"]);
 
         if (check_file_data.confirm)
         {

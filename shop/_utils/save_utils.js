@@ -8,7 +8,7 @@ let human_readable_id = (str, oid) => {
 };
 
 let size_parser = size => {
-    let match = /^(\-?[\d|\.]+)\s?([.|\S]+)?\s?(.+)?/.exec((size || "").toString().trim());
+    let match = /^(\-?\+?[\d|\.]+)\s?([.|\S]+)?\s?(.+)?/.exec((size || "").toString().trim());
     let value = match && match[1] ? parseFloat(match[1]) : 0;
     let dimension = match && match[2] ? match[2].trim() : "";
     let more_data = match && match[3] ? match[3].trim() : "";

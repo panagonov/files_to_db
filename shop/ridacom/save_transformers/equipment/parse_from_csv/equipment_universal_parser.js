@@ -1,5 +1,13 @@
 let utils        = require("../../../../../_utils/utils.js");
 let import_utils = require("../../../../_utils/save_utils.js");
+let render_specs = require("../../../../../../bioseek/discovery/core/_auto_generate_config/render_specs.json");
+let transform_fns  = {};
+
+utils.objEach(render_specs, (key, value) => {
+    (value || []).forEach(item => {
+        transform_fns[item.name] = item.transform_fn
+    })
+});
 
 let _range_parser = value => {
     let plus_minus_range = false;
@@ -9,7 +17,7 @@ let _range_parser = value => {
     }
 
 
-    let range = (value || "").split("-");
+    let range = (value || "").replace(" to ", "-").split("-");
     let from  = import_utils.size_parser(range[0].trim());
     let to    = import_utils.size_parser((range[1] || "").trim());
 
@@ -45,9 +53,10 @@ let _range_parser = value => {
     return null
 };
 
-let _array_range_parser = value =>
-    _text_to_array(value).filter(item => item).map(item => _range_parser(item));
-
+let _array_range_parser = value =>{
+    value = (value || "").replace(/,/g, ";");
+    return _text_to_array(value).filter(item => item).map(item => _size_parser(item)).filter(item => item);
+};
 
 let _size_parser = value => {
     let result = import_utils.size_parser(value);
@@ -95,7 +104,7 @@ let _dimension_parser = value => {
 
 let _text_to_array = value => {
     value = value.replace(/\n/g, ";");
-    return value.split(";").map(item => item.trim())
+    return value.split(";").map(item => item.trim()).filter(item => item)
 };
 
 let _number_parser = value =>
@@ -103,6 +112,11 @@ let _number_parser = value =>
 
 let _string_parser = value =>
     (value || "").replace(/\s/g," ").trim();
+
+
+let _images_parser = value => {
+    return _text_to_array(value).map(link =>({link}))
+}
 
 let _category_parser = value => {
     let result = _text_to_array(value);
@@ -119,39 +133,33 @@ let _sub_category_parser = value => {
         return res;
     }, [])
 };
-
 let parsers = {
-    rpm                 : _range_parser,
-    capacity            : _array_range_parser,
-    noise_level         : _range_parser,
-    overall_dimensions  : _dimension_parser,
-    voltage             : _step_parser,
-    product_relations   : _text_to_array,
-    electric_power      : _step_parser,
-    electric_frequency  : _range_parser,
-    weight              : _size_parser,
-    warranty            : _size_parser,
-    program_memory      : _number_parser,
-    channel             : _number_parser,
-    cord_length         : _size_parser,
-    temperature_settings: _range_parser,
-    temperature_accuracy: _size_parser,
-    ramp_rate           : _range_parser,
-    category            : _category_parser,
-    sub_category        : _sub_category_parser,
-    volume              : _range_parser,
-    inaccuracy          : _range_parser,
-    imprecision         : _range_parser,
-    color               : _string_parser,
-    name                : _string_parser,
-    original_link       : _string_parser,
+    "plainText"         : _string_parser,
+    "arrayToText"       : _text_to_array,
+    "arrayToParagraphs" : _text_to_array,
+    "dimensionValue"    : _range_parser,
+    "arrayOfDimensions" : _array_range_parser,
+    "sizeDimensionValue": _dimension_parser,
+    "number"            : _number_parser,
+    "images"            : _images_parser,
+
+    "product_relations" : _text_to_array,
+    "category"          : _category_parser,
+    "sub_category"      : _sub_category_parser,
 };
 
+let unused_fields = ["oid", "alternative_oid"];
 let convert = (specifications) => {
 
-    let result = Object.keys(specifications).reduce((res, field_name) => {
-        if (parsers.hasOwnProperty(field_name)) {
-            let field_value = parsers[field_name](specifications[field_name]);
+    let clear_specs = {};
+    utils.objEach(specifications, (key, value) => value && value.trim() ? clear_specs[key] = value : null);
+
+    let result = Object.keys(clear_specs).reduce((res, field_name) => {
+        let transform_fn_name = transform_fns[field_name];
+        let transform_fn = parsers[transform_fn_name] || parsers[field_name];
+
+        if (transform_fn) {
+            let field_value = transform_fn(specifications[field_name]);
 
             if (field_value instanceof Array && !field_name.length)
                 return res;
@@ -163,8 +171,24 @@ let convert = (specifications) => {
             res[field_name] = field_value;
             return res;
         }
+        else if (unused_fields.indexOf(field_name) === -1)
+        {
+            console.error(`Parser for field "${field_name}" was not found ${transform_fn_name}`)
+        }
         return res;
     }, {});
+
+    let specs_fields = Object.keys(clear_specs).filter(item => unused_fields.indexOf(item) === -1).length;
+    let result_fields = Object.keys(result).length;
+
+    if (specs_fields.length !== result_fields.length)
+    {
+        console.error("Missing transformed fields");
+        console.error(JSON.stringify(specs_fields.filter(item => result_fields.indexOf(item) === -1)));
+    }
+
+    // if (["R4040","BSH200"].indexOf(specifications.oid) !== -1)
+    //     debugger //capacity, ramp_timer_range
 
     return result
 };
@@ -172,4 +196,4 @@ let convert = (specifications) => {
 module.exports = convert;
 
 
-// console.log(_sub_category_parser("pipette_accessories"));
+// console.log(_range_parser("4 to +65°C"));

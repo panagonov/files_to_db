@@ -1,12 +1,29 @@
-let fs           = require("fs");
-let utils        = require("../../../../_utils/utils.js");
-let import_utils = require("../../../_utils/save_utils.js");
-let fixator      = require("./benchmark/fixator.js");
+const csvtojson          = require("csvtojson");
+let fs                   = require("fs");
+let utils                = require("../../../../_utils/utils.js");
+let import_utils         = require("../../../_utils/save_utils.js");
+let fixator              = require("./benchmark/fixator.js");
+let product_props_parser = require("./parse_from_csv/equipment_universal_parser.js");
 
 let collection_name = "product";
 let relation_fields = ["supplier", "distributor", "category", "sub_category"];
 
 let category_hash = {};
+
+let product_props = {};
+
+csvtojson().fromFile(__dirname +"/benchmark/props.csv")
+.then((jsonObj)=>{
+    product_props = jsonObj.reduce((res, item) => {
+        res[item.oid] = item;
+        res[item.oid + "-E"] = item;
+        res[item.oid.replace(/\-E$/, "")] = item;
+        res[item.alternative_oid] = item;
+        if (id_fixes_map[item.oid])
+            res[id_fixes_map[item.oid]] = item;
+        return res
+    }, {})
+});
 
 let id_fixes_map = {
     "BV1003-T150" : "BV1003-150",
@@ -20,7 +37,7 @@ let id_fixes_map = {
 let get_real_oid = oid =>
 {
     return id_fixes_map[oid] || oid.replace(/\-E$/, "")
-}
+};
 
 let load_crawler_data = async(items, crawler_db) => {
     let crawler_ids = items.reduce((res, {oid}) => {
@@ -177,6 +194,10 @@ let convert = (item, crawler_item, custom_data) =>
     let result = utils.mapping_transform(mapping, record);
     result = fixator(result, record);
 
+    if (product_props[result.oid]){
+        result = Object.assign(result, product_props_parser(product_props[result.oid]));
+    }
+
     let service_data = import_utils.build_service_data(result, relation_fields);
     result = Object.assign(result, service_data);
 
@@ -251,7 +272,7 @@ module.exports = {
     load_crawler_data,
     load_custom_data,
     get_crawler_item,
-    version: 30,
+    version: 33,
     // disable: true
 };
 

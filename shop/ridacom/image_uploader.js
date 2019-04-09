@@ -7,7 +7,7 @@ let product_types =  fs.readdirSync(`${__dirname}/save_transformers`);
 let field_name = "image_crawler_version";
 let collection_name = "product";
 let cache_collection = "product_image";
-let crawler_version = 20;
+let crawler_version = 26;
 
 /**
  *
@@ -32,6 +32,9 @@ let upload = async(product_type, crawler_db, options = {}) => {
                 "must" : [
                     {
                         "term" : {"all_categories" : product_type}
+                    },
+                    {
+                        "term" : {"supplier" : "cloud_clone_corp"}
                     }
                 ]
             }
@@ -66,13 +69,13 @@ let upload = async(product_type, crawler_db, options = {}) => {
                 let hash_product = ready_products_hash[product._id];
 
 
-                if (!hash_product || options.force)
+                if (!hash_product || !hash_product.images || options.force)
                 {
                     let supplier = product.supplier[0];
                     let distributor = product.distributor[0];
 
                     document.images = await single_product_upload({
-                        images,
+                        items: images,
                         originals : product.distributor_only.images,
                         supplier,
                         distributor,
@@ -111,34 +114,39 @@ let single_product_upload = async({items, originals, supplier, distributor, _id,
     for (let i = 0; i < (items || []).length; i++)
     {
         let file_data = items[i];
+        let need_do_download_image = (file_data.link && file_data.link.indexOf("http") === 0) || file_data.file_content;
 
-        if(file_data.link.indexOf("http") !== 0 && options.check_uploaded)
+        if(!need_do_download_image && options.check_uploaded)
         {
             if (!(await upload_utils.s3_check_is_file_exists(`image/${distributor}/${supplier}`, file_data.link)))
             {
-                console.error(`image/${distributor}/${supplier}/${_id} is missing`);
+                console.error(`image/${distributor}/${supplier}/${file_data.link} is missing`);
+                console.error(_id);
                 items[i] = originals[i];
-                file_data = items[i]
+                file_data = items[i];
+                need_do_download_image = true;
             }
         }
 
-        if (file_data.link.indexOf("http") === 0)
+        if (need_do_download_image)
         {
             let new_item_names = await upload_utils.upload_product_image({
-                link: file_data.link,
+                ...file_data.link ? {link: file_data.link} : "",
+                ...file_data.file_content ? {file_content: file_data.file_content} : "",
                 path: `image/${distributor}/${supplier}`,
                 product_id: _id,
-                image_index: i,
+                file_index: i,
                 meta: {supplier: supplier, distributor: distributor},
                 options
             }
             );
             new_item_names.link_id ? items[i].link = new_item_names.link_id : null;
-            new_item_names.thumb_link_id ? items[i].thumb_link = new_item_names.thumb_link_id : null
+            new_item_names.thumb_link_id ? items[i].thumb_link = new_item_names.thumb_link_id : null;
+            items[i].file_content ? delete items[i].file_content : ""
         }
 
     }
-    console.log(`Uploaded ${items.length} images: ${supplier}`);
+    console.log(`Uploaded ${(items || []).length} images: ${supplier}`);
 
     return items
 };
@@ -191,6 +199,50 @@ let upload_single = async (es_oid) => {
     await crawler_db.create(cache_collection, {data : {_id : es_product._id, images: ready_items}})
 };
 
+let upload_from_directory = async (dir_path) => {
+
+    let crawler_db = await init_crawler_db();
+    await es_db.init();
+
+    let files = fs.readdirSync(dir_path);
+
+    let images_hash = {};
+
+    for(let i = 0; i < files.length; i++)
+    {
+        let file_name = files[i];
+        let file_no_extension = file_name.split(".").shift();
+        let [oid, index] = file_no_extension.split("_");
+        images_hash[oid] = images_hash[oid] || [];
+        images_hash[oid].push(file_name)
+    }
+
+    for (let oid in images_hash)
+    {
+        let es_product = await es_db.read_one(collection_name, {"body" : {"query" : {"term" : {"oid" : oid}}}});
+        if (!es_product){
+            console.error("Product not found", oid);
+            continue
+        }
+
+        let supplier    = es_product.supplier[0];
+        let distributor = es_product.distributor[0];
+
+        let items = [];
+
+        images_hash[oid].forEach(item => {
+            items.push({file_content : {html: fs.readFileSync(`${dir_path}/${item}`), content_type : "image/jpg", confirm: true}})
+        });
+
+        let ready_items =  await single_product_upload({items, supplier, distributor, _id: es_product._id});
+
+        await es_db.update(collection_name, {data : {_id : es_product._id, images: ready_items}});
+        console.log(es_product._id);
+        console.log(ready_items);
+        await crawler_db.create(cache_collection, {data : {_id : es_product._id, images: ready_items}})
+    }
+};
+
 module.exports = {
     run
 };
@@ -215,3 +267,7 @@ process.on('uncaughtException', function (err, data) {
 });
 
 r("" , {check_uploaded: true});
+
+// upload_from_directory(`${__dirname}/files/himedia_laboratories/images`)
+// .then(() => process.exit(0))
+// .catch(e => { console.error(e); r() })
