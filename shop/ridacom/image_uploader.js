@@ -7,7 +7,7 @@ let product_types =  fs.readdirSync(`${__dirname}/save_transformers`);
 let field_name = "image_crawler_version";
 let collection_name = "product";
 let cache_collection = "product_image";
-let crawler_version = 26;
+let crawler_version = 30;
 
 /**
  *
@@ -32,9 +32,6 @@ let upload = async(product_type, crawler_db, options = {}) => {
                 "must" : [
                     {
                         "term" : {"all_categories" : product_type}
-                    },
-                    {
-                        "term" : {"supplier" : "cloud_clone_corp"}
                     }
                 ]
             }
@@ -50,7 +47,7 @@ let upload = async(product_type, crawler_db, options = {}) => {
         let already_downloaded = await crawler_db.read(cache_collection, {body: {"_id" : {$in: ids}}});
         let ready_products_hash = already_downloaded.reduce((res, item) => {
             res[item._id] = item;
-            return result;
+            return res;
         }, {});
 
         let es_bulk = [];
@@ -59,7 +56,7 @@ let upload = async(product_type, crawler_db, options = {}) => {
         for (let i = 0; i < result.length; i++)
         {
             let product = result[i];
-            let images = options.force ? product.distributor_only.images : product.images;
+            let images = options.force && product.distributor_only.images ? product.distributor_only.images : product.images;
             let document = {
                 ...crawler_version ? {[field_name] : crawler_version} : ""
             };
@@ -68,8 +65,7 @@ let upload = async(product_type, crawler_db, options = {}) => {
             {
                 let hash_product = ready_products_hash[product._id];
 
-
-                if (!hash_product || !hash_product.images || options.force)
+                if (!hash_product || !hash_product.images || options.force || options.check_uploaded)
                 {
                     let supplier = product.supplier[0];
                     let distributor = product.distributor[0];

@@ -3,7 +3,7 @@ let exec             = require("child_process").exec;
 
 let extract_pdf_text = async(source) =>
     new Promise((resolve, reject) => {
-        exec(`pdftotext ${source} -`, (err, result) =>
+        exec(`pdftotext "${source}" -`, (err, result) =>
         {
             if (err){
                 console.error("PDF to Text", err);

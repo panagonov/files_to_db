@@ -129,10 +129,20 @@ let _category_parser = value => {
 let _sub_category_parser = value => {
     let result = _text_to_array(value);
     return result.reduce((res, value) =>{
-        res = res.concat(import_utils.get_canonical(value.replace(/_/g, " "), ":product_sub_category"));
+        let matches = import_utils.get_canonical(value.replace(/_/g, " "), ":product_sub_category");
+        if (!matches.length)
+            matches = import_utils.get_canonical(value.replace(/_/g, " "), ":product_category");
+
+        res = res.concat(matches);
         return res;
     }, [])
 };
+
+let _product_relations_parser = (value, supplier, distributor) => {
+    let result = _text_to_array(value);
+    return result.map(item => `PRODUCT_SOURCE:[${supplier.toUpperCase()}]_SUPPLIER:[${distributor.toUpperCase()}]_ID:[${item}]`)
+};
+
 let parsers = {
     "plainText"         : _string_parser,
     "arrayToText"       : _text_to_array,
@@ -143,13 +153,13 @@ let parsers = {
     "number"            : _number_parser,
     "images"            : _images_parser,
 
-    "product_relations" : _text_to_array,
+    "product_relations" : _product_relations_parser,
     "category"          : _category_parser,
     "sub_category"      : _sub_category_parser,
 };
 
 let unused_fields = ["oid", "alternative_oid"];
-let convert = (specifications) => {
+let convert = (specifications, supplier, distributor) => {
 
     let clear_specs = {};
     utils.objEach(specifications, (key, value) => value && value.trim() ? clear_specs[key] = value : null);
@@ -159,7 +169,7 @@ let convert = (specifications) => {
         let transform_fn = parsers[transform_fn_name] || parsers[field_name];
 
         if (transform_fn) {
-            let field_value = transform_fn(specifications[field_name]);
+            let field_value = transform_fn(specifications[field_name], supplier, distributor);
 
             if (field_value instanceof Array && !field_name.length)
                 return res;
@@ -186,9 +196,6 @@ let convert = (specifications) => {
         console.error("Missing transformed fields");
         console.error(JSON.stringify(specs_fields.filter(item => result_fields.indexOf(item) === -1)));
     }
-
-    // if (["R4040","BSH200"].indexOf(specifications.oid) !== -1)
-    //     debugger //capacity, ramp_timer_range
 
     return result
 };

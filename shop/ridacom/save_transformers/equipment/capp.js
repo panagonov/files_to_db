@@ -143,7 +143,7 @@ let convert = (item, crawler_item, custom_data) =>
     result = Object.assign(result, additional_data);
 
     if (product_props[result.oid]){
-        result = Object.assign(result, product_props_parser(product_props[result.oid]));
+        result = Object.assign(result, product_props_parser(product_props[result.oid], item.src, item.tid));
     }
 
     let service_data = import_utils.build_service_data(result, relation_fields);
