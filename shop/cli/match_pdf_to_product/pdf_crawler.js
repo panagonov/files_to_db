@@ -9,7 +9,7 @@ let default_url   = "http://www.himedialabs.com/Catalogue/2018/files/assets/comm
 let bucket_name   = "bioseek-shop/";
 
 
-let run = async({url, file_prefix = "", page_count = 616, download_dir}) => {
+let himedia_laboratories_download = async({url, file_prefix = "", page_count = 616, download_dir}) => {
     url = url || default_url;
 
     await upload_pdf_utils.init({download_dir});
@@ -42,7 +42,7 @@ let run = async({url, file_prefix = "", page_count = 616, download_dir}) => {
 
 let upload = async (dir_name, distributor, supplier) =>
 {
-    let thumb_path = `${__dirname}/pdf_thumbs.json`;
+    let thumb_path = `${dir_name}/pdf_thumbs.json`;
     let pdf_thumbs = {};
 
     if (fs.existsSync(thumb_path))
@@ -95,7 +95,7 @@ let upload = async (dir_name, distributor, supplier) =>
 };
 
 module.exports = {
-    run,
+    himedia_laboratories_download,
     upload
 };
 //

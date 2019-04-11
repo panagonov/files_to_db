@@ -69,8 +69,8 @@ let s3_check_is_file_exists = async(path, id) =>
 let upload_product_image = async({link, path, product_id, file_index, meta = {}, options = {}, file_content}) => {
     if (!browser)
     {
-        browser = new RequestBrowser();
-        await browser.init();
+        browser = new HeadlessBrowser();
+        await browser.init({headless: false});
     }
 
     let link_id = product_id.replace(/\W/g, "_") + "_" + file_index;

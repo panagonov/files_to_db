@@ -1,5 +1,4 @@
 const csvtojson          = require("csvtojson");
-let fs                   = require("fs");
 let utils                = require("../../../../_utils/utils.js");
 let import_utils         = require("../../../_utils/save_utils.js");
 let fixator              = require("./benchmark/fixator.js");
@@ -235,7 +234,6 @@ let convert = (item, crawler_item, custom_data) =>
     //     debugger
 
     category_hash[result.oid] = {category: result.category, sub_category: result.sub_category};
-    fs.writeFileSync("cat.json", JSON.stringify(category_hash), "utf8");
 
     return {
         converted_item : result,

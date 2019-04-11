@@ -20,7 +20,7 @@ HeadlessBrowser.prototype.init = async function(options)
         this.proxy_settings = {server: "69.46.80.226:12360"};
         this.browser = await puppeteer.launch({
             headless: this.options.headless,
-            args    : [ `--proxy-server=${this.proxy_settings.server}` ]
+            args    : [ `--proxy-server=${this.proxy_settings.server}`,'--no-sandbox', '--disable-setuid-sandbox' ]
         });
     }
 
@@ -30,6 +30,10 @@ HeadlessBrowser.prototype.init = async function(options)
 
     if (this.proxy_settings && this.proxy_settings.authenticate)
         await this.page.authenticate(this.proxy_settings.authenticate);
+
+    this.page.on("response", async (response) =>{
+        this.file = await response.buffer();
+    })
 };
 
 HeadlessBrowser.prototype.close = async function () {
@@ -40,15 +44,35 @@ HeadlessBrowser.prototype.close = async function () {
     this.page = null;
 };
 
-HeadlessBrowser.prototype.load = async function (url) {
+HeadlessBrowser.prototype.on_file_loaded = async function () {
+    return new Promise(resolve => {
+        let interval = setInterval(() => {
+            if (this.file)
+            {
+                clearInterval(interval);
+                resolve(this.file);
+                this.file = null;
+            }
+        }, 500)
+    })
+};
+
+HeadlessBrowser.prototype.load = async function (url, types = []) {
     await this.page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
 
     try {
         let response = await this.page.goto(url, {waitUntil : "networkidle2", timeout: this.options.check_timeout});
-        let html = await this.page.content();
+
+        if (!response || types.indexOf(response._headers["content-type"]) === -1)
+        {
+            console.error("Download Error:",url);
+            return {confirm: false}
+        }
+        let html = await this.on_file_loaded();
+
         let content_type = response && response._headers ? response._headers["content-type"].split(";")[0] : "";
         let headers = response && response._headers ? response._headers : {};
-        return {html, content_type, headers}
+        return {confirm: true, html, content_type, headers}
     }
     catch (e) {
         console.error("load failed", url);
@@ -78,6 +102,5 @@ HeadlessBrowser.prototype.check_is = async function (url, types) {
         return {confirm: true, content_type: content_type, html: html}
     }
 };
-
 
 module.exports = HeadlessBrowser;

@@ -11,7 +11,8 @@ let add_domain = (domain_name, data) => {
     .map(word => word.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&").trim())
     .sort((a,b) => b.length - a.length);
 
-    let regStr = "(^|\\s|\\W)("+ words.join("|") + ")($|\\s|\\W)";
+    // let regStr = "(^|\\s|\\W)("+ words.join("|") + ")($|\\s|\\W)";
+    let regStr = "(^|\\s|\\W)("+ words.join("|") + ")";
 
     domain_hash[domain_name] = {
         data: data,

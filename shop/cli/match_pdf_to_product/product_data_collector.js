@@ -1,6 +1,5 @@
 let fs    = require("fs");
 let es_db = require("../../../_utils/es_db.js");
-let hash_path = `${__dirname}/id_hash.json`;
 
 let body = {
     "query" : {},
@@ -27,7 +26,9 @@ let agg_domain_names = async () => {
     return db_data.aggregations.supplier.buckets.map(item => item.key)
 };
 
-let run = async () => {
+let run = async (download_dir) =>
+{
+    let hash_path = `${download_dir}/id_hash.json`;
 
     if (fs.existsSync(hash_path))
         return JSON.parse(fs.readFileSync(hash_path, "utf8"));
@@ -81,7 +82,7 @@ let run = async () => {
     }
 
 
-    fs.writeFileSync(`${__dirname}/id_hash.json`, JSON.stringify(id_hash), "utf8");
+    fs.writeFileSync(hash_path, JSON.stringify(id_hash), "utf8");
 
     return id_hash
 };

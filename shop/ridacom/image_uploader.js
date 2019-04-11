@@ -7,7 +7,7 @@ let product_types =  fs.readdirSync(`${__dirname}/save_transformers`);
 let field_name = "image_crawler_version";
 let collection_name = "product";
 let cache_collection = "product_image";
-let crawler_version = 30;
+let crawler_version = 32;
 
 /**
  *
@@ -32,6 +32,9 @@ let upload = async(product_type, crawler_db, options = {}) => {
                 "must" : [
                     {
                         "term" : {"all_categories" : product_type}
+                    },
+                    {
+                        "term" : {"supplier" : "adam_equipment"}
                     }
                 ]
             }
@@ -110,9 +113,9 @@ let single_product_upload = async({items, originals, supplier, distributor, _id,
     for (let i = 0; i < (items || []).length; i++)
     {
         let file_data = items[i];
-        let need_do_download_image = (file_data.link && file_data.link.indexOf("http") === 0) || file_data.file_content;
+        let need_do_download = (file_data.link && file_data.link.indexOf("http") === 0) || file_data.file_content;
 
-        if(!need_do_download_image && options.check_uploaded)
+        if(!need_do_download && options.check_uploaded)
         {
             if (!(await upload_utils.s3_check_is_file_exists(`image/${distributor}/${supplier}`, file_data.link)))
             {
@@ -120,11 +123,11 @@ let single_product_upload = async({items, originals, supplier, distributor, _id,
                 console.error(_id);
                 items[i] = originals[i];
                 file_data = items[i];
-                need_do_download_image = true;
+                need_do_download = true;
             }
         }
 
-        if (need_do_download_image)
+        if (need_do_download)
         {
             let new_item_names = await upload_utils.upload_product_image({
                 ...file_data.link ? {link: file_data.link} : "",
@@ -134,13 +137,11 @@ let single_product_upload = async({items, originals, supplier, distributor, _id,
                 file_index: i,
                 meta: {supplier: supplier, distributor: distributor},
                 options
-            }
-            );
+            });
             new_item_names.link_id ? items[i].link = new_item_names.link_id : null;
             new_item_names.thumb_link_id ? items[i].thumb_link = new_item_names.thumb_link_id : null;
             items[i].file_content ? delete items[i].file_content : ""
         }
-
     }
     console.log(`Uploaded ${(items || []).length} images: ${supplier}`);
 
@@ -170,7 +171,7 @@ let init_crawler_db = async() =>{
     return crawler_db
 };
 
-let upload_single = async (es_oid) => {
+let upload_single = async (es_oid, options) => {
 
     let crawler_db = await init_crawler_db();
     await es_db.init();
@@ -187,7 +188,7 @@ let upload_single = async (es_oid) => {
 
     let supplier = es_product.supplier[0];
     let distributor = es_product.distributor[0];
-    let ready_items =  await single_product_upload({items, supplier, distributor, _id: es_product._id, options: {force: true}});
+    let ready_items =  await single_product_upload({items, supplier, distributor, _id: es_product._id, options: options});
 
     await es_db.update(collection_name, {data : {_id : es_product._id, images: ready_items}});
     console.log(es_product._id);
@@ -245,7 +246,7 @@ module.exports = {
 
 let r  = (oid, options) => {
     if (oid) {
-        upload_single(oid)
+        upload_single(oid, options)
         .then(() => process.exit(0))
         .catch(e => console.error(e));
     }
@@ -262,7 +263,7 @@ process.on('uncaughtException', function (err, data) {
     r()
 });
 
-r("" , {check_uploaded: true});
+r("WFK 75" , {check_uploaded: true/*, force: true*/});
 
 // upload_from_directory(`${__dirname}/files/himedia_laboratories/images`)
 // .then(() => process.exit(0))

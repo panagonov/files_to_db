@@ -66,13 +66,13 @@ let upload = async(product_type, crawler_db, options = {}) => {
                 let hash_product = ready_products_hash[product._id];
 
 
-                if (!hash_product || options.force)
+                if (!hash_product || !hash_product.pdf || options.force || options.check_uploaded)
                 {
                     let supplier = product.supplier[0];
                     let distributor = product.distributor[0];
 
                     document.pdf = await single_product_upload({
-                        pdf,
+                        items: pdf,
                         originals : product.distributor_only.pdf,
                         supplier,
                         distributor,
@@ -111,33 +111,36 @@ let single_product_upload = async({items, originals, supplier, distributor, _id,
     for (let i = 0; i < (items || []).length; i++)
     {
         let file_data = items[i];
+        let need_do_download = (file_data.link && file_data.link.indexOf("http") === 0) || file_data.file_content;
 
-        if(file_data.link.indexOf("http") !== 0 && options.check_uploaded)
+        if(!need_do_download && options.check_uploaded)
         {
-            if (!(await upload_utils.s3_check_is_file_exists(`image/${distributor}/${supplier}`, file_data.link)))
+            if (!(await upload_utils.s3_check_is_file_exists(`pdf/${distributor}/${supplier}`, file_data.link)))
             {
-                console.error(`image/${distributor}/${supplier}/${_id} is missing`);
+                console.error(`image/${distributor}/${supplier}/${file_data.link} is missing`);
+                console.error(_id);
                 items[i] = originals[i];
-                file_data = items[i]
+                file_data = items[i];
+                need_do_download = true;
             }
         }
 
-        if (file_data.link.indexOf("http") === 0)
+        if (need_do_download)
         {
             let new_item_names = await upload_utils.upload_product_pdf({
-                    link: file_data.link,
-                    path: `pdf/${distributor}/${supplier}`,
-                    file_name: (file_data.link || file_data.href).split("/").pop(),
-                    meta: {supplier: supplier, distributor: distributor},
-                    options
-                }
-            );
+                ...file_data.link ? {link: file_data.link} : "",
+                ...file_data.file_content ? {file_content: file_data.file_content} : "",
+                path: `pdf/${distributor}/${supplier}`,
+                file_name: (file_data.link || file_data.href).split("/").pop(),
+                meta: {supplier: supplier, distributor: distributor},
+                options
+            });
             new_item_names.link_id ? items[i].link = new_item_names.link_id : null;
-            new_item_names.thumb_link_id ? items[i].thumb_link = new_item_names.thumb_link_id : null
+            new_item_names.thumb_link_id ? items[i].thumb_link = new_item_names.thumb_link_id : null;
+            items[i].file_content ? delete items[i].file_content : ""
         }
-
     }
-    console.log(`Uploaded ${items.length} images: ${supplier}`);
+    console.log(`Uploaded ${(items || []).length} pdfs: ${supplier}`);
 
     return items
 };
