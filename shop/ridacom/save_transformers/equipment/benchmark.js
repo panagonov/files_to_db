@@ -16,8 +16,9 @@ let main_product_id_fixator_list = [
     "W3200-120", "W3200-300", "W3200-500", "W3200-1200","W3200-3200", "W3200-5000",
     "W3300-120", "W3300-300", "W3300-500", "W3300-1200","W3200-5000", "W3300-10000",
     "W4000-100", "W4000-500", "W1000-100", "W1000-500",
-    "P7700-1", "P7700-10", "P7700-20", "P7700-100", "P7700-200", "P7700-1000", "P7700-5M", "P7700-10M"
-]
+    "P7700-1", "P7700-10", "P7700-20", "P7700-100", "P7700-200", "P7700-1000", "P7700-5M", "P7700-10M",
+    "MR9600", "MR9600-E"
+];
 
 csvtojson().fromFile(__dirname +"/benchmark/props.csv")
 .then((jsonObj)=>{
@@ -84,11 +85,11 @@ let _getProductRelations = (record) => {
     let oid = get_real_oid(record.oid);
     if (record.supplies) {
         return record.supplies.related.reduce((res, item) => {
-            if (item.oid) {
-                let related = typeof item.oid === "string" ? [item.oid] : item.oid;
-                related.forEach(oid => res.push(`PRODUCT_SOURCE:[BENCHMARK]_SUPPLIER:[RIDACOM]_ID:[${oid}]`));
+            let related = [];
+            if (item.table_specification && item.table_specification.length) {
+                related = item.table_specification.filter(item => item.oid !== oid).map(({oid}) => `PRODUCT_SOURCE:[BENCHMARK]_SUPPLIER:[RIDACOM]_ID:[${oid}]`);
             }
-            return res;
+            return res.concat(related);
         }, []);
     } else if (record.crawler_item) {
         let res = [];
@@ -174,7 +175,7 @@ let mapping = {
 };
 
 let index = 0;
-let stop_after = 417;
+let stop_after = /*417;*/ 490;
 let show_in_console = (result, crawler_item, record) =>
 {
     if (index >= stop_after) {
@@ -291,7 +292,7 @@ module.exports = {
     load_crawler_data,
     load_custom_data,
     get_crawler_item,
-    version: 34,
+    version: 36,
     // disable: true
 };
 

@@ -7,7 +7,7 @@ let product_types =  fs.readdirSync(`${__dirname}/save_transformers`);
 let field_name = "image_crawler_version";
 let collection_name = "product";
 let cache_collection = "product_image";
-let crawler_version = 32;
+let crawler_version = 35;
 
 /**
  *
@@ -34,7 +34,7 @@ let upload = async(product_type, crawler_db, options = {}) => {
                         "term" : {"all_categories" : product_type}
                     },
                     {
-                        "term" : {"supplier" : "adam_equipment"}
+                        "term" : {"supplier" : "benchmark_scientific"}
                     }
                 ]
             }
@@ -263,7 +263,7 @@ process.on('uncaughtException', function (err, data) {
     r()
 });
 
-r("WFK 75" , {check_uploaded: true/*, force: true*/});
+r("" , {check_uploaded: true, force: true});
 
 // upload_from_directory(`${__dirname}/files/himedia_laboratories/images`)
 // .then(() => process.exit(0))

@@ -1,5 +1,5 @@
 let fs              = require("fs");
-let request         = require("request");
+let exec            = require("child_process").exec;
 let s3              = require("../../bioseek/discovery/core/s3.js");
 let image_minimizer = require('../../bioseek/discovery/core/utilities/image_minimizer.js');
 let errors          = require("./errors.json");
@@ -50,6 +50,28 @@ let upload_to_s3 = async ({path, id, meta = {}, content_type, file_body}) =>
 
 let s3_check_is_file_exists = async(path, id) =>
     await s3.is_file_exists(bucket_name + path, id);
+
+
+
+let convert_to_jpg = async(content) => {
+    let file_name = temp_dir + "convert.tmp";
+    let output_name =  temp_dir + "out.jpg";
+
+    fs.writeFileSync(file_name, content);
+    await new Promise((resolve, reject) => {
+        exec(`magick convert ${file_name} -quality 92 ${output_name}`, (err, res) => {
+            if (err) {
+                console.error(err);
+                return reject(err);
+            }
+            resolve()
+        })
+    });
+    let result = fs.readFileSync(output_name);
+    fs.unlinkSync(file_name);
+    fs.unlinkSync(output_name);
+    return result
+}
 /**
  *
  * @param {String} link
@@ -69,7 +91,7 @@ let s3_check_is_file_exists = async(path, id) =>
 let upload_product_image = async({link, path, product_id, file_index, meta = {}, options = {}, file_content}) => {
     if (!browser)
     {
-        browser = new HeadlessBrowser();
+        browser = new RequestBrowser();
         await browser.init({headless: false});
     }
 
@@ -83,11 +105,18 @@ let upload_product_image = async({link, path, product_id, file_index, meta = {},
     if (!file_exists)
     {
         link ? link = link.replace("/500x/", "/x800/")/*.replace(".co.uk", ".com")*/ : null;
-        let check_file_data = file_content || await browser.load(link, ["image/png", "image/jpg", "image/jpeg", "image/gif"]);
+        let check_file_data = file_content || await browser.load(link, ["image/png", "image/jpg", "image/jpeg", "image/gif", "image/bmp"]);
 
-        if (check_file_data.confirm)
+        if (check_file_data.confirm && check_file_data.html.length)
         {
             let html = check_file_data.html;
+
+            if (["image/png", "image/jpg", "image/jpeg"].indexOf(check_file_data.content_type) === -1)
+            {
+                html = await convert_to_jpg(check_file_data.html);
+                check_file_data.content_type = "image/jpeg"
+            }
+
             if (html)
             {
                 let compressed_image = html; // await image_minimizer(file);
