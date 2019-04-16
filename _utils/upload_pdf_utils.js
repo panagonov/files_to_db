@@ -43,10 +43,6 @@ let convert_pdf_to_image = async(source) =>
         })
     });
 
-
-let is_file_exists = async (path, id) =>
-    await s3.is_file_exists(bucket_name + path, id);
-
 let upload_to_s3 = async({path, id, meta = {}, content_type, file_body}) =>
 {
     await s3.upload({
@@ -114,6 +110,7 @@ let upload_pdf_preview = async(path, file_name, meta) => {
  * @returns {Promise<{link_id: string, thumb_link_id: string}>}
  */
 let upload_product_pdf = async({link, path, file_name, meta = {}, options = {}}) => {
+    file_name = decodeURIComponent(file_name).replace(/\W|\s/, "_")
     if (!browser)
     {
         browser = new RequestBrowser();

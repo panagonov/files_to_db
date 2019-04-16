@@ -3,7 +3,7 @@ let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
 let relation_fields = ["supplier", "distributor", "category", "sub_category"];
-let export_version  = 30;
+let export_version  = 31;
 let collection_name = "product";
 
 let category_mapping = {
@@ -111,7 +111,8 @@ let _getPdf = item =>
 
 let _getPriceModel = (item, original_items) =>
 {
-    let item_with_lower_price = (original_items || []).sort((a,b) => a.price.value - b.price.value)[0];
+    let sorted_by_price =(original_items || []).sort((a,b) => (a.price.value || 0) - (b.price.value || 0));
+    let item_with_lower_price = sorted_by_price[0];
     let lower_price = item_with_lower_price.price.value;
 
     let result = {
@@ -130,7 +131,9 @@ let _getPriceModel = (item, original_items) =>
                 "size" : import_utils.size_parser(size.size),
                 "price" : original_item.price
             }
-        }).filter(item => item)
+        })
+        .filter(item => item)
+        .sort((a,b) => (a.price.value || 0) - (b.price.value || 0))
     };
 
     return result;

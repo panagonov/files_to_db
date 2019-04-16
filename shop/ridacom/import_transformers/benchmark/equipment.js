@@ -14,7 +14,7 @@ let mapping = {
         if (!record["Suggested List Price"])
             return null;
 
-        let price = parseFloat(record["Suggested List Price"].replace("$", "").trim());
+        let price = parseFloat(record["Suggested List Price"].replace("$", "").replace(/,/g, "").trim());
 
         return {
             "is_multiple" : false,

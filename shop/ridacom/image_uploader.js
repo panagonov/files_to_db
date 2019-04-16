@@ -7,7 +7,7 @@ let product_types =  fs.readdirSync(`${__dirname}/save_transformers`);
 let field_name = "image_crawler_version";
 let collection_name = "product";
 let cache_collection = "product_image";
-let crawler_version = 35;
+let crawler_version = 42;
 
 /**
  *
@@ -30,9 +30,9 @@ let upload = async(product_type, crawler_db, options = {}) => {
                     "term" : {[field_name] : crawler_version}
                 },
                 "must" : [
-                    {
-                        "term" : {"all_categories" : product_type}
-                    },
+                    // {
+                    //     "term" : {"all_categories" : product_type}
+                    // },
                     {
                         "term" : {"supplier" : "benchmark_scientific"}
                     }
@@ -171,29 +171,35 @@ let init_crawler_db = async() =>{
     return crawler_db
 };
 
-let upload_single = async (es_oid, options) => {
+let upload_single = async (oid, options) => {
 
     let crawler_db = await init_crawler_db();
     await es_db.init();
 
-    let es_product = await es_db.read_one(collection_name, {"body" : {"query" : {"term" : {"oid" : es_oid}}}});
+    let all_ids = typeof oid === "string" ? [oid] : oid;
 
-    if (!es_product)
-        return console.error("Product not found");
+    for (let i = 0; i < all_ids.length; i++)
+    {
+        let es_oid = all_ids[i];
+        let es_product = await es_db.read_one(collection_name, {"body" : {"query" : {"term" : {"oid" : es_oid}}}});
 
-    let items = es_product.distributor_only.images;
+        if (!es_product)
+            return console.error("Product not found");
 
-    if (!items  || !items.length)
-        return console.error("No images");
+        let items = es_product.distributor_only.images;
 
-    let supplier = es_product.supplier[0];
-    let distributor = es_product.distributor[0];
-    let ready_items =  await single_product_upload({items, supplier, distributor, _id: es_product._id, options: options});
+        if (!items  || !items.length)
+            return console.error("No images");
 
-    await es_db.update(collection_name, {data : {_id : es_product._id, images: ready_items}});
-    console.log(es_product._id);
-    console.log(ready_items);
-    await crawler_db.create(cache_collection, {data : {_id : es_product._id, images: ready_items}})
+        let supplier = es_product.supplier[0];
+        let distributor = es_product.distributor[0];
+        let ready_items =  await single_product_upload({items, supplier, distributor, _id: es_product._id, options: options});
+
+        await es_db.update(collection_name, {data : {_id : es_product._id, images: ready_items}});
+        console.log(es_product._id);
+        console.log(ready_items);
+        await crawler_db.create(cache_collection, {data : {_id : es_product._id, images: ready_items}})
+    }
 };
 
 let upload_from_directory = async (dir_path) => {
@@ -268,3 +274,36 @@ r("" , {check_uploaded: true, force: true});
 // upload_from_directory(`${__dirname}/files/himedia_laboratories/images`)
 // .then(() => process.exit(0))
 // .catch(e => { console.error(e); r() })
+
+// let update = async() => {
+//     await es_db.init();
+//     await es_db.update("product", {data: {
+//         "_id" : "PRODUCT_SOURCE:[GENOME_ME]_SUPPLIER:[RIDACOM]_ID:[IHC650]",
+//         "images" : [
+//             {
+//                 "link": "http://www.genomeme.ca/images/GeneAb/AntigensProductImages/Podoplanin-IHC650-Placenta.jpg",
+//                 "text": [
+//                     "GeneAb<sup>TM</sup> Podoplanin [IHC650] on Testicular Cancer"
+//                 ],
+//                 "thumb_link": "http://www.genomeme.ca/images/GeneAb/AntigensProductImages/Podoplanin-IHC650-Placenta.jpg"
+//             }
+//         ],
+//             "distributor_only" : {
+//                 "images" : [
+//                     {
+//                         "link": "http://www.genomeme.ca/images/GeneAb/AntigensProductImages/Podoplanin-IHC650-Placenta.jpg",
+//                         "text": [
+//                             "GeneAb<sup>TM</sup> Podoplanin [IHC650] on Testicular Cancer"
+//                         ],
+//                         "thumb_link": "http://www.genomeme.ca/images/GeneAb/AntigensProductImages/Podoplanin-IHC650-Placenta.jpg"
+//                     }
+//                 ]
+//             }
+//     }})
+// }
+//
+// update()
+// .then(() => process.exit(0))
+// .catch(e => { console.error(e); r() });
+
+//Abp50151

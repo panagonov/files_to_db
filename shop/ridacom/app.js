@@ -17,6 +17,7 @@ let aggregate_data = require("./aggregate.js");
 let save_to_es_db  = require("./save_to_es_db.js");
 // let image_uploader = require("./image_uploader.js");
 // let pdf_uploader   = require("./pdf_uploader.js");
+// let suggest_image_fixer   = require("./suggest_images_fixer");
 
 let update_fields_list = /*{human_readable_id: 1}*/ null;
 
@@ -34,6 +35,7 @@ let run = async(mongo_db, crawler_db) =>
     await save_to_es_db.run(mongo_db, crawler_db, distributor, update_fields_list);
     // await image_uploader.run(crawler_db);
     // await pdf_uploader.run(crawler_db);
+    // await suggest_image_fixer.run()
 };
 
 let clean = async(mongo_db, crawler_db) =>

@@ -22,10 +22,10 @@ let mapping = {
 
         let result = [];
 
-        record["0.1ml C"] ? result.push({size: "0.1ml C", price: parseFloat(record["0.1ml C"].replace("$", ""))}) : null;
-        record["1ml C"] ? result.push({size: "1ml C", price: parseFloat(record["1ml C"].replace("$", ""))}) : null;
-        record["7ml P"] ? result.push({size: "7ml P", price: parseFloat(record["7ml P"].replace("$", ""))}) : null;
-        record["25ml P"] ? result.push({size: "25ml P", price: parseFloat(record["25ml P"].replace("$", ""))}) : null;
+        record["0.1ml C"] && record["0.1ml C"] !== "N/A" ? result.push({size: "0.1ml C", price: parseFloat(record["0.1ml C"].replace(/\$|,|\s/g, ""))}) : null;
+        record["1ml C"] && record["1ml C"] !== "N/A" ? result.push({size: "1ml C", price: parseFloat(record["1ml C"].replace(/\$|,|\s/g, ""))}) : null;
+        record["7ml P"] && record["7ml P"] !== "N/A" ? result.push({size: "7ml P", price: parseFloat(record["7ml P"].replace(/\$|,|\s/g, ""))}) : null;
+        record["25ml P"] && record["25ml P"] !== "N/A" ? result.push({size: "25ml P", price: parseFloat(record["25ml P"].replace(/\$|,|\s/g, ""))}) : null;
 
         return result
 

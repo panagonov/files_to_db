@@ -168,7 +168,7 @@ let init_crawler_db = async() =>{
     return crawler_db
 };
 
-let upload_single = async (es_oid) => {
+let upload_single = async (es_oid, options) => {
 
     let crawler_db = await init_crawler_db();
     await es_db.init();
@@ -185,7 +185,7 @@ let upload_single = async (es_oid) => {
 
     let supplier = es_product.supplier[0];
     let distributor = es_product.distributor[0];
-    let ready_items =  await single_product_upload({items, supplier, distributor, _id: es_product._id, options: {force: true}});
+    let ready_items =  await single_product_upload({items, supplier, distributor, _id: es_product._id, options: options});
 
     await es_db.update(collection_name, {data : {_id : es_product._id, pdf: ready_items}});
     console.log(es_product._id);
@@ -199,7 +199,7 @@ module.exports = {
 
 let r  = (oid, options) => {
     if (oid) {
-        upload_single(oid)
+        upload_single(oid, options)
         .then(() => process.exit(0))
         .catch(e => console.error(e));
     }
@@ -216,4 +216,4 @@ process.on('uncaughtException', function (err, data) {
     r()
 });
 
-r("H1010-P-MP" , {check_uploaded: true});
+r("EAB 125i" , {check_uploaded: true, force: true});

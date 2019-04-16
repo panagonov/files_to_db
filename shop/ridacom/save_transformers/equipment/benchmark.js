@@ -17,7 +17,8 @@ let main_product_id_fixator_list = [
     "W3300-120", "W3300-300", "W3300-500", "W3300-1200","W3200-5000", "W3300-10000",
     "W4000-100", "W4000-500", "W1000-100", "W1000-500",
     "P7700-1", "P7700-10", "P7700-20", "P7700-100", "P7700-200", "P7700-1000", "P7700-5M", "P7700-10M",
-    "MR9600", "MR9600-E"
+    "MR9600", "MR9600-E",
+    "B4000-M","B4000-M-E", "B4000-16", "B4000-16-E"
 ];
 
 csvtojson().fromFile(__dirname +"/benchmark/props.csv")
@@ -26,6 +27,8 @@ csvtojson().fromFile(__dirname +"/benchmark/props.csv")
         res[item.oid] = item;
         res[item.oid + "-E"] = item;
         res[item.oid.replace(/\-E$/, "")] = item;
+        res[item.oid.replace(/\*$/, "")] = item;
+        res[item.oid.replace(/\*$/, "-E")] = item;
         res[item.alternative_oid] = item;
         if (id_fixes_map[item.oid])
             res[id_fixes_map[item.oid]] = item;
@@ -40,7 +43,14 @@ let id_fixes_map = {
     "H2505-40E" : "H2505-40",
     "H2505-70E" : "H2505-70",
     "H2505-130E" : "H2505-130",
-    "B3D5000*-STK" : "B3D5000-STK"
+    "B3D5000*-STK" : "B3D5000-STK",
+    "W3300~120" : "W3300-120",
+    "W3300~300" : "W3300-300",
+    "W3300~500" : "W3300-500",
+    "W3300~1200" : "W3300-1200",
+    "W3300~5000" : "W3300-5000",
+    "W3300~10000" : "W3300-10000",
+    "W1105~9" : "W1105-9",
 };
 
 let get_real_oid = oid =>
@@ -160,7 +170,22 @@ let mapping = {
     },
     "description"         : "crawler_item.description",
     "product_relations"   : record => _getProductRelations(record),
-    "images"              : "crawler_item.images",
+    "images"              : record => {
+        if (record.crawler_item.images)
+        {
+            return record.crawler_item.images
+        }
+        if (record.supplies && record.supplies.related && record.supplies.related[0] && record.supplies.related[0].product_relations) {
+            for (let i = 0; i < record.supplies.related[0].product_relations.length; i++){
+                let relation = record.supplies.related[0].product_relations[i];
+                let oid = relation.oid.split("\n").shift().trim();
+                if (oid === record.oid &&relation.image )
+                    return [{link: relation.image}]
+            }
+            return record.supplies.related[0].images
+        }
+        return null
+    },
     "pdf"                 : "crawler_item.pdf",
     "original_link"       : record =>{
         if(record.crawler_item.link){
@@ -175,7 +200,7 @@ let mapping = {
 };
 
 let index = 0;
-let stop_after = /*417;*/ 490;
+let stop_after = -1;
 let show_in_console = (result, crawler_item, record) =>
 {
     if (index >= stop_after) {
@@ -222,17 +247,14 @@ let convert = (item, crawler_item, custom_data) =>
     let service_data = import_utils.build_service_data(result, relation_fields);
     result = Object.assign(result, service_data);
 
-    // let additional_data = get_additional_category_data(record, result);
-    // result = Object.assign(result, additional_data);
-
     index
     let suggest_data = import_utils.build_suggest_data(result, relation_fields, result.category[0][1]);
     result           = import_utils.clean_result_data(result, relation_fields);
 
-    show_in_console(result, crawler_item, record);
+    // show_in_console(result, crawler_item, record);
 
-    // if (utils.isEmptyObj(crawler_item) && !supplies)
-    //     debugger
+    if (["BSH100-CV"].indexOf(result.oid) !== -1)
+        debugger
 
     category_hash[result.oid] = {category: result.category, sub_category: result.sub_category};
 
@@ -245,22 +267,44 @@ let convert = (item, crawler_item, custom_data) =>
 
 let load_custom_data = async(mongo_db, crawler_db, result) => {
 
-    let ids = utils.uniq(result
-        .map(item => id_fixes_map[item.oid] || item.oid)
-        .filter(id => id)
-    );
+    let ids = result
+        .reduce((res,item) =>{
+            res.push(id_fixes_map[item.oid] || item.oid);
+            res.push(item.oid.replace("-", "~"));
+            res.push(item.oid.replace("-", "~") +"-E");
+            res.push(item.oid + "-E");
+            res.push(item.oid.replace(/\-E$/, ""));
+            res.push(item.oid.replace(/\-E$/, "").replace("-", "~"));
+            res.push(item.oid.replace(/\*$/, ""));
+            res.push(item.oid.replace(/\*$/, "").replace("-", "~"));
+            res.push(item.oid.replace(/\*$/, "-E"));
+            return res
+        }, [])
+        .filter(id => id);
+
+    ids = utils.uniq(ids);
 
     let crawler_data = await crawler_db.read("product", {body: {"src" : "benchmark", "table_specification.oid" : {$in : ids}}});
 
     let hash = {};
     crawler_data.forEach(item => {
         (item.table_specification || []).forEach(res => {
-            hash[res.oid] = hash[res.oid] || {};
-            hash[res.oid].item = res;
-            hash[res.oid].related = hash[res.oid].related || [];
-            hash[res.oid].related.push(item)
-
-
+            let all_oids = utils.uniq([
+                res.oid, res.oid.replace("~", "-"),
+                res.oid, res.oid.replace("~", "-") + "-E",
+                res.oid + "-E",
+                res.oid.replace(/\-E$/, ""),
+                res.oid.replace(/\-E$/, "").replace("~", "-"),
+                res.oid.replace(/\*$/, ""),
+                res.oid.replace(/\*$/, "").replace("~", "-"),
+                res.oid.replace(/\*$/, "-E")
+            ]);
+            all_oids.forEach(oid => {
+                hash[oid] = hash[oid] || {};
+                hash[oid].item = res;
+                hash[oid].related = hash[oid].related || [];
+                hash[oid].related.push(item)
+            })
         });
     });
 
@@ -272,8 +316,6 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
             hash[res.name].item = res;
             hash[res.name].related = hash[res.name].related || [];
             hash[res.name].related.push(item)
-
-
         });
     });
 
@@ -292,7 +334,7 @@ module.exports = {
     load_crawler_data,
     load_custom_data,
     get_crawler_item,
-    version: 36,
+    version: 46,
     // disable: true
 };
 
