@@ -3,25 +3,8 @@ let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
 let relation_fields = ["supplier", "distributor", "category", "sub_category"];
-let export_version  = 2;
+let export_version  = 4;
 let collection_name = "product";
-
-let load_cache_images = async(ids, crawler_db) => {
-    let cache_data = await crawler_db.read("product_image", {body: {_id: {$in: ids}}});
-    return cache_data.reduce((res, item) =>{
-        res[item._id] = item;
-        return res;
-    }, {})
-};
-
-
-let load_cache_pdfs = async(ids, crawler_db) => {
-    let cache_data = await crawler_db.read("product_pdf", {body: {_id: {$in: ids}}});
-    return cache_data.reduce((res, item) =>{
-        res[item._id] = item;
-        return res;
-    }, {})
-};
 
 let _get_string_data = data => {
     if (data) {
