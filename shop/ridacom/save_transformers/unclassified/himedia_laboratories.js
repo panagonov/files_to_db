@@ -3,17 +3,24 @@ let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
 let relation_fields = ["supplier", "distributor", "category", "sub_category"];
-let export_version  = 31;
+let export_version  = 2;
 let collection_name = "product";
 
-let category_mapping = {
-    "Microbiology"                     : "microbiology",
-    "Animal Cell Culture"              : "tissue_and_cell_culture",
-    "Plant Tissue Culture"             : "tissue_and_cell_culture",
-    "Molecular Biology"                : "molecular_biology",
-    "Density Gradient Separation Media": "unclassified",
-    "Chemicals"                        : "chemical",
-    "Laboratory Aids & Equipments"     : "equipment"
+let load_cache_images = async(ids, crawler_db) => {
+    let cache_data = await crawler_db.read("product_image", {body: {_id: {$in: ids}}});
+    return cache_data.reduce((res, item) =>{
+        res[item._id] = item;
+        return res;
+    }, {})
+};
+
+
+let load_cache_pdfs = async(ids, crawler_db) => {
+    let cache_data = await crawler_db.read("product_pdf", {body: {_id: {$in: ids}}});
+    return cache_data.reduce((res, item) =>{
+        res[item._id] = item;
+        return res;
+    }, {})
 };
 
 let _get_string_data = data => {
@@ -46,7 +53,7 @@ let _load_original_products_data = async (items, mongo_db) =>
     }, {});
 };
 
-let custom_save_to_db = async(mongo_db, crawler_db, distributor, type, site, _save_suggest_data, update_fields_list) =>
+let custom_save_to_db = async(mongo_db, crawler_db, distributor, type, site, _save_suggest_data, bulk_result, update_fields_list) =>
 {
     let limit = 500;
     let page = 0;
@@ -89,8 +96,7 @@ let custom_save_to_db = async(mongo_db, crawler_db, distributor, type, site, _sa
             }
         });
 
-        if (es_bulk.length)
-            await es_db.bulk(es_bulk);
+        await bulk_result(es_db, crawler_db, es_bulk);
 
         await _save_suggest_data(accumulated_suggest_data);
 

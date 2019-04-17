@@ -143,6 +143,27 @@ let _product_relations_parser = (value, supplier, distributor) => {
     return result.map(item => `PRODUCT_SOURCE:[${supplier.toUpperCase()}]_SUPPLIER:[${distributor.toUpperCase()}]_ID:[${item}]`)
 };
 
+let _product_size_parser = (value, supplier, distributor) => {
+    let result = [];
+    let sizes = _text_to_array(value);
+    for (let i = 0; i < sizes.length; i++)
+    {
+        let size = sizes[i].split(" x ").filter(item => item).map(item => item.trim());
+
+        if (size.length === 1){
+            result.push(_size_parser(size[0]));
+        }
+        else if (size.length === 2){
+            let size_part = _size_parser(size[1]);
+            let count_part = parseFloat(size[0]);
+            if (count_part)
+                size_part.count = count_part;
+            result.push(size_part);
+        }
+    }
+    return result
+};
+
 let parsers = {
     "plainText"         : _string_parser,
     "arrayToText"       : _text_to_array,
@@ -156,6 +177,8 @@ let parsers = {
     "product_relations" : _product_relations_parser,
     "category"          : _category_parser,
     "sub_category"      : _sub_category_parser,
+    "size"              : _product_size_parser,
+    "original_link"     : _string_parser
 };
 
 let unused_fields = ["oid", "alternative_oid"];

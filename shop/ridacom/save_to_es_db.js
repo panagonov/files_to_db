@@ -101,6 +101,25 @@ let load_cache_pdfs = async(ids, crawler_db) => {
     }, {})
 };
 
+let bulk_result = async(es_db, crawler_db, es_bulk) => {
+    if (es_bulk.length){
+
+        let ids = es_bulk.map(({_id}) => _id);
+        let cached_pdfs = await load_cache_pdfs(ids, crawler_db);
+        let cached_images = await load_cache_images(ids, crawler_db);
+
+        es_bulk.forEach(item => {
+            if (cached_pdfs[item._id])
+                item.document.pdf = cached_pdfs[item._id].pdf;
+
+            if (cached_images[item._id] && cached_images[item._id].images && !cached_images[item._id].images.some(({link}) => image_errors[link]))
+                item.document.images = cached_images[item._id].images;
+        });
+
+        await es_db.bulk(es_bulk);
+    }
+}
+
 let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fields_list) =>
 {
     let converter = converters[type][site];
@@ -177,22 +196,7 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fie
                 not_found_custom = not_found_custom.concat(missing_data);
         });
 
-        if (es_bulk.length){
-
-            let ids = es_bulk.map(({_id}) => _id);
-            let cached_pdfs = await load_cache_pdfs(ids, crawler_db);
-            let cached_images = await load_cache_images(ids, crawler_db);
-
-            es_bulk.forEach(item => {
-                if (cached_pdfs[item._id])
-                    item.document.pdf = cached_pdfs[item._id].pdf;
-
-                if (cached_images[item._id] && cached_images[item._id].images && !cached_images[item._id].images.some(({link}) => image_errors[link]))
-                    item.document.images = cached_images[item._id].images;
-            });
-
-            await es_db.bulk(es_bulk);
-        }
+        await bulk_result(es_db, crawler_db, es_bulk);
 
         await _save_suggest_data(accumulated_suggest_data);
 
@@ -228,7 +232,7 @@ let run = async(mongo_db, crawler_db, distributor, update_fields_list) =>
 
             if (converter.custom_save_to_db)
             {
-                await converter.custom_save_to_db(mongo_db, crawler_db, distributor, type, site, _save_suggest_data, update_fields_list);
+                await converter.custom_save_to_db(mongo_db, crawler_db, distributor, type, site, _save_suggest_data, bulk_result, update_fields_list);
             }
             else
             {
