@@ -216,7 +216,7 @@ let get_crawler_item = (item, crawler_hash) =>  crawler_hash[id_fixes_map[item.o
 
 module.exports = {
     convert,
-    version: 4,
+    version: 7,
     get_crawler_ids,
     get_crawler_item
 };

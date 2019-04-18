@@ -207,7 +207,7 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
 module.exports = {
     convert,
     load_custom_data,
-    version: 4
+    version: 7
 };
 
 // console.log(import_utils.get_canonical("plate_washer".replace("_", " "), ":product_category"))

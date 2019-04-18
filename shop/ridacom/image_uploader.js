@@ -7,7 +7,7 @@ let product_types =  fs.readdirSync(`${__dirname}/save_transformers`);
 let field_name = "image_crawler_version";
 let collection_name = "product";
 let cache_collection = "product_image";
-let crawler_version = 42;
+let crawler_version = 46;
 
 /**
  *
@@ -30,11 +30,8 @@ let upload = async(product_type, crawler_db, options = {}) => {
                     "term" : {[field_name] : crawler_version}
                 },
                 "must" : [
-                    // {
-                    //     "term" : {"all_categories" : product_type}
-                    // },
                     {
-                        "term" : {"supplier" : "benchmark_scientific"}
+                        "term" : {"all_categories" : product_type}
                     }
                 ]
             }
@@ -113,7 +110,7 @@ let single_product_upload = async({items, originals, supplier, distributor, _id,
     for (let i = 0; i < (items || []).length; i++)
     {
         let file_data = items[i];
-        let need_do_download = (file_data.link && file_data.link.indexOf("http") === 0) || file_data.file_content;
+        let need_do_download = !!((file_data.link && file_data.link.indexOf("http") === 0) || file_data.file_content);
 
         if(!need_do_download && options.check_uploaded)
         {
@@ -123,6 +120,12 @@ let single_product_upload = async({items, originals, supplier, distributor, _id,
                 console.error(_id);
                 items[i] = originals[i];
                 file_data = items[i];
+                need_do_download = true;
+            }
+            else if (!(await upload_utils.s3_check_is_file_exists(`image/${distributor}/${supplier}`, file_data.thumb_link)))
+            {
+                console.error(`image/${distributor}/${supplier}/${file_data.thumb_link} is missing`);
+                console.error(_id);
                 need_do_download = true;
             }
         }
@@ -269,7 +272,7 @@ process.on('uncaughtException', function (err, data) {
     r()
 });
 
-r("" , {check_uploaded: true, force: true});
+r("" , {check_uploaded: true});
 
 // upload_from_directory(`${__dirname}/files/himedia_laboratories/images`)
 // .then(() => process.exit(0))
@@ -305,5 +308,3 @@ r("" , {check_uploaded: true, force: true});
 // update()
 // .then(() => process.exit(0))
 // .catch(e => { console.error(e); r() });
-
-//Abp50151

@@ -3,7 +3,7 @@ let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
 
 let relation_fields = ["supplier", "distributor", "category", "sub_category"];
-let export_version  = 4;
+let export_version  = 7;
 let collection_name = "product";
 
 let _get_string_data = data => {
