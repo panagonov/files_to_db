@@ -208,7 +208,7 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
 module.exports = {
     convert,
     load_custom_data,
-    version: 18
+    version: 24
 };
 
 // console.log(import_utils.get_canonical("clinical centrifuge", ":product_category"))
