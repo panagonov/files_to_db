@@ -267,9 +267,6 @@ let convert = (item, crawler_item, custom_data) =>
 
     // show_in_console(result, crawler_item, record);
 
-    // if (["BSH100-CV"].indexOf(result.oid) !== -1)
-    //     debugger
-
     category_hash[result.oid] = {category: result.category, sub_category: result.sub_category};
 
     return {
@@ -351,7 +348,7 @@ module.exports = {
     load_crawler_data,
     load_custom_data,
     get_crawler_item,
-    version: 7,
+    version: 17,
     // disable: true
 };
 

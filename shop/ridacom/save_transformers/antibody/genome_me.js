@@ -79,7 +79,7 @@ let mapping = {
     "external_links"   : record => [{"key": "genomeme", "id": record.oid}],
     "bio_object"       : record => [{
         "type": "protein",
-        ...record.name ? {"name": record.name} : ""
+        ...record.name ? {"name": record.name} : "",
     }],
     "price_model"      : record => _getPriceModel(record, record.crawler_item),
     "description"      : record => record.crawler_item && record.crawler_item.description ? [record.crawler_item.description] : null,
@@ -115,5 +115,5 @@ let convert = (item, crawler_item) =>
 
 module.exports = {
     convert,
-    version: 7
+    version: 15
 };

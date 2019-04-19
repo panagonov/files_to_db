@@ -99,16 +99,25 @@ let _getPriceModel = (item, crawler_item) =>
     return result;
 };
 
+let  _get_bio_object = record => {
+
+    if (!record.item_name  || !record.item_name.trim())
+        return null;
+
+    return[{
+        "type": "protein",
+        ...record.item_name ? {"name": record.item_name} : "",
+        ...record.aliases && record.aliases[0] ? {"symbol": record.aliases[0]} : "",
+        ...record.aliases ? {"aliases": record.aliases} : ""
+    }]
+};
+
 let mapping = {
     "name"               : "name",
     "oid"                : "oid",
     "human_readable_id"  : record => `cloud_clone_${import_utils.human_readable_id(record.name, record.oid)}`,
     "external_links"     : record => [{"key": "cloud_clone", "id": record.oid}],
-    "bio_object"         : record => [{
-                                "type": "protein",
-                                ...record.item_name ? {"name": record.item_name} : "",
-                                ...record.aliases ? {"aliases": record.aliases} : ""
-                            }],
+    "bio_object"         : _get_bio_object,
     "price_model"        : record => _getPriceModel(record, record.crawler_item),
     "supplier"           : record => import_utils.get_canonical("Cloud-Clone Corp.", ":supplier"),
     "distributor"        : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
@@ -156,5 +165,5 @@ let convert = (item, crawler_item) =>
 
 module.exports = {
     convert,
-    version: 7
+    version: 15
 };

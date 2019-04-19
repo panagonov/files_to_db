@@ -1,15 +1,12 @@
-let utils        = require("../../../../_utils/utils.js");
-let Mongo_db     = require("../../../../_utils/db.js");
-let import_utils = require("../../../_utils/save_utils.js");
-
-let uniprot_db;
+let utils            = require("../../../../_utils/utils.js");
+let import_utils     = require("../../../_utils/save_utils.js");
+let bio_object_utils = require("../../../_utils/bio_object_utils.js");
 
 let relation_fields = ["category", "reactivity", "conjugate", "test_method", "supplier", "distributor"];
 
 let init = async() =>
 {
-    uniprot_db = new Mongo_db();
-    await uniprot_db.init({database: "uniprot"});
+    await bio_object_utils.init()
 };
 
 let _getImages = item => {
@@ -74,6 +71,7 @@ let _get_bio_object = record =>
     return record.bio_object_data.map(bio_object => ({
         "type": "protein",
         ...bio_object.name                  ? {"name": bio_object.name}                                                 : "",
+        ...bio_object.symbol                ? {"symbol": bio_object.symbol}                                             : "",
         ...bio_object.aliases               ? {"aliases": (bio_object.aliases || []).concat(bio_object.ids || [])}      : "",
         ...bio_object.gene                  ? {"gene": bio_object.gene}                                                 : "",
         ...bio_object.organism              ? {"organism": bio_object.organism}                                         : "",
@@ -167,28 +165,9 @@ let convert = (item, crawler_item, custom_data) =>
 };
 
 let load_custom_data = async(mongo_db, crawler_db, result) => {
-    let duplicated = [];
 
-    let ids = utils.uniq(result
-        .map(item => item.accession)
-        .filter(id => id)
-        .reduce((res, id) => {
-            res = res.concat(id.split("/"));
-            res = res.map(it => it.trim().split("-").shift());
-            return res
-        }, [])
-    );
-    let bio_objects = await uniprot_db.read("uniprot", {body: {ids : {$in : ids}}});
+    let {hash, duplicated} = await bio_object_utils.find_bio_objects(result);
 
-    let hash = bio_objects.reduce((res, item) => {
-        (item.ids || []).forEach(id => {
-            if (res[id])
-                duplicated.push(id);
-            res[id] = item});
-        return res;
-    }, {});
-
-    duplicated = utils.uniq(duplicated);
     return {result: hash, error: duplicated.length ? duplicated : null};
 };
 
@@ -196,5 +175,5 @@ module.exports = {
     convert,
     load_custom_data,
     init,
-    version: 7
+    version: 15
 };

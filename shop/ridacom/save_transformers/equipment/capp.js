@@ -150,12 +150,13 @@ let convert = (item, crawler_item, custom_data) =>
     result = Object.assign(result, service_data);
 
     if (!result.category[0])
-        debugger
+        debugger;
 
     let suggest_data = import_utils.build_suggest_data(result, relation_fields, result.category[0][1]);
     result           = import_utils.clean_result_data(result, relation_fields);
 
     // show_in_console(result, crawler_item1, record);
+
 
     return {
         converted_item : result,
@@ -207,7 +208,7 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
 module.exports = {
     convert,
     load_custom_data,
-    version: 7
+    version: 18
 };
 
-// console.log(import_utils.get_canonical("plate_washer".replace("_", " "), ":product_category"))
+// console.log(import_utils.get_canonical("clinical centrifuge", ":product_category"))

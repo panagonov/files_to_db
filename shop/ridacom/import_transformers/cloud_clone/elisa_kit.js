@@ -87,7 +87,7 @@ let mapping = {
 
         return record["Alternative Names"].split(";").map(item => item.trim()).filter(item => item)
     },
-    "item_name"        : "Item Name",
+    "item_name"        : record => record["Item Name"] && record["Item Name"].trim() ? record["Item Name"].trim() : null,
     "research_area"    : record => {
         if (!record["Research Area"])
             return null;
