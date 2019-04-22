@@ -157,6 +157,9 @@ let convert = (item, crawler_item, custom_data) =>
 
     // show_in_console(result, crawler_item1, record);
 
+    if (["CR-1730R", "CRC-432X", "CRC-416X"].indexOf(result.oid) !== -1)
+        debugger
+
 
     return {
         converted_item : result,
@@ -208,7 +211,7 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
 module.exports = {
     convert,
     load_custom_data,
-    version: 24
+    version: 26
 };
 
 // console.log(import_utils.get_canonical("clinical centrifuge", ":product_category"))

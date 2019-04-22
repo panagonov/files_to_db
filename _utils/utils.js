@@ -37,7 +37,7 @@ let mapping_transform = (mapping, record) =>
         if(typeof mapping[key] === "function") {
             let res = mapping[key](record);
             if (res || res === 0) {
-                result[key] = mapping[key](record)
+                result[key] = res
             }
         }
         else if (typeof mapping[key] === "string") {
