@@ -1,0 +1,2123 @@
+{
+    "Products": {
+        "Antibodies"                      : {
+            "Search Antibodies"                        : {},
+            "Secondary Antibodies"                     : {
+                "Search Secondary Antibodies": {}
+            },
+            "Recombinant Antibodies"                   : {},
+            "Trial Size Antibodies"                    : {},
+            "Apoptosis Antibodies"                     : {},
+            "Epitope Tag and Fusion Protein Antibodies": {},
+            "Cancer Marker Antibodies"                 : {},
+            "Neuroscience Antibodies"                  : {},
+            "Isotype Control Antibodies"               : {
+                "Search Isotype Controls": {}
+            },
+            "Stem Cell Marker Antibodies"              : {},
+            "Infectious Disease Antibodies"            : {
+                "Bacterial Antibodies": {},
+                "Virus Antibodies"    : {},
+                "Parasite Antibodies" : {}
+            },
+            "Antibody Production"                      : {
+                "Adjuvants"                          : {},
+                "Antibody Fragmentation"             : {},
+                "Antibody Isotyping"                 : {},
+                "Cell Fusion"                        : {},
+                "Custom Antibody Production Services": {},
+                "Antibody Purification Kits"         : {}
+            },
+            "Antibody Kits"                            : {
+                "Antibody Sampler Kits" : {},
+                "Antibody Labeling Kits": {}
+            },
+            "Antibodies by Application"                : {
+                "ELISA Antibodies"               : {},
+                "Flow Cytometry Antibodies"      : {},
+                "Immunohistochemistry Antibodies": {},
+                "Western Blot Antibodies"        : {}
+            }
+        },
+        "Cell Biology"                    : {
+            "Apoptosis Research Products"          : {
+                "Apoptosis Antibodies"          : {},
+                "Apoptosis ELISA Kits"          : {},
+                "Apoptosis Inhibitors"          : {},
+                "Apoptosis Detection"           : {
+                    "Apoptosis Antibody Microarrays": {},
+                    "Apoptosis Assay Reagents"      : {}
+                },
+                "Apoptosis Related Biomolecules": {
+                    "Apoptosis Inducers": {},
+                    "Apoptosis Proteins": {},
+                    "Caspase Inhibitors": {},
+                    "Human Caspases"    : {},
+                    "Human SMAC"        : {}
+                }
+            },
+            "Microscopes and Cell Imaging Systems" : {
+                "Search Microscopes and Cell Imaging Systems": {},
+                "Confocal Microscopes"                       : {},
+                "Confocal Laser Scanning Microscopes"        : {},
+                "Digital Microscopes"                        : {},
+                "Inverted Microscopes"                       : {},
+                "Upright Microscopes"                        : {},
+                "Stereo / Zoom Microscopes"                  : {},
+                "Electron Microscopes"                       : {},
+                "Spinning Disk Confocal Microscopes"         : {},
+                "Super-Resolution Microscopes"               : {},
+                "Live Cell Imaging Microscopes"              : {},
+                "Fluorescence Microscopes"                   : {},
+                "TIRF Microscopes"                           : {},
+                "Microscope Cameras"                         : {},
+                "CMOS Microscope Cameras"                    : {},
+                "Imaging Accessories"                        : {
+                    "Stages"                   : {},
+                    "Controllers"              : {},
+                    "Light Sources"            : {},
+                    "Objectives"               : {},
+                    "Scanners"                 : {},
+                    "Animal Handling Equipment": {},
+                    "Actuators"                : {},
+                    "Adapters"                 : {},
+                    "Motors"                   : {}
+                },
+                "Imaging Reagents"                           : {
+                    "Labels / Dyes / Stains": {}
+                }
+            },
+            "Apoptosis Detection"                  : {
+                "Apoptosis Antibody Microarrays": {},
+                "Apoptosis Assay Reagents"      : {
+                    "Annexin-V Binding Buffers": {},
+                    "TUNEL Reagents"           : {}
+                }
+            },
+            "Cell Biology Services"                : {
+                "Cell Biology Analysis Services"                                           : {
+                    "Cytokine Bioassay Services": {}
+                },
+                "Cell Culture Services"                                                    : {},
+                "Cell Line Authentication / Identification Services"                       : {},
+                "Immunology Services"                                                      : {
+                    "Antibody Labeling Services"                        : {},
+                    "Antibody Purification Services"                    : {},
+                    "Antigen Design Services"                           : {},
+                    "Custom Antibody Production Services"               : {},
+                    "Hybridoma Services"                                : {},
+                    "Immunoassay Services"                              : {},
+                    "Immunology Testing Services / Customised screening": {}
+                },
+                "Microbiology Services"                                                    : {
+                    "Bacteriostasis / Fungistasis"                                   : {},
+                    "Custom Viral Services"                                          : {},
+                    "Mycoplasma Detection Services / Mycoplasma Elimination Services": {}
+                },
+                "Sample Storage Services / Cell Storage Services / Tissue Storage Services": {},
+                "Screening / Development Services"                                         : {}
+            },
+            "Cell Isolation"                       : {
+                "Cell Isolation Products"            : {},
+                "Cell Isolation by Density"          : {},
+                "Lymphocyte Isolation"               : {
+                    "Lymphocyte Isolation Media": {},
+                    "Lymphocyte Isolation Kits" : {}
+                },
+                "T Cell Isolation"                   : {
+                    "T Cell Positive Isolation": {},
+                    "T Cell Negative Isolation": {}
+                },
+                "B Cell Isolation"                   : {
+                    "B Cell Positive Isolation": {},
+                    "B Cell Negative Isolation": {}
+                },
+                "Magnetic Cell Isolation"            : {},
+                "Cell Isolation by Cell Type"        : {
+                    "PBMC Isolation"                   : {},
+                    "Stem Cell Isolation"              : {},
+                    "Neutrophil Isolation"             : {},
+                    "CD4+ T Cell Isolation"            : {},
+                    "Monocyte Isolation"               : {},
+                    "Hematopoietic Stem Cell Isolation": {},
+                    "Dendritic Cell Isolation"         : {},
+                    "Myeloid Cell Isolation"           : {},
+                    "Regulatory T Cells Isolation"     : {},
+                    "Tumor Cells Isolation"            : {},
+                    "Granulocyte Isolation"            : {},
+                    "Endothelial Cell Isolation"       : {},
+                    "Macrophage Isolation"             : {},
+                    "Epithelial Cell Isolation"        : {},
+                    "Mesenchymal Stem Cell Isolation"  : {},
+                    "Myocyte Isolation"                : {},
+                    "NK Cell Isolation"                : {},
+                    "Basophil Isolation"               : {},
+                    "Red Blood Cell Isolation"         : {},
+                    "Fibroblast Isolation"             : {},
+                    "Neuron Isolation"                 : {}
+                },
+                "Human Cell Isolation"               : {
+                    "Human Lymphocyte Isolation": {},
+                    "Human Monocyte Isolation"  : {},
+                    "Human Neutrophil Isolation": {},
+                    "Human Macrophage Isolation": {}
+                },
+                "Mouse Cell Isolation"               : {
+                    "Mouse Lymphocyte Isolation"    : {},
+                    "Mouse Monocyte Isolation"      : {},
+                    "Mouse NK Cell Isolation"       : {},
+                    "Mouse Dendritic Cell Isolation": {},
+                    "Mouse Stem Cell Isolation"     : {}
+                },
+                "Cell Isolation by Target"           : {
+                    "CD4 Cell Isolation" : {},
+                    "CD8 Cell Isolation" : {},
+                    "CD34 Cell Isolation": {},
+                    "CD14 Cell Isolation": {}
+                },
+                "Separators"                         : {},
+                "Cell and Protein Fractionation Kits": {},
+                "Mitochondria Isolation Kits"        : {}
+            },
+            "Histochemistry / Immunohistochemistry": {
+                "Immunohistochemistry  Kits"       : {
+                    "Search IHC Kits"              : {},
+                    "Antibody Labeling Kits"       : {},
+                    "Biotin IHC Kits"              : {},
+                    "Human IHC Kits"               : {},
+                    "HRP IHC Kits"                 : {},
+                    "Alkaline Phosphatase IHC Kits": {},
+                    "DAB IHC Kits"                 : {},
+                    "AEC IHC Kits"                 : {},
+                    "BCIP/NBT IHC Kits"            : {},
+                    "Mouse IHC Kits"               : {},
+                    "Rat IHC Kits"                 : {}
+                },
+                "IHC Antibodies"                   : {},
+                "Blood and Tissue Products"        : {},
+                "Histology Equipment"              : {
+                    "Microtomes"                                : {
+                        "Histology Freezing Devices"              : {},
+                        "Microtome Accessories / Microtome Blades": {},
+                        "Microtome Instruments"                   : {}
+                    },
+                    "Perfusion Systems"                         : {},
+                    "Sample Preparation for Electron Microscopy": {
+                        "Electron Microscope Sample Preparation (Coating)"                  : {},
+                        "Electron Microscope Sample Preparation (Contrasting Labelling)"    : {},
+                        "Electron Microscope Sample Preparation (Drying)"                   : {},
+                        "Electron Microscope Sample Preparation (Fixation)"                 : {},
+                        "Electron Microscope Sample Preparation (Freeze Etching / Fracture)": {},
+                        "Electron Microscope Sample Preparation (Vacuume Transfer)"         : {},
+                        "Electron Microscope Ultramicrotomes"                               : {},
+                        "Tissue Processing / Tissue Clearing"                               : {}
+                    },
+                    "Tissue Preparation"                        : {
+                        "Tissue Processing / Tissue Clearing": {}
+                    },
+                    "Tissue Staining"                           : {
+                        "Tissue Stainers"            : {},
+                        "Tissue Staining Accessories": {}
+                    },
+                    "Automated Immunostainers / Slide Stainers" : {}
+                },
+                "Histology/Histochemistry Services": {},
+                "Immunohistochemistry Reagents"    : {
+                    "Histological Stains"                        : {},
+                    "Staining Enhancers"                         : {},
+                    "Mounting Medium"                            : {},
+                    "Unmasking Fluids"                           : {},
+                    "Fixation/Permeabilization/Clearing Reagents": {},
+                    "Diluent Solutions"                          : {},
+                    "IHC Wash Buffers"                           : {},
+                    "IHC Accessories"                            : {},
+                    "Antifade Reagents"                          : {},
+                    "Blocking Reagents"                          : {},
+                    "Biotin"                                     : {},
+                    "Substrates"                                 : {}
+                },
+                "Protein Labeling"                 : {
+                    "Antibody Labeling Kits"            : {},
+                    "Chemiluminescent Labeling Reagents": {},
+                    "Conjugates"                        : {},
+                    "Fluorophores"                      : {},
+                    "Fusion Protein Tag Labeling"       : {},
+                    "Protein Labeling Kits"             : {},
+                    "Protein Labeling Services"         : {},
+                    "Crosslinking Reagents"             : {}
+                }
+            },
+            "Infectious Agents"                    : {
+                "EBV"                       : {},
+                "Herpes Simplex Virus / HSV": {},
+                "HHV"                       : {},
+                "HIV"                       : {},
+                "HTLV"                      : {},
+                "Human Influenza A Virus"   : {},
+                "Neisseria gonorrhoeae"     : {},
+                "Other Viruses"             : {},
+                "Rubella Viruses"           : {},
+                "SIV"                       : {},
+                "SRV"                       : {},
+                "Vaccinia"                  : {},
+                "VZV"                       : {}
+            },
+            "Lysates And Extracts"                 : {
+                "Cell Lysates"                    : {},
+                "Human Cell Lysates"              : {},
+                "Mouse Cell Lysates"              : {},
+                "Rat Cell Lysates"                : {},
+                "Tissue Lysates"                  : {},
+                "Human Tissue Lysates"            : {},
+                "Mouse Tissue Lysates"            : {},
+                "Porcine Tissue Lysates"          : {},
+                "Chicken/Bird Tissue Lysates"     : {},
+                "Non-Human Primate Tissue Lysates": {},
+                "Plant Tissue Lysates"            : {}
+            },
+            "Cell Signal Transduction"             : {
+                "Cytokine Detection Assays": {
+                    "Chemokine / Cytokine ELISA Kits"    : {},
+                    "Immune Response Related Microarrays": {}
+                }
+            }
+        },
+        "Immunochemicals"                 : {
+            "Antibody Production": {
+                "Adjuvants"                          : {},
+                "Antibody Fragmentation"             : {},
+                "Antibody Isotyping"                 : {
+                    "Human Isotyping Kits": {},
+                    "Mouse Isotyping Kits": {},
+                    "Rat Isotyping Kits"  : {}
+                },
+                "Cell Fusion"                        : {
+                    "Electroporation / Cell Fusion Instruments": {},
+                    "PEG"                                      : {}
+                },
+                "Custom Antibody Production Services": {
+                    "Custom Monoclonal Antibody Production Services" : {},
+                    "Custom Polyclonal Antibody Production Services" : {},
+                    "Custom Recombinant Antibody Production Services": {}
+                },
+                "Antibody Purification Kits"         : {}
+            },
+            "Immunoassays"       : {
+                "Search Assay Kits"                 : {},
+                "Search ELISA Kits"                 : {},
+                "ELISA Kits"                        : {
+                    "Search ELISA Kits"              : {},
+                    "Chemokine / Cytokine ELISA Kits": {},
+                    "Human ELISA Kits"               : {},
+                    "Growth Factor ELISA Kits"       : {}
+                },
+                "Radioimmunoassays"                 : {
+                    "Human RIA": {},
+                    "Other RIA": {},
+                    "Rat RIA"  : {}
+                },
+                "Multiplex Assay Kits"              : {},
+                "Cytokine Multiplex Assays"         : {},
+                "Kinase Multiplex Assays"           : {},
+                "Hormone Multiplex Assays"          : {},
+                "Growth Factor Multiplex Assays"    : {},
+                "Growth Factor Multiplex Assay Kits": {},
+                "Hormone Multiplex Assay Kits"      : {}
+            }
+        },
+        "Assay Kits"                      : {
+            "ELISA Kits"                 : {
+                "Search ELISA Kits"              : {},
+                "Chemokine / Cytokine ELISA Kits": {},
+                "Human ELISA Kits"               : {
+                    "Other Human ELISA/EIA Kits": {}
+                },
+                "Growth Factor ELISA Kits"       : {},
+                "Multiplex ELISA Kits"           : {
+                    "Cytokine Multiplex ELISA Kits"     : {},
+                    "Growth Factor Multiplex ELISA Kits": {}
+                }
+            },
+            "Microspheres And Assay Kits": {
+                "Microspheres / Particles for Calibration and Validation": {
+                    "NIST traceable Polystyrene Microspheres / Polystyrene Particles for Calibration & Validation": {}
+                }
+            }
+        },
+        "Nucleic Acid Electrophoresis"    : {
+            "Gel Documentation"  : {
+                "Gel Documentation Systems": {
+                    "Gel Documentation Systems"        : {},
+                    "Chemiluminescence Imaging Systems": {},
+                    "Fluorescent Imaging"              : {},
+                    "Automated Blot Analysis"          : {},
+                    "Film Gel Imaging Systems"         : {},
+                    "Phosphorimagers"                  : {}
+                },
+                "Gel Analysis Software"    : {
+                    "DNA And Protein Gel Analysis Software": {}
+                }
+            },
+            "Nucleic Acid Stains": {
+                "DNA Stains"                     : {},
+                "Ethidium Bromide"               : {},
+                "Methylene Blue"                 : {},
+                "SYBR® Green Nucleic Acid Stains": {},
+                "SYTOX® Nucleic Acid Stains"     : {}
+            },
+            "DNA / RNA Standards": {
+                "Search Ladders and Markers": {},
+                "PFGE DNA Markers"          : {},
+                "Quantitative DNA Standards": {},
+                "DNA Ladders by Size"       : {
+                    "2.5 kb ladders": {},
+                    "2 kb ladders"  : {},
+                    "1 kb ladders"  : {},
+                    "500 bp ladders": {},
+                    "250 bp ladders": {},
+                    "200 bp ladders": {},
+                    "100 bp ladders": {},
+                    "50 bp ladders" : {},
+                    "25 bp ladders" : {},
+                    "20 bp ladders" : {},
+                    "10 bp ladders" : {},
+                    "5 bp ladders"  : {}
+                },
+                "RNA Ladders"               : {},
+                "Lambda DNA"                : {},
+                "pBR322 Digests"            : {},
+                "phiX174 Digests"           : {},
+                "Protein Ladders"           : {
+                    "Prestained Protein Ladders": {},
+                    "Unstained Protein Ladders" : {}
+                }
+            }
+        },
+        "BioImaging / Microscopy"         : {
+            "Specialized Imaging Systems"                   : {
+                "Gel Documentation Systems"                : {
+                    "Gel Documentation Systems"        : {},
+                    "Chemiluminescence Imaging Systems": {},
+                    "Fluorescent Imaging"              : {},
+                    "Automated Blot Analysis"          : {},
+                    "Film Gel Imaging Systems"         : {},
+                    "Phosphorimagers"                  : {}
+                },
+                "High Content Screening Systems"           : {},
+                "Laser Capture Microdissection Instruments": {},
+                "Microscopy Imaging Systems"               : {
+                    "CCD Imager (In Vivo Imaging)"        : {},
+                    "Infrared Imaging (FTIR / IR Imaging)": {},
+                    "Microscope Imaging Systems"          : {}
+                },
+                "Radiography Imaging Systems"              : {
+                    "Cabinet X-Ray Imaging Systems": {}
+                }
+            },
+            "Software for Bioimaging (Bio-Imaging Software)": {
+                "Image Analysis Software / Image Processing Software": {},
+                "Image Acquisition Software"                         : {},
+                "Microscope and Cell Imaging Software"               : {},
+                "Imaging Software (Free Downloads)"                  : {}
+            }
+        },
+        "Blood and Tissue Products"       : {
+            "Blood Samples": {
+                "Blood and Tissue Products": {},
+                "Blood Samples by Species" : {
+                    "Donkey Blood"    : {},
+                    "Goat Blood"      : {},
+                    "Guinea Pig Blood": {},
+                    "Feline Blood"    : {},
+                    "Porcine Blood"   : {},
+                    "Hamster Blood"   : {},
+                    "Rabbit Blood"    : {},
+                    "Sheep Blood"     : {},
+                    "Monkey Blood"    : {},
+                    "Human Blood"     : {},
+                    "Mouse Blood"     : {},
+                    "Rat Blood"       : {}
+                }
+            },
+            "Tissue Slides": {
+                "Human Tissue Products"   : {
+                    "Blood and Tissue Products": {}
+                },
+                "Human Tissue Slide"      : {
+                    "Human Normal Tissue Slide"                : {},
+                    "Human Disease Tissue Slide"               : {},
+                    "Human Cancer Tissue Slide"                : {},
+                    "Human Autoimmune Disease Tissue Slide"    : {},
+                    "Human Cardiovascular Disease Tissue Slide": {},
+                    "Human Neurological Disease Tissue Slide"  : {}
+                },
+                "Tissue Arrays by Species": {
+                    "Human Tissue Arrays": {},
+                    "Mouse Tissue Arrays": {},
+                    "Rat Tissue Arrays"  : {}
+                },
+                "Animal Tissue Samples"   : {
+                    "Rat Tissue Samples"   : {},
+                    "Rabbit Tissue Samples": {},
+                    "Mouse Tissue Samples" : {}
+                }
+            },
+            "Plasma"       : {
+                "Plasma Search"          : {},
+                "Plasma by Species"      : {
+                    "Bovine Plasma"    : {},
+                    "Canine Plasma"    : {},
+                    "Donkey Plasma"    : {},
+                    "Fish Plasma"      : {},
+                    "Goat Plasma"      : {},
+                    "Guinea Pig Plasma": {},
+                    "Hamster Plasma"   : {},
+                    "Horse Plasma"     : {},
+                    "Human Plasma"     : {},
+                    "Mouse Plasma"     : {},
+                    "Porcine Plasma"   : {},
+                    "Rabbit Plasma"    : {},
+                    "Rat Plasma"       : {}
+                },
+                "Plasma by Anticoagulant": {
+                    "Acid Citrate Dextrose Plasma": {},
+                    "Alsever's Plasma"            : {},
+                    "Citrate Plasma"              : {},
+                    "Dipotassium EDTA Plasma"     : {},
+                    "EDTA Plasma"                 : {},
+                    "Heparin Plasma"              : {},
+                    "Lithium Heparin Plasma"      : {},
+                    "Potassium EDTA Plasma"       : {},
+                    "Potassium Oxalate Plasma"    : {},
+                    "Sodium Citrate Plasma"       : {},
+                    "Sodium EDTA Plasma"          : {},
+                    "Sodium Heparin Plasma"       : {},
+                    "Tripotassium EDTA Plasma"    : {}
+                }
+            }
+        },
+        "Cloning and Expression"          : {
+            "Cell Culture / Tissue Culture" : {
+                "Cell Culture Media"                            : {
+                    "Search Cell Culture Media"   : {},
+                    "Mammalian Cell Culture Media": {},
+                    "Stem Cell Culture Media"     : {}
+                },
+                "Primary Cells, Cell Lines and Microorganisms"  : {
+                    "Search Cells and Microorganisms": {},
+                    "Primary Human Cells"            : {},
+                    "Stem Cells and Progenitor Cells": {},
+                    "Blood Cells"                    : {}
+                },
+                "Stem Cell Culture Media"                       : {},
+                "Cell Culture Reagents"                         : {
+                    "Agar"                          : {},
+                    "Amino Acid Mixtures"           : {},
+                    "Antibiotics / Antimycotics"    : {},
+                    "Cell Culture Supplements"      : {},
+                    "Cell Dispersion Reagents"      : {},
+                    "Expression Induction"          : {},
+                    "Luria Broth Reagents"          : {},
+                    "Matrices & Cellular Attachment": {},
+                    "Phenol Red"                    : {},
+                    "Salt Solutions"                : {},
+                    "Serum"                         : {},
+                    "Serum Replacements"            : {},
+                    "Vitamin Solutions"             : {}
+                },
+                "Serum"                                         : {
+                    "Serum Search"      : {},
+                    "Fetal Bovine Serum": {}
+                },
+                "Stem Cell Culture"                             : {
+                    "Stem Cell Culture Media"        : {},
+                    "Mouse Stem Cell Culture"        : {},
+                    "Stem Cell Culture Supplements"  : {},
+                    "Human Stem Cell Supplements"    : {},
+                    "Rat Stem Cell Culture"          : {},
+                    "Stem Cell Kits"                 : {},
+                    "Other Species Stem Cell Culture": {}
+                },
+                "Cell Line Authentication"                      : {
+                    "Cell Line Authentication / Identification Services": {},
+                    "DNA Sequencers / Genetic Analyzers"                : {},
+                    "Mycoplasma Detection"                              : {}
+                },
+                "Cell Viability, Proliferation and Cytotoxicity": {
+                    "Search Cell Viability and Proliferation Assays": {},
+                    "Cell Staining Dyes"                            : {}
+                },
+                "Cell Culture Equipment"                        : {
+                    "Cell Culture Systems"                                             : {
+                        "Automated Cell Culture Systems"                   : {},
+                        "Bioreactors (for Disposable Cell Culture Systems)": {},
+                        "Bioreactors (Stirred-tank) / Fermentors"          : {},
+                        "Fittings and Seals"                               : {},
+                        "Mechanical Cell Strain Instruments"               : {},
+                        "Photo-Bioreactor Systems"                         : {}
+                    },
+                    "Fermentation Equipment"                                           : {
+                        "Bioreactors (Stirred-tank) / Fermentors"                          : {},
+                        "Cell Culture Monitoring Systems / Cell Culture Monitoring Sensors": {},
+                        "Magnetic Stirrers"                                                : {},
+                        "Peristaltic Pumps"                                                : {}
+                    },
+                    "Cell Culture Monitoring Systems / Cell Culture Monitoring Sensors": {},
+                    "Cell/Tissue Support Systems"                                      : {
+                        "Innoculating Loops": {}
+                    },
+                    "Spinner Flask Equipment"                                          : {
+                        "Magnetic Stirrers"             : {},
+                        "Suspension Cell Culture Flasks": {}
+                    },
+                    "Laboratory Rockers and Shakers"                                   : {
+                        "Laboratory Incubator Shakers"            : {},
+                        "Laboratory Rocker and Shaker Accessories": {},
+                        "Laboratory Rockers"                      : {},
+                        "Laboratory Shakers"                      : {}
+                    },
+                    "Laboratory Hoods (Laminar Flow Hoods / Biosafety Cabinets)"       : {
+                        "Class I, II,& III Biosafety cabinets"      : {},
+                        "Fume Hoods / Accessories"                  : {},
+                        "Laminar Flow Hoods / Laminar Flow Cabinets": {},
+                        "PCR Workstation / PCR Hood"                : {}
+                    },
+                    "Laboratory Incubators"                                            : {
+                        "Laboratory Incubators (CO2 Incubator)": {},
+                        "Laboratory Incubators (Non-CO2)"      : {}
+                    },
+                    "Filtration Devices"                                               : {
+                        "96 Well Filter Plates"            : {},
+                        "Self-Contained Filtration Devices": {},
+                        "Concentration Kits"               : {},
+                        "Syringe Filters"                  : {}
+                    },
+                    "Tissue Dissociation"                                              : {
+                        "Tissue Dissociation Instruments / Tissue Dissociation Systems": {}
+                    },
+                    "Multi-Well Tissue Culture Plates"                                 : {
+                        "Multi-Well Plates (Non-Coated)": {},
+                        "Multi-Well Strips"             : {},
+                        "Tissue Culture Inserts"        : {}
+                    },
+                    "Cell Culture Dishes"                                              : {
+                        "Tissue Culture Dishes (100 mm)": {},
+                        "Tissue Culture Dishes (245 mm)": {},
+                        "Tissue Culture Dishes (35 mm)" : {},
+                        "Tissue Culture Dishes (60 mm)" : {}
+                    },
+                    "Cell Culture Flasks"                                              : {
+                        "Adherent Cell Culture Flasks"  : {},
+                        "Suspension Cell Culture Flasks": {}
+                    },
+                    "Roller Bottles"                                                   : {},
+                    "Petri Dishes"                                                     : {},
+                    "Hybridzation / Perfusion Chambers"                                : {},
+                    "Colony Counters"                                                  : {}
+                },
+                "Miscellaneous Cell Culture"                    : {
+                    "Cell Expansion Kits"                                                  : {},
+                    "Cell Freezing / Tissue Freezing / Cryopreservation / Storage Reagents": {},
+                    "Cell Labeling / Tracking"                                             : {},
+                    "Miscellaneous Cell Culture"                                           : {},
+                    "Mycoplasma Detection And Elimination"                                 : {}
+                },
+                "Cell Culture Services"                         : {}
+            },
+            "Cloning and Expression Vectors": {
+                "Vector Search"           : {},
+                "Cloning Vectors"         : {},
+                "Expression Vectors"      : {
+                    "Mammalian Expression Vectors": {},
+                    "Bacterial Expression Vectors": {},
+                    "Yeast Expression Vectors"    : {},
+                    "Insect Expression Vectors"   : {},
+                    "Cell Free Expression Vectors": {}
+                },
+                "Viral Expression Vectors": {
+                    "Baculovirus Expression Vectors": {},
+                    "Adenoviral Expression Vectors" : {},
+                    "Retroviral Expression Vectors" : {},
+                    "Lentiviral Expression Vectors" : {}
+                },
+                "Reporter Vectors"        : {},
+                "RNAi Expression Vectors" : {},
+                "Tagged Vectors"          : {
+                    "His tag Vectors"     : {},
+                    "GST tag Vectors"     : {},
+                    "DDK/FLAG tag Vectors": {},
+                    "GFP tag Vectors"     : {},
+                    "RFP tag Vectors"     : {}
+                }
+            },
+            "DNA Purification"              : {
+                "Genomic DNA Purification Kits"       : {
+                    "Bacterial Genomic DNA Purification Kits" : {},
+                    "Buccal Swab Genomic Purification Kits"   : {},
+                    "Genomic DNA Purification Kits"           : {},
+                    "Magnetic Genomic DNA Purification Kits"  : {},
+                    "Microplate Genomic DNA Purification Kits": {},
+                    "Plant DNA Purification Kits"             : {}
+                },
+                "Plasmid DNA Purification Kits"       : {},
+                "Tissue DNA Purification Kits"        : {},
+                "Plant DNA Purification Kits"         : {},
+                "Gel DNA Purification Kits"           : {},
+                "PCR Purification Kits"               : {},
+                "Viral DNA Purification Kits"         : {},
+                "Magnetic Bead DNA Isolation"         : {
+                    "Magnetic Genomic DNA Purification Kits": {},
+                    "Magnetic Particle Processor"           : {},
+                    "Magnetic Plasmid Purification Kits"    : {},
+                    "Streptavidin Magnetic Beads"           : {}
+                },
+                "Automated  DNA Purification Kits"    : {
+                    "HT Plasmid Purification Supplies"        : {},
+                    "Magnetic Genomic DNA Purification Kits"  : {},
+                    "Magnetic Plasmid Purification Kits"      : {},
+                    "Microplate Genomic DNA Purification Kits": {},
+                    "Microplate PCR Purification Kits"        : {},
+                    "Microplate Plasmid Purification Kits"    : {},
+                    "Microplate Viral Purification Kits"      : {}
+                },
+                "DNA Fragment Purification"           : {
+                    "DNA Purification Spin Columns"            : {},
+                    "Gel Purification Kits / DNA Recovery Kits": {},
+                    "PCR Reaction Purification"                : {}
+                },
+                "Plasmid Purification Kits"           : {
+                    "Gel Purification Kits"               : {},
+                    "Magnetic Plasmid Purification Kits"  : {},
+                    "Microplate Plasmid Purification Kits": {},
+                    "Plasmid Purification Kits (Midi)"    : {},
+                    "Plasmid Purification Kits (Mini)"    : {}
+                },
+                "Specialty DNA Isolation"             : {
+                    "DNA Purification (Tissue)": {}
+                },
+                "Virus Purification"                  : {
+                    "Adenovirus Purification Kits"                              : {},
+                    "Lambda DNA Purification kits"                              : {},
+                    "Microplate Viral Purification Kits"                        : {},
+                    "Viral DNA/RNA Purification Kits"                           : {},
+                    "Viral RNA Purification Kits"                               : {},
+                    "Virion Isolation / Virion Purification / Virion Extraction": {}
+                },
+                "Other DNA Purification Kits"         : {
+                    "DNA Fragment Purification Kits"     : {},
+                    "Mitochondrial DNA Purification Kits": {},
+                    "Cell Free DNA Purification Kits"    : {},
+                    "ChIP DNA Purification Kits"         : {},
+                    "Exosome DNA Purification Kits"      : {}
+                },
+                "DNA Purification Kits by Sample Type": {
+                    "Blood DNA Purification Kits"       : {},
+                    "Fungal DNA Purification Kits"      : {},
+                    "Fecal DNA Purification Kits"       : {},
+                    "Soil DNA Purification Kits"        : {},
+                    "Bacterial DNA Purification Kits"   : {},
+                    "Insect DNA Purification Kits"      : {},
+                    "Tail DNA Purification Kits"        : {},
+                    "Fixed tissue DNA Purification Kits": {},
+                    "Forensic DNA Purification Kits"    : {}
+                },
+                "Spin Purification Kits"              : {}
+            },
+            "Library Construction"          : {
+                "cDNA Synthesis": {
+                    "RNA": {
+                        "Search miRNA"    : {},
+                        "Search shRNA"    : {},
+                        "Search siRNA"    : {},
+                        "Search Total RNA": {},
+                        "Search All RNA"  : {},
+                        "Total RNA"       : {
+                            "Total RNA": {}
+                        },
+                        "mRNA"            : {
+                            "mRNA": {}
+                        },
+                        "shRNA"           : {
+                            "shRNA": {}
+                        },
+                        "siRNA"           : {
+                            "siRNA": {}
+                        },
+                        "miRNA"           : {
+                            "miRNA": {}
+                        },
+                        "Non-coding RNA"  : {},
+                        "tRNA"            : {}
+                    }
+                }
+            }
+        },
+        "Lab Equipment"                   : {
+            "Cell Analysis"                                    : {
+                "Automated Cell Culture Systems"  : {},
+                "Cell Analysis Equipment"         : {
+                    "Cell Analysis Accessories"              : {},
+                    "Cell Analysis Systems"                  : {},
+                    "Cell Sorters / Cell Sorting Instruments": {},
+                    "Cell Strain Measurement"                : {}
+                },
+                "Cell Counting and Cell Viability": {
+                    "Cell Counters"          : {},
+                    "Flow Cytometry"         : {},
+                    "Cell Analysis Equipment": {},
+                    "Colony Counters"        : {}
+                },
+                "Flow Cytometry"                  : {
+                    "Cell Analysis Systems"                                  : {},
+                    "Flow Cytometers"                                        : {},
+                    "Flow Cytometer Accessories / Flow Cytometry Accessories": {},
+                    "Flow Cytometry Antibodies"                              : {},
+                    "Flow Cytometry Kits"                                    : {},
+                    "Flow Cytometry Reagents"                                : {},
+                    "Fluorescent Particles"                                  : {},
+                    "Flow Cytometry Beads"                                   : {}
+                },
+                "High Content Screening Systems"  : {},
+                "Protein Labeling"                : {
+                    "Antibody Labeling Kits"            : {},
+                    "Chemiluminescent Labeling Reagents": {},
+                    "Conjugates"                        : {},
+                    "Fluorophores"                      : {},
+                    "Fusion Protein Tag Labeling"       : {},
+                    "Protein Labeling Kits"             : {},
+                    "Protein Labeling Services"         : {},
+                    "Crosslinking Reagents"             : {}
+                },
+                "Real-Time Cell Analysis Systems" : {},
+                "Spectrophotometry"               : {
+                    "Microplate Readers"           : {},
+                    "Spectrophotometer Accessories": {},
+                    "Spectrophotometers"           : {}
+                }
+            },
+            "Neuroscience Equipment"                           : {
+                "Animal Handling Equipment"                  : {},
+                "Animal Monitoring Equipment"                : {
+                    "Analgesia Meters"         : {},
+                    "Animal Behavior Equipment": {},
+                    "Animal Monitoring Systems": {}
+                },
+                "Data Acquisition For Neuroscience Equipment": {
+                    "Amplifiers"                                       : {},
+                    "Data Acquistion Systems (Hardware & Software)"    : {},
+                    "Digitizers"                                       : {},
+                    "Physiology/Neurobiology Data Acquisition Software": {}
+                },
+                "Histology Equipment"                        : {
+                    "Microtomes"                                : {},
+                    "Perfusion Systems"                         : {},
+                    "Sample Preparation for Electron Microscopy": {},
+                    "Tissue Preparation"                        : {},
+                    "Tissue Staining"                           : {},
+                    "Automated Immunostainers / Slide Stainers" : {}
+                },
+                "Microinstrument Forming"                    : {},
+                "Micromanipulation Equipment"                : {
+                    "Laser Capture Microdissection / Laser Microdissection"  : {},
+                    "Microinjection"                                         : {},
+                    "Micromanipulator Controllers"                           : {},
+                    "Micromanipulator Stands, Platforms, Stages and Brackets": {},
+                    "Micromanipulators"                                      : {}
+                },
+                "Research Animal Laboratory Equipment"       : {
+                    "Pumps and Fluid Flow Instruments": {}
+                },
+                "Supplies for Neuroscience"                  : {
+                    "Homeothermic Blankets / Pads": {},
+                    "Ventilators"                 : {}
+                }
+            },
+            "Liquid Handling"                                  : {
+                "Automated Liquid Handling"                 : {},
+                "Automated Liquid Handling Systems"         : {
+                    "Automated Workstations"                        : {},
+                    "Automated DNA/RNA/Protein Purification Systems": {},
+                    "Automated Microplate Handling Systems"         : {},
+                    "Specialized Liquid Handlers"                   : {},
+                    "Automated Solid Phase Extraction (SPE) Systems": {},
+                    "Dispensing Systems"                            : {}
+                },
+                "Pipettes / Pipettors"                      : {
+                    "Pipettors"                          : {},
+                    "Multichannel Pipettors"             : {},
+                    "8 Channel Pipettors"                : {},
+                    "12 Channel Pipettors"               : {},
+                    "96 Channel Pipettors"               : {},
+                    "384 Channel Pipettors"              : {},
+                    "Single Channel Pipettors"           : {},
+                    "Electronic Pipettors"               : {},
+                    "Electronic Single Channel Pipettors": {},
+                    "Electronic Multichannel Pipettors"  : {},
+                    "Manual Pipettors"                   : {},
+                    "Automated Pipettes"                 : {},
+                    "Pipette Controllers"                : {}
+                },
+                "Liquid Handling and Automated Workstations": {}
+            },
+            "Analytical Instrumentation / Analytical Equipment": {
+                "Analytical Balances"                                    : {},
+                "Cell Analysis Equipment"                                : {
+                    "Cell Analysis Accessories"              : {},
+                    "Cell Analysis Systems"                  : {},
+                    "Cell Sorters / Cell Sorting Instruments": {},
+                    "Cell Strain Measurement"                : {}
+                },
+                "Chemistry Analyzers"                                    : {},
+                "Chromatography Equipment"                               : {
+                    "Chromatography Columns"                 : {},
+                    "Chromatography Systems"                 : {},
+                    "Chromatography Pumps"                   : {},
+                    "HPLC Detector / Chromatography Detector": {},
+                    "Chromatography Software"                : {},
+                    "Sample Management Tools"                : {},
+                    "Chromatography Accessories"             : {}
+                },
+                "Fluorometer / Fluorescence Detection Instruments"       : {
+                    "Fluorescence Polarization"                     : {},
+                    "Fluorometers / Fluorescence Spectrophotometers": {},
+                    "Luminescence Detection"                        : {},
+                    "Microplate Readers"                            : {}
+                },
+                "Other Analytical Instrumentation - Analytical Equipment": {
+                    "Elemental Determinators" : {},
+                    "Extensometers"           : {},
+                    "Rheometers / Viscometers": {}
+                },
+                "Particle Analyzer / Surface Analyzer / Liquid Analyzers": {
+                    "Light Scattering Detector / Evaporative Light Scattering Detectors": {},
+                    "Particle Size Analyzer / Particle Shape Analyzers"                 : {},
+                    "Rheometers / Viscometers"                                          : {}
+                },
+                "pH Meters and Osmometers"                               : {
+                    "Benchtop pH Meters"       : {},
+                    "Osmometers"               : {},
+                    "pH Electrodes"            : {},
+                    "pH Meter Buffer Solutions": {}
+                },
+                "Testing & Inspection Machines"                          : {},
+                "Thermal Analyzers"                                      : {
+                    "Calorimeters"                                          : {},
+                    "Thermogravimetric Analyzer / Thermomechanical Analyzer": {}
+                }
+            },
+            "Blotting Equipment"                               : {
+                "Blotters"                                     : {
+                    "Automated Blot Analysis"                                    : {},
+                    "Automated Western Blot Processors / Western Blot Processors": {},
+                    "Blotters (Semi-Dry)"                                        : {},
+                    "Blotters (Tank)"                                            : {}
+                },
+                "Western Blot Incubation/Wash/Stain Containers": {
+                    "Blot Incubation Boxes"            : {},
+                    "Blotting Trays / Incubation Trays": {},
+                    "Western Blot Staining Trays"      : {},
+                    "Western Incubation Trays/ Boxes"  : {}
+                },
+                "Hybridization and Crosslinking"               : {
+                    "Hybridization Ovens": {}
+                },
+                "Blotter Accessories"                          : {}
+            },
+            "Electrophoresis Equipment"                        : {
+                "2-D Gel Electrophoresis (2DGE)"    : {
+                    "2-D Electrophoresis Accessories": {},
+                    "2-D Sample Preparation"         : {},
+                    "Carrier Ampholytes"             : {},
+                    "Isoelectric Focusing Systems"   : {}
+                },
+                "Electroelution Systems"            : {},
+                "Electrophoresis Accessories"       : {
+                    "Electrophoresis Accessories"       : {},
+                    "Electrophoresis Cleaning Solutions": {},
+                    "Gradient Makers"                   : {},
+                    "Handcast Gel Accessories"          : {},
+                    "Power Supplies"                    : {}
+                },
+                "Electrophoresis Systems"           : {
+                    "Automated Electrophoresis Systems" : {},
+                    "Capillary Electrophoresis"         : {},
+                    "Horizontal Electrophoresis Systems": {},
+                    "Isoelectric Focusing Systems"      : {}
+                },
+                "Gel Documentation"                 : {
+                    "Gel Doc Systems"      : {},
+                    "Gel Analysis Software": {}
+                },
+                "Gel Drying Equipment"              : {
+                    "Gel Dryer Accessories": {},
+                    "Gel Dryers"           : {},
+                    "Gel Drying Frames"    : {}
+                },
+                "Sequencing Electrophoresis Systems": {
+                    "Sequencing Electrophoresis Systems": {}
+                },
+                "Transilluminators"                 : {
+                    "Multi-Wavelength Transilluminators" : {},
+                    "Single Wavelength Transilluminators": {},
+                    "White Light Transilluminators"      : {}
+                }
+            },
+            "Genomics Tools"                                   : {
+                "Automated DNA/RNA/Protein Purification Systems"      : {
+                    "Automated DNA Extraction Systems"                              : {},
+                    "Automated DNA/RNA Purification Sample Preparation Workstations": {},
+                    "DNA/RNA Purification Workstations"                             : {},
+                    "Magnetic Particle Processor"                                   : {},
+                    "Protein Purification Workstations"                             : {},
+                    "Sample Management Software"                                    : {},
+                    "Colony Pickers / Colony Arrayers"                              : {}
+                },
+                "Automated Electrophoresis Systems"                   : {
+                    "Automated Electrophoresis Systems"                    : {},
+                    "DNA Microfluidics Chip Kits"                          : {},
+                    "Microfluidic Chip / Microchip Electrophoresis Systems": {}
+                },
+                "DNA Sequencers / Genetic Analyzers"                  : {},
+                "Genotyping System / Genotyping Instrument"           : {},
+                "Mass Spectrometers"                                  : {
+                    "TOF Mass Spectrometers"       : {},
+                    "Quadrupole Mass Spectrometers": {},
+                    "LC / MS Mass Spectrometers"   : {},
+                    "Complete LC / MS Systems"     : {},
+                    "GC / MS Systems"              : {},
+                    "Tandem Mass Spectrometers"    : {},
+                    "ICP-MS Mass Spectrometers"    : {},
+                    "CE / MS Systems"              : {}
+                },
+                "Microarray Equipment"                                : {
+                    "Hybridization Ovens"              : {},
+                    "Microarray Hybridization Chambers": {},
+                    "Microarray Systems"               : {},
+                    "Slide Hybridization Systems"      : {}
+                },
+                "Next Generation Sequencing / Whole Genome Sequencing": {
+                    "Next Generation Sequencers"                        : {},
+                    "NGS Library Preparation and Sample Prep"           : {},
+                    "Next Generation Sequencing Services / NGS Services": {}
+                },
+                "PCR Equipment"                                       : {
+                    "PCR Thermocyclers"                                  : {},
+                    "Thermal Cyclers"                                    : {},
+                    "Real-Time PCR Thermal Cyclers"                      : {},
+                    "Digital PCR Systems (dPCR)"                         : {},
+                    "Multipurpose Workstations"                          : {},
+                    "PCR Workstation / PCR Hood"                         : {},
+                    "PCR Consumables"                                    : {},
+                    "Real Time Thermal Cycler (Thermocycler) Accessories": {},
+                    "Epigenetics Tools"                                  : {}
+                }
+            },
+            "General Laboratory Equipment"                     : {
+                "Air Dryer / Air Purifiers"                                 : {
+                    "Microbial Identification Systems": {}
+                },
+                "Autoclave Sterilizer"                                      : {},
+                "Books"                                                     : {
+                    "Misc. Books"                     : {},
+                    "Molecular And Cell Biology Books": {}
+                },
+                "Chemistry Analyzers"                                       : {},
+                "Computer Systems & Printers"                               : {
+                    "Printers & Supplies": {}
+                },
+                "Consumables"                                               : {
+                    "Cell Culture Dishes"             : {},
+                    "Laboratory Cleaning Reagents"    : {},
+                    "Microplates"                     : {},
+                    "Multi-Well Tissue Culture Plates": {},
+                    "PCR Consumables"                 : {},
+                    "Pipette Tips"                    : {},
+                    "Reaction Vials"                  : {},
+                    "Reagent Reservoirs"              : {},
+                    "Supplies & Consumables"          : {},
+                    "Tubes"                           : {},
+                    "Vial Closures"                   : {}
+                },
+                "Desiccators"                                               : {
+                    "Desiccator Cabinets (Non-vacuum)": {},
+                    "Desiccator Cabinets (Vacuum)"    : {}
+                },
+                "Dispensers"                                                : {
+                    "Dispensers (General)": {}
+                },
+                "Dissolution Testing"                                       : {
+                    "Dissolution Accessories": {},
+                    "Dissolution Systems"    : {},
+                    "Dissolution Testers"    : {}
+                },
+                "Dry Block Heating/Chilling"                                : {
+                    "Dry Block Heaters": {}
+                },
+                "Electrode (not for pH measurment)"                         : {},
+                "Filtration Devices"                                        : {
+                    "96 Well Filter Plates"            : {},
+                    "Self-Contained Filtration Devices": {},
+                    "Concentration Kits"               : {},
+                    "Syringe Filters"                  : {}
+                },
+                "Homogenizers / Sonicators"                                 : {
+                    "Homogenizers"                : {},
+                    "Sonicators / Ultrasonicators": {},
+                    "Homogenizer Accessories"     : {}
+                },
+                "Laboratory Centrifuges"                                    : {
+                    "Benchtop Centrifuges": {},
+                    "Floor Centrifuges"   : {},
+                    "Centrifuge Parts"    : {},
+                    "Centrifuge Tubes"    : {}
+                },
+                "Laboratory Furniture"                                      : {
+                    "Storage Equipment"   : {},
+                    "Tables"              : {},
+                    "Tables / Workbenches": {}
+                },
+                "Laboratory Hoods (Laminar Flow Hoods / Biosafety Cabinets)": {
+                    "Class I, II,& III Biosafety cabinets"      : {},
+                    "Fume Hoods / Accessories"                  : {},
+                    "Laminar Flow Hoods / Laminar Flow Cabinets": {},
+                    "PCR Workstation / PCR Hood"                : {}
+                },
+                "Laboratory Incubators"                                     : {
+                    "Laboratory Incubators (CO2 Incubator)": {},
+                    "Laboratory Incubators (Non-CO2)"      : {}
+                },
+                "Laboratory Ovens"                                          : {
+                    "Drying Vacuum Ovens"                      : {},
+                    "Heating/Drying Ovens (Forced Convection)" : {},
+                    "Heating/Drying Ovens (Natural Convection)": {},
+                    "Hybridization Ovens"                      : {}
+                },
+                "Laboratory Refrigeration"                                  : {
+                    "Lab Refrigeration Equipment Search Tool": {},
+                    "Laboratory Freezers"                    : {},
+                    "Bench-Top Coolers"                      : {}
+                },
+                "Laboratory Rockers and Shakers"                            : {
+                    "Laboratory Incubator Shakers"            : {},
+                    "Laboratory Rocker and Shaker Accessories": {},
+                    "Laboratory Rockers"                      : {},
+                    "Laboratory Shakers"                      : {}
+                },
+                "Laboratory Scales / Scientific Balances"                   : {
+                    "Analytical Balances"                                   : {},
+                    "Moisture Balances / Moisture Analyzers"                : {},
+                    "Portable Balances"                                     : {},
+                    "Thermogravimetric Analyzer / Thermomechanical Analyzer": {},
+                    "Top Loading / Precision Balances"                      : {}
+                },
+                "Laboratory Washers"                                        : {
+                    "Microplate Washers": {}
+                },
+                "Laboratory Water Purification / Laboratory Water Systems"  : {
+                    "Laboratory Water Purification Systems (Lab Water)": {},
+                    "Ultrapure Water Purification Systems"             : {},
+                    "Water TOC Analyzer"                               : {}
+                },
+                "Labware"                                                   : {
+                    "Bottles"                               : {},
+                    "Burettes"                              : {},
+                    "Centrifuge Tubes"                      : {},
+                    "Flasks"                                : {},
+                    "Glass Beads"                           : {},
+                    "Glass Tubing"                          : {},
+                    "Laboratory Gas Burners and Sterilizers": {},
+                    "Mortars & Pestles"                     : {},
+                    "Sample Containers / Sample Cups"       : {},
+                    "Stirring Devices"                      : {},
+                    "Syringes"                              : {},
+                    "Vials"                                 : {}
+                },
+                "Misc. General Laboratory Equipment"                        : {
+                    "Calorimeters": {},
+                    "Cryoscopes"  : {}
+                },
+                "pH Meters and Osmometers"                                  : {
+                    "Benchtop pH Meters"       : {},
+                    "Osmometers"               : {},
+                    "pH Electrodes"            : {},
+                    "pH Meter Buffer Solutions": {}
+                },
+                "Pipettes / Pipettors"                                      : {
+                    "Pipettors"                          : {},
+                    "Multichannel Pipettors"             : {},
+                    "8 Channel Pipettors"                : {},
+                    "12 Channel Pipettors"               : {},
+                    "96 Channel Pipettors"               : {},
+                    "384 Channel Pipettors"              : {},
+                    "Single Channel Pipettors"           : {},
+                    "Electronic Pipettors"               : {},
+                    "Electronic Single Channel Pipettors": {},
+                    "Electronic Multichannel Pipettors"  : {},
+                    "Manual Pipettors"                   : {},
+                    "Automated Pipettes"                 : {},
+                    "Pipette Controllers"                : {}
+                },
+                "Radiometric Detectors"                                     : {
+                    "Gamma Counters": {},
+                    "Radio Monitors": {}
+                },
+                "Storage Equipment"                                         : {
+                    "Cryogenic Storage Systems / Cryogenic Equipment": {},
+                    "Laboratory Freezers"                            : {},
+                    "Specialty Storage Cabinets"                     : {},
+                    "Storage Accessories (racks, shelves, cabinets)" : {}
+                },
+                "Thermometers and Temperature Monitoring Systems"           : {},
+                "Vacuum Centrifuge / Concentrators"                         : {},
+                "Vacuum Systems, Pumps & Manifolds"                         : {
+                    "Vacuum Manifold Accessories": {},
+                    "Vacuum Manifolds"           : {},
+                    "Vacuum Pumps"               : {},
+                    "Vacuum Systems"             : {}
+                },
+                "Vortexers"                                                 : {
+                    "Vortexer Accessories": {},
+                    "Vortexers"           : {}
+                },
+                "Water Baths"                                               : {
+                    "Circulating Water Baths": {},
+                    "Shaking Water Baths"    : {}
+                },
+                "Stages"                                                    : {}
+            },
+            "Mass Spectrometry"                                : {
+                "Mass Spectrometers"         : {
+                    "TOF Mass Spectrometers"       : {},
+                    "Quadrupole Mass Spectrometers": {},
+                    "LC / MS Mass Spectrometers"   : {},
+                    "Complete LC / MS Systems"     : {},
+                    "GC / MS Systems"              : {},
+                    "Tandem Mass Spectrometers"    : {},
+                    "ICP-MS Mass Spectrometers"    : {},
+                    "CE / MS Systems"              : {}
+                },
+                "Mass Spectrometry Standards": {
+                    "MALDI Standards / MALDI Matrix Kits / Calibration Kits": {},
+                    "Miscellaneous Mass Spectrometry Standards"             : {}
+                },
+                "Sample Preparation"         : {
+                    "Automated MALDI Prep"                          : {},
+                    "Automated Solid Phase Extraction (SPE) Systems": {}
+                }
+            },
+            "Microarray Equipment"                             : {
+                "Hybridization Ovens"              : {},
+                "Microarray Hybridization Chambers": {},
+                "Microarray Systems"               : {
+                    "Automatic Microarray Slide Handler"              : {},
+                    "Microarray Data Analysis"                        : {},
+                    "Microarray Printing / Microarray Spotting"       : {},
+                    "Microarray Scanner Accessories"                  : {},
+                    "Microarray Scanners / Microarray Scanner Systems": {}
+                },
+                "Slide Hybridization Systems"      : {}
+            },
+            "Spectrophotometry"                                : {
+                "Microplate Readers"           : {
+                    "ELISA Plate Readers"            : {},
+                    "Fluorescence Microplate Readers": {},
+                    "Microplate Reader Accessories"  : {},
+                    "Microplate Reader Software"     : {},
+                    "Microplate Spectrophotometers"  : {},
+                    "Multiplex-enabled Reader/Imager": {}
+                },
+                "Spectrophotometer Accessories": {
+                    "Cuvette / UV Cuvettes"     : {},
+                    "Spectrophotometer Software": {},
+                    "Spectrophotometry Filters" : {}
+                },
+                "Spectrophotometers"           : {
+                    "Double-Beam Spectrophotometers"                : {},
+                    "Fluorometers / Fluorescence Spectrophotometers": {},
+                    "Other Spectrophotometers"                      : {},
+                    "Single-Beam Spectrophotometers"                : {},
+                    "Split Beam Spectrophotometers"                 : {},
+                    "UV Spectrophotometers"                         : {}
+                }
+            },
+            "Proteomics Tools"                                 : {
+                "Protein Purification and Sample Prep"     : {},
+                "Protein Extraction Kits"                  : {},
+                "Cell and Protein Fractionation Kits"      : {},
+                "Membrane Protein Extraction"              : {},
+                "Nuclear Protein Extraction"               : {},
+                "Protein Digestion Kits"                   : {},
+                "Chromatography and Separation Search Tool": {},
+                "Concentration Kits"                       : {},
+                "Protein Assay and Quantification Kits"    : {},
+                "Protein Gel Electrophoresis"              : {
+                    "Protein Electrophoresis Equipment": {},
+                    "2-D Gel Electrophoresis (2DGE)"   : {},
+                    "Protein Gel Staining"             : {},
+                    "Protein Standards"                : {},
+                    "Precast Protein Gels"             : {},
+                    "Protein Electrophoresis Reagents" : {},
+                    "PAGE Gel Casting"                 : {},
+                    "Gel Drying / Storage"             : {}
+                },
+                "Protein Arrays / Protein Microarrays"     : {},
+                "Mass Spectrometry"                        : {
+                    "Mass Spectrometers"         : {},
+                    "Mass Spectrometry Standards": {},
+                    "Sample Preparation"         : {}
+                },
+                "Proteomic Analysis/Research Services"     : {}
+            },
+            "Protein Analysis / Protein Characterization"      : {
+                "Mass Spectrometry"                         : {
+                    "Mass Spectrometers"         : {},
+                    "Mass Spectrometry Standards": {},
+                    "Sample Preparation"         : {}
+                },
+                "Protein Analysis Systems"                  : {
+                    "Protein Characterization Systems / Protein Analysis Systems"    : {},
+                    "Protein Protein Interaction / Affinity Characterization Systems": {},
+                    "Surface Plasmon Resonance Systems (SPR System)"                 : {},
+                    "Nuclear Magnetic Resonance (NMR)"                               : {},
+                    "Amino Acid Analyzers"                                           : {}
+                },
+                "Protein Gel Electrophoresis"               : {
+                    "Protein Electrophoresis Equipment": {},
+                    "2-D Gel Electrophoresis (2DGE)"   : {},
+                    "Protein Gel Staining"             : {},
+                    "Protein Standards"                : {},
+                    "Precast Protein Gels"             : {},
+                    "Protein Electrophoresis Reagents" : {},
+                    "PAGE Gel Casting"                 : {},
+                    "Gel Drying / Storage"             : {}
+                },
+                "Microscale Thermophoresis (MST) Technology": {}
+            }
+        },
+        "Molecular Biology"               : {
+            "Nucleic Acid Detection"                              : {
+                "In Situ Hybridization"            : {
+                    "In Situ Hybridization Kits": {},
+                    "ISH Reagents"              : {},
+                    "Nucleic Acid Labeling"     : {}
+                },
+                "Microarrays"                      : {
+                    "Arrays"                                : {},
+                    "DNA Microarrays"                       : {},
+                    "Antibody Microarrays / Antibody Arrays": {},
+                    "PCR Arrays and qPCR Arrays"            : {},
+                    "Protein Arrays / Protein Microarrays"  : {},
+                    "Tissue Microarrays / Tissue Arrays"    : {},
+                    "Microarray Services"                   : {},
+                    "Microarray Equipment"                  : {},
+                    "Microarray Processing"                 : {},
+                    "Microarray Production"                 : {}
+                },
+                "Nucleic Acid Analysis Instruments": {},
+                "Nucleic Acid Blotting"            : {
+                    "Blotting Buffers"     : {},
+                    "Blotting Consumables" : {},
+                    "Blotting Equipment"   : {},
+                    "Nucleic Acid Labeling": {}
+                },
+                "Nucleic Acid Stains"              : {
+                    "DNA Stains"                     : {},
+                    "Ethidium Bromide"               : {},
+                    "Methylene Blue"                 : {},
+                    "SYBR® Green Nucleic Acid Stains": {},
+                    "SYTOX® Nucleic Acid Stains"     : {}
+                },
+                "Protein - DNA Interaction Assays" : {
+                    "Electrophoretic Mobility Shift Assays (EMSA)"                            : {},
+                    "Electrophoretic Mobility Shift Assays (EMSA) (High Throughput Screening)": {},
+                    "Reporter Gene Assays"                                                    : {}
+                },
+                "Quantitative PCR (qPCR)"          : {
+                    "Real-Time Thermal Cyclers"                          : {},
+                    "Real-Time PCR Reagents / Real-Time PCR Kits"        : {
+                        "Passive Reference Dyes"                       : {},
+                        "qPCR Master Mixes"                            : {},
+                        "Quantitative PCR Labels"                      : {},
+                        "Real Time Gene Assays"                        : {},
+                        "Real Time PCR(qPCR) Kits"                     : {},
+                        "Real-Time PCR - Probes"                       : {},
+                        "Real-Time PCR Primer Design / Oligo Synthesis": {}
+                    },
+                    "PCR Consumables"                                    : {
+                        "PCR Plates/ PCR Plate Extras": {},
+                        "PCR Tubes/ PCR Tube Extras"  : {}
+                    },
+                    "Real Time Thermal Cycler (Thermocycler) Accessories": {
+                        "Filter Sets"                                              : {},
+                        "Misc. Real Time Thermal Cycler (Thermocycler) Accessories": {},
+                        "Real Time Thermal Cycler (Thermocycler) Calibration Kits" : {}
+                    },
+                    "Real Time Gene Assays"                              : {
+                        "Real Time TaqMan Gene Expression Assays": {}
+                    },
+                    "Real-Time PCR Primer Design / Oligo Synthesis"      : {
+                        "Oligo / Probe / Primer Design Software": {}
+                    },
+                    "Real Time PCR Primer Design Software"               : {
+                        "Oligo / Probe / Primer Design Software": {}
+                    }
+                },
+                "RNA Detection Assay/Kits"         : {
+                    "Ribonuclease Protection Assay (RPA)": {},
+                    "RNA Detection Kits"                 : {}
+                }
+            },
+            "Transfection"                                        : {
+                "Transfection Kits and Reagents"                : {
+                    "Primary Cell Transfection Reagents"                       : {},
+                    "Transfection Enhancers / Transfection Efficiency Reagents": {},
+                    "Search Transfection Reagents"                             : {}
+                },
+                "Electroporation / Sonoporation / Gene Delivery": {
+                    "Electroporation / Cell Fusion Instruments": {},
+                    "Electroporation Accessories"              : {},
+                    "Electroporation Electrodes"               : {},
+                    "High-Throughput Electroporation"          : {},
+                    "Transfection Systems"                     : {}
+                }
+            },
+            "Expression Analysis"                                 : {
+                "DNA Amplification Kits"                              : {},
+                "Nucleic Acid Analysis Instruments"                   : {},
+                "Quantitative PCR (qPCR)"                             : {
+                    "Real-Time PCR Thermal Cyclers"                      : {},
+                    "Real-Time PCR Reagents / Real-Time PCR Kits"        : {},
+                    "PCR Consumables"                                    : {},
+                    "Real Time Thermal Cycler (Thermocycler) Accessories": {},
+                    "Real Time Gene Assays"                              : {},
+                    "Real-Time PCR Primer Design / Oligo Synthesis"      : {},
+                    "Real Time PCR Primer Design Software"               : {}
+                },
+                "RT-PCR (Reverse Transcriptase PCR)"                  : {
+                    "Reverse Transcriptase PCR Kits"     : {},
+                    "RNA"                                : {},
+                    "RNase Detection and Decontamination": {},
+                    "RT-PCR Master Mixes and Reagents"   : {}
+                },
+                "PCR Comprehensive Expression Profiling"              : {
+                    "Human Expression Profiling PCR Arrays" : {},
+                    "PCR Based Expression Profiling (Human)": {}
+                },
+                "Microarrays"                                         : {
+                    "Arrays"                                : {},
+                    "DNA Microarrays"                       : {},
+                    "Antibody Microarrays / Antibody Arrays": {},
+                    "PCR Arrays and qPCR Arrays"            : {},
+                    "Protein Arrays / Protein Microarrays"  : {},
+                    "Tissue Microarrays / Tissue Arrays"    : {},
+                    "Microarray Services"                   : {},
+                    "Microarray Equipment"                  : {},
+                    "Microarray Processing"                 : {},
+                    "Microarray Production"                 : {}
+                },
+                "RNA Amplification"                                   : {
+                    "RNA Amplification Kits": {}
+                },
+                "RNA"                                                 : {
+                    "Search miRNA"    : {},
+                    "Search shRNA"    : {},
+                    "Search siRNA"    : {},
+                    "Search Total RNA": {},
+                    "Search All RNA"  : {},
+                    "Total RNA"       : {},
+                    "mRNA"            : {},
+                    "shRNA"           : {},
+                    "siRNA"           : {},
+                    "miRNA"           : {},
+                    "Non-coding RNA"  : {}
+                },
+                "cDNA Clones, Tissue-specific cDNA and cDNA Libraries": {
+                    "cDNA Search": {}
+                },
+                "RACE Kits"                                           : {}
+            },
+            "Genotyping Technology"                               : {
+                "AFLP - Amplified Fragment Length Polymorphism": {
+                    "AFLP Kits": {}
+                },
+                "Genotyping Services"                          : {},
+                "Genotyping Software"                          : {},
+                "Genotyping Systems / Genotyping Instruments"  : {
+                    "Genotyping System / Genotyping Instrument": {}
+                },
+                "Microarray Based Genotyping"                  : {
+                    "Human Genome Microarrays": {},
+                    "Mouse Genome Microarrays": {}
+                },
+                "Mutation Detection (Genotyping)"              : {
+                    "Mutation Detection Kits"                : {},
+                    "Mutation Detection Kits (Gene Specific)": {},
+                    "Real Time PCR Kits (Pathogen Detection)": {}
+                },
+                "PCR / Electrophoresis Based Genotyping"       : {
+                    "   - Capillary Electrophoresis (CE) - PCR Based Genotyping": {},
+                    "- Application Specific Kits  (PCR Based Genotyping)"       : {},
+                    "- Genotyping Services  (PCR Based)"                        : {},
+                    "- Thermal Cyclers / Thermocyclers (PCR Based Genotyping)"  : {}
+                },
+                "Real-Time PCR Based Genotyping"               : {
+                    "Real-Time PCR Based Genotyping (Software)": {}
+                },
+                "STR / Microsatellite Markers And Kits"        : {
+                    "Bovine / Cattle Microsatellite / STR Markers And Kits (PCR Based Genotyping)": {},
+                    "CANINE Microsatellite / STR Markers And Kits (PCR Based Genotyping)"         : {},
+                    "Equine Microsatellite / STR Markers And Kits (PCR Based Genotyping)"         : {},
+                    "HUMAN  Microsatellite / STR Markers And Kits (PCR Based Genotyping)"         : {}
+                }
+            },
+            "Next Generation Sequencing / Whole Genome Sequencing": {
+                "Next Generation Sequencers"                        : {},
+                "NGS Library Preparation and Sample Prep"           : {},
+                "Next Generation Sequencing Services / NGS Services": {},
+                "NGS Kits"                                          : {},
+                "DNA Fragmentation"                                 : {},
+                "Adapter Ligation Kits"                             : {},
+                "Library Amplification"                             : {},
+                "cDNA Synthesis"                                    : {},
+                "Target Enrichment Kits"                            : {},
+                "Library Quantification"                            : {},
+                "NGS Kits by Application"                           : {
+                    "RNA-Seq NGS Kits"                : {},
+                    "Methyl-Seq NGS Kits"             : {},
+                    "Targeted Sequencing NGS Kits"    : {},
+                    "ChIP-Seq NGS Kits"               : {},
+                    "Whole Genome Sequencing NGS Kits": {}
+                }
+            },
+            "DNA Sequencing"                                      : {
+                "Automated DNA Sequencing"                            : {
+                    "Automated Sequencing Kits"                           : {},
+                    "DNA Sequencers / Genetic Analyzers"                  : {},
+                    "Next Generation Sequencing / Whole Genome Sequencing": {},
+                    "Sequencing Reagents"                                 : {}
+                },
+                "DNA Sequencing Services"                             : {},
+                "Manual DNA Sequencing"                               : {
+                    "Sequencing Electrophoresis Systems": {},
+                    "Sequencing Reagents"               : {}
+                },
+                "Next Generation Sequencing / Whole Genome Sequencing": {
+                    "Next Generation Sequencers"                        : {},
+                    "NGS Library Preparation and Sample Prep"           : {},
+                    "Next Generation Sequencing Services / NGS Services": {}
+                },
+                "Sequence Analysis Software"                          : {
+                    "Genotyping Software"                   : {},
+                    "Oligo / Probe / Primer Design Software": {},
+                    "Sequence Analysis Software"            : {}
+                },
+                "Sequencing Primers"                                  : {
+                    "Oligonucleotide Synthesis Services": {}
+                }
+            },
+            "Molecular Biology Reagents"                          : {
+                "EDTA/ EGTA"               : {
+                    "EDTA": {},
+                    "EGTA": {}
+                },
+                "Enzymes"                  : {
+                    "DNA Polymerases"    : {},
+                    "Search Enzymes"     : {},
+                    "Nucleases"          : {},
+                    "Polymerases"        : {},
+                    "Proteases"          : {},
+                    "Transferases"       : {},
+                    "Restriction Enzymes": {}
+                },
+                "Molecular Biology Buffers": {
+                    "TAE Buffers": {},
+                    "TE Buffer"  : {},
+                    "TPE Buffer" : {}
+                },
+                "Nuclease Decontamination" : {
+                    "Nuclease Detection"    : {},
+                    "RNase  Decontamination": {}
+                },
+                "Nucleotides"              : {
+                    "dNTPs"          : {},
+                    "NDPs"           : {},
+                    "NMPs"           : {},
+                    "NTPs"           : {},
+                    "Polynucleotides": {}
+                },
+                "Water"                    : {
+                    "Laboratory Water Purification / Laboratory Water Systems": {},
+                    "Water (DEPC)"                                            : {},
+                    "Water (Distilled)"                                       : {},
+                    "Water (HPLC Grade)"                                      : {},
+                    "Water (MB Grade)"                                        : {},
+                    "Water (Nuclease-Free)"                                   : {},
+                    "Water (Nuclease-Free, Dist.)"                            : {},
+                    "Water (PCR Grade)"                                       : {},
+                    "Water (RNase-Free)"                                      : {},
+                    "Water (Sterile Filtered)"                                : {},
+                    "Water (Tissue Culture Grade)"                            : {}
+                }
+            },
+            "In Vitro Transcription / Translation"                : {
+                "Baculovirus Systems"                         : {
+                    "Baculovirus Reagents / Baculovirus Kits": {}
+                },
+                "Coupled In Vitro Transcription / Translation": {},
+                "Expression Induction"                        : {
+                    "IPTG"                     : {},
+                    "Other Expression Inducers": {}
+                },
+                "In Vitro Transcription"                      : {
+                    "In Vitro Transcription / Labeling Kits": {},
+                    "NTPs"                                  : {},
+                    "rNTPs"                                 : {},
+                    "Transcription Buffers"                 : {},
+                    "Transcription Extracts"                : {}
+                },
+                "In Vitro Translation"                        : {
+                    "In Vitro Translation"             : {},
+                    "In Vitro Translation RNA Controls": {}
+                },
+                "Poly A Tailing"                              : {
+                    "Poly A Tailing Kits / dA-Tailing Kits": {}
+                },
+                "Protein Production Services"                 : {},
+                "RNA Capping"                                 : {}
+            },
+            "Molecular Biology Services"                          : {
+                "PCR Services"                                      : {
+                    "Mutagenesis Services"  : {},
+                    "Real Time PCR Services": {}
+                },
+                "DNA Extraction Services"                           : {},
+                "Gene Expression / Gene Profiling Services"         : {},
+                "DNA Sequencing Services"                           : {},
+                "Library Construction Services"                     : {
+                    "BAC Library Construction Services" : {},
+                    "cDNA Library Construction Services": {},
+                    "Gene Library Synthesis Services"   : {}
+                },
+                "Genotyping Services"                               : {},
+                "Microarray Services"                               : {
+                    "Gene Expression / Gene Profiling Services"           : {},
+                    "Microarray Design Services"                          : {},
+                    "Microarray Processing & Expression Analysis Services": {},
+                    "Microarray Production Services"                      : {}
+                },
+                "Gene Editing Services"                             : {},
+                "Gene Synthesis Services"                           : {},
+                "Next Generation Sequencing Services / NGS Services": {},
+                "Oligonucleotide Synthesis Services"                : {
+                    "Custom Oligo Synthesis Services"              : {},
+                    "Custom siRNA Synthesis Services"              : {},
+                    "Real-Time PCR Primer Design / Oligo Synthesis": {}
+                },
+                "Subcloning Services / Cloning Services"            : {},
+                "RNAi Services / miRNA Services / shRNA Services"   : {
+                    "Custom RNAi and siRNA Synthesis"            : {},
+                    "RNAi Assay and Product Development Services": {},
+                    "RNAi Consulting Services"                   : {},
+                    "RNAi Screening Services"                    : {}
+                },
+                "Cell Line Generation / Transfection Services"      : {
+                    "Cell Line Generation / Transfection Services": {}
+                },
+                "Protein Production Services"                       : {},
+                "Custom Antibody Production Services"               : {
+                    "Custom Monoclonal Antibody Production Services" : {},
+                    "Custom Polyclonal Antibody Production Services" : {},
+                    "Custom Recombinant Antibody Production Services": {}
+                },
+                "Viral Services"                                    : {
+                    "Custom Viral Services": {}
+                }
+            },
+            "CRISPR Products"                                     : {
+                "CRISPR-Cas9 and Guide RNA"     : {},
+                "Gene Editing Services"         : {},
+                "Transfection Kits and Reagents": {
+                    "Primary Cell Transfection Reagents"                       : {},
+                    "Transfection Enhancers / Transfection Efficiency Reagents": {},
+                    "Search Transfection Reagents"                             : {}
+                },
+                "Cas9 Nuclease"                 : {},
+                "Guide RNA"                     : {},
+                "CRISPR Screening Libraries"    : {},
+                "CRISPR Positive Controls"      : {},
+                "CRISPR Negative Controls"      : {},
+                "Gene-specific Knockout Kits"   : {}
+            }
+        },
+        "Lab Automation / High-Throughput": {
+            "Automated Workstations": {
+                "Liquid Handling and Automated Workstations": {},
+                "PCR Workstations"                          : {},
+                "DNA Purification Workstations"             : {},
+                "Multipurpose Workstations"                 : {},
+                "DNA/RNA Purification Workstations"         : {},
+                "Protein Purification Workstations"         : {},
+                "Automated Cell Culture Systems"            : {},
+                "Workstation Modules"                       : {},
+                "Workstation Automation Software"           : {},
+                "Automated Multi-Purpose Workstations"      : {}
+            },
+            "Dispensing Systems"    : {
+                "Aspiration Systems"            : {},
+                "Bottle-Top Dispensers"         : {},
+                "Handheld Dispensers"           : {},
+                "Microplate Dispensers"         : {},
+                "Pumps and Dispensing Equipment": {}
+            }
+        },
+        "Protein Biochemistry"            : {
+            "Chromatography"      : {
+                "Chromatography and Separation Search Tool"    : {},
+                "Chromatography Equipment"                     : {
+                    "Chromatography Columns"                 : {},
+                    "Chromatography Systems"                 : {},
+                    "Chromatography Pumps"                   : {},
+                    "HPLC Detector / Chromatography Detector": {},
+                    "Chromatography Software"                : {},
+                    "Sample Management Tools"                : {},
+                    "Chromatography Accessories"             : {}
+                },
+                "GC/HPLC Solvents"                             : {
+                    "Acetonitrile"             : {},
+                    "DMSO (Dimethyl Sulfoxide)": {},
+                    "Formic Acid"              : {},
+                    "TFA (HPLC Solvent)"       : {}
+                },
+                "Chromatography Media"                         : {
+                    "Affinity Chromatography Media": {},
+                    "Ion Exchange Media"           : {},
+                    "Mixed-Mode Chromatography"    : {}
+                },
+                "Chromatography Standards / HPLC Control Sets" : {
+                    "HPLC Standards": {}
+                },
+                "Chromatography Columns"                       : {
+                    "Affinity Purification Columns"  : {},
+                    "Gel Filtration Columns"         : {},
+                    "Hydrophobic Interaction Columns": {},
+                    "Ion Exchange Columns"           : {},
+                    "Reversed Phase Columns"         : {},
+                    "Size Exclusion Columns"         : {}
+                },
+                "Affinity Chromatography"                      : {
+                    "Affinity Chromatography Media": {},
+                    "Antibody Purification"        : {}
+                },
+                "Ion Exchange Chromatography"                  : {
+                    "Ion Exchange Chromatography Search Tool": {},
+                    "Ion Exchange Media"                     : {}
+                },
+                "High Performance Liquid Chromatography (HPLC)": {
+                    "HPLC Systems"                                : {},
+                    "Nanoscale HPLC Systems"                      : {},
+                    "Chromatography Standards / HPLC Control Sets": {},
+                    "GC/HPLC Solvents"                            : {}
+                },
+                "Gas Chromatography (GC)"                      : {
+                    "Gas Chromatography Systems": {},
+                    "GC / MS Systems"           : {},
+                    "GC/HPLC Solvents"          : {}
+                },
+                "Affinity Purification"                        : {
+                    "Affinity Purification Resins" : {},
+                    "Affinity Purification Columns": {},
+                    "Affinity Purification Kits"   : {}
+                },
+                "Ion Exchange"                                 : {
+                    "Ion Exchange Resins" : {},
+                    "Ion Exchange Columns": {}
+                },
+                "Size Exclusion"                               : {
+                    "Size Exclusion Resins" : {},
+                    "Size Exclusion Columns": {}
+                },
+                "Reversed Phase"                               : {
+                    "Reversed Phase Columns": {}
+                },
+                "Chromatography Resins"                        : {
+                    "Affinity Purification Resins": {},
+                    "Ion Exchange Resins"         : {},
+                    "Metal Chelate Resins"        : {},
+                    "Size Exclusion Resins"       : {}
+                },
+                "Empty Columns"                                : {}
+            },
+            "Enzyme Inhibitors"   : {
+                "Search Inhibitors"         : {},
+                "Kinase Inhibitors"         : {},
+                "Caspase Inhibitors"        : {},
+                "Protease Inhibitors"       : {
+                    "Serine Protease Inhibitors"  : {},
+                    "Cysteine Protease Inhibitors": {}
+                },
+                "Phosphatase Inhibitors"    : {
+                    "Protein Serine/Threonine Phosphatase Inhibitors": {},
+                    "Protein Tyrosine Phosphatase Inhibitors"        : {},
+                    "Cdc25 Phosphatase Inhibitors"                   : {}
+                },
+                "Inhibitor Cocktails"       : {
+                    "Protease Inhibitor Cocktails"   : {},
+                    "Phosphatase Inhibitor Cocktails": {}
+                },
+                "Common Protease Inhibitors": {
+                    "PMSF"     : {},
+                    "Leupeptin": {},
+                    "Pepstatin": {}
+                }
+            },
+            "Protein Purification": {
+                "Protein Purification and Sample Prep": {},
+                "Protein Extraction Kits"             : {},
+                "Membrane Protein Extraction"         : {},
+                "Nuclear Protein Extraction"          : {},
+                "Cell and Protein Fractionation Kits" : {},
+                "Concentration Kits"                  : {},
+                "Mitochondria Isolation Kits"         : {},
+                "Protein Dialysis Kits"               : {},
+                "Recombinant Protein Purification"    : {},
+                "GST Tag Protein Purification"        : {},
+                "His Tag Protein Purification"        : {},
+                "Antibody Purification"               : {
+                    "Antibody Purification Kits"       : {},
+                    "Protein A/G Antibody Purification": {},
+                    "Antibody Purification Services"   : {}
+                },
+                "Protein Purification Services"       : {},
+                "Homogenizers / Sonicators"           : {
+                    "Homogenizers"                : {},
+                    "Sonicators / Ultrasonicators": {},
+                    "Homogenizer Accessories"     : {}
+                },
+                "Magnetic Beads & Accessories"        : {
+                    "Magnetic Beads"             : {},
+                    "Streptavidin Magnetic Beads": {}
+                },
+                "Protein Purification Workstations"   : {},
+                "Filtration Devices"                  : {
+                    "96 Well Filter Plates"            : {},
+                    "Self-Contained Filtration Devices": {},
+                    "Concentration Kits"               : {},
+                    "Syringe Filters"                  : {}
+                },
+                "Lysis Buffers / Cell Lysis Kits"     : {},
+                "Protein Purification Kits"           : {},
+                "Chromatography"                      : {
+                    "Chromatography and Separation Search Tool"    : {},
+                    "Chromatography Equipment"                     : {},
+                    "GC/HPLC Solvents"                             : {},
+                    "Chromatography Media"                         : {},
+                    "Chromatography Standards / HPLC Control Sets" : {},
+                    "Chromatography Columns"                       : {},
+                    "Affinity Chromatography"                      : {},
+                    "Ion Exchange Chromatography"                  : {},
+                    "High Performance Liquid Chromatography (HPLC)": {},
+                    "Gas Chromatography (GC)"                      : {}
+                },
+                "Protein Removal"                     : {}
+            },
+            "Protein Expression"  : {
+                "Expression Kits"                     : {
+                    "Bacterial Expression Cloning Kits"                  : {},
+                    "Insect Expression Cloning Kits"                     : {},
+                    "Lentivector Expression Systems (Lentiviral Vectors)": {},
+                    "Mammalian Expression Cloning Kits"                  : {},
+                    "Yeast Expression Cloning Kits"                      : {}
+                },
+                "In Vitro Transcription / Translation": {
+                    "Baculovirus Systems"                         : {},
+                    "Coupled In Vitro Transcription / Translation": {},
+                    "Expression Induction"                        : {},
+                    "In Vitro Transcription"                      : {},
+                    "In Vitro Translation"                        : {},
+                    "Poly A Tailing"                              : {},
+                    "Protein Production Services"                 : {},
+                    "RNA Capping"                                 : {}
+                }
+            },
+            "Western Blotting"    : {
+                "Blotting Equipment"                                  : {
+                    "Blotters"                                     : {},
+                    "Western Blot Incubation/Wash/Stain Containers": {},
+                    "Hybridization and Crosslinking"               : {},
+                    "Blotter Accessories"                          : {}
+                },
+                "Membranes and Blotting Paper"                        : {
+                    "Blotting Paper"          : {},
+                    "Filter Paper Sandwiches" : {},
+                    "Nitrocellulose Membranes": {},
+                    "Nylon Membranes"         : {},
+                    "PVDF Membranes"          : {}
+                },
+                "Protein Gel Electrophoresis"                         : {
+                    "Protein Electrophoresis Equipment": {},
+                    "2-D Gel Electrophoresis (2DGE)"   : {},
+                    "Protein Gel Staining"             : {},
+                    "Protein Standards"                : {},
+                    "Precast Protein Gels"             : {},
+                    "Protein Electrophoresis Reagents" : {},
+                    "PAGE Gel Casting"                 : {},
+                    "Gel Drying / Storage"             : {}
+                },
+                "Western Blot Antibodies"                             : {},
+                "Western Blot Blocking, Incubation, Staining, Washing": {
+                    "Automated Western Blot Processors / Western Blot Processors": {},
+                    "Blocking Reagents"                                          : {},
+                    "Blot Wash Buffers"                                          : {},
+                    "Hybridization and Crosslinking"                             : {},
+                    "Western Blot Incubation/Wash/Stain Containers"              : {}
+                },
+                "Western Blot Imaging"                                : {
+                    "Chemiluminescence Imaging Systems": {},
+                    "Gel Documentation Systems"        : {},
+                    "Film Gel Imaging Systems"         : {},
+                    "Fluorescent Imaging"              : {}
+                },
+                "Western Blotting Reagents"                           : {
+                    "Biotin"                               : {},
+                    "Blocking Reagents"                    : {},
+                    "Blot Wash Buffers"                    : {},
+                    "Blotting Reagent Kits"                : {},
+                    "Substrates"                           : {},
+                    "Transfer Buffers"                     : {},
+                    "Western Blotting Signal Amplification": {},
+                    "Western Blotting Stripping Reagents"  : {}
+                },
+                "Western Blotting Standards"                          : {
+                    "Fluorescent Protein Standards": {},
+                    "Prestained Protein Standards" : {},
+                    "Unstained Protein Standards"  : {}
+                }
+            }
+        },
+        "Polymerase Chain Reaction (PCR)" : {
+            "PCR Equipment"                     : {
+                "PCR Thermocyclers"                                  : {
+                    "PCR Machines"                   : {},
+                    "Real-Time Thermal Cyclers"      : {},
+                    "Digital PCR Systems (dPCR)"     : {},
+                    "Multi-Block PCR Thermal Cyclers": {},
+                    "384-Well PCR Thermal Cyclers"   : {},
+                    "96-Well PCR Thermal Cyclers"    : {},
+                    "20-25 Well PCR Thermal Cyclers" : {},
+                    "48-Well PCR Thermal Cyclers"    : {},
+                    "Thermal Cycler Accessories"     : {
+                        "Accessory Blocks"               : {},
+                        "Other Thermal Cycler Accesories": {}
+                    }
+                },
+                "PCR Machines"                                       : {},
+                "Real-Time Thermal Cyclers"                          : {},
+                "Digital PCR Systems (dPCR)"                         : {},
+                "Multipurpose Workstations"                          : {},
+                "PCR Workstation / PCR Hood"                         : {},
+                "PCR Consumables"                                    : {
+                    "PCR Plates/ PCR Plate Extras": {},
+                    "PCR Tubes/ PCR Tube Extras"  : {}
+                },
+                "Real Time Thermal Cycler (Thermocycler) Accessories": {
+                    "Filter Sets"                                              : {},
+                    "Misc. Real Time Thermal Cycler (Thermocycler) Accessories": {},
+                    "Real Time Thermal Cycler (Thermocycler) Calibration Kits" : {}
+                },
+                "Epigenetics Tools"                                  : {
+                    "DNA Methylation"                                     : {},
+                    "Next Generation Sequencing / Whole Genome Sequencing": {},
+                    "RNAi"                                                : {}
+                }
+            },
+            "RT-PCR (Reverse Transcriptase PCR)": {
+                "Reverse Transcriptase PCR Kits"     : {
+                    "Real Time RT-PCR Kits": {},
+                    "RT-PCR Kits"          : {}
+                },
+                "RNA"                                : {
+                    "Search miRNA"    : {},
+                    "Search shRNA"    : {},
+                    "Search siRNA"    : {},
+                    "Search Total RNA": {},
+                    "Search All RNA"  : {},
+                    "Total RNA"       : {},
+                    "mRNA"            : {},
+                    "shRNA"           : {},
+                    "siRNA"           : {},
+                    "miRNA"           : {},
+                    "Non-coding RNA"  : {}
+                },
+                "RNase Detection and Decontamination": {
+                    "RNase  Decontamination": {},
+                    "RNase Detection"       : {},
+                    "RNase Inhibitors"      : {}
+                },
+                "RT-PCR Master Mixes and Reagents"   : {
+                    "RT-PCR Master Mix (Tubes)"          : {},
+                    "RT-PCR Master Mixes"                : {},
+                    "RT-qPCR Master Mixes"               : {},
+                    "RT-qPCR Sample Preparation Reagents": {}
+                }
+            },
+            "PCR Kits"                          : {
+                "Real Time PCR(qPCR) Kits"              : {
+                    "Real Time Multiplex PCR Kits"           : {},
+                    "Real Time PCR Control Kits"             : {},
+                    "Real Time PCR Kits"                     : {},
+                    "Real Time PCR Kits (Compensation Sets)" : {},
+                    "Real Time PCR Kits (Pathogen Detection)": {},
+                    "Real Time RT-PCR Kits"                  : {},
+                    "Universal Probe Library Gene Assay"     : {}
+                },
+                "PCR Genotyping Kits"                   : {
+                    "- Application Specific Kits  (PCR Based Genotyping)": {},
+                    "STR / Microsatellite Markers And Kits"              : {}
+                },
+                "Reverse Transcriptase PCR Kits"        : {
+                    "Real Time RT-PCR Kits": {},
+                    "RT-PCR Kits"          : {}
+                },
+                "PCR Comprehensive Expression Profiling": {
+                    "Human Expression Profiling PCR Arrays" : {},
+                    "PCR Based Expression Profiling (Human)": {}
+                },
+                "Other PCR Kits"                        : {
+                    "Multiplex PCR Kits": {},
+                    "PCR Cloning Kits"  : {},
+                    "PCR Kits"          : {}
+                }
+            },
+            "PCR Primers"                       : {
+                "Primers and Probes Search": {},
+                "Gene-specific Primers"    : {},
+                "Sequencing Primers"       : {
+                    "T7 Primers"     : {},
+                    "T3 Primers"     : {},
+                    "SP6 Primers"    : {},
+                    "M13 Primers"    : {},
+                    "M13/pUC Primers": {}
+                },
+                "GAPDH Primers"            : {
+                    "Human GAPDH Primers": {},
+                    "Mouse GAPDH Primers": {}
+                },
+                "cDNA Synthesis Primers"   : {
+                    "Oligo dT Primers": {},
+                    "Random Primers"  : {}
+                }
+            },
+            "PCR Reagents"                      : {
+                "DNA Binding Proteins"        : {
+                    "recA Protein, E. Coli"               : {},
+                    "Single Stranded DNA Binding Proteins": {},
+                    "T4 Gene 32 Protein"                  : {}
+                },
+                "dNTPs"                       : {
+                    "dNTP Mixes"    : {},
+                    "dNTP Salts"    : {},
+                    "dNTP Solutions": {}
+                },
+                "PCR Buffers"                 : {
+                    "PCR Buffers"             : {},
+                    "PCR Optimization Buffers": {}
+                },
+                "PCR Enhancers"               : {},
+                "PCR Master Mixes"            : {
+                    "PCR Master Mix (96-well)"        : {},
+                    "PCR Master Mixes"                : {},
+                    "PCR Master Mixes (High Fidelity)": {},
+                    "PCR Master Mixes (Hot Start)"    : {},
+                    "qPCR Master Mixes"               : {},
+                    "RT-PCR Master Mix (Tubes)"       : {}
+                },
+                "PCR Purification Reagents"   : {},
+                "PCR Reaction Components"     : {
+                    "PCR Chemicals": {}
+                },
+                "PCR Standards / PCR Controls": {},
+                "Thermostable Polymerases"    : {}
+            }
+        },
+        "Nucleic Acid Purification"       : {
+            "RNA Isolation/Purification"                    : {
+                "Cell/Tissue RNA Purification Kits": {},
+                "Total RNA Purification Kits"      : {},
+                "RNA Purification Kits"            : {
+                    "mRNA Purification Kits"       : {},
+                    "Viral RNA Purification Kits"  : {},
+                    "miRNA Purification Kits"      : {},
+                    "Small RNA Purification Kits"  : {},
+                    "Exosome RNA Purification Kits": {}
+                },
+                "RNA Purification by Source/Sample": {
+                    "Blood RNA Purification Kits"       : {},
+                    "Plant RNA Purification Kits"       : {},
+                    "Bacterial RNA Purification Kits"   : {},
+                    "Fixed tissue RNA Purification Kits": {}
+                }
+            },
+            "Automated DNA/RNA/Protein Purification Systems": {
+                "Automated DNA Extraction Systems"                              : {},
+                "Automated DNA/RNA Purification Sample Preparation Workstations": {},
+                "DNA/RNA Purification Workstations"                             : {},
+                "Magnetic Particle Processor"                                   : {},
+                "Protein Purification Workstations"                             : {},
+                "Sample Management Software"                                    : {},
+                "Colony Pickers / Colony Arrayers"                              : {},
+                "Multi-well DNA/RNA Purification Kits"                          : {
+                    "96-well DNA Extraction Kits": {},
+                    "96-well RNA Extraction Kits": {}
+                }
+            },
+            "Nucleic Acid Purification Accessory Reagents"  : {
+                "RNase Inhibitors"                   : {},
+                "Lysis Buffers / Cell Lysis Kits"    : {},
+                "Red Blood Cell Lysis Reagents"      : {},
+                "Glycogen"                           : {},
+                "Nucleases"                          : {
+                    "Endonucleases": {},
+                    "Exonucleases" : {}
+                },
+                "Endotoxin Removal Kits and Reagents": {},
+                "Glycosidases"                       : {
+                    "N-Glycosidase"     : {},
+                    "Beta-Galactosidase": {},
+                    "Neuraminidase"     : {},
+                    "Amylase"           : {},
+                    "Lysozyme"          : {},
+                    "Cellulase"         : {},
+                    "Agarase"           : {}
+                },
+                "Protein Removal"                    : {}
+            }
+        },
+        "RNAi Technology"                 : {
+            "shRNA": {
+                "shRNA"          : {},
+                "shRNA Clones"   : {},
+                "shRNA Libraries": {}
+            },
+            "siRNA": {
+                "siRNA": {}
+            }
+        },
+        "Software"                        : {
+            "Laboratory Management Software": {
+                "Data Acquisition For Neuroscience Equipment": {
+                    "Amplifiers"                                       : {},
+                    "Data Acquistion Systems (Hardware & Software)"    : {},
+                    "Digitizers"                                       : {},
+                    "Physiology/Neurobiology Data Acquisition Software": {}
+                },
+                "Instrument Status And Control Software"     : {
+                    "      Instrument / Product Specific  Software"            : {},
+                    "Calibration Management Software (Free Trial)"             : {},
+                    "Laboratory Automation Software"                           : {},
+                    "Laboratory Information Management Systems (LIMS) Software": {},
+                    "Sample Management Software"                               : {}
+                }
+            }
+        }
+    }
+}

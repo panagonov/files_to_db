@@ -29,6 +29,37 @@ let getValueFromJSON = (jsn, key) =>
     return getValueFromJSON(jsn[currentKey], parseData.join('.'))
 };
 
+let setKeyInJSON = (jsn, key, value) => {
+    if (!key)
+    {
+        return;
+    }
+    let parseData = key.split('.');
+    let currentKey = parseData[0];
+    let nextKey = parseData[1];
+    let isArray = parseInt(nextKey, 10) == nextKey;
+
+    if (!jsn.hasOwnProperty(currentKey))
+    {
+        if (isArray)
+        {
+            jsn[currentKey] = [];
+        }
+        else
+        {
+            jsn[currentKey] = {};
+        }
+    }
+
+    if (parseData.length === 1)
+    {
+        return jsn[currentKey] = value;
+    }
+
+    parseData.shift();
+    return setKeyInJSON(jsn[currentKey], parseData.join('.'), value)
+};
+
 let mapping_transform = (mapping, record) =>
 {
     let result = {};
@@ -149,5 +180,7 @@ module.exports = {
     objEach,
     isEmptyObj,
     format,
-    addZero
+    addZero,
+    getValueFromJSON,
+    setKeyInJSON
 };
