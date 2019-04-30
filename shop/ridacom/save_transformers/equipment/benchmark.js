@@ -175,6 +175,18 @@ let _get_images = record =>
     return null
 };
 
+let _get_original_link = record =>
+{
+    if(record.crawler_item.link){
+        return record.crawler_item.link
+    }
+    else if(record.supplies && record.supplies.related && record.supplies.related.length){
+        return record.supplies.related[0].link
+    }
+
+    return null
+};
+
 
 let mapping = {
     "name"                : "name",
@@ -182,7 +194,11 @@ let mapping = {
     "human_readable_id"   : record => `benchmark_scientific_${import_utils.human_readable_id(record.name, record.oid)}`,
     "external_links"      : record => [{"key": "benchmark", "id": record.oid}],
     "price_model"         : "price",
-    "supplier"            : () => import_utils.get_canonical("Benchmark Scientific", ":supplier"),
+    "supplier"            : record => {
+        let original_link = _get_original_link(record);
+        let supplier = !original_link || /benchmarkscientific/.test(original_link) ? "Benchmark Scientific" : "Accuris Instruments";
+        return import_utils.get_canonical(supplier, ":supplier");
+    },
     "distributor"         : () => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
     "description"         : "crawler_item.description",
     "category"            : _get_product_category,
@@ -190,33 +206,25 @@ let mapping = {
     "product_relations"   : _getProductRelations,
     "images"              : _get_images,
     "pdf"                 : "crawler_item.pdf",
-    "original_link"       : record =>{
-        if(record.crawler_item.link){
-            return record.crawler_item.link
-        }
-        else if(record.supplies && record.supplies.related && record.supplies.related.length){
-            return record.supplies.related[0].link
-        }
-
-        return null
-    }
+    "original_link"       : _get_original_link
 };
 
 let index = 0;
-let stop_after = 420;
+let stop_after = -1;
 let crawler_not_found = [];
 let show_in_console = (result, crawler_item, record) =>
 {
     if (index >= stop_after) {
         let crawler_found = !utils.isEmptyObj(crawler_item) || !!record.supplies;
         console.table({
-            index : index,
-            name        : result.name,
-            oid         : result.oid,
-            category    : (result.category || []).toString(),
-            sub_category: (result.sub_category || []).toString(),
-            all_categories: (result.all_categories || []).toString(),
-            crawler: crawler_found
+            index         : index,
+            name          : result.name,
+            oid           : result.oid,
+            // category      : (result.category || []).toString(),
+            // sub_category  : (result.sub_category || []).toString(),
+            // all_categories: (result.all_categories || []).toString(),
+            supplier      : result.supplier[0],
+            crawler       : crawler_found
         });
         if (!crawler_found && !result.original_link) {
             crawler_not_found.push(result.oid);
@@ -261,7 +269,6 @@ let convert = (item, crawler_item, custom_data) =>
     let service_data = import_utils.build_service_data(result, relation_fields);
     result = Object.assign(result, service_data);
 
-    index
     let suggest_data = import_utils.build_suggest_data(result, relation_fields, result.category[0][1]);
     result           = import_utils.clean_result_data(result, relation_fields);
 
@@ -348,7 +355,7 @@ module.exports = {
     load_crawler_data,
     load_custom_data,
     get_crawler_item,
-    version: 21,
+    version: 22,
     // disable: true
 };
 
