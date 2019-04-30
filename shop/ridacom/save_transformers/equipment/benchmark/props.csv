@@ -4,7 +4,7 @@ oid,alternative_oid,preheat_time,interface,temperature_differential,temperature_
 B2000-2 ,B2000-2-E,,,,,,,,,,"115,230V",,50-60Hz,2kg,,,,5.3x9.4x5.5in,±0.2°C at 37°C,6.5x8x6in,,5-100°C,,,,1.0°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,B2000-4-T5;B2000-4-T1520;B2000-4-T150;B2000-4-T500;B2000-8-T150;B2000-8-500,water_bath,,
 Vortex Mixers,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 BV1000,BV1000-E,,,,,,,,,,"115,230V",180W,50-60Hz,3.8kg,2years,4-45°C,touch;continuous ,,,13x16x17cm,,,,,,,,,200-3200rpm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,3mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BV1000-FLAT;BV1000-COMBO;BV1000-H15;BV1000-H150;BV1000-H500,,,
-BV1003,BV1003-E,,,,,,,,,,"115,230V",180W,50-60Hz,3.8kg,2years,4-45°C,touch;continuous ,,,13.2x17x17cm,,,,,,,,,200-3200rpm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,3mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BV1000-COMBO;BV1000-H15;BV1000-H150;BV1000-H500;BV1003-150;BV1003-500,vortexer,,
+BV1003,BV1003-E,,,,,,,,,,"115,230V",180W,50-60Hz,3.8kg,2years,4-45°C,touch;continuous ,,,13.2x17x17cm,,,,,,,,,200-3200rpm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,3mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BV1000-COMBO;BV1000-H15;BV1000-H150;BV1000-H500;BV1003-150;BV1003-500;BV1003-T150;BV1003-T500,vortexer,,
 BV101,BV101-E,,,,,,,,,,100-240V,0.7A,50-60Hz,0.4kg,2years,,insta-touch pressure activation,,,9.4x9.9x6.6cm,,,,,,,,,2800rpm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,4mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BV1000-COMBO;BV1000-H15;BV1000-H150;BV1000-H500;BV1003-150;BV1003-500,,,
 BV101-B,BV101-B-E,,,,,,,,,,100-240V,0.7A,50-60Hz,0.4kg,2years,,insta-touch pressure activation,,,9.4x9.9x6.6cm,,,,,,,,,2800rpm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,4mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BV1000-COMBO;BV1000-H15;BV1000-H150;BV1000-H500;BV1003-150;BV1003-500,,,
 BV101-G,BV101-G-E,,,,,,,,,,100-240V,0.7A,50-60Hz,0.4kg,2years,,insta-touch pressure activation,,,9.4x9.9x6.6cm,,,,,,,,,2800rpm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,4mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BV1000-COMBO;BV1000-H15;BV1000-H150;BV1000-H500;BV1003-150;BV1003-500,,,
@@ -13,6 +13,8 @@ BV101-R,BV101-R-E,,,,,,,,,,100-240V,0.7A,50-60Hz,0.4kg,2years,,insta-touch press
 BV1005,BV1005-E,,,,,,,,,,"115,230V",180W,,3.8kg,2years,4-65°C,touch;continuous ,,,13x16x17cm,,,,,,,,,200-3400rpm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,3mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BV1000-FLAT;BV1000-COMBO;BV1000-H15;BV1000-H150;BV1000-H500,vortexer,,
 BV1010,BV1010-E,,,,,,,,,,100-240V,,50-60Hz,13kg,2years,,,,,38.5x23.5x42cm,,,,,,,,,500-2500rpm,,,,,,,,,,,,,6x250ml,,,1min-100h,,,,,,,,,,,,,,3.6mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BV1010-05;BV1010-1520;BV1010-12;BV1010-13;BV1010-150;BV1010-500;BV101025;BV101050H;BV1010-MP;BV1010-MP02,vortexer,,
 BV1010-TST,BV1010-TST-E,,,,,,,,,,101-240V,,50-60Hz,13kg,2years,,,,,38.5x23.5x42cm,,,,,,,,,500-2500rpm,30x17.8cm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,shaker;vortexer,,
+BV1003-T150,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BV1003,accesory,vortexer,http://www.benchmarkscientific.com/rpproducts/benchmixer-v2-vortex-mixer/
+BV1003-T500,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BV1003,accesory,vortexer,http://www.benchmarkscientific.com/rpproducts/benchmixer-v2-vortex-mixer/
 2d-rockers,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 BR1000,BR1000-E,,,,,,,,,,"115,230V",50W,50-60Hz,3kg,2years,4-45°C,,,,34x30x12cm,,,,,,,,,12rpm,30x30cm,,,,,,,,,,,,,,,,,,,,,,,±8°,,,,,,,,2.3kg,,,,,,,,,,,,,,,,,,,,,,,,,,,BR1000-STACK;BR1000-DIMPLED;B0718,rocker,platform rocker,
 BR2000,BR2000-E,,,,,,,,,,"115,230V",50W,50-60Hz,3.4kg,2years,4-45°C,,,,35.6x30x16.5cm,,,,,,,,,2-30rpm,35x30cm,,,,,,,,,,,,,,,,,,,,,,,0-30°,,,,,,,,3.6kg,,,,,,,,,,,,,,,,,,,,,,,,,,,BR2000-STACK;BR1000-DIMPLED;B0718,rocker,2d rocker,
@@ -45,6 +47,18 @@ D1030,D1030-E,,,,,,,,,,,,,2.2kg,2 Years,,,,,17x21x13.5cm,,,,,,,,,2700-4000rpm,,,
 D1036,D1036-Е,,,,,,,,,,100-240V,,50-60Hz,9kg,2 Years,,,,,22 x 35.5 x 20.5 cm,,,,,,,,,4.0-7.0 m/s,,,,,,,,,,,,,"6 x 2.0ml,2 x 5.0ml",,,,,,,1-90sec,0-90 sec. (1 sec. increments),10,<65 db,,,,,,,,,,,,,0.05 m/s,,,,,,,,,,,,,,,,,,,,,,,D1031-01;D1031-05;D1031-10;D1032-01;D1032-05;D1032-10;D1032-15;D1032-30;D1032-SK;D1032-60;D1034-MX;D1034-28,homogenizer,,
 D2400,D2400-E,,,,,,,,,,100-240V,,50-60Hz,25kg,2 Years,,,,,28 x 36 x 38.5 cm,up to 50,,,,,,,,4.0-7.0 m/s (0.05 m/s increments),,,,,,,,,,,,,24 x 2.0ml,,,,,,,1-90 sec. (up to 90 sec.),0-2 min. (1 sec. increments),10,<68 db,,,,,,,,,,,<2 sec.,<2 sec.,,,,,,,,,,,,,,,,,,,,,,,,D1031-01;D1031-05;D1031-10;D1032-01;D1032-05;D1032-10;D1032-10;D1032-30;D1032-SK;D1033-28;D1034-28,homogenizer,,
 D1000,D1000-E,,,,,,,,,,"115V,230V",,"60Hz,50HZ",0.62kg,2 years,4-65°C,,,,4.5 x 5.8 x 22.5 cm,,,,,,,,,"8500-30,000rpm",,,,,,,,,,,,,0.1 to 250ml,,,,,,,,,,<70 db,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,D1000-M10;D1000-M14;D1000-M5;D1000-M7;D1000-ST,homogenizer,,
+D1031-01,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
+D1031-05,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
+D1031-10,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
+D1032-01,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
+D1032-05,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
+D1032-10,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
+D1032-15,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
+D1032-30,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
+D1032-SK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
+D1033-28,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
+D1034-MX,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
+D1034-28,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
 Rolers and Rotators,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 R2020,R2020-E,,,,,,,,,,115-230V,0.5A,50-60Hz,1.4kg,2 years,,,,,27.5 x 15.2 x 16.5cm,,,,,,,,,24rpm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,R2020-1520;R2020-0507;R2020-150;R2020-500;R2020-PCR;R2020-RP,rotator,,
 R2024,R2024-E,,,,,,,,,Mix;Pause;Rock,100-240V,0.5A,50-60Hz,1.4kg,2 years,,,,,27.5 x 15.2 x 16.5cm,,,,,,,,,5 to 70rpm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,R2020-1520;R2020-0507;R2020-150;R2020-500;R2020-PCR;R2020-RP,rotator,,
@@ -55,6 +69,8 @@ H2020,H2020-Е,,,,,,,,,,"115,230V",0.5A,50-60Hz,4kg,2 years,5-60°C,,,,29.5 x 21
 H2024,H2024-Е,,,,,,,,,Mix;Pause;Rock,100-240V,0.5A,50-60Hz,4.5kg,2 years,5-60°C,,,,29.5 x 21.6 x 22.9cm,,,,,,,,,5 to 70rpm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,R2020-1520;R2020-0507;R2020-150;R2020-500;R2020-PCR;R2020-RP,rotator;incubator,,
 R3005,R3005-E,,,,,,,,,Simultaneous roll & tilt,"115,230V",,50-60Hz,5kg,2 years,4-40°C,,,,45 x 18 x 9 cm,,,,,,,,,38 rpm (±10%),,,,,,,,,,,,,,,,,,,,,,,,±5°,,5,3 x 32 cm,5mm (rollers are on 35mm centers),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 R3010,R3010-E,,,,,,,,,Simultaneous roll & tilt,"115,230V",,50-60Hz,8kg,2 years,4-40°C,,,,45x 36 x 9 cm,,,,,,,,,38 rpm (±10%),,,,,,,,,,,,,,,,,,,,,,,,±5°,,10,3 x 32 cm,5mm (rollers are on 35mm centers),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+R4040-RP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,rocker,
+R4045-RP2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,rocker,
 Orbital shakers,,,,,,,,,,,app,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 BT4001,BT4001-E,,,,,,,,,,"120V,230V",600W,50-60Hz,11.25kg,2 years,0-65°C,,,,47 x 54 x 12.5 cm,,,,,,,,,30-300 rpm,33x30cm (Included),,,,,,,,,,,,6 kg,,,,,,,,,,,,,,,,8mm to 200mm (diameter),19mm,154 cm,,,,,1rpm,,,,,,,,,,,,,,,,,,,,,,,BT3000-MR;BT4010-MR;H1010-MR;H1000-P-MP;H1000-P-MP;H1000-P-250;H1000-P-500;H1000-P-SP;H1000-MR-CMB;H1000-MR-50;H1000-MR-125;H1000-MR-250;H1000-MR-500;H1000-MR-1000;H1000-MR-2000;H1000-MR-MP;H1000-MR-1550;H1000-MR-T15;H1000-MR-T50;H1000-MR-T50;H1000-MR-T600;H1000-MR-T15H;H1000-MR-T150H;H1000-MR-T500H;H1000-MR-TSR,,,
 BT4011,BT4011-E,,,,,,,,,,"120V,230V",600W,50-60Hz,11.25kg,2 years,0-65°C,,,,47 x 54 x 12.5 cm,,,,,,,,,30-300 rpm,33x30cm (Included),,,,,,,,,,,,6 kg,,,,,,,,,,,,,,,,8mm to 200mm (diameter),19mm,154 cm,,,,,1rpm,,,,,,,,,,,,,,,,,,,,,,,BT3000-MR;BT4010-MR;H1010-MR;H1000-P-MP;H1000-P-MP;H1000-P-250;H1000-P-500;H1000-P-SP;H1000-MR-CMB;H1000-MR-50;H1000-MR-125;H1000-MR-250;H1000-MR-500;H1000-MR-1000;H1000-MR-2000;H1000-MR-MP;H1000-MR-1550;H1000-MR-T15;H1000-MR-T50;H1000-MR-T50;H1000-MR-T600;H1000-MR-T15H;H1000-MR-T150H;H1000-MR-T500H;H1000-MR-TSR,,,
@@ -63,6 +79,18 @@ BT1011,BT1011-Е,,,,,,,,,,"115V,230V",450W,50-60Hz,30kg,2 years,,,,,47 x 54 x 12
 BT3001,BT3001-Е,,,,,,,,,,"120V,230V",600W,50-60Hz,11.25kg,2 years,4-65°C,,,,28 x 33x 7.5 cm,,,,,,,,,30-300 rpm,33x30cm (Included),,,,,,,,,,,,5 x 1L,,,,,,,,,,,,,,,,,19mm,,,,,,1rpm,,,,,,,,,,,,,,,,,,,,,,,BT3000-MR;H1000-P-SP;H1000-P-MP;H1000-P-125;H1000-P-250;H1000-P-500;H1000-MR-CMB;H1000-MR-50;H1000-MR-125;H1000-MR-250;H1000-MR-500;H1000-MR-1000;H1000-MR-2000;H1000-MR-MP;H1000-MR-1550;H1000-MR-T15;H1000-MR-T50;H1000-MR-T50;H1000-MR-T600;H1000-MR-T15H;H1000-MR-T150H;H1000-MR-T500H;H1000-MR-TSR,,,
 BT302,BT302-E,,,,,,,,,,100-240V,250W,50-60Hz,5.5kg,2 years,4-65°C,,,,33 x 30 x 12 cm,,,,,,,,,50-300 rpm,24x20cm (Included),,,,,,,,,,,,4 x 1L,,,1min up to 99h / continuous,,,,,,,,,,,,,,19mm,,,,,,10rpm,,,,,,,,,,,,,,,,,,,,,,,H1000-MR;BT300-RB,shaker,orbital_shaker,
 BT1502,BT1502-E,,,,,,,,,,100-240V,250W,50-60Hz,5.5kg,2 years,4-65°C,,,,33 x 30 x 12 cm,,,,,,,,,200-1500 rpm,,,,,,,,,,,,,Up to 4 microplates,,,,,,,,,,,,,,,,,3mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BT1500-A1520;BT1500-A05,shaker,orbital_shaker,
+H1000-MR,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,shaker,
+H1000-MR-1000,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,shaker,
+H1000-MR-500,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,shaker,
+H1000-MR-250,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,shaker,
+H1000-MR-125,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,shaker,
+H1000-MR-50,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,shaker,
+H1000-MR-MP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,incu_shaker,
+H1000-MR-1550,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,incu_shaker,
+H1000-MR-T15,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,incu_shaker,
+H1000-MR-T50,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,incu_shaker,
+H1000-MR-CMB,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,orbital_shaker,
+H1000-MR-T14,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,incu_shaker,http://www.benchmarkscientific.com/rpproducts/incu-shaker-mini-shaking-incubator/
 Shaking incubators,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 H1001-M,H1001-M-E,,,,,,,,,,"115V,230V",300W,50-60Hz,11.5kg,2 years,4-65°C,,,±0.25°C,28 x 48 x 33 cm,,5-70°C,,±0.1°C,,0.1°C,,,30-300rpm,28 x 41 x 33 cm,,,,,,,,,,,,,,,1min-48h / continuous,,,,,,,,,,,,,,19mm,,,,,,1rpm,,,,,,,,,,,,,,,,,,,,,,,H1000-MR;H1000-P-MP;H1000-P-SP;H1000-MR-CMB;H1000-MR-25;H1000-MR-50;H1000-MR-125;H1000-MR-250;H1000-MR-500;H1000-MR-1000;H1000-MR-MP;H1000-MR-1550;H1000-MR-T15;H1000-MR-T50;H1000-MR-T600;H1000-MR-T15H;H1000-MR-TSR,incubator;shaker,incu_shaker,
 H2010,H2010-E,,,,,,,,,,"115V,230V",450W,50-60Hz,55kg,2 years,5-60°C,,,±1.25°C,51 x 65 x 47 cm,,,,±0.1°C,,0.1°C,,,30-300 rpm,45 x 45 cm,,,,,,,,,,,,,,,1min-48h / continuous,,,,,,,,,,,,,,19mm,,,,,,1rpm,,,,,,,,,,,,,,,,,,,,,,,H1010-MR;H1010-P-SP;H1010-P-MP;H1010-SH;H1000-MR-CMB;H1000-MR-25;H1000-MR-50;H1000-MR-125;H1000-MR-250;H1000-MR-500;H1000-MR-1000;H1000-MR-2000;H1000-MR-3000;H1000-MR-MP;H1000-MR-1550;H1000-MR-T15;H1000-MR-T50;H1000-MR-T600;H1000-MR-T15H;H1000-MR-T150H;H1000-MR-T50H;H1000-MR-TSR,incubator;shaker,incu_shaker,
@@ -93,10 +121,14 @@ B2000-4-E,,,,,,,,,,,"115V,230V",,50-60Hz,6.5 kg,,5-105°C,,5.3 x 9.4 x 5.5 in,±
 B2000-8-E,,,,,,,,,,,"115V,230V",,50-60Hz,8 kg,,5-100°C,,10.4 x 12.8 x 5.9in,± 0.2°C at 37°C,10.5 x 17.5 x 12.4 in,,,,0.5°C,,0.1°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,B2000-4-T5;B2000-4-T1520;B2000-4-T150;B2000-4-T500;B2000-8-T150;B2000-8-500,temperature_control_bath,,
 B2000-12-E,,,,,,,,,,,"115V,230V",,50-60Hz,8 kg,,5-100°C,,12.8 x 10.4 x 7.9 in,± 0.2°C at 37°C,10.7 x 17.5 x 16.2in,,,,0.5°C,,0.1°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,B2000-4-T5;B2000-4-T1520;B2000-4-T150;B2000-4-T500;B2000-8-T150;B2000-8-500,temperature_control_bath,,
 SB0012,,,,,,,,,,,"115V,230V",,50-60Hz,6.5 kg,2 years,5-80°C,,30 x 24 x 15.25 cm.,± 0.2°C at 37°C,31 x 34.5 x 30 cm,,,,±0.3°C (at 37°C),,0.1°C,,,30 to 200 rpm,,,Stainless Steel,,,,,,,,,,12L,,,"1 min. to 48 hours, or continuous",,,,,,,,,,,,,,25mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SB0012-T120;SB0012-T5,temperature_control_bath;shaker,,
+BSW13,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,centrifuge_tubes,
+BSW1516,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,centrifuge_tubes,
+BSWHEM,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,centrifuge_tubes,
 Thermal cycle,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 T5005-3205,T5005-3205-E,,,,,30-112°C user adjustable,Simulated sample or block,,,,100-240V,,50-60Hz,2.9kg,2 years,,,,± 0.25°C,18.2 x 23.2 x 15.7cm,Over 100 typical programs,0-99°C,,± 0.25°C,,"Yes, both time and temperature","Yes, both time and temperature",5°C/s heating (maximum);5°C/sec cooling (maximum),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 T5000-96,T5000-96-E,,USB;LAN;RS232,1-30ºC,30-105ºC,30-112°C user adjustable,Simulated sample or block,,,,75-275V,,50-60Hz,7.3kg,2 years,,,,± 0.2°C,26 x 36 x 25cm,Unlimited with flash drive,0-100°C,,± 0.2°C,,"Yes, both time and temperature","Yes, both time and temperature",5°C/s,,,,,,,,,,,,,,96x0.2ml tubes;0.2ml strips;1x96 well plate (nonskirted);39x0.5ml tubes,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,T5000-A-IS,,,
 T5000-384,T5000-384-E,,USB;LAN;RS232,1-30ºC,30-105ºC,30-112°C user adjustable,Simulated sample or block,,,,,,,7.3kg,2 years,,,,± 0.2°C,26 x 36 x 25cm,Unlimited with flash drive,0-100°C,,± 0.2°C,,"Yes, both time and temperature","Yes, both time and temperature",5°C/s,,,,,,,,,,,,,,1 x 384 well plate,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,T5000-A-IS,,,
+T5000-A-IS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,thermal_cycler,
 Strerilization,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 B1201,B1201-E,Approx. 25 min. to 300°C,,,,,,,,,"115V,250V",120W,50-60Hz,2kg,2 Years,,,,,14 x 14.5 x 15.5cm,,100 to 300°C,,,,,,,,,150g,,40mm,80mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,B1201-BEAD,micro_sterilizer;bead_sterilizer,,
 B1202,B1202-E,Approx. 25 min. to 300°C,,,,,,,,,"115V,250V",250W,50-60Hz,2.5kg,2 Years,,,,,14 x 14.5 x 21.5cm,,100 to 300°C,,,,,,,,,300g,,40mm,140mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,B1201-BEAD,micro_sterilizer;classic_sterilizer,,
@@ -130,21 +162,21 @@ A1700,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,> 1200g/
 A1701,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,> 1200g/cm² (1%),36°C ± 1.5°C (1.5%),88°C ± 1.5°C (1.5%),0.13,< 7%,<0.2%,Room Temperature,None Detected,None Detected,,,,,,,,,,,,,,Agarose,,
 A1705,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,> 1200g/cm² (1%),36°C ± 1.5°C (1.5%),88°C ± 1.5°C (1.5%),0.13,< 7%,<0.2%,Room Temperature,None Detected,None Detected,,,,,,,,,,,,,,Agarose,,
 Hybex,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-B3000-50-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL32,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP2;B3000-RIN2;B3000-CAP-HTC,,,http://www.benchmarkscientific.com/rpproducts/hybex/
-B3000-50,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,B3000-CAP2;B3000-RIN2;B3000-CAP-HTC,,,http://www.benchmarkscientific.com/rpproducts/hybex/
-B3000-100*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,http://www.benchmarkscientific.com/rpproducts/hybex/
-B3000-250*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,http://www.benchmarkscientific.com/rpproducts/hybex/
-B3000-500*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,http://www.benchmarkscientific.com/rpproducts/hybex/
-B3000-1000*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,http://www.benchmarkscientific.com/rpproducts/hybex/
-B3000-2000*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,http://www.benchmarkscientific.com/rpproducts/hybex/
-B3000-SP*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,http://www.benchmarkscientific.com/rpproducts/hybex/
-B3000-CAP*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,http://www.benchmarkscientific.com/rpproducts/hybex/
-B3000-100-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL45,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,,,
-B3000-250-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL46,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,,,
-B3000-500-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL47,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,,,
-B3000-1000-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL48,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,,,
-B3000-2000-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL49,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,,,
-B3000-SP-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL45,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,,,
+B3000-50-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL32,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP2;B3000-RIN2;B3000-CAP-HTC,bottle,,http://www.benchmarkscientific.com/rpproducts/hybex/
+B3000-50,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,B3000-CAP2;B3000-RIN2;B3000-CAP-HTC,bottle,,http://www.benchmarkscientific.com/rpproducts/hybex/
+B3000-100*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,bottle,,http://www.benchmarkscientific.com/rpproducts/hybex/
+B3000-250*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,bottle,,http://www.benchmarkscientific.com/rpproducts/hybex/
+B3000-500*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,bottle,,http://www.benchmarkscientific.com/rpproducts/hybex/
+B3000-1000*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,bottle,,http://www.benchmarkscientific.com/rpproducts/hybex/
+B3000-2000*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,bottle,,http://www.benchmarkscientific.com/rpproducts/hybex/
+B3000-SP*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,bottle,http://www.benchmarkscientific.com/rpproducts/hybex/
+B3000-CAP*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,bottle,http://www.benchmarkscientific.com/rpproducts/hybex/
+B3000-100-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL45,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,Accessories,bottle,
+B3000-250-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL46,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,Accessories,bottle,
+B3000-500-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL47,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,Accessories,bottle,
+B3000-1000-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL48,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,Accessories,bottle,
+B3000-2000-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL49,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,Accessories,bottle,
+B3000-SP-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL45,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,Accessories,bottle,
 BV1010-00,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Vortexer,http://www.benchmarkscientific.com/rpproducts/benchmixer-xl-vortex-mixer/
 BV1010-50HQ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Vortexer,http://www.benchmarkscientific.com/rpproducts/benchmixer-xl-vortex-mixer/
 R4040-1520,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Rotator,http://www.benchmarkscientific.com/rpproducts/roto-bot/
@@ -201,11 +233,11 @@ C1005-T5-ST,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 C1005-T5-LOCK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,micro centrifuge,http://www.benchmarkscientific.com/rpproducts/myfuge-5/
 C1008-ROT2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,mini centrifuge,http://www.benchmarkscientific.com/rpproducts/myfuge-mini-centrifuge/
 C1008-A2-9,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,mini centrifuge,http://www.benchmarkscientific.com/rpproducts/myfuge-mini-centrifuge/
-B3000-CAP,B3000-CAP*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Bottle,,
-B3000-RIN,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Bottle,,
-B3000-CAP2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Bottle,,
-B3000-RIN2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Bottle,,
-B3000-CAP-HTC,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Bottle,,
+B3000-CAP,B3000-CAP*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Bottle,
+B3000-RIN,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Bottle,
+B3000-CAP2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Bottle,
+B3000-RIN2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Bottle,
+B3000-CAP-HTC,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Bottle,
 Balance,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 W1000-200,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,balance,calibration_weights,
 W1000-1000,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,balance,calibration_weights,http://www.accuris-usa.com/Products/calibration-weights/
