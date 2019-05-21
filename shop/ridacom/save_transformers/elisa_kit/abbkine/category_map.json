@@ -1,0 +1,17 @@
+{
+    "loading control"           : "antibodies",
+    "tag antibody"              : "antibodies",
+    "primary antibody"          : "antibodies",
+    "secondary antibody"        : "antibodies",
+    "pathological antibody"     : "antibodies",
+    "purification tool"         : "protein_purification",
+    "elisa assay kit"           : "assay_kits",
+    "elisa kit"                 : "elisa_kits",
+    "sampling kit"              : "assay_kits",
+    "celluar assay kit"         : "assay_kits",
+    "recombinant protein"       : "proteins_and_peptides",
+    "peptide"                   : "proteins_and_peptides",
+    "cytokine and growth factor": "proteins_and_peptides",
+    "normal sera and lggs"      : "histochemistry_immunohistochemistry",
+    "tracer reagent"            : "dyes_indicators_and_stains"
+}

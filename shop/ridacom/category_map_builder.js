@@ -24,7 +24,7 @@ let transformer = (line) =>{
 
     mapping_value
     .split(";")
-    .map(item => item.replace(/("|,|в„ў)/g, "").trim().toLowerCase())
+    .map(item => item.replace(/("|в„ў)/g, "").replace(/,$/, "").trim().toLowerCase())
     .filter(item => item)
     .forEach(item => {
         result[item] = original_category
@@ -58,7 +58,10 @@ let import_CSV_from_path = async (csv_path) => {
     });
 };
 
-
-import_CSV_from_path(__dirname + `/category_map.csv`)
-.then(() => fs.writeFileSync(__dirname + `/category_map.json`, JSON.stringify(result), "utf8"))
+// let path = __dirname + "/save_transformers/elisa_kit/abbkine/category_map";
+// let path = __dirname + "/save_transformers/equipment/adam_equipment/category_map";
+// let path = __dirname + "/save_transformers/unclassified/himedia/category_map";
+let path = __dirname + "/save_transformers/equipment/capp/category_map";
+import_CSV_from_path(`${path}.csv`)
+.then(() => fs.writeFileSync(`${path}.json`, JSON.stringify(result), "utf8"))
 .catch(e => console.error(e));

@@ -1,6 +1,7 @@
 let utils            = require("../../../../_utils/utils.js");
 let import_utils     = require("../../../_utils/save_utils.js");
 let bio_object_utils = require("../../../_utils/bio_object_utils.js");
+let transformers     = require("./abbkine/transformers.js");
 
 let relation_fields = ["category", "reactivity", "conjugate", "test_method", "supplier", "distributor"];
 
@@ -9,115 +10,14 @@ let init = async() =>
     await bio_object_utils.init()
 };
 
-let _getImages = item => {
-    let result = null;
-
-    if(item.images && item.images.length)
-    {
-        result = item.images.map((link, index) => {
-            let text = item.images_text && item.images_text[index] ? item.images_text[index] : "";
-            text = text.replace(/\s+/g, " ").trim();
-            return {
-                link: link,
-                ...text ? {text: [text]} : ""
-            }
-        })
-    }
-
-    return result
-};
-
-let _getPdf = item =>
-{
-    let result = null;
-
-    if(item.pdf)
-    {
-        result = [{ link: item.pdf }]
-    }
-
-    return result;
-};
-
-let _getPriceModel = (item, crawler_item) =>
-{
-    let result = {
-        ...item.price && item.price.length ? {"is_multiple" : true} : "",
-        search_price : item.price ? item.price[0].price : 0,
-        "variation" :[]
-    };
-
-    (item.price || []).forEach((price_item, index)=>
-    {
-        let size = import_utils.size_parser(price_item.size);
-
-        result.variation.push({
-            "price" : {
-                "value"   : price_item.price || 0,
-                "currency": "usd",
-            },
-            "size"    : size
-        })
-    });
-
-    return result;
-};
-
-let _get_bio_object = record =>
-{
-    if (!record.bio_object_data || !record.bio_object_data.length)
-        return null;
-
-    return record.bio_object_data.map(bio_object => ({
-        "type": "protein",
-        ...bio_object.name                  ? {"name": bio_object.name}                                                 : "",
-        ...bio_object.symbol                ? {"symbol": bio_object.symbol}                                             : "",
-        ...bio_object.aliases               ? {"aliases": (bio_object.aliases || []).concat(bio_object.ids || [])}      : "",
-        ...bio_object.gene                  ? {"gene": bio_object.gene}                                                 : "",
-        ...bio_object.organism              ? {"organism": bio_object.organism}                                         : "",
-        ...bio_object.ncbi_organism_tax_id  ? {"ncbi_organism_tax_id": bio_object.ncbi_organism_tax_id}                 : "",
-
-    }));
-};
-
-let _getCalibrationRange = record => {
-    let result = null;
-    let value = record["calibration_range"];
-    if (value && value.indexOf("-") !== -1)
-    {
-        let range = value.split("-");
-        let from = import_utils.size_parser(range[0]);
-        let to = import_utils.size_parser(range[1]);
-
-        result = {
-            from ,
-            to
-        }
-    }
-    return result;
-};
-
 let mapping = {
     "name"               : "name",
     "oid"                : "oid",
-    "human_readable_id"  : record => `abbkine_scientific_co_ltd_${import_utils.human_readable_id(record.name, record.oid)}`,
-    "external_links"     : record => [{"key": "abbkine", "id": record.oid}],
-    "description"        : record => record["background"] ? [record["background"]] : null,
-    "bio_object"         : record => _get_bio_object(record),
-    "price_model"        : record => _getPriceModel(record, record.crawler_item),
-    "supplier"           : record => import_utils.get_canonical("Abbkine Scientific Co., Ltd.", ":supplier"),
-    "distributor"        : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
-    "category"           : record => import_utils.get_canonical("Elisa Kit", ":product_category"),
-    "conjugate"          : record => import_utils.get_canonical(record.conjugate || "", [":conjugate", ":reactivity"]),
-    "test_method"        : record => import_utils.get_canonical(record.detection_method || "", ":test_method"),
-    "images"             : record => _getImages(record.crawler_item),
-    "pdf"                : record => _getPdf(record.crawler_item),
     "original_link"      : "link",
     "formulation"        : "formulation",
     "usage"              : "usage_notes",
     "storage_conditions" : "storage_instructions",
     "delivery_conditions": "shipping",
-    "calibration_range"  : _getCalibrationRange,
     "alternative"        : "alternative",
     "precautions"        : "precautions",
     "gene_id"            : "gene_id",
@@ -125,6 +25,19 @@ let mapping = {
     "sample_type"        : "sample_type",
     "assay_length"       : "assay_duration",
     "kit_components"     : "kit_components",
+    "human_readable_id"  : record => `abbkine_scientific_co_ltd_${import_utils.human_readable_id(record.name, record.oid)}`,
+    "external_links"     : record => [{"key": "abbkine", "id": record.oid}],
+    "description"        : record => record["background"] ? [record["background"]] : null,
+    "supplier"           : record => import_utils.get_canonical("Abbkine Scientific Co., Ltd.", ":supplier"),
+    "distributor"        : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
+    "conjugate"          : record => import_utils.get_canonical(record.conjugate || "", [":conjugate", ":reactivity"]),
+    "test_method"        : record => import_utils.get_canonical(record.detection_method || "", ":test_method"),
+    "category"           : transformers.get_category,
+    "bio_object"         : transformers.get_bio_object,
+    "price_model"        : transformers.get_price_model,
+    "images"             : transformers.get_images,
+    "pdf"                : transformers.get_pdf,
+    "calibration_range"  : transformers.get_calibration_range,
 };
 
 let _get_bio_object_data = (item, custom_data) =>
@@ -175,5 +88,5 @@ module.exports = {
     convert,
     load_custom_data,
     init,
-    version: 15
+    version: 17
 };

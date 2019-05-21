@@ -1,0 +1,8 @@
+To generate product_list.json:
+
+1. Go to http://www.cloud-clone.com/
+
+3.collect product links into http://www.accuris-usa.com in every category page and start:
+    [].slice.call(document.querySelectorAll(".ul_inline a")).map(item => item.href)
+
+4. Copy result like array

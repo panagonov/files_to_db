@@ -1,18 +1,10 @@
 const csvtojson          = require("csvtojson");
 let utils                = require("../../../../_utils/utils.js");
 let import_utils         = require("../../../_utils/save_utils.js");
+let transformers = require("./capp/transformers.js");
 let product_props_parser = require("./parse_from_csv/equipment_universal_parser.js");
 
 let relation_fields = ["supplier", "distributor", "category", "sub_category"];
-
-let enrich = {
-    pipette            : require("./capp/pipette.js"),
-    centrifuge         : require("./capp/centrifuge.js"),
-    micro_centrifuge   : require("./capp/centrifuge.js"),
-    clinical_centrifuge: require("./capp/centrifuge.js"),
-    centrifuge_tubes   : require("./capp/centrifuge_tubes.js"),
-    balance            : require("./capp/balance.js")
-};
 
 let product_props = {};
 
@@ -24,85 +16,22 @@ csvtojson().fromFile(__dirname +"/capp/props.csv")
     }, {})
 });
 
-let _getImages = item => {
-
-    if(item.image)
-    {
-        return [{
-            link: item.image,
-            type: "product",
-            ...item.image_text ? {text: item.image_text.map(text => text.replace(/\s+/g, " ").trim())} : ""
-        }]
-    }
-
-    return null
-};
-
-let _getPdf = item =>
-{
-    return item.pdf ? item.pdf : null;
-};
-
-let _getPriceModel = (item, crawler_item) =>
-{
-    let sub_products = Object.keys(crawler_item.sub_products || {}).filter(it => crawler_item.sub_products[it] !== undefined);
-
-    let result = {
-        ...sub_products &&sub_products.length ? {"is_multiple" : true} : "",
-        ...sub_products &&sub_products.length ? {"is_ids_are_unique" : true} : "",
-        search_price : item.price ? item.price[0].value : 0,
-        "variation" :[{
-            "price" : {
-                "value"   : item.price ? item.price[0].value || 0 : 0,
-                "currency": item.price ? item.price[0].currency || "usd" : "usd",
-            },
-            "product_id": item.oid
-        }]
-    };
-
-    return result;
-};
-
-let _getProductRelations = record => {
-    let sub_products = Object.keys(record.crawler_item.sub_products || {})
-    .filter(id => id !== record.oid);
-
-    let result = sub_products.map(id => `PRODUCT_SOURCE:[CAPP]_SUPPLIER:[RIDACOM]_ID:[${id}]`);
-    return result
-};
-
-let get_additional_category_data = (record, result) => {
-    if (! result.category)
-        return {};
-    try {
-        let category = result.category[0][1];
-
-        if (enrich[category])
-        {
-            let new_data = enrich[category](record, result);
-            return  Object.assign(result, new_data)
-        }
-    }
-    catch(e){}
-    return {}
-};
-
 let mapping = {
     "name"                : "name",
     "oid"                 : "oid",
+    "original_link"       : "crawler_item.link",
+    "table_specification" : "crawler_item.specification",
     "human_readable_id"   : record => `capp_${import_utils.human_readable_id(record.name, record.oid)}`,
     "external_links"      : record => [{"key": "capp", "id": record.oid}],
-    "price_model"         : record => _getPriceModel(record, record.crawler_item),
     "supplier"            : record => import_utils.get_canonical("CAPP", ":supplier"),
-    "category"            : record => import_utils.get_canonical(record.crawler_item.category || "equipment", ":product_category"),
     "sub_category"        : record => import_utils.get_canonical(record.crawler_item.sub_category || "", ":product_sub_category"),
     "distributor"         : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
     "description"         : record => record.crawler_item && record.crawler_item.description ? [record.crawler_item.description] : null,
-    "table_specification" : "crawler_item.specification",
-    "product_relations"   : record => _getProductRelations(record),
-    "images"              : record => _getImages(record.crawler_item),
-    "pdf"                 : record => _getPdf(record.crawler_item),
-    "original_link"       : "crawler_item.link"
+    "price_model"         : transformers.get_price_model,
+    "product_relations"   : transformers.get_product_relations,
+    "images"              : transformers.get_images,
+    "pdf"                 : transformers.get_pdf,
+    "category"            :transformers.get_category,
 };
 
 let index = 0;
@@ -139,7 +68,7 @@ let convert = (item, crawler_item, custom_data) =>
 
     let result = utils.mapping_transform(mapping, record);
 
-    let additional_data = get_additional_category_data(record, result);
+    let additional_data = transformers.get_additional_category_data(record, result);
     result = Object.assign(result, additional_data);
 
     if (product_props[result.oid]){
@@ -156,10 +85,6 @@ let convert = (item, crawler_item, custom_data) =>
     result           = import_utils.clean_result_data(result, relation_fields);
 
     // show_in_console(result, crawler_item1, record);
-
-    if (["CR-1730R", "CRC-432X", "CRC-416X"].indexOf(result.oid) !== -1)
-        debugger
-
 
     return {
         converted_item : result,
@@ -211,7 +136,7 @@ let load_custom_data = async(mongo_db, crawler_db, result) => {
 module.exports = {
     convert,
     load_custom_data,
-    version: 26
+    version: 28
 };
 
 // console.log(import_utils.get_canonical("clinical centrifuge", ":product_category"))

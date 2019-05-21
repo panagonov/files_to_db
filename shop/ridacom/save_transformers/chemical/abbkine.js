@@ -1,88 +1,18 @@
 let utils        = require("../../../../_utils/utils.js");
 let import_utils = require("../../../_utils/save_utils.js");
+let transformers = require("./abbkine/transformers.js");
 
 let relation_fields = ["supplier", "distributor", "application", "category", "preparation_method"];
-
-let _getImages = item => {
-    let result = null;
-
-    if(item.images && item.images.length)
-    {
-        result = item.images.map((link, index) => {
-            let text = item.images_text && item.images_text[index] ? item.images_text[index] : "";
-            text = text.replace(/\s+/g, " ").trim();
-            return {
-                link: link,
-                ...text ? {text: [text]} : ""
-            }
-        })
-    }
-
-    return result
-};
-
-let _getPdf = item =>
-{
-    let result = null;
-
-    if(item.pdf)
-    {
-        result =[{link: item.pdf}]
-    }
-
-    return result;
-};
-
-let _getPriceModel = (item, crawler_item) =>
-{
-    let result = {
-        ...item.price && item.price.length ? {"is_multiple" : true} : "",
-        search_price : item.price ? item.price[0].price : 0,
-        "variation" :[]
-    };
-
-    (item.price || []).forEach((price_item, index)=>
-    {
-        let size = import_utils.size_parser(price_item.size);
-
-        result.variation.push({
-            "price" : {
-                "value"   : price_item.price || 0,
-                "currency": "usd",
-            },
-            "size"    : size
-        })
-    });
-
-    return result;
-};
 
 let mapping = {
     "name"               : "name",
     "oid"                : "oid",
-    "human_readable_id"  : record => `abbkine_scientific_co_ltd_${import_utils.human_readable_id(record.name, record.oid)}`,
-    "external_links"     : record => {
-                                        let result = [{"key": "abbkine", "id": record.oid}];
-                                        if (record.cas_number)
-                                            result.push({"key": "cas_number", "id": record.cas_number});
-                                        return result;
-                           },
-    "description"        : record => record["background"] ? [record["background"]] : null,
-    "price_model"        : record => _getPriceModel(record, record.crawler_item),
-    "supplier"           : record => import_utils.get_canonical("Abbkine Scientific Co., Ltd.", ":supplier"),
-    "distributor"        : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
-    "category"           : record => import_utils.get_canonical("Chemical", ":product_category"),
-    "application"        : record => import_utils.get_canonical((record.application || []).join("; "), ":application"),
-    "images"             : record =>  _getImages(record.crawler_item),
-    "pdf"                : record =>  _getPdf(record.crawler_item),
     "formulation"        : "formulation",
     "usage"              : "usage_notes",
     "storage_conditions" : "storage_instructions",
     "delivery_conditions": "shipping",
-    "molecular_weight"   : record => !record["mol_weight"] ? null : import_utils.size_parser(record["mol_weight"]),
     "purification"       : "purification",
     "purity"             : "purity",
-    "preparation_method" : record => import_utils.get_canonical(record.host || "", [":host", ":reactivity", ":preparation_method"]),
     "formula"            : "formula",
     "features"           : "features",
     "storage_buffer"     : "storage_buffer",
@@ -90,6 +20,18 @@ let mapping = {
     "aliases"            : "alternative",
     "original_link"      : "link",
     "app_notes"          : "app_notes",
+    "human_readable_id"  : record => `abbkine_scientific_co_ltd_${import_utils.human_readable_id(record.name, record.oid)}`,
+    "molecular_weight"   : record => !record["mol_weight"] ? null : import_utils.size_parser(record["mol_weight"]),
+    "description"        : record => record["background"] ? [record["background"]] : null,
+    "preparation_method" : record => import_utils.get_canonical(record.host || "", [":host", ":reactivity", ":preparation_method"]),
+    "supplier"           : record => import_utils.get_canonical("Abbkine Scientific Co., Ltd.", ":supplier"),
+    "distributor"        : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
+    "application"        : record => import_utils.get_canonical((record.application || []).join("; "), ":application"),
+    "external_links"     : transformers.get_external_links,
+    "category"           : transformers.get_category,
+    "price_model"        : transformers.get_price_model,
+    "images"             : transformers.get_images,
+    "pdf"                : transformers.get_pdf,
 
 };
 
@@ -112,5 +54,5 @@ let convert = (item, crawler_item) =>
 
 module.exports = {
     convert,
-    version: 15
+    version: 16
 };

@@ -143,10 +143,22 @@ let get_category = record => {
     let categories = [];
     for(let i = (record.categories || []).length - 1; i >= 0; i--)
     {
-        let cat_name = record.categories[i].toLowerCase();
+        let cat_name = record.categories[i].toLowerCase().replace("®", "");
         if (category_map[cat_name]) {
             categories.push(category_map[cat_name]);
             break;
+        }
+    }
+
+    if (!categories.length)
+    {
+        for(let i = (record.categories || []).length; i > 0; i--)
+        {
+            let cat_name = record.categories.slice(0, i).join("/").toLowerCase().replace("®", "");
+            if (category_map[cat_name]) {
+                categories.push(category_map[cat_name]);
+                break;
+            }
         }
     }
 
@@ -161,6 +173,7 @@ let get_category = record => {
     let result = import_utils.get_canonical(categories.join("; ").replace(/_/g, " "), ":product_category");
 
     if (!result.length){
+        debugger
         missing_categories.push(record.categories.join("/"));
         fs.writeFileSync(__dirname + "/missing_cat.json", JSON.stringify(utils.uniq(missing_categories)))
     }

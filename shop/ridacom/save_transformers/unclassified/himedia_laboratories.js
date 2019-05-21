@@ -4,7 +4,7 @@ let transformers = require("./himedia/transformers.js");
 let save_fn      = require("./himedia/save_fn.js");
 
 let relation_fields = ["supplier", "distributor", "category", "sub_category"];
-let export_version  = 18;
+let export_version  = 25;
 
 let mapping = {
     "_id"                   :  record => `PRODUCT_SOURCE:[HIMEDIA]_SUPPLIER:[RIDACOM]_ID:[${record["oid"].trim() || ""}]`,
@@ -43,7 +43,7 @@ let convert = (item, original_items) =>
     result = Object.assign(result, service_data);
 
     if (!result.category.length)
-        return {converted_item: null}
+        return {converted_item: null};
 
     let type = result.category[0][1];
 
