@@ -13,8 +13,8 @@ BV101-R,BV101-R-E,,,,,,,,,,100-240V,0.7A,50-60Hz,0.4kg,2years,,insta-touch press
 BV1005,BV1005-E,,,,,,,,,,"115,230V",180W,,3.8kg,2years,4-65°C,touch;continuous ,,,13x16x17cm,,,,,,,,,200-3400rpm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,3mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BV1000-FLAT;BV1000-COMBO;BV1000-H15;BV1000-H150;BV1000-H500,vortexer,,
 BV1010,BV1010-E,,,,,,,,,,100-240V,,50-60Hz,13kg,2years,,,,,38.5x23.5x42cm,,,,,,,,,500-2500rpm,,,,,,,,,,,,,6x250ml,,,1min-100h,,,,,,,,,,,,,,3.6mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BV1010-05;BV1010-1520;BV1010-12;BV1010-13;BV1010-150;BV1010-500;BV101025;BV101050H;BV1010-MP;BV1010-MP02,vortexer,,
 BV1010-TST,BV1010-TST-E,,,,,,,,,,101-240V,,50-60Hz,13kg,2years,,,,,38.5x23.5x42cm,,,,,,,,,500-2500rpm,30x17.8cm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,shaker;vortexer,,
-BV1003-T150,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BV1003,accesory,vortexer,http://www.benchmarkscientific.com/rpproducts/benchmixer-v2-vortex-mixer/
-BV1003-T500,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BV1003,accesory,vortexer,http://www.benchmarkscientific.com/rpproducts/benchmixer-v2-vortex-mixer/
+BV1003-T150,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BV1003,Other Lab Accessories,vortexer,http://www.benchmarkscientific.com/rpproducts/benchmixer-v2-vortex-mixer/
+BV1003-T500,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BV1003,Other Lab Accessories,vortexer,http://www.benchmarkscientific.com/rpproducts/benchmixer-v2-vortex-mixer/
 2d-rockers,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 BR1000,BR1000-E,,,,,,,,,,"115,230V",50W,50-60Hz,3kg,2years,4-45°C,,,,34x30x12cm,,,,,,,,,12rpm,30x30cm,,,,,,,,,,,,,,,,,,,,,,,±8°,,,,,,,,2.3kg,,,,,,,,,,,,,,,,,,,,,,,,,,,BR1000-STACK;BR1000-DIMPLED;B0718,rocker,platform rocker,
 BR2000,BR2000-E,,,,,,,,,,"115,230V",50W,50-60Hz,3.4kg,2years,4-45°C,,,,35.6x30x16.5cm,,,,,,,,,2-30rpm,35x30cm,,,,,,,,,,,,,,,,,,,,,,,0-30°,,,,,,,,3.6kg,,,,,,,,,,,,,,,,,,,,,,,,,,,BR2000-STACK;BR1000-DIMPLED;B0718,rocker,2d rocker,
@@ -47,18 +47,18 @@ D1030,D1030-E,,,,,,,,,,,,,2.2kg,2 Years,,,,,17x21x13.5cm,,,,,,,,,2700-4000rpm,,,
 D1036,D1036-Е,,,,,,,,,,100-240V,,50-60Hz,9kg,2 Years,,,,,22 x 35.5 x 20.5 cm,,,,,,,,,4.0-7.0 m/s,,,,,,,,,,,,,"6 x 2.0ml,2 x 5.0ml",,,,,,,1-90sec,0-90 sec. (1 sec. increments),10,<65 db,,,,,,,,,,,,,0.05 m/s,,,,,,,,,,,,,,,,,,,,,,,D1031-01;D1031-05;D1031-10;D1032-01;D1032-05;D1032-10;D1032-15;D1032-30;D1032-SK;D1032-60;D1034-MX;D1034-28,homogenizer,,
 D2400,D2400-E,,,,,,,,,,100-240V,,50-60Hz,25kg,2 Years,,,,,28 x 36 x 38.5 cm,up to 50,,,,,,,,4.0-7.0 m/s (0.05 m/s increments),,,,,,,,,,,,,24 x 2.0ml,,,,,,,1-90 sec. (up to 90 sec.),0-2 min. (1 sec. increments),10,<68 db,,,,,,,,,,,<2 sec.,<2 sec.,,,,,,,,,,,,,,,,,,,,,,,,D1031-01;D1031-05;D1031-10;D1032-01;D1032-05;D1032-10;D1032-10;D1032-30;D1032-SK;D1033-28;D1034-28,homogenizer,,
 D1000,D1000-E,,,,,,,,,,"115V,230V",,"60Hz,50HZ",0.62kg,2 years,4-65°C,,,,4.5 x 5.8 x 22.5 cm,,,,,,,,,"8500-30,000rpm",,,,,,,,,,,,,0.1 to 250ml,,,,,,,,,,<70 db,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,D1000-M10;D1000-M14;D1000-M5;D1000-M7;D1000-ST,homogenizer,,
-D1031-01,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
-D1031-05,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
-D1031-10,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
-D1032-01,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
-D1032-05,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
-D1032-10,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
-D1032-15,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
-D1032-30,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
-D1032-SK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
-D1033-28,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
-D1034-MX,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
-D1034-28,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,homogenizer,
+D1031-01,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,homogenizer,
+D1031-05,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,homogenizer,
+D1031-10,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,homogenizer,
+D1032-01,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,homogenizer,
+D1032-05,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,homogenizer,
+D1032-10,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,homogenizer,
+D1032-15,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,homogenizer,
+D1032-30,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,homogenizer,
+D1032-SK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,homogenizer,
+D1033-28,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,homogenizer,
+D1034-MX,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,homogenizer,
+D1034-28,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,homogenizer,
 Rolers and Rotators,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 R2020,R2020-E,,,,,,,,,,115-230V,0.5A,50-60Hz,1.4kg,2 years,,,,,27.5 x 15.2 x 16.5cm,,,,,,,,,24rpm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,R2020-1520;R2020-0507;R2020-150;R2020-500;R2020-PCR;R2020-RP,rotator,,
 R2024,R2024-E,,,,,,,,,Mix;Pause;Rock,100-240V,0.5A,50-60Hz,1.4kg,2 years,,,,,27.5 x 15.2 x 16.5cm,,,,,,,,,5 to 70rpm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,R2020-1520;R2020-0507;R2020-150;R2020-500;R2020-PCR;R2020-RP,rotator,,
@@ -79,18 +79,18 @@ BT1011,BT1011-Е,,,,,,,,,,"115V,230V",450W,50-60Hz,30kg,2 years,,,,,47 x 54 x 12
 BT3001,BT3001-Е,,,,,,,,,,"120V,230V",600W,50-60Hz,11.25kg,2 years,4-65°C,,,,28 x 33x 7.5 cm,,,,,,,,,30-300 rpm,33x30cm (Included),,,,,,,,,,,,5 x 1L,,,,,,,,,,,,,,,,,19mm,,,,,,1rpm,,,,,,,,,,,,,,,,,,,,,,,BT3000-MR;H1000-P-SP;H1000-P-MP;H1000-P-125;H1000-P-250;H1000-P-500;H1000-MR-CMB;H1000-MR-50;H1000-MR-125;H1000-MR-250;H1000-MR-500;H1000-MR-1000;H1000-MR-2000;H1000-MR-MP;H1000-MR-1550;H1000-MR-T15;H1000-MR-T50;H1000-MR-T50;H1000-MR-T600;H1000-MR-T15H;H1000-MR-T150H;H1000-MR-T500H;H1000-MR-TSR,,,
 BT302,BT302-E,,,,,,,,,,100-240V,250W,50-60Hz,5.5kg,2 years,4-65°C,,,,33 x 30 x 12 cm,,,,,,,,,50-300 rpm,24x20cm (Included),,,,,,,,,,,,4 x 1L,,,1min up to 99h / continuous,,,,,,,,,,,,,,19mm,,,,,,10rpm,,,,,,,,,,,,,,,,,,,,,,,H1000-MR;BT300-RB,shaker,orbital_shaker,
 BT1502,BT1502-E,,,,,,,,,,100-240V,250W,50-60Hz,5.5kg,2 years,4-65°C,,,,33 x 30 x 12 cm,,,,,,,,,200-1500 rpm,,,,,,,,,,,,,Up to 4 microplates,,,,,,,,,,,,,,,,,3mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,BT1500-A1520;BT1500-A05,shaker,orbital_shaker,
-H1000-MR,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,shaker,
-H1000-MR-1000,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,shaker,
-H1000-MR-500,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,shaker,
-H1000-MR-250,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,shaker,
-H1000-MR-125,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,shaker,
-H1000-MR-50,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,shaker,
-H1000-MR-MP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,incu_shaker,
-H1000-MR-1550,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,incu_shaker,
-H1000-MR-T15,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,incu_shaker,
-H1000-MR-T50,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,incu_shaker,
-H1000-MR-CMB,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,orbital_shaker,
-H1000-MR-T14,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,incu_shaker,http://www.benchmarkscientific.com/rpproducts/incu-shaker-mini-shaking-incubator/
+H1000-MR,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,shaker,
+H1000-MR-1000,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,shaker,
+H1000-MR-500,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,shaker,
+H1000-MR-250,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,shaker,
+H1000-MR-125,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,shaker,
+H1000-MR-50,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,shaker,
+H1000-MR-MP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,incu_shaker,
+H1000-MR-1550,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,incu_shaker,
+H1000-MR-T15,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,incu_shaker,
+H1000-MR-T50,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,incu_shaker,
+H1000-MR-CMB,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,orbital_shaker,
+H1000-MR-T14,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,incu_shaker,http://www.benchmarkscientific.com/rpproducts/incu-shaker-mini-shaking-incubator/
 Shaking incubators,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 H1001-M,H1001-M-E,,,,,,,,,,"115V,230V",300W,50-60Hz,11.5kg,2 years,4-65°C,,,±0.25°C,28 x 48 x 33 cm,,5-70°C,,±0.1°C,,0.1°C,,,30-300rpm,28 x 41 x 33 cm,,,,,,,,,,,,,,,1min-48h / continuous,,,,,,,,,,,,,,19mm,,,,,,1rpm,,,,,,,,,,,,,,,,,,,,,,,H1000-MR;H1000-P-MP;H1000-P-SP;H1000-MR-CMB;H1000-MR-25;H1000-MR-50;H1000-MR-125;H1000-MR-250;H1000-MR-500;H1000-MR-1000;H1000-MR-MP;H1000-MR-1550;H1000-MR-T15;H1000-MR-T50;H1000-MR-T600;H1000-MR-T15H;H1000-MR-TSR,incubator;shaker,incu_shaker,
 H2010,H2010-E,,,,,,,,,,"115V,230V",450W,50-60Hz,55kg,2 years,5-60°C,,,±1.25°C,51 x 65 x 47 cm,,,,±0.1°C,,0.1°C,,,30-300 rpm,45 x 45 cm,,,,,,,,,,,,,,,1min-48h / continuous,,,,,,,,,,,,,,19mm,,,,,,1rpm,,,,,,,,,,,,,,,,,,,,,,,H1010-MR;H1010-P-SP;H1010-P-MP;H1010-SH;H1000-MR-CMB;H1000-MR-25;H1000-MR-50;H1000-MR-125;H1000-MR-250;H1000-MR-500;H1000-MR-1000;H1000-MR-2000;H1000-MR-3000;H1000-MR-MP;H1000-MR-1550;H1000-MR-T15;H1000-MR-T50;H1000-MR-T600;H1000-MR-T15H;H1000-MR-T150H;H1000-MR-T50H;H1000-MR-TSR,incubator;shaker,incu_shaker,
@@ -128,7 +128,7 @@ Thermal cycle,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 T5005-3205,T5005-3205-E,,,,,30-112°C user adjustable,Simulated sample or block,,,,100-240V,,50-60Hz,2.9kg,2 years,,,,± 0.25°C,18.2 x 23.2 x 15.7cm,Over 100 typical programs,0-99°C,,± 0.25°C,,"Yes, both time and temperature","Yes, both time and temperature",5°C/s heating (maximum);5°C/sec cooling (maximum),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 T5000-96,T5000-96-E,,USB;LAN;RS232,1-30ºC,30-105ºC,30-112°C user adjustable,Simulated sample or block,,,,75-275V,,50-60Hz,7.3kg,2 years,,,,± 0.2°C,26 x 36 x 25cm,Unlimited with flash drive,0-100°C,,± 0.2°C,,"Yes, both time and temperature","Yes, both time and temperature",5°C/s,,,,,,,,,,,,,,96x0.2ml tubes;0.2ml strips;1x96 well plate (nonskirted);39x0.5ml tubes,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,T5000-A-IS,,,
 T5000-384,T5000-384-E,,USB;LAN;RS232,1-30ºC,30-105ºC,30-112°C user adjustable,Simulated sample or block,,,,,,,7.3kg,2 years,,,,± 0.2°C,26 x 36 x 25cm,Unlimited with flash drive,0-100°C,,± 0.2°C,,"Yes, both time and temperature","Yes, both time and temperature",5°C/s,,,,,,,,,,,,,,1 x 384 well plate,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,T5000-A-IS,,,
-T5000-A-IS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,thermal_cycler,
+T5000-A-IS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,thermal_cycler,
 Strerilization,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 B1201,B1201-E,Approx. 25 min. to 300°C,,,,,,,,,"115V,250V",120W,50-60Hz,2kg,2 Years,,,,,14 x 14.5 x 15.5cm,,100 to 300°C,,,,,,,,,150g,,40mm,80mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,B1201-BEAD,micro_sterilizer;bead_sterilizer,,
 B1202,B1202-E,Approx. 25 min. to 300°C,,,,,,,,,"115V,250V",250W,50-60Hz,2.5kg,2 Years,,,,,14 x 14.5 x 21.5cm,,100 to 300°C,,,,,,,,,300g,,40mm,140mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,B1201-BEAD,micro_sterilizer;classic_sterilizer,,
@@ -137,8 +137,8 @@ B1001,B1001-E,,,,,,,,,,"120V,230V",,50-60Hz,1.5kg,1 Year,,,14 mm,,10.2 x 15.2 x 
 B1001-XL,,,,,,,,,,,"120V,230V",,50-60Hz,1.6 kg,1 Year,,,35 mm,,10.2 x 15.2 x 28 cm,,815°C,,,,,,,,,,,,100mm,,,,,,,,,,,,,,5-7 seconds,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,micro_sterilizer,,
 B4000-M,B4000-M-E,,,,,,,,,,"120V,230V",950W,50-60Hz,33kg,1 Year,,,,,51x34x33cm,,,,,,,,,,,8L,,17 x 31 cm,,,,,,,,,,,,,12 x 24.8 cm,2 Bar,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,B4000-P;B4000-PA,autoclave,,
 B4000-16,B4000-16-E,,,,,,,,,,"120V,230V",1600W,50-60Hz,40kg,1 Year,,,,,56x44.5x40cm,,,,,,,,,,,16L,,23 x 35 cm,,,,,,,,,,,,,16.5 x 27 cm,2 Bar,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,B4000-P;B4000-PA,autoclave,,
-B4000-P,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,B4000-PA,Accessories,autoclave,
-B4000-PA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,B4000-P,consumable,autoclave,
+B4000-P,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,B4000-PA,Other Lab Accessories,autoclave,
+B4000-PA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,B4000-P,Consumables,autoclave,
 Hotplates,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 H3760-HS,H3760-HS-E,,,,,,,,,,"120V,230V",500W,50-60Hz,2.9kg,2 years,4 to +65°C,,,,18 x 26 x 10.1 cm,,5-380°C,,,,,,,200-1500 rpm,16.6 x 16.5 cm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,H3760-TP;H3760-ROD,hotplate,digital_hotplate,
 H3760-SE,,,,,,,,,,,"120V,230V",500W,50-60Hz,2.9kg,2 years,4 to +65°C,,,,18 x 26 x 10.1 cm,,5-380°C,,,,,,,200-1500 rpm,16.6 x 16.5 cm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,stirrer,magnetic_stirrer,
@@ -147,9 +147,9 @@ H4000-HS,H4000-HS-E,,,,,,,,,,"120V,230V",500W,50-60Hz,4kg,2 years,4 to +65°C,,,
 H4000-S,H4000-S-E,,,,,,,,,,"120V,230V",500W,50-60Hz,4kg,2 years,4 to +65°C,,,,20 x 23 x 11.5 cm,,80-380°C,,,,,,,60-1500 rpm,180 x 180 mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 H4000-H,H4000-H-E,,,,,,,,,,"120V,230V",500W,50-60Hz,4kg,2 years,4 to +65°C,,,,20 x 23 x 11.5 cm,,80-380°C,,,,,,,60-1500 rpm,180 x 180 mm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 S1005,S1005-E,,,,,,,,,,100-240V,2W,50-60Hz,0.2kg,1 year,4 to +45°C,,,,12 x 12 x 3 cm,,,,,,,,,100-1500 rpm,8.5 x 8.5 cm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,stirrer,magnetic_stirrer,
-H3760-ROD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,hotplate;stirrer,
-H3760-TP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,hotplate;stirrer,
-H3760-CS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,accessory,hotplate;stirrer,
+H3760-ROD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,hotplate;stirrer,
+H3760-TP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,hotplate;stirrer,
+H3760-CS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,hotplate;stirrer,
 CoolCobe,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 R1000,R1000-E,,,,,,,,,,,,,1 kg,2 years,,,,,14.3 x 14.3 x 6.4 cm,,0°C for up to 4 hours,,,,,,,,,36x1.5/2.0ml tubes (side 1);96x0.2ml tubes(side 2);12x0.2ml strips(side 2);1x96 well PCR plate(side 2);10x1.5/2.0ml (side 2),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Agarose,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -169,75 +169,75 @@ B3000-250*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 B3000-500*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,bottle,,http://www.benchmarkscientific.com/rpproducts/hybex/
 B3000-1000*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,bottle,,http://www.benchmarkscientific.com/rpproducts/hybex/
 B3000-2000*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,bottle,,http://www.benchmarkscientific.com/rpproducts/hybex/
-B3000-SP*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,bottle,http://www.benchmarkscientific.com/rpproducts/hybex/
-B3000-CAP*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,bottle,http://www.benchmarkscientific.com/rpproducts/hybex/
-B3000-100-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL45,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,Accessories,bottle,
-B3000-250-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL46,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,Accessories,bottle,
-B3000-500-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL47,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,Accessories,bottle,
-B3000-1000-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL48,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,Accessories,bottle,
-B3000-2000-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL49,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,Accessories,bottle,
-B3000-SP-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL45,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,Accessories,bottle,
-BV1010-00,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Vortexer,http://www.benchmarkscientific.com/rpproducts/benchmixer-xl-vortex-mixer/
-BV1010-50HQ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Vortexer,http://www.benchmarkscientific.com/rpproducts/benchmixer-xl-vortex-mixer/
-R4040-1520,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Rotator,http://www.benchmarkscientific.com/rpproducts/roto-bot/
-R4040-150,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Rotator,http://www.benchmarkscientific.com/rpproducts/roto-bot/
-R4040-500,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Rotator,http://www.benchmarkscientific.com/rpproducts/roto-bot/
-R4040-HZ15,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Rotator,http://www.benchmarkscientific.com/rpproducts/roto-bot/
-R4040-HZ50,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Rotator,http://www.benchmarkscientific.com/rpproducts/roto-bot/
-B3D5000-STK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Rocker,
-B3D5000-DIMP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Rocker,
-B3D-STACK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Rocker,
-B3D-STACK-D,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Rocker,
-BR1000-STACK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Rocker,
-BR1000-STACK-D,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Rocker,
-BR2000-FLAT,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Shaker,http://www.benchmarkscientific.com/rpproducts/benchrocker-2d/
-BR1000-FLAT,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Shaker,
-H1000-MR-T14,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Shaker Incubator,
-H5000-12,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Vortexer Incubator,
-H5000-20,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Vortexer Incubator,
-H5000-150,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Vortexer Incubator,
-H5000-500,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Vortexer Incubator,
-H5000-MP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Vortexer Incubator,
-H5000-DWMP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Vortexer Incubator,
-H5000-WB,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Vortexer Incubator,
-H5000-5MT,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Vortexer Incubator,http://www.benchmarkscientific.com/rpproducts/multitherm-heating-cooling-vortexer/
-D2400-R5,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/bead-blaster-24/
-D1036-A5,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/bead-bug-6/
-D1031-T20,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
-D1031-T21,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
-D1031-RF,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
-D1033-30G,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Homogenizer,
-D1131-01,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
-D1131-05,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
-D1131-10,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
-D1132-01TP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
-D1132-05TP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
-D1132-10TP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
-D1132-15TP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
-D1132-30TP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
-D1133-28,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
-D1132-60,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
-D1133-G,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
-SB0012-T1520,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Water Bath,http://www.benchmarkscientific.com/rpproducts/sb-12l-shaking-water-bath/
-BSH100-CU,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Dry Bath,http://www.benchmarkscientific.com/rpproducts/myblock-mini-dry-bath/
-BSH100-01,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Dry Bath,http://www.benchmarkscientific.com/rpproducts/myblock-mini-dry-bath/
-BSW15,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Dry Bath,
-H2300-SH,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Incubator,http://www.benchmarkscientific.com/rpproducts/incu-shaker-mini-co2-shaking-incubator-2/
+B3000-SP*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,bottle,http://www.benchmarkscientific.com/rpproducts/hybex/
+B3000-CAP*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,bottle,http://www.benchmarkscientific.com/rpproducts/hybex/
+B3000-100-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL45,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,Other Lab Accessories,bottle,
+B3000-250-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL46,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,Other Lab Accessories,bottle,
+B3000-500-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL47,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,Other Lab Accessories,bottle,
+B3000-1000-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL48,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,Other Lab Accessories,bottle,
+B3000-2000-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL49,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,Other Lab Accessories,bottle,
+B3000-SP-B,,,,,,,,,,,,,,,,,,,,,,-70-500°C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Autoclave or dry heat,hybex™ borosilicate glass,Polypropylene (140°C),GL45,Standard Blue Green Purple Yellow White Assorted,,,,,,B3000-CAP-B;B3000-RIN;B3000-CAP-HTC,Other Lab Accessories,bottle,
+BV1010-00,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Vortexer,http://www.benchmarkscientific.com/rpproducts/benchmixer-xl-vortex-mixer/
+BV1010-50HQ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Vortexer,http://www.benchmarkscientific.com/rpproducts/benchmixer-xl-vortex-mixer/
+R4040-1520,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Rotator,http://www.benchmarkscientific.com/rpproducts/roto-bot/
+R4040-150,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Rotator,http://www.benchmarkscientific.com/rpproducts/roto-bot/
+R4040-500,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Rotator,http://www.benchmarkscientific.com/rpproducts/roto-bot/
+R4040-HZ15,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Rotator,http://www.benchmarkscientific.com/rpproducts/roto-bot/
+R4040-HZ50,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Rotator,http://www.benchmarkscientific.com/rpproducts/roto-bot/
+B3D5000-STK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Rocker,
+B3D5000-DIMP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Rocker,
+B3D-STACK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Rocker,
+B3D-STACK-D,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Rocker,
+BR1000-STACK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Rocker,
+BR1000-STACK-D,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Rocker,
+BR2000-FLAT,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Shaker,http://www.benchmarkscientific.com/rpproducts/benchrocker-2d/
+BR1000-FLAT,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Shaker,
+H1000-MR-T14,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Shaker Incubator,
+H5000-12,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Vortexer Incubator,
+H5000-20,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Vortexer Incubator,
+H5000-150,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Vortexer Incubator,
+H5000-500,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Vortexer Incubator,
+H5000-MP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Vortexer Incubator,
+H5000-DWMP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Vortexer Incubator,
+H5000-WB,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Vortexer Incubator,
+H5000-5MT,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Vortexer Incubator,http://www.benchmarkscientific.com/rpproducts/multitherm-heating-cooling-vortexer/
+D2400-R5,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/bead-blaster-24/
+D1036-A5,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/bead-bug-6/
+D1031-T20,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
+D1031-T21,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
+D1031-RF,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
+D1033-30G,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Homogenizer,
+D1131-01,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
+D1131-05,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
+D1131-10,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
+D1132-01TP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
+D1132-05TP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
+D1132-10TP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
+D1132-15TP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
+D1132-30TP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
+D1133-28,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
+D1132-60,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
+D1133-G,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Homogenizer,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
+SB0012-T1520,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Water Bath,http://www.benchmarkscientific.com/rpproducts/sb-12l-shaking-water-bath/
+BSH100-CU,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Dry Bath,http://www.benchmarkscientific.com/rpproducts/myblock-mini-dry-bath/
+BSH100-01,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Dry Bath,http://www.benchmarkscientific.com/rpproducts/myblock-mini-dry-bath/
+BSW15,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Dry Bath,
+H2300-SH,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Incubator,http://www.benchmarkscientific.com/rpproducts/incu-shaker-mini-co2-shaking-incubator-2/
 H3760-CS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Digital hotplate,http://www.benchmarkscientific.com/rpproducts/digital-hotplate-stirrers/
 H4000-ROD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,H3760-HS-E;H3760-SE;H3760-H-E,hotplate,Digital hotplate,http://www.benchmarkscientific.com/rpproducts/analog-hotplate-stirrers/
-D1031-ST25,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,micro centrifuge,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
-C1005-AC2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,micro centrifuge,
-C1005-T5-RK2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,micro centrifuge,
-C1005-T5* Clear,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,micro centrifuge,http://www.benchmarkscientific.com/rpproducts/myfuge-5/
+D1031-ST25,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,micro centrifuge,http://www.benchmarkscientific.com/rpproducts/beads-prefilled-kits/
+C1005-AC2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,micro centrifuge,
+C1005-T5-RK2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,micro centrifuge,
+C1005-T5* Clear,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,micro centrifuge,http://www.benchmarkscientific.com/rpproducts/myfuge-5/
 C1005-T5-ST,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,micro centrifuge,http://www.benchmarkscientific.com/rpproducts/myfuge-5/
-C1005-T5-LOCK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,micro centrifuge,http://www.benchmarkscientific.com/rpproducts/myfuge-5/
-C1008-ROT2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,mini centrifuge,http://www.benchmarkscientific.com/rpproducts/myfuge-mini-centrifuge/
-C1008-A2-9,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,mini centrifuge,http://www.benchmarkscientific.com/rpproducts/myfuge-mini-centrifuge/
-B3000-CAP,B3000-CAP*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Bottle,
-B3000-RIN,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Bottle,
-B3000-CAP2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Bottle,
-B3000-RIN2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Bottle,
-B3000-CAP-HTC,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Bottle,
+C1005-T5-LOCK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,micro centrifuge,http://www.benchmarkscientific.com/rpproducts/myfuge-5/
+C1008-ROT2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,mini centrifuge,http://www.benchmarkscientific.com/rpproducts/myfuge-mini-centrifuge/
+C1008-A2-9,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,mini centrifuge,http://www.benchmarkscientific.com/rpproducts/myfuge-mini-centrifuge/
+B3000-CAP,B3000-CAP*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Bottle,
+B3000-RIN,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Bottle,
+B3000-CAP2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Bottle,
+B3000-RIN2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Bottle,
+B3000-CAP-HTC,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Bottle,
 Balance,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 W1000-200,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,balance,calibration_weights,
 W1000-1000,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,balance,calibration_weights,http://www.accuris-usa.com/Products/calibration-weights/
@@ -269,30 +269,30 @@ P7700-T5M,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 V0020-E,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,14ml/s,15L/min,-30 to -750mbar,oil free piston,V1002-1SL;V1002-8;V1002-S8;V1002;V0020-F1;V0020-QD;V0020-BOT;V0020-TB;V0020-SG,aspirator,,
 V0020-SG,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,aspirator,http://www.accuris-usa.com/Products/aspire-laboratory-aspirator/
 Electrophoresis,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-E1101,E1101-E,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,electrophoresis,,
-E1101-SK,E1101-SK-E,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,electrophoresis balance agarose,,
-E5001-SD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,E5000-MAT;E5001-535;E5001-590;E5001-ORANGE;E5001-OC;E4500-LD;E4500-PS,Accessories,electrophoresis,
-E5000-MAT,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,electrophoresis,
-E5001-535,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,electrophoresis,
-E5001-590,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,electrophoresis,
-E5001-ORANGE,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,electrophoresis,
-E5001-OC,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,electrophoresis,
-E4500-LD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,electrophoresis,
-E4500-PS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,electrophoresis,
-E5001-SDB,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,E5001-ORANGE;E5001-590;E5001-535;E4000-VG1,Accessories,electrophoresis,
-E5001-ORANGE,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,electrophoresis,
-E5001-590,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,electrophoresis,
-E5001-535,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,electrophoresis,
-E4000-VG1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,electrophoresis,
-E4000,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,E4000-VG1;E4000-AC;E4000-VG,Accessories,electrophoresis,
-E4000-VG,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,electrophoresis,http://www.accuris-usa.com/Products/smartdoc-imaging-system/
-E4000-VG1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,electrophoresis,
-E3000,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,electrophoresis,
-E4000-AC,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,electrophoresis,http://www.accuris-usa.com/Products/smartdoc-imaging-system/
-E2100,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,electrophoresis,
-E2301,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,electrophoresis,
+E1101,E1101-E,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Electrophoresis Equipment,,
+E1101-SK,E1101-SK-E,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Electrophoresis Equipment balance agarose,,
+E5001-SD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,E5000-MAT;E5001-535;E5001-590;E5001-ORANGE;E5001-OC;E4500-LD;E4500-PS,Other Lab Accessories,electrophoresis,
+E5000-MAT,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,electrophoresis,
+E5001-535,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,electrophoresis,
+E5001-590,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,electrophoresis,
+E5001-ORANGE,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,electrophoresis,
+E5001-OC,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,electrophoresis,
+E4500-LD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,electrophoresis,
+E4500-PS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,electrophoresis,
+E5001-SDB,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,E5001-ORANGE;E5001-590;E5001-535;E4000-VG1,Other Lab Accessories,electrophoresis,
+E5001-ORANGE,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,electrophoresis,
+E5001-590,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,electrophoresis,
+E5001-535,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,electrophoresis,
+E4000-VG1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,electrophoresis,
+E4000,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,E4000-VG1;E4000-AC;E4000-VG,Other Lab Accessories,electrophoresis,
+E4000-VG,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,electrophoresis,http://www.accuris-usa.com/Products/smartdoc-imaging-system/
+E4000-VG1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,electrophoresis,
+E3000,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,electrophoresis,
+E4000-AC,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,electrophoresis,http://www.accuris-usa.com/Products/smartdoc-imaging-system/
+E2100,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,electrophoresis,
+E2301,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,electrophoresis,
 MR9600,MR9600-E,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,MR9600-TP;MR9600-340;MR9600-380;MR9600-405;MR9600-415;MR9600-420;MR9600-450;MR9600-470;MR9600-490;MR9600-492;MR9600-510;MR9600-520;MR9600-532;MR9600-540;MR9600-546;MR9600-560;MR9600-562;MR9600-570;MR9600-578;MR9600-590;MR9600-595;MR9600-600;MR9600-620;MR9600-630;MR9600-646;MR9600-650;MR9600-663;MR9600-680;MR9600-690;MR9600-700;MR9600-750,Microplate Absorbance Reader,,
-MR9600-TP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Accessories,Microplate Absorbance Reader,
+MR9600-TP,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Other Lab Accessories,Microplate Absorbance Reader,
 MR9600-PA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,MR9600-TP,filter,Microplate Absorbance Reader,http://www.accuris-usa.com/Products/microplate-absorbance-reader/
 MR9600-340,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,filter,Microplate Absorbance Reader,
 MR9600-380,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,filter,Microplate Absorbance Reader,
@@ -418,5 +418,5 @@ C1008-P,C1008-P-E,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 C1008-R,C1008-R-E,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,mini_centrifuge,,
 BSC1006-R,BSC1006-R-E,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,mini_centrifuge,,
 BSC1006-B,BSC1006-B-E,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,mini_centrifuge,,
-C3100,C3100-E,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,centrifuge,,
-C3200,C3200-E,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,centrifuge,,
+C3100,C3100-E,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,universal centrifuge,,
+C3200,C3200-E,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,universal centrifuge,,

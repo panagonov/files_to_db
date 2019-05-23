@@ -98,6 +98,7 @@ let get_bio_object = record => {
 let get_category = record => {
     let crawler_item = record.crawler_item;
 
+
     let categories = [];
     for(let i = (crawler_item.categories || []).length - 1; i >= 0; i--)
     {
@@ -123,6 +124,7 @@ let get_category = record => {
             fs.writeFileSync(__dirname + "/missing_cat.json", JSON.stringify(utils.uniq(missing_categories)));
         }
     }
+
     return result;
 };
 

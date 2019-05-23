@@ -1,0 +1,26 @@
+{
+    "agarose": [
+        "agar",
+        "nucleic_acid_electrophoresis_reagents"
+    ],
+    "hybex glass media bottles": "bottle",
+    "hotplates and stirrers": "hotplate",
+    "incubators": "incubators",
+    "shaking incubators": [
+        "incubators",
+        "shaker"
+    ],
+    "homogenizers/cell lysis": "homogenizer",
+    "2d and 3d rockers": "rocker",
+    "rollers and rotators": [
+        "roller",
+        "rotator"
+    ],
+    "orbital shakers": "shaker",
+    "vortex mixers": "vortexer",
+    "sterilization": "sterilizer",
+    "temperature control baths": "temperature_control_bath",
+    "thermal cycler": "thermal_cycle",
+    "coolcube benchtop cooler": "cooler",
+    "centrofuges": "laboratory_centrifuges"
+}

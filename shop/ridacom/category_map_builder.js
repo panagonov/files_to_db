@@ -27,7 +27,21 @@ let transformer = (line) =>{
     .map(item => item.replace(/("|в„ў)/g, "").replace(/,$/, "").trim().toLowerCase())
     .filter(item => item)
     .forEach(item => {
-        result[item] = original_category
+        if (result[item])
+        {
+            if (result[item] instanceof Array)
+            {
+                result[item].push(original_category)
+            }
+            else
+            {
+                result[item] = [result[item], original_category]
+            }
+        }
+        else
+        {
+            result[item] = original_category;
+        }
     })
 };
 
@@ -62,7 +76,8 @@ let import_CSV_from_path = async (csv_path) => {
 // let path = __dirname + "/save_transformers/equipment/adam_equipment/category_map";
 // let path = __dirname + "/save_transformers/unclassified/himedia/category_map";
 // let path = __dirname + "/save_transformers/equipment/capp/category_map";
-let path = __dirname + "/save_transformers/antibody/cloud_clone/category_map";
+// let path = __dirname + "/save_transformers/antibody/cloud_clone/category_map";
+let path = __dirname + "/save_transformers/equipment/benchmark/category_map";
 import_CSV_from_path(`${path}.csv`)
 .then(() => fs.writeFileSync(`${path}.json`, JSON.stringify(result), "utf8"))
 .catch(e => console.error(e));

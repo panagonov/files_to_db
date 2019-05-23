@@ -63,7 +63,7 @@ let load_crawler_data = async(items, crawler_db) => {
                 r.push(it, clean_oid, clean_oid +"*", clean_oid +"-E", clean_oid + "*-E", clean_oid + "-E*", clean_oid +"~E", clean_oid + "*~E", clean_oid + "~E*");
                 return r
             }, [])
-        );}
+        );};
 
 
     let ids = items.reduce((res,item) => {
@@ -94,7 +94,7 @@ let load_crawler_data = async(items, crawler_db) => {
     return hash
 };
 
-let _getProductRelations = (record) => {
+let _get_product_relations = (record) => {
     let oid = get_real_oid(record.oid);
     if (record.crawler_item) {
         let res = [];
@@ -127,7 +127,7 @@ let _get_product_category = record => {
         }
     }
 
-    return result.length ? result :import_utils.get_canonical("Accessories", ":product_category");
+    return result.length ? result :import_utils.get_canonical("other lab accessories", ":product_category");
 };
 
 let _get_product_sub_category = record => {
@@ -194,14 +194,14 @@ let mapping = {
     "description"         : "crawler_item.description",
     "category"            : _get_product_category,
     "sub_category"        : _get_product_sub_category,
-    "product_relations"   : _getProductRelations,
+    "product_relations"   : _get_product_relations,
     "images"              : _get_images,
     "pdf"                 : "crawler_item.pdf",
     "original_link"       : "crawler_item.link"
 };
 
 let index = 0;
-let stop_after = 400;
+let stop_after = 0;
 let crawler_not_found = [];
 let show_in_console = (result, crawler_item, record) =>
 {
@@ -275,7 +275,7 @@ let get_crawler_item = (item, crawler_hash) =>  {
 module.exports = {
     convert,
     load_crawler_data,
-    version: 25,
+    version: 26,
     get_crawler_item
     // disable: true
 };

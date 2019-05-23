@@ -98,6 +98,9 @@ let get_bio_object = record => {
 let get_category = record => {
     let crawler_item = record.crawler_item;
 
+    if ((crawler_item.categories || []).indexOf("Serums") !== -1)
+        debugger
+
     let categories = [];
     for(let i = (crawler_item.categories || []).length - 1; i >= 0; i--)
     {
