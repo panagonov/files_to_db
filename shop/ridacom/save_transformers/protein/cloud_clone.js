@@ -48,7 +48,7 @@ let convert = (item, crawler_item) =>
     let service_data = import_utils.build_service_data(result, relation_fields);
     result = Object.assign(result, service_data);
 
-    let suggest_data = import_utils.build_suggest_data(result, relation_fields, "protein");
+    let suggest_data = import_utils.build_suggest_data(result, relation_fields, result.category[0][1]);
     result           = import_utils.clean_result_data(result, relation_fields);
 
     return {
@@ -59,5 +59,5 @@ let convert = (item, crawler_item) =>
 
 module.exports = {
     convert,
-    version: 20
+    version: 31
 };

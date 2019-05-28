@@ -56,6 +56,9 @@ let _save_suggest_data = async (suggest_data) =>
             document.synonyms = utils.uniq([].concat(document.synonyms || [], item_in_db_hash.synonyms || [])).filter(item => item);
         }
 
+        if (document.category.some(item => ["antibody","elisa_kit","protein"].indexOf(item) !== -1))
+            debugger
+
         return {model_title: suggest_collection_name, command_name: command, "_id": id, "document":document}});
 
     if (es_bulk.length)

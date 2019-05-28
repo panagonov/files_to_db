@@ -176,6 +176,13 @@ let build_suggest_data = (record, relation_fields, category) => {
         })
     });
 
+    for(let key in result)
+    {
+        let categories = result[key].category
+        if (categories.some(item => ["antibody","elisa_kit","protein"].indexOf(item) !== -1))
+            debugger
+    }
+
     return result
 };
 

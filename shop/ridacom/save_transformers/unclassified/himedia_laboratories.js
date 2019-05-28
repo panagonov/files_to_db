@@ -4,10 +4,10 @@ let transformers = require("./himedia/transformers.js");
 let save_fn      = require("./himedia/save_fn.js");
 
 let relation_fields = ["supplier", "distributor", "category", "sub_category"];
-let export_version  = 25;
+let export_version  = 31;
 
 let mapping = {
-    "_id"                   :  record => `PRODUCT_SOURCE:[HIMEDIA]_SUPPLIER:[RIDACOM]_ID:[${record["oid"].trim() || ""}]`,
+    "_id"                   : record => `PRODUCT_SOURCE:[HIMEDIA]_SUPPLIER:[RIDACOM]_ID:[${record["oid"].trim() || ""}]`,
     "name"                  : "name",
     "oid"                   : "oid",
     "original_link"         : "original_link",
@@ -29,7 +29,6 @@ let mapping = {
     "risk"                  : transformers.get_risk,
     "pdf"                   : transformers.get_pdf,
     "category"              : transformers.get_category,
-    // "sub_category"          : record => import_utils.get_canonical([record.categories[1], record.categories[2], record.categories[3]].join("; "), ":product_category").slice(0, 1),
 };
 
 
@@ -45,9 +44,7 @@ let convert = (item, original_items) =>
     if (!result.category.length)
         return {converted_item: null};
 
-    let type = result.category[0][1];
-
-    let suggest_data = import_utils.build_suggest_data(result, relation_fields, type);
+    let suggest_data = import_utils.build_suggest_data(result, relation_fields, result.category[0][1]);
     result           = import_utils.clean_result_data(result, relation_fields);
 
     if (result.images )
