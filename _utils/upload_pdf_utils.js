@@ -110,7 +110,7 @@ let upload_pdf_preview = async(path, file_name, meta) => {
  * @returns {Promise<{link_id: string, thumb_link_id: string}>}
  */
 let upload_product_pdf = async({link, path, file_name, meta = {}, options = {}}) => {
-    file_name = decodeURIComponent(file_name).replace(/\W|\s/, "_")
+    file_name = decodeURIComponent(file_name).replace(/\W|\s/g, "_")
     if (!browser)
     {
         browser = new RequestBrowser();

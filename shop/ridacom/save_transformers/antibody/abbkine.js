@@ -84,8 +84,17 @@ let convert = (item, crawler_item, custom_data) =>
 };
 
 let load_custom_data = async(mongo_db, crawler_db, result) => {
+    let ids = utils.uniq(result
+        .map(item => item.accession)
+        .filter(id => id)
+        .reduce((res, id) => {
+            res = res.concat(id.split("/"));
+            res = res.map(it => it.trim().split("-").shift());
+            return res
+        }, [])
+    );
 
-    let {hash, duplicated} = await bio_object_utils.find_bio_objects(result);
+    let {hash, duplicated} = await bio_object_utils.find_bio_objects(ids);
 
     return {result: hash, error: duplicated.length ? duplicated : null};
 };

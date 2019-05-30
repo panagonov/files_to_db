@@ -9,6 +9,11 @@ let collection_name = "product";
 let cache_collection = "product_pdf";
 let crawler_version = 13;
 
+product_type_mapping = {
+    "antibody" : "antibodies",
+    "elisa_kit" : "elisa_kits",
+};
+
 /**
  *
  * @param product_type
@@ -32,6 +37,9 @@ let upload = async(product_type, crawler_db, options = {}) => {
                 "must" : [
                     {
                         "term" : {"all_categories" : product_type}
+                    },
+                    {
+                        "term" : {"supplier" : "affinity_biosciences"}
                     }
                 ]
             }
@@ -156,7 +164,7 @@ let run = async (crawler_db, options) => {
 
         if (progress[product_type])
             continue;
-        await upload(product_type, crawler_db, options)
+        await upload(product_type_mapping[product_type] || product_type, crawler_db, options)
     }
 };
 
@@ -216,4 +224,4 @@ process.on('uncaughtException', function (err, data) {
     r()
 });
 
-r("EAB 125i" , {check_uploaded: true, force: true});
+r("" , {/*check_uploaded: true, force: true*/});

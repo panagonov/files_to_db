@@ -10,18 +10,9 @@ let init = async() =>
     await uniprot_db.init({database: collection_name});
 };
 
-let find_bio_objects = async(result) => {
+let find_bio_objects = async(ids) => {
     let duplicated = [];
 
-    let ids = utils.uniq(result
-        .map(item => item.accession)
-        .filter(id => id)
-        .reduce((res, id) => {
-            res = res.concat(id.split("/"));
-            res = res.map(it => it.trim().split("-").shift());
-            return res
-        }, [])
-    );
     let bio_objects = await uniprot_db.read(collection_name, {body: {ids : {$in : ids}}});
 
     let hash = bio_objects.reduce((res, item) => {

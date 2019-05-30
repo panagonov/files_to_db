@@ -1,0 +1,9 @@
+{
+    "primary antibody"                : "antibodies",
+    "secondary antibody"              : "antibodies",
+    "phosphp-specific antibody"       : "antibodies",
+    "loading control and tag antibody": "antibodies",
+    "reagents and kits"               : "antibody_kits",
+    "antigen-peptide"                 : "proteins_and_peptides",
+    "inhibitors"                      : "inhibitors"
+}

@@ -56,9 +56,6 @@ let _save_suggest_data = async (suggest_data) =>
             document.synonyms = utils.uniq([].concat(document.synonyms || [], item_in_db_hash.synonyms || [])).filter(item => item);
         }
 
-        if (document.category.some(item => ["antibody","elisa_kit","protein"].indexOf(item) !== -1))
-            debugger
-
         return {model_title: suggest_collection_name, command_name: command, "_id": id, "document":document}});
 
     if (es_bulk.length)
@@ -121,7 +118,7 @@ let bulk_result = async(es_db, crawler_db, es_bulk) => {
 
         await es_db.bulk(es_bulk);
     }
-}
+};
 
 let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fields_list) =>
 {
@@ -154,7 +151,7 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fie
 
         if (converter.load_custom_data)
         {
-            custom_data = await converter.load_custom_data(mongo_db, crawler_db, result);
+            custom_data = await converter.load_custom_data(mongo_db, crawler_db, result, crawler_hash);
             if (custom_data.error)
                 custom_errors.concat(custom_data.error);
             custom_data = custom_data.result
