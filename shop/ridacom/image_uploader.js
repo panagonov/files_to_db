@@ -280,7 +280,7 @@ process.on('uncaughtException', function (err, data) {
     r()
 });
 
-r("" , {check_uploaded: true});
+r("AF6126" , {check_uploaded: true, force: true});
 
 // upload_from_directory(`${__dirname}/files/himedia_laboratories/images`)
 // .then(() => process.exit(0))

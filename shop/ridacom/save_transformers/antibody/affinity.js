@@ -21,6 +21,7 @@ let mapping = {
     "specificity"           : "specificity",
     "storage_buffer"        : "storage_buffer",
     "images"                : "crawler_item.images",
+    "human_readable_id"     : record => `affinity_biosciences_${import_utils.human_readable_id(record.name, record.oid)}`,
     "supplier"              : record => import_utils.get_canonical("Affinity Biosciences", ":supplier"),
     "distributor"           : record => import_utils.get_canonical("RIDACOM Ltd.", ":distributor"),
     "application"           : record => import_utils.get_canonical((record.application || []).join("; "), ":application"),
@@ -97,5 +98,5 @@ module.exports = {
     load_custom_data,
     convert,
     init,
-    version: 4
+    version: 5
 };
