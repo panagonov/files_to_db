@@ -39,11 +39,17 @@ let get_unclassified_fields = record => {
                 value = [value]
             }
             if (value instanceof Array) {
-                value = value.filter(item => typeof item === "string")
+                value = value.filter(item => typeof item === "string");
                 result.push({name: key, value})
             }
         })
     });
+
+    return result;
+};
+let get_price_model = record => {
+    let result = record.price;
+    result.search_price = result.variation.sort((a,b) => a.price.value - b.price.value)[0].price.value;
 
     return result;
 };
@@ -85,5 +91,6 @@ module.exports = {
     get_pdf,
     get_bio_object,
     get_category,
-    get_unclassified_fields
+    get_price_model,
+    get_unclassified_fields,
 };

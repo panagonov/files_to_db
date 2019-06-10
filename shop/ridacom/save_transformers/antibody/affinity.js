@@ -15,7 +15,6 @@ let mapping = {
     "oid"                   : "oid",
     "buffer_form"           : "buffer_form",
     "original_link"         : "link",
-    "price_model"           : "price",
     "purification"          : "purification",
     "concentration"         : "concentration",
     "specificity"           : "specificity",
@@ -34,6 +33,7 @@ let mapping = {
     "precautions"           : record => record.crawler_item["tab_blocking"] && record.crawler_item["tab_blocking"]["Precautions"]  ? [record.crawler_item["tab_blocking"]["Precautions"]] : null,
     "aliases"               : record => record.crawler_item["Product Information"] && record.crawler_item["Product Information"]["Alternative Names"]  ? record.crawler_item["Product Information"]["Alternative Names"] : null,
     "storage_conditions"    : record => record.crawler_item["Product Information"] && record.crawler_item["Product Information"]["Storage Condition and Buffer"]  ? record.crawler_item["Product Information"]["Storage Condition and Buffer"] : null,
+    "price_model"           : transformers.get_price_model,
     "pdf"                   : transformers.get_pdf,
     "category"              : transformers.get_category,
     "unclassified_fields"   : transformers.get_unclassified_fields,
@@ -98,5 +98,5 @@ module.exports = {
     load_custom_data,
     convert,
     init,
-    version: 5
+    version: 6
 };
