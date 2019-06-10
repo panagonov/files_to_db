@@ -1,7 +1,8 @@
-let fs = require("fs");
-let import_utils = require("../../../../_utils/save_utils.js");
-let category_map = require("./category_map.json");
-let utils        = require("../../../../../_utils/utils.js");
+let fs                 = require("fs");
+let import_utils       = require("../../../../_utils/save_utils.js");
+let category_map       = require("./category_map.json");
+let utils              = require("../../../../../_utils/utils.js");
+let currency_converter = require("../../../../../common-components/region_utils/currency_converter.js");
 
 let missing_categories = [];
 
@@ -30,7 +31,7 @@ let get_price_model = (item) =>
     let result = {
         "is_multiple" : !!(item.sizes && item.sizes.length),
         "is_ids_are_unique": true,
-        "search_price" : lower_price || 0,
+        "search_price"  : lower_price ? currency_converter.convert_currency(item_with_lower_price.price.currency, "usd", lower_price) : 0,
         "variation" : item.sizes.map(size => {
             let original_item = original_items.filter(item => item.oid === size.product_id)[0];
             if (!original_item)

@@ -11,7 +11,7 @@ let mapping = {
     "type"             : result => "unclassified",
     "name"             : "Product Description",
     "price"            : (record) => {
-        return ({"value": parseFloat(record["END USER PRICING IN EUR WITHOUT TAXES"]), "currency" : "usd"})
+        return ({"value": parseFloat(record["END USER PRICING IN EUR WITHOUT TAXES"]), "currency" : "eur"})
     }
 };
 

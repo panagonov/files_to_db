@@ -41,24 +41,10 @@ let mapping = {
         }
 
         let originalValue = parseFloat(record["List Price\n(USD)"]);
-        let discountPercentage = 0;
-        let discount = 0;
-
-        if (record["Discount"])
-        {
-            discountPercentage = parseFloat(record["Discount"]) * 100;
-            discount = originalValue * (discountPercentage / 100)
-        }
 
         return {
-            value : discount || originalValue,
+            value :originalValue,
             currency : "usd",
-            ...record["Discount"] ? {"isPromotion": true}: "",
-            ...record["Discount"] ? {"promotion": {
-                    "discount": discount,
-                    "discountPercentage": discountPercentage,
-                    "originalValue": originalValue
-                }}: ""
         }
     },
     "supplier_specific": (record) => {
