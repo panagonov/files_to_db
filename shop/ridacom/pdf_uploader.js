@@ -7,7 +7,7 @@ let product_types =  fs.readdirSync(`${__dirname}/save_transformers`);
 let field_name = "pdf_crawler_version";
 let collection_name = "product";
 let cache_collection = "product_pdf";
-let crawler_version = 13;
+let crawler_version = 14;
 
 product_type_mapping = {
     "antibody" : "antibodies",
@@ -36,10 +36,7 @@ let upload = async(product_type, crawler_db, options = {}) => {
                 },
                 "must" : [
                     {
-                        "term" : {"all_categories" : product_type}
-                    },
-                    {
-                        "term" : {"supplier" : "affinity_biosciences"}
+                        "term" : {"supplier" : "himedia_laboratories"}
                     }
                 ]
             }
@@ -224,4 +221,4 @@ process.on('uncaughtException', function (err, data) {
     r()
 });
 
-r("" , {/*check_uploaded: true, force: true*/});
+r("" , {check_uploaded: true, force: true});

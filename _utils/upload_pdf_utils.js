@@ -91,7 +91,7 @@ let upload_pdf_preview = async(path, file_name, meta) => {
 
     } catch (e)
     {
-        errors.push(id);
+        errors.push(thumb_name);
         fs.writeFileSync(__dirname + "/pdf_errors.json", JSON.stringify(errors), "utf8");
         console.error(e)
     }
