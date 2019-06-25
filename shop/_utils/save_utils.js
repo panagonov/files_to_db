@@ -71,6 +71,9 @@ let get_canonical = (text, type) =>
 let build_suggest_data = (record, relation_fields, category) => {
     let result = {};
 
+    if (!record.original_link)
+        return result;
+
     let separate_aliases_and_synonyms = (data) =>
     {
         let max_alias_length = 5;
@@ -102,7 +105,7 @@ let build_suggest_data = (record, relation_fields, category) => {
     };
 
     //add product name
-    let show_on_match = [{key: "supplier", value: record.ui.supplier[0]}];
+    let show_on_match = [{key: "supplier", value: record.ui.supplier[0], id: record.supplier[0][1]}];
     if (record.images  && record.images.length)
         show_on_match.push({key: "image", value: record.images[0].link});
 

@@ -10,10 +10,10 @@ let init = async() =>
     await uniprot_db.init({database: collection_name});
 };
 
-let find_bio_objects = async(ids) => {
+let find_bio_objects = async(ids, field = "ids") => {
     let duplicated = [];
 
-    let bio_objects = await uniprot_db.read(collection_name, {body: {ids : {$in : ids}}});
+    let bio_objects = await uniprot_db.read(collection_name, {body: {[field] : {$in : ids}}});
 
     let hash = bio_objects.reduce((res, item) => {
         (item.ids || []).forEach(id => {

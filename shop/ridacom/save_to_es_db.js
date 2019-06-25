@@ -205,7 +205,6 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fie
 
         page++;
         console.log(distributor, type, site, `${page * limit}/${count}`)
-
     }
     while(result.length === limit);
 
