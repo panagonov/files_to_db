@@ -275,7 +275,7 @@ let get_crawler_item = (item, crawler_hash) =>  {
 module.exports = {
     convert,
     load_crawler_data,
-    version: 1,
+    version: 2,
     get_crawler_item
     // disable: true
 };

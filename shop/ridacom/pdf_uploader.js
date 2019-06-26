@@ -1,4 +1,5 @@
 let fs           = require("fs");
+let utils        = require("../../_utils/utils.js");
 let es_db        = require("../../_utils/es_db.js");
 let progress     = require("./_cache/pdf_uploader_progress.json");
 let upload_utils = require("../../_utils/upload_pdf_utils.js");
@@ -7,7 +8,7 @@ let product_types =  fs.readdirSync(`${__dirname}/save_transformers`);
 let field_name = "pdf_crawler_version";
 let collection_name = "product";
 let cache_collection = "product_pdf";
-let crawler_version = 14;
+let crawler_version = 2;
 
 product_type_mapping = {
     "antibody" : "antibodies",
@@ -132,11 +133,13 @@ let single_product_upload = async({items, originals, supplier, distributor, _id,
 
         if (need_do_download)
         {
+            let file_name = (file_data.link || file_data.href).split("/");
+            file_name = file_name.slice(3, file_name.length).join("_");
             let new_item_names = await upload_utils.upload_product_pdf({
                 ...file_data.link ? {link: file_data.link} : "",
                 ...file_data.file_content ? {file_content: file_data.file_content} : "",
                 path: `pdf/${distributor}/${supplier}`,
-                file_name: (file_data.link || file_data.href).split("/").pop(),
+                file_name: file_name,
                 meta: {supplier: supplier, distributor: distributor},
                 options
             });
@@ -192,10 +195,11 @@ let upload_single = async (es_oid, options) => {
     let distributor = es_product.distributor[0];
     let ready_items =  await single_product_upload({items, supplier, distributor, _id: es_product._id, options: options});
 
-    await es_db.update(collection_name, {data : {_id : es_product._id, pdf: ready_items}});
+    let final_pdfs = utils.uniq(ready_items.concat(es_product.pdf).filter(item => item.link.indexOf("http") !== 0), item => item.link);
+    await es_db.update(collection_name, {data : {_id : es_product._id, pdf: final_pdfs}});
     console.log(es_product._id);
     console.log(ready_items);
-    await crawler_db.create(cache_collection, {data : {_id : es_product._id, pdf: ready_items}})
+    await crawler_db.create(cache_collection, {data : {_id : es_product._id, pdf: final_pdfs}})
 };
 
 module.exports = {
@@ -221,4 +225,4 @@ process.on('uncaughtException', function (err, data) {
     r()
 });
 
-r("" , {check_uploaded: true, force: true});
+r("" , {/*check_uploaded: true, */force: true});

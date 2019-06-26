@@ -105,5 +105,5 @@ module.exports = {
     init,
     convert,
     load_custom_data,
-    version: 2
+    version: 3
 };
