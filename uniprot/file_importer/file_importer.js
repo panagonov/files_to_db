@@ -15,6 +15,8 @@ let save_to_db = async(collection_name) =>
 {
     if (!mongo_bulk.length)
         return;
+
+
     try
     {
         await mongo_db.bulk(collection_name, mongo_bulk);
@@ -36,6 +38,7 @@ let import_bulk = async(dir_path, file_name, type) =>
         xml.collect("gene");
         xml.collect("name");
         xml.collect("alternativeName");
+        xml.collect("dbReference");
 
         xml.on("endElement: entry", async record =>{
             let document = transformers[type].transform(record);

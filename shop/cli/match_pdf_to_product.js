@@ -195,10 +195,10 @@ let settings = {
             page_count: 616
         }
     },
-    "capp": {
-        distributor: "ridacom_ltd",
-        supplier: "capp",
-    }
+    // "capp": {
+    //     distributor: "ridacom_ltd",
+    //     supplier: "capp",
+    // }
 };
 
 run(settings.himedia_laboratories)
