@@ -10,7 +10,7 @@ let db_name  = "product";
 let init = async () =>
 {
     mongo_db = new MongoDb();
-    await mongo_db.init({database: db_name});
+    await mongo_db.init({database: db_name, user: "hashstyle", "pass": "Ha5h5tylE"});
 
     crawler_db = new MongoDb();
     await crawler_db.init({host: "172.16.1.11", database: "crawlers", user: "hashstyle", "pass": "Ha5h5tylE"});

@@ -47,7 +47,8 @@ Mongo.prototype.init = async function(conf, counter = 0)
             connectTimeoutMS : conf.connectTimeoutMS || 6000,
             reconnectTries   : conf.reconnectTries || 10,
             reconnectInterval: conf.reconnectInterval || 5000,
-            useNewUrlParser  : true
+            useNewUrlParser  : true,
+            useUnifiedTopology: true
         });
         this.db    = client.db(conf.database);
     }

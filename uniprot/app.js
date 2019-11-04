@@ -15,7 +15,7 @@ let db_name  = "uniprot";
 let init = async () =>
 {
     mongo_db = new MongoDb();
-    await mongo_db.init({database: db_name});
+    await mongo_db.init({host: "localhost", database: db_name, user: "hashstyle", "pass" : "Ha5h5tylE"});
     await es_db.init();
 };
 
