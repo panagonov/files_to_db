@@ -10,6 +10,15 @@ let unzip_path         = "E:/files_data/grants/";
 let state          = {state: "ready"};
 let cancel         = false;
 
+let urls = {
+    "projects"        : "https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=0",
+    "abstracts"       : "https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=1",
+    "publications"    : "https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=2",
+    "patents"         : "https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=3",
+    "clinical_studies": "https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=4",
+    "link_tables"     : "https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=5"
+};
+
 let set_state = (data) => {
     utils.objEach(data, (key, value) => {
         state[key] = value;
@@ -23,14 +32,6 @@ let on_cancel = () => {
     set_state({state: "ready", finish: new Date().toISOString(), error: "canceled"});
 };
 
-let urls = {
-    "projects"        : "https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=0",
-    "abstracts"       : "https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=1",
-    "publications"    : "https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=2",
-    "patents"         : "https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=3",
-    "clinical_studies": "https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=4",
-    "link_tables"     : "https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=5"
-};
 
 let get_url_content = url =>
     new Promise((resolve, reject) => {
