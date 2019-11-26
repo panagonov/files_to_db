@@ -1,5 +1,5 @@
 let fs       = require("fs");
-let es_db    = require("../../_utils/elasticsearch/db.js");
+let es_db    = require("../../_utils/es_db.js");
 
 let hash_path = `${__dirname}/_sources/hash.json`;
 let hash = {};

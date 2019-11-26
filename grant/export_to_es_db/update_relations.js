@@ -1,4 +1,4 @@
-let es_db    = require("../../_utils/elasticsearch/db.js");
+let es_db    = require("../../_utils/es_db.js");
 
 let rel_version = 2;
 

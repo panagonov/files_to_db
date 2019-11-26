@@ -5,7 +5,7 @@
  ********************************************************************/
 
 let MongoDb       = require("../_utils/db.js");
-let es_db         = require("../_utils/elasticsearch/db.js");
+let es_db         = require("../_utils/es_db.js");
 let file_importer = require("./file_importer/file_importer.js");
 let keywords      = require("./keywords/keywords.js");
 let affiliate     = require("./affiliate/affiliate.js");
