@@ -139,7 +139,6 @@ let mapping = {
 let convert = (record, result_to_enrich) =>
 {
     let result = utils.mapping_transform(mapping, record);
-
     return result
 };
 

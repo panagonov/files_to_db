@@ -173,7 +173,6 @@ let get_category = record => {
         result = import_utils.get_canonical("Laboratory Scales/Scientific Balances", ":product_category");
         if (crawler_item.sub_category)
         {
-            debugger
             missing_categories.push(crawler_item.sub_category.join("/"));
             fs.writeFileSync(__dirname + "/missing_cat.json", JSON.stringify(utils.uniq(missing_categories)));
         }
@@ -187,13 +186,8 @@ let get_additional_category_data = (record, result) => {
         return {};
 
     let category = result.category[0][1];
-
-    if (enrich[category])
-    {
-        let new_data = enrich[category](record, result);
-        return new_data
-    }
-    return {}
+    let new_data = enrich["balance"](record, result);
+    return new_data
 };
 
 module.exports = {
