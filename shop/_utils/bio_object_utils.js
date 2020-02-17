@@ -1,5 +1,6 @@
-let utils        = require("../../_utils/utils.js");
-let Mongo_db     = require("../../_utils/db.js");
+let utils    = require("@bioseek/core/utilities/utils.js");
+let Mongo_db = require("@crawler/_utils/db.js");
+let config   = require('@bioseek/core/config.js');
 
 let uniprot_db;
 let collection_name = "uniprot";
@@ -7,7 +8,10 @@ let collection_name = "uniprot";
 let init = async() =>
 {
     uniprot_db = new Mongo_db();
-    await uniprot_db.init({database: collection_name});
+    let mongo_conf = utils.clone(config.get("crawler:authors:mongo_db"));
+    mongo_conf.database = collection_name;
+
+    await uniprot_db.init(mongo_conf);
 };
 
 let find_bio_objects = async(ids, field = "ids") => {

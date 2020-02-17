@@ -1,5 +1,5 @@
 let fs           = require("fs");
-let es_db        = require("../../_utils/es_db.js");
+let es_db        = require("@bioseek/core/db/elasticsearch/db.js");
 let utils        = require("../../_utils/utils.js");
 let save_utils   = require("../_utils/save_utils.js");
 let image_errors = require("../../_utils/errors.json");
@@ -144,7 +144,6 @@ let save_to_db = async(mongo_db, crawler_db, distributor, type, site, update_fie
         let accumulated_suggest_data = {};
         let es_bulk = [];
         let custom_data;
-
         result = await mongo_db.read(collection_name, {body: {type: type, src: site, tid: distributor, export_version: {$ne : export_version}}, size: limit});
 
         let crawler_hash = await _load_crawler_data(result, crawler_db, converter);

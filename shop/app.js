@@ -1,7 +1,9 @@
 require('module-alias/register');
-let MongoDb = require("../_utils/db.js");
-let es_db   = require("../_utils/es_db.js");
-let ridacom = require("./ridacom/app.js");
+let Mongo_db = require("@crawler/_utils/db.js");
+let config   = require('@bioseek/core/config.js');
+let es_db    = require("@bioseek/core/db/elasticsearch/db.js");
+let utils    = require("@bioseek/core/utilities/utils.js");
+let ridacom  = require("./ridacom/app.js");
 
 let mongo_db;
 let crawler_db;
@@ -9,11 +11,14 @@ let db_name  = "product";
 
 let init = async () =>
 {
-    mongo_db = new MongoDb();
-    await mongo_db.init({database: db_name, user: "hashstyle", "pass": "Ha5h5tylE"});
+    mongo_db = new Mongo_db();
+    let mongo_conf = utils.clone(config.get("crawler:authors:mongo_db"));
+    mongo_conf.database = db_name;
 
-    crawler_db = new MongoDb();
-    await crawler_db.init({host: "172.16.1.11", database: "crawlers", user: "hashstyle", "pass": "Ha5h5tylE"});
+    await mongo_db.init(mongo_conf);
+
+    crawler_db = new Mongo_db();
+    await crawler_db.init(config.get("crawler:authors:mongo_db"));
 
     await es_db.init();
 };

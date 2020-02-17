@@ -12,9 +12,9 @@
  ********************************************************************/
 
 let fs             = require("fs");
-let file_importer  = require("./file_importer.js");
-let aggregate_data = require("./aggregate.js");
-// let save_to_es_db  = require("./save_to_es_db.js");
+// let file_importer  = require("./file_importer.js");
+// let aggregate_data = require("./aggregate.js");
+let save_to_es_db  = require("./save_to_es_db.js");
 // let image_uploader = require("./image_uploader.js");
 // let pdf_uploader   = require("./pdf_uploader.js");
 // let suggest_image_fixer   = require("./suggest_images_fixer");
@@ -26,13 +26,13 @@ let suppliers   = fs.readdirSync(__dirname + "/import_transformers");
 
 let run = async(mongo_db, crawler_db) =>
 {
-    for (let i = 0; i < suppliers.length; i++)
-    {
-        await file_importer.run(mongo_db, distributor, suppliers[i]);
-        await aggregate_data.run(mongo_db, crawler_db, suppliers[i]);
-    }
+    // for (let i = 0; i < suppliers.length; i++)
+    // {
+    //     await file_importer.run(mongo_db, distributor, suppliers[i]);
+    //     await aggregate_data.run(mongo_db, crawler_db, suppliers[i]);
+    // }
 
-    // await save_to_es_db.run(mongo_db, crawler_db, distributor, update_fields_list);
+    await save_to_es_db.run(mongo_db, crawler_db, distributor, update_fields_list);
     // await image_uploader.run(crawler_db);
     // await pdf_uploader.run(crawler_db);
     // await suggest_image_fixer.run()

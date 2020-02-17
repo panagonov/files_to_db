@@ -16,7 +16,7 @@
     "jquery": "^3.4.1",
     "jsdom": "^15.2.1",
     "jsonschema": "^1.2.4",
-    "module-alias": "^2.2.1",
+    "module-alias": "^2.2.2",
     "mongodb": "^3.3.1",
     "node-aho-corasick": "0.0.2",
     "puppeteer": "^1.19.0",
@@ -29,5 +29,13 @@
     "xml-stream": "^0.4.5",
     "xml2js": "^0.4.19",
     "xml2json": "^0.11.2"
+  },
+  "_moduleAliases": {
+    "@bioseek": "../bioseek/bioseek",
+    "@sanatio": "../bioseek/sanatio",
+    "@common": "../bioseek/common-components",
+    "@crawler": "../bioseek/crawlers",
+    "@build": "../bioseek/build_tools",
+    "@genetics": "../bioseek"
   }
 }

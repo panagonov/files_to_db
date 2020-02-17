@@ -1,4 +1,4 @@
-let es_db        = require("../../../../../_utils/es_db.js");
+let es_db        = require("@bioseek/core/db/elasticsearch/db.js");
 let utils        = require("../../../../../_utils/utils.js");
 let import_utils = require("../../../../_utils/save_utils.js");
 

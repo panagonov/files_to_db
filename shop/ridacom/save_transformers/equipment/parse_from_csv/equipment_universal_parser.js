@@ -1,6 +1,6 @@
 let utils        = require("../../../../../_utils/utils.js");
 let import_utils = require("../../../../_utils/save_utils.js");
-let render_specs = require("../../../../../../bioseek/discovery/core/_auto_generate_config/render_specs.json");
+let render_specs = require("@bioseek/core/_auto_generate_config/render_specs.json");
 let transform_fns  = {};
 
 utils.objEach(render_specs, (key, value) => {
