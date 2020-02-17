@@ -1,5 +1,5 @@
 let fs           = require("fs");
-let es_db        = require("../../_utils/es_db.js");
+let es_db        = require("@bioseek/core/db/elasticsearch/db.js");
 let progress     = require("./_cache/image_uploader_progress.json");
 let upload_utils = require("../../_utils/upload_utils.js");
 

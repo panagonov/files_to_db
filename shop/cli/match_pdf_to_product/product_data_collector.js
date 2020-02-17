@@ -1,5 +1,5 @@
 let fs    = require("fs");
-let es_db = require("../../../_utils/es_db.js");
+let es_db = require("@bioseek/core/db/elasticsearch/es_db.js");
 
 let body = {
     "query" : {},

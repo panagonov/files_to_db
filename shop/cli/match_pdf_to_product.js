@@ -1,7 +1,7 @@
 let fs               = require("fs");
 let directory_reader = require("../../_utils/directory_reader.js");
 let utils            = require("../../_utils/utils.js");
-let es_db            = require("../../_utils/es_db.js");
+let es_db            = require("@bioseek/core/db/elasticsearch/es_db.js");
 let MongoDb          = require("../../_utils/db.js");
 
 let pdf_crawler            = require("./match_pdf_to_product/pdf_crawler.js");

@@ -1,5 +1,5 @@
-let es_db        = require("../../_utils/es_db.js");
-let enums        = require("../../../bioseek/discovery/core/utilities/enums.js");
+let es_db        = require("@bioseek/core/db/elasticsearch/db.js");
+let enums        = require("@bioseek/core/utilities/enums.js");
 
 let collection_name = "shop_suggest";
 

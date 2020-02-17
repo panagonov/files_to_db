@@ -1,6 +1,6 @@
 let fs           = require("fs");
 let utils        = require("../../_utils/utils.js");
-let es_db        = require("../../_utils/es_db.js");
+let es_db        = require("@bioseek/core/db/elasticsearch/db.js");
 let progress     = require("./_cache/pdf_uploader_progress.json");
 let upload_utils = require("../../_utils/upload_pdf_utils.js");
 
