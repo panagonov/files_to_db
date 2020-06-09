@@ -75,7 +75,7 @@ let mapping_transform = (mapping, record) =>
             let res = getValueFromJSON(record, mapping[key]);
             res ? result[key] = res : null
         }
-        else if (mapping[key] instanceof Array ) {
+        else if (mapping[key] instanceof Array && mapping[key].length) {
             for(let i = 0; i < mapping[key].length; i++)
             {
                 let res = getValueFromJSON(record, mapping[key][i]);

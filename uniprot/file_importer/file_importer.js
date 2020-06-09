@@ -3,7 +3,7 @@ let progress         = require("./file_importer_progress.json");
 let directory_reader = require("../../_utils/directory_reader.js");
 
 let transformers = directory_reader(`${__dirname}/transformers/`, "js");
-let files_path   = `${__dirname}/files`;
+let files_path   = `E:/files_data`;
 let mongo_db;
 let mongo_bulk   = [];
 let bulk_size    =  1000;
@@ -15,8 +15,6 @@ let save_to_db = async(collection_name) =>
 {
     if (!mongo_bulk.length)
         return;
-
-
     try
     {
         await mongo_db.bulk(collection_name, mongo_bulk);
@@ -39,9 +37,17 @@ let import_bulk = async(dir_path, file_name, type) =>
         xml.collect("name");
         xml.collect("alternativeName");
         xml.collect("dbReference");
+        xml.collect("keyword");
+        xml.collect("evidence");
+        xml.collect("feature");
+        xml.collect("comment");
+        xml.collect("reference");
+        xml.collect("sequence");
 
         xml.on("endElement: entry", async record =>{
             let document = transformers[type].transform(record);
+            if (!document)
+                return;
 
             mongo_bulk.push({command_name: "upsert", _id: document._id, document: document});
             counter++;

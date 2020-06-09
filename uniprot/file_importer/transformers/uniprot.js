@@ -1,7 +1,26 @@
 let utils = require("../../../_utils/utils.js");
+const knownOrganisms = [
+    "Felis catus",
+    "Gallus gallus",
+    "Pan troglodytes",
+    "Canis familiaris",
+    "Drosophila melanogaster",
+    "Homo sapiens",
+    "Mus musculus",
+    "Pongo pygmaeus",
+    "Sus scrofa",
+    "Fugu rubripes",
+    "Tetraodon nigroviridis",
+    "Oryctolagus cuniculus",
+    "Rattus norvegicus",
+    "Caenorhabditis elegans",
+    "Saccharomyces cerevisiae",
+    "Schizosaccharomyces pombe",
+    "Danio rerio"
+];
 
 let mapping = {
-    "_id"                 : record => record.accession instanceof Array ? record.accession.sort((a, b) => a < b ? -1 : 1).join("_") : record.accession,
+    "_id"                 : record => record.accession instanceof Array ? record.accession.sort((a, b) => a < b ? -1 : 1).join("_").slice(0,127) : record.accession,
     "ids"                 : record => record.accession instanceof Array ? record.accession : [record.accession],
     "name"                : ["protein.recommendedName.fullName.$text", "protein.recommendedName.fullName"],
     "aliases"             : record => (record.protein.alternativeName || [])
@@ -12,8 +31,22 @@ let mapping = {
                                 res = res.concat(item.name.filter(it => it.$.type !== "ORF").map(it => it.$text));
                                 return res;
                             }, []),
-    "organism"            : record => (record.organism.name || []).map(it => it.$text),
+    "organism"            : record => (record.organism.name || [])
+                                        .map(it => it.$text.trim())
+                                        .filter(name => knownOrganisms.indexOf(name) !== -1),
+    "description"         : record => {
+                                    let result = null;
+                                    if (record.comment) {
+                                        result = record.comment.filter(item => item["$"].type === "function")
+                                        .map(item => item.text.$text);
+                                        if (result.length)
+                                            return result
+                                    }
+                                    return null
+                                },
     "ncbi_organism_tax_id": "organism.dbReference.$.id",
+    "date_created"        : record => record["$"] && record["$"].created ? new Date(record["$"].created).toISOString() : null,
+    "date_updated"        : record => record["$"] && record["$"].modified ? new Date(record["$"].modified).toISOString() : null,
     "external_links"      : record => {
         return (record.dbReference || []).map(item  => {
             let res =  {
@@ -38,6 +71,10 @@ let transform = (record) =>
         return null;
 
     let result = utils.mapping_transform(mapping, record);
+
+    if (!result.organism || !result.organism.length)
+        return null;
+
     return result
 };
 
