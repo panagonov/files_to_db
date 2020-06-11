@@ -1,4 +1,7 @@
 let utils = require("../../../_utils/utils.js");
+
+let hash = {};
+
 const knownOrganisms = [
     "Felis catus",
     "Gallus gallus",
@@ -20,7 +23,16 @@ const knownOrganisms = [
 ];
 
 let mapping = {
-    "_id"                 : record => record.accession instanceof Array ? record.accession.sort((a, b) => a < b ? -1 : 1).join("_").slice(0,127) : record.accession,
+    "_id"                 : record => {
+        let genes =(record.gene || []).reduce((res,item) => {
+            res = res.concat(item.name.filter(it => it.$.type !== "ORF").map(it => it.$text));
+            return res;
+        }, []);
+        if (genes && genes.length) {
+            return `GENE:NCBI:${genes[0].toUpperCase()}`
+        }
+        return null;
+    },
     "ids"                 : record => record.accession instanceof Array ? record.accession : [record.accession],
     "name"                : ["protein.recommendedName.fullName.$text", "protein.recommendedName.fullName"],
     "aliases"             : record => (record.protein.alternativeName || [])
@@ -31,6 +43,10 @@ let mapping = {
                                 res = res.concat(item.name.filter(it => it.$.type !== "ORF").map(it => it.$text));
                                 return res;
                             }, []),
+    "gene_symbol"         : record => (record.gene || []).reduce((res,item) => {
+                                    res = res.concat(item.name.filter(it => it.$.type !== "ORF").map(it => it.$text));
+                                    return res;
+                                }, [])[0],
     "organism"            : record => (record.organism.name || [])
                                         .map(it => it.$text.trim())
                                         .filter(name => knownOrganisms.indexOf(name) !== -1),
@@ -65,6 +81,23 @@ let mapping = {
     }
 };
 
+let manage_hash = result => {
+    hash[result._id] = hash[result._id] || {};
+    if (result.aliases)
+        hash[result._id].aliases = utils.uniq((hash[result._id].aliases || []).concat(result.aliases));
+    if (result.gene)
+        hash[result._id].gene = utils.uniq((hash[result._id].gene || []).concat(result.gene));
+    if (result.organism)
+        hash[result._id].organism = utils.uniq((hash[result._id].organism || []).concat(result.organism))
+};
+
+let enrich_result = result => {
+    if (hash.hasOwnProperty(result._id)) {
+        return Object.assign({}, result, hash[result._id])
+    }
+    return result;
+};
+
 let transform = (record) =>
 {
     if (!record.accession)
@@ -74,6 +107,12 @@ let transform = (record) =>
 
     if (!result.organism || !result.organism.length)
         return null;
+
+    if (!result._id)
+        return null;
+
+    manage_hash(result);
+    result = enrich_result(result);
 
     return result
 };
